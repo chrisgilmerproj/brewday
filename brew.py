@@ -10,9 +10,9 @@ class Beer(object):
     """
 
     def __init__(self, name='beer',
-                 grains=None,
-                 hops=None,
-                 brew_house_yield_percent=None,
+                 grain_list=None,
+                 hop_list=None,
+                 percent_brew_house_yield=None,
                  gallons_of_beer=None,
                  degrees_plato=None,
                  mash_temp=None,
@@ -21,9 +21,9 @@ class Beer(object):
                  percent_color_loss=None,
                  target_ibu=None):
         self.name = name
-        self.grains = grains
-        self.hops = hops
-        self.brew_house_yield_percent = brew_house_yield_percent  #%
+        self.grain_list = grain_list
+        self.hop_list = hop_list
+        self.percent_brew_house_yield = percent_brew_house_yield  #%
         self.gallons_of_beer = gallons_of_beer  #G
         self.degrees_plato = degrees_plato  #P
         self.mash_temp = mash_temp  #F
@@ -73,18 +73,18 @@ class Beer(object):
 
         BHY  =  [(Pactual)(galactual)(BHYtarget)] / [(Ptarget)(galtarget)]
         """
-        return ((plato_actual)(gal_actual)(self.brew_house_yield_percent)) / ((self.degrees_plato)(self.gallons_of_beer))
+        return ((plato_actual)(gal_actual)(self.percent_brew_house_yield)) / ((self.degrees_plato)(self.gallons_of_beer))
 
     def get_extract_weight(self):
         """
         Weight of Extract
         The weight of extract is the amount of malt extract present in the wort.
 
-        Lbs extract =   [(8.32 lbs/gal wort)(gal wort)(S.G.)(P)] / 100
+        Lbs extract =   [(8.32 pounds/gal wort)(gal wort)(S.G.)(P)] / 100
 
         8.32 in the above formula is the weight of one gallon of water.
         To find the weight of a gallon of wort, multiply the specific gravity
-        of the wort by 8.32lbs.
+        of the wort by 8.32pounds.
         """
         return (8.32 * self.gallons_of_beer * self.get_specific_gravity() * self.degrees_plato) / 100.0
 
@@ -97,7 +97,7 @@ class Beer(object):
 
         WY =    (HWE as-is)(BHY)
         """
-        return grain.hwe * self.brew_house_yield_percent
+        return grain.hwe * self.percent_brew_house_yield
 
     def get_pounds_malt(self, grain):
         """
@@ -106,7 +106,7 @@ class Beer(object):
         taken from the malt rather than the weight of the malt.  Do this will
         all you to compensate for the Working Yield and help you accurately
         measure your malt bills.  For example, an recipe may call for 5% of
-        caramel 20.  This does not me that you ad 0.5 lbs of caramel 20 malt
+        caramel 20.  This does not me that you ad 0.5 pounds of caramel 20 malt
         in a 10 lb recipe. Instead, this means that you will have 5% of the
         total extract come from the caramel 20 malt.  Use the following formula
         to calculate the weight of malt based on a percent of extract.
@@ -116,7 +116,7 @@ class Beer(object):
         return self.get_extract_weight() * grain.percent_extract / self.get_working_yield(grain)
 
     def get_total_grain_weight(self):
-        return sum([self.get_pounds_malt(g) for g in self.grains])
+        return sum([self.get_pounds_malt(g) for g in self.grain_list])
 
     def get_strike_temp(self):
         """
@@ -138,7 +138,7 @@ class Beer(object):
         to the milled malt.  We need to calculate the appropriate amount of
         water to allow for enzyme action and starch conversion take place.
 
-        gallons H2O =  (Lbs malt)(L:G)(1gallon H2O) / 8.32 lbs water
+        gallons H2O =  (Lbs malt)(L:G)(1gallon H2O) / 8.32 pounds water
         """
         return self.get_total_grain_weight() * self.liquor_to_grist_ratio / 8.32
 
@@ -181,7 +181,7 @@ class Beer(object):
         return grain.percent_extract / 100.0 * grain.color * self.degrees_plato / 8
 
     def get_total_wort_color(self):
-        return sum([self.get_wort_color(g) for g in self.grains])
+        return sum([self.get_wort_color(g) for g in self.grain_list])
 
     def get_beer_color(self):
         """
@@ -197,8 +197,8 @@ class Beer(object):
         Specific Gravity = 1.057
         S.G. = [(14P) / (258.6 - (14P/258.2 x 227.1))] +1
 
-        Lbs extract = 6.16 lbs
-        Lbs extract =   [(8.32 lbs/gal wort)(5gal wort)(1.057 S.G.)(14 P)] / 100
+        Lbs extract = 6.16 pounds
+        Lbs extract =   [(8.32 pounds/gal wort)(5gal wort)(1.057 S.G.)(14 P)] / 100
 
         Working Yield of 2-Row = 0.53
         WY =    (0.76 HWE as-is)(70% BHY)
@@ -206,19 +206,19 @@ class Beer(object):
         Working Yield of C20 = 0.49
         WY =    (0.70 HWE as-is)(70% BHY)
 
-        Lbs of 2-Row = 11.04 lbs
+        Lbs of 2-Row = 11.04 pounds
         Lbs malt = (6.15Lbs extract)(95% Extract) / 0.53 WY
 
-        Lbs of C20 = 0.63 lbs
+        Lbs of C20 = 0.63 pounds
         Lbs malt = (6.15 Lbs extract)(5% Extract) / 0.49 WY
 
-        Total Grain Weight = 11.67 lbs
+        Total Grain Weight = 11.67 pounds
 
         Strike Temperature = 164 degrees F
         Strike Temp =  [((0.4)(152 T mash- 60 T malt)) / 3 L:G] +  152 T mash
 
         Mash Water Volume = 4.2 Gallons
-        gallons H2O =  (11.67 Lbs malt)(3 L:G)(1gallon H2O) / 8.32 lbs water
+        gallons H2O =  (11.67 Lbs malt)(3 L:G)(1gallon H2O) / 8.32 pounds water
 
         Centennial Hops = 0.0.57 oz
         Ounces hops = (40 IBU Target)(5 galbeer)(95% IBU) / (14% a-acid)(32% Utilization)(7494)
@@ -244,19 +244,19 @@ class Beer(object):
         print 'degP = {:0.3f}'.format(deg_plato)
         print
 
-        lbs_extract = self.get_extract_weight()
-        print 'Lbs extract = {:0.2f} lbs'.format(lbs_extract)
+        pounds_extract = self.get_extract_weight()
+        print 'Lbs extract = {:0.2f} pounds'.format(pounds_extract)
         print
 
-        for grain in self.grains:
+        for grain in self.grain_list:
             wy = self.get_working_yield(grain)
             print 'Working Yield of {0} = {1:0.2f}%'.format(grain.name, wy)
-            lbs_malt = self.get_pounds_malt(grain)
-            print 'Lbs of {0} = {1:0.2f} Lbs'.format(grain.name, lbs_malt)
+            pounds_malt = self.get_pounds_malt(grain)
+            print 'Lbs of {0} = {1:0.2f} Lbs'.format(grain.name, pounds_malt)
             print
 
         total_grain_weight = self.get_total_grain_weight()
-        print 'Total Grain Weight = {:0.2f} lbs'.format(total_grain_weight)
+        print 'Total Grain Weight = {:0.2f} pounds'.format(total_grain_weight)
         print
 
         strike_temp = self.get_strike_temp()
@@ -267,12 +267,12 @@ class Beer(object):
         print 'Mash Water Volume = {:0.2f} Gallons'.format(mash_water_vol)
         print
 
-        for hop in self.hops:
+        for hop in self.hop_list:
             hops_weight = self.get_hops_weight(hop)
             print '{0} Hops = {1:0.2f} Ounces'.format(hop.name, hops_weight)
             print
 
-        for grain in self.grains:
+        for grain in self.grain_list:
             wort_color = self.get_wort_color(grain)
             print 'Color of {0} = {1:0.2f} degrees Lovibond'.format(grain.name, wort_color)
             print
@@ -285,7 +285,7 @@ class Beer(object):
         print 'Beer Color = {:0.2f} degrees Lovibond'.format(beer_color)
         print
 
-        for hop in self.hops:
+        for hop in self.hop_list:
             print self.get_ibu_real_beer(hop)
             print self.get_percent_utilization(hop)
 
@@ -408,7 +408,7 @@ if __name__ == "__main__":
                     hwe=0.70,
                     color=20,
                     percent_extract=5)
-    grains = [pale, crystal]
+    grain_list = [pale, crystal]
 
     # Define Hops
     centennial = Hop(name='centennial',
@@ -423,19 +423,19 @@ if __name__ == "__main__":
                   percent_ibus=0.20,
                   percent_utilization=0.025,
                   percent_contribution=0.05)
-    hops = [centennial, cascade]
+    hop_list = [centennial, cascade]
 
     # Define Beer
-    pale_ale = Beer('pale ale',
-                    grains=grains,
-                    hops=hops,
-                    brew_house_yield_percent = 70.0,  #%
-                    gallons_of_beer = 5.0,  #G
-                    degrees_plato = 14.0,  #P
-                    mash_temp = 152.0,  #F
-                    malt_temp = 60.0,  #F
-                    liquor_to_grist_ratio = 3.0/1.0,
-                    percent_color_loss = 0.30,  #%
-                    target_ibu = 40.0)
+    beer = Beer('pale ale',
+                grain_list=grain_list,
+                hop_list=hop_list,
+                percent_brew_house_yield = 70.0,  #%
+                gallons_of_beer = 5.0,  #G
+                degrees_plato = 14.0,  #P
+                mash_temp = 152.0,  #F
+                malt_temp = 60.0,  #F
+                liquor_to_grist_ratio = 3.0/1.0,
+                percent_color_loss = 0.30,  #%
+                target_ibu = 40.0)
 
-    pale_ale.calculate()
+    beer.calculate()
