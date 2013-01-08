@@ -3,6 +3,14 @@
 import math
 
 
+def fahrenheit_to_celsius(temp):
+    return (temp - 32.0) / 1.8
+
+
+def celsius_to_fahrenheit(temp):
+    return(temp * 1.8) + 32.0
+
+
 class Beer(object):
     """
     Learn to Brew Website:
@@ -23,13 +31,13 @@ class Beer(object):
         self.name = name
         self.grain_list = grain_list
         self.hop_list = hop_list
-        self.percent_brew_house_yield = percent_brew_house_yield  #%
-        self.gallons_of_beer = gallons_of_beer  #G
-        self.degrees_plato = degrees_plato  #P
-        self.mash_temp = mash_temp  #F
-        self.malt_temp = malt_temp  #F
+        self.percent_brew_house_yield = percent_brew_house_yield  # %
+        self.gallons_of_beer = gallons_of_beer  # G
+        self.degrees_plato = degrees_plato  # P
+        self.mash_temp = mash_temp  # F
+        self.malt_temp = malt_temp  # F
         self.liquor_to_grist_ratio = liquor_to_grist_ratio
-        self.percent_color_loss = percent_color_loss  #%
+        self.percent_color_loss = percent_color_loss  # %
         self.target_ibu = target_ibu
 
     def __repr__(self):
@@ -60,9 +68,10 @@ class Beer(object):
 
         Plato = [(S.G.)2 - (205.347)] + (668.7183)(S.G.) - 463.371
         """
-        specific_gravity = self.get_specific_gravity()
-        return (specific_gravity - 1.0) * 1000 / 4
-        #return (specific_gravity ** 2 - 205.347) + (668.7183 * specific_gravity) - 463.371
+        sg = self.get_specific_gravity()
+        return (sg - 1.0) * 1000 / 4
+        #return (sg ** 2 - 205.347) + (668.7183 * sg) - 463.371
+        #return -676.67 + 1286.4*sg - 800.47 * sg ** 2 + 190.74 * sg ** 3
 
     def get_brew_house_yield(self, plato_actual, gal_actual):
         """
@@ -97,7 +106,7 @@ class Beer(object):
 
         WY =    (HWE as-is)(BHY)
         """
-        return grain.hwe * self.percent_brew_house_yield
+        return grain.hot_water_extract * self.percent_brew_house_yield
 
     def get_pounds_malt(self, grain):
         """
@@ -170,7 +179,7 @@ class Beer(object):
         equation. For the hops equation, the units for the % must be expressed
         in decimal form.  (e.g. 10%= .10)
         """
-        return (self.target_ibu * self.gallons_of_beer * hop.percent_contribution) / (hop.percent_alpha_acids * hop.percent_utilization * 7494)
+        return (self.target_ibu * self.gallons_of_beer * (hop.percent_contribution / 100.0)) / ((hop.percent_alpha_acids / 100.0) * (hop.percent_utilization / 100.0) * 7494)
 
     def get_wort_color(self, grain):
         """
@@ -252,7 +261,7 @@ class Beer(object):
             wy = self.get_working_yield(grain)
             print 'Working Yield of {0} = {1:0.2f}%'.format(grain.name, wy)
             pounds_malt = self.get_pounds_malt(grain)
-            print 'Lbs of {0} = {1:0.2f} Lbs'.format(grain.name, pounds_malt)
+            print 'Lbs of {0} = {1:0.2f} pounds'.format(grain.name, pounds_malt)
             print
 
         total_grain_weight = self.get_total_grain_weight()
@@ -321,37 +330,46 @@ class Beer(object):
         ABV down the road.
 
         The complex formula, and variations on it come from
-        Ritchie Products Ltd, (Zymurgy, Summer 1995, vol. 18, no. 2) 
+        Ritchie Products Ltd, (Zymurgy, Summer 1995, vol. 18, no. 2)
         -Michael L. Hall's article Brew by the Numbers: Add Up What's in Your
         Beer, and Designing Great Beers by Daniels.
         """
         return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
 
-    def get_hydrometer_adjustment(self):
+    def get_hydrometer_adjustment(self, temp):
         """
         http://www.brewersfriend.com/hydrometer-temp/
+        http://merrycuss.com/calc/sgcorrection.html
+        http://hbd.org/brewery/library/HydromCorr0992.html
+        http://www.primetab.com/formulas.html
+
+        Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
+            where T is in degrees F.
         """
-        pass
+        correction = 1.313454 - 0.132674 * (temp ** 1) + \
+                    (2.057793 * 10 ** -3) * (temp ** 2) - \
+                    (2.627634 * 10 ** -6) * (temp ** 3)
+        return self.get_specific_gravity() + (correction * 0.001)
 
     def get_ibu_jackie_rager(self, hop):
         """
         http://www.rooftopbrew.net/ibu.php
         """
         woz = self.get_hops_weight(hop)
-        return (woz * hop.percent_utilization * hop.percent_alpha_acids * 7489) / (self.gallons_of_beer * self.get_specific_gravity())
+        return (woz * (hop.percent_utilization / 100.0) * (hop.percent_alpha_acids / 100.0) * 7489) / (self.gallons_of_beer * self.get_specific_gravity())
 
     def get_ibu_glenn_tinseth(self, hop):
         """
         http://www.rooftopbrew.net/ibu.php
         """
         #woz = self.get_hops_weight(hop)
-         
+
     def get_ibu_real_beer(self, hop):
         """
         http://www.realbeer.com/hops/research.html
         """
         woz = self.get_hops_weight(hop)
-        return (woz * hop.percent_utilization * hop.percent_alpha_acids * 7490) / (self.gallons_of_beer * self.get_specific_gravity())
+        return (woz * (hop.percent_utilization / 100.0) * (hop.percent_alpha_acids / 100.0) * 7490) / (self.gallons_of_beer * self.get_specific_gravity())
 
     def get_percent_utilization(self, hop):
         bigness_factor = 1.65 * 0.000125 ** (self.get_specific_gravity() - 1)
@@ -363,11 +381,11 @@ class Grain(object):
 
     def __init__(self, name=None,
                  short_name=None,
-                 hwe=None,
+                 hot_water_extract=None,
                  color=None,
                  percent_extract=None):
         self.name = name
-        self.hwe = hwe
+        self.hot_water_extract = hot_water_extract
         self.color = color
         self.percent_extract = percent_extract
 
@@ -379,12 +397,13 @@ class Hop(object):
 
     def __init__(self, name=None,
                  short_name=None,
-                 percent_alpha_acids=None,
                  boil_time=None,
+                 percent_alpha_acids=None,
                  percent_ibus=None,
                  percent_utilization=None,
                  percent_contribution=None):
         self.name = name
+        self.short_name = short_name
         self.percent_alpha_acids = percent_alpha_acids
         self.boil_time = boil_time
         self.percent_ibus = percent_ibus
@@ -400,42 +419,42 @@ if __name__ == "__main__":
     # Define Grains
     pale = Grain(name='pale 2-row',
                  short_name='2-row',
-                 hwe=0.76,
+                 hot_water_extract=0.76,
                  color=2,
-                 percent_extract=95)
+                 percent_extract=95.0)
     crystal = Grain(name='crystal C20',
                     short_name='C20',
-                    hwe=0.70,
+                    hot_water_extract=0.70,
                     color=20,
-                    percent_extract=5)
+                    percent_extract=5.0)
     grain_list = [pale, crystal]
 
     # Define Hops
     centennial = Hop(name='centennial',
-                     percent_alpha_acids=0.14,
-                     boil_time=60,
-                     percent_ibus=0.80,
-                     percent_utilization=0.32,
-                     percent_contribution=0.95)
+                     boil_time=60.0,
+                     percent_alpha_acids=14.0,
+                     percent_ibus=80.0,
+                     percent_utilization=32.0,
+                     percent_contribution=95.0)
     cascade = Hop(name='cascade',
-                  percent_alpha_acids=0.07,
-                  boil_time=5,
-                  percent_ibus=0.20,
-                  percent_utilization=0.025,
-                  percent_contribution=0.05)
+                  boil_time=5.0,
+                  percent_alpha_acids=7.0,
+                  percent_ibus=20.0,
+                  percent_utilization=2.5,
+                  percent_contribution=5.0)
     hop_list = [centennial, cascade]
 
     # Define Beer
-    beer = Beer('pale ale',
+    beer = Beer(name='pale ale',
                 grain_list=grain_list,
                 hop_list=hop_list,
-                percent_brew_house_yield = 70.0,  #%
-                gallons_of_beer = 5.0,  #G
-                degrees_plato = 14.0,  #P
-                mash_temp = 152.0,  #F
-                malt_temp = 60.0,  #F
-                liquor_to_grist_ratio = 3.0/1.0,
-                percent_color_loss = 0.30,  #%
-                target_ibu = 40.0)
+                percent_brew_house_yield=70.0,  # %
+                gallons_of_beer=5.0,  # G
+                degrees_plato=14.0,  # P
+                mash_temp=152.0,  # F
+                malt_temp=60.0,  # F
+                liquor_to_grist_ratio=3.0 / 1.0,
+                percent_color_loss=0.30,  # %
+                target_ibu=40.0)
 
     beer.calculate()

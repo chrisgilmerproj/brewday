@@ -9,43 +9,43 @@ class TestBeer(unittest.TestCase):
         # Define Grains
         pale = Grain(name='pale 2-row',
                      short_name='2-row',
-                     hwe=0.76,
+                     hot_water_extract=0.76,
                      color=2,
                      percent_extract=95)
         crystal = Grain(name='crystal C20',
                         short_name='C20',
-                        hwe=0.70,
+                        hot_water_extract=0.70,
                         color=20,
-                        percent_extract=5)
+                        percent_extract=5.0)
         self.grain_list = [pale, crystal]
 
         # Define Hops
         centennial = Hop(name='centennial',
-                         percent_alpha_acids=0.14,
-                         boil_time=60,
-                         percent_ibus=0.80,
-                         percent_utilization=0.32,
-                         percent_contribution=0.95)
+                         boil_time=60.0,
+                         percent_alpha_acids=14.0,
+                         percent_ibus=80.0,
+                         percent_utilization=32.0,
+                         percent_contribution=95.0)
         cascade = Hop(name='cascade',
-                      percent_alpha_acids=0.07,
-                      boil_time=5,
-                      percent_ibus=0.20,
-                      percent_utilization=0.025,
-                      percent_contribution=0.05)
+                      boil_time=5.0,
+                      percent_alpha_acids=7.0,
+                      percent_ibus=20.0,
+                      percent_utilization=2.5,
+                      percent_contribution=5.0)
         self.hop_list = [centennial, cascade]
 
-        # Define Beer
-        self.beer = Beer('pale ale',
+        # Define Beers
+        self.beer = Beer(name='pale ale',
                          grain_list=self.grain_list,
                          hop_list=self.hop_list,
-                         percent_brew_house_yield = 70.0,  #%
-                         gallons_of_beer = 5.0,  #G
-                         degrees_plato = 14.0,  #P
-                         mash_temp = 152.0,  #F
-                         malt_temp = 60.0,  #F
-                         liquor_to_grist_ratio = 3.0/1.0,
-                         percent_color_loss = 0.30,  #%
-                         target_ibu = 40.0)
+                         percent_brew_house_yield=70.0,  # %
+                         gallons_of_beer=5.0,  # G
+                         degrees_plato=14.0,  # P
+                         mash_temp=152.0,  # F
+                         malt_temp=60.0,  # F
+                         liquor_to_grist_ratio=3.0 / 1.0,
+                         percent_color_loss=0.30,  # %
+                         target_ibu=40.0)
 
     def test_get_specific_gravity(self):
         sg = self.beer.get_specific_gravity()
@@ -102,6 +102,18 @@ class TestBeer(unittest.TestCase):
     def test_get_beer_color(self):
         beer_color = self.beer.get_beer_color()
         self.assertEquals(round(beer_color, 2), 3.55)
+
+    def test_get_alcohol_by_volume_standard(self):
+        abv = self.beer.get_alcohol_by_volume_standard(1.057, 1.013)
+        self.assertEquals(round(abv, 2), 5.78)
+
+    def test_get_alcohol_by_volume_alternative(self):
+        abv = self.beer.get_alcohol_by_volume_alternative(1.057, 1.013)
+        self.assertEquals(round(abv, 2), 5.95)
+
+    def test_get_hydrometer_adjustment(self):
+        sg = self.beer.get_hydrometer_adjustment(float(70))
+        self.assertEquals(round(sg, 3), 1.058)
 
     def test_get_ibu_real_beer(self):
         ibu = self.beer.get_ibu_real_beer(self.hop_list[0])
