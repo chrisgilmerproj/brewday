@@ -284,15 +284,25 @@ class Beer(object):
         Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         sg = self.get_specific_gravity()
-        print 'SG = {:0.3f}'.format(sg)
-        print
-
         deg_plato = self.get_degrees_plato()
-        print 'degP = {:0.3f}'.format(deg_plato)
-        print
-
         pounds_extract = self.get_extract_weight()
-        print 'Lbs extract = {:0.2f} pounds'.format(pounds_extract)
+        strike_temp = self.get_strike_temp()
+        mash_water_vol = self.get_mash_water_volume()
+        total_wort_color = self.get_total_wort_color()
+        beer_color = self.get_beer_color()
+        total_grain_weight = self.get_total_grain_weight()
+
+        print
+        print self.name.capitalize()
+        print '-' * len(self.name)
+        print 'Specific Gravity:   {:0.3f}'.format(sg)
+        print 'Degrees Plato:      {:0.3f} degP'.format(deg_plato)
+        print 'Extract Weight:     {:0.2f} lbs'.format(pounds_extract)
+        print 'Strike Temperature: {:0.2f} degF'.format(strike_temp)
+        print 'Mash Water Volume:  {:0.2f} gallons'.format(mash_water_vol)
+        print 'Total Grain Weight: {:0.2f} lbs'.format(total_grain_weight)
+        print 'Total Wort Color:   {0:0.2f} degL'.format(total_wort_color)
+        print 'Beer Color:         {0:0.2f} degL'.format(beer_color)
         print
 
         for grain in self.grain_list:
@@ -300,41 +310,23 @@ class Beer(object):
             pounds_malt = self.get_pounds_malt(grain)
             wort_color = self.get_wort_color(grain)
             print grain.format()
-            print '{0:0.2f}% working yield'.format(wy)
-            print '{0:0.2f} pounds'.format(pounds_malt)
-            print '{0:0.2f} degrees Lovibond'.format(wort_color)
+            print 'Working Yield:     {0:0.2f} %'.format(wy)
+            print 'Malt:              {0:0.2f} lbs'.format(pounds_malt)
+            print 'Color:             {0:0.2f} degL'.format(wort_color)
             print
-
-
-        total_grain_weight = self.get_total_grain_weight()
-        print 'Total Grain Weight = {:0.2f} pounds'.format(total_grain_weight)
-        print
-
-        strike_temp = self.get_strike_temp()
-        print 'Strike Temperature = {:0.2f} F'.format(strike_temp)
-        print
-
-        mash_water_vol = self.get_mash_water_volume()
-        print 'Mash Water Volume = {:0.2f} Gallons'.format(mash_water_vol)
-        print
 
         for hop in self.hop_list:
             hops_weight = self.get_hops_weight(hop)
             ibus = self.get_ibu_real_beer(hop)
-            utilization = self.get_percent_utilization(hop)
+            utilization = hop.get_percent_utilization(sg, hop.boil_time)
             print hop.format()
-            print '{0:0.2f} Ounces'.format(hops_weight)
-            print '{0:0.2f} IBUs'.format(ibus)
-            print '{0:0.2f}% utilization'.format(utilization)
+            print 'Weight:       {0:0.2f} oz'.format(hops_weight)
+            print 'IBUs:         {0:0.2f}'.format(ibus)
+            print 'Utilization:  {0:0.2f} %'.format(utilization)
             print
 
-        total_wort_color = self.get_total_wort_color()
-        print 'Total Wort Color = {0:0.2f} degrees Lovibond'.format(total_wort_color)
-        print
+        #self.hop_list[0].print_utilization_table()
 
-        beer_color = self.get_beer_color()
-        print 'Beer Color = {0:0.2f} degrees Lovibond'.format(beer_color)
-        print
 
     def get_alcohol_by_volume_standard(self, og, fg):
         """
@@ -412,62 +404,6 @@ class Beer(object):
         woz = self.get_hops_weight(hop)
         return (woz * (hop.percent_utilization / 100.0) * (hop.percent_alpha_acids / 100.0) * 7490) / (self.gallons_of_beer * self.get_specific_gravity())
 
-    def get_bigness_factor(self, sg):
-        """
-        Source: http://www.realbeer.com/hops/research.html
-        """
-        return 1.65 * 0.000125 ** (sg - 1)
-
-    def get_boil_time_factor(self, boil_time):
-        """
-        Source: http://www.realbeer.com/hops/research.html
-        """
-        return (1 - math.exp(-0.04 * boil_time)) / 4.15
-
-    def get_percent_utilization(self, hop):
-        """
-        The Bigness factor accounts for reduced utilization due to higher wort
-        gravities. Use an average gravity value for the entire boil to account
-        for changes in the wort volume.
-
-        Bigness factor = 1.65 * 0.000125^(wort gravity - 1)
-
-        The Boil Time factor accounts for the change in utilization due to
-        boil time:
-
-        Boil Time factor = (1 - e^(-0.04 * time in mins)) / 4.15
-
-        Source: http://www.realbeer.com/hops/research.html
-        """
-        bigness_factor = self.get_bigness_factor(self.get_specific_gravity())
-        boil_time_factor = self.get_boil_time_factor(hop.boil_time)
-        return bigness_factor * boil_time_factor
-
-    def print_utilization_table(self):
-        """
-        Decimal Alpha Acid Utilization vs. Boil Time and Wort Original Gravity
-
-        Source: http://www.realbeer.com/hops/research.html
-        """
-        boil_time_list = range(0, 60, 3) + range(60, 130, 10)
-        gravity_list = range(1030, 1140, 10)
-
-        line = []
-        print 'Decimal Alpha Acid Utilization - Boil Time vs Wort Original Gravity'
-        print
-        print ' '.join(['{0:0.3f}'.format(l/1000.0) for l in [0] + gravity_list])
-        print '-' * 72
-        for boil_time in boil_time_list:
-            line.append(boil_time)
-            for sg in gravity_list:
-                bigness_factor = self.get_bigness_factor(sg / 1000.0)
-                boil_time_factor = self.get_boil_time_factor(boil_time)
-
-                aau = bigness_factor * boil_time_factor
-                line.append(aau)
-            print ' '.join(['{0:0.3f}'.format(l) for l in line])
-            line = []
-
 
 class Grain(object):
 
@@ -491,7 +427,7 @@ class Grain(object):
 Color:             {2} degL
 Hot Water Extract: {3}
 Extract:           {4} %""".format(self.name.capitalize(),
-                                   '-' * (len(self.name) + 5),
+                                   '-' * (len(self.name) + 6),
                                    self.color,
                                    self.hot_water_extract,
                                    self.percent_extract)
@@ -509,8 +445,8 @@ class Hop(object):
                  percent_contribution=None):
         self.name = name
         self.short_name = short_name or name
-        self.percent_alpha_acids = percent_alpha_acids
         self.boil_time = boil_time
+        self.percent_alpha_acids = percent_alpha_acids
         self.percent_ibus = percent_ibus
         self.percent_utilization = percent_utilization
         self.percent_contribution = percent_contribution
@@ -523,17 +459,77 @@ class Hop(object):
         msg = """{0} Hops
 {1}
 Alpha Acids:  {2} %
-IBUs:         {4} %
-Utilization:  {5} %
-Contribution: {6} %
-Boil Time:    {3} min""".format(self.name.capitalize(),
-                                '-' * (len(self.name) + 5),
+IBUs:         {3} %
+Utilization:  {4} %
+Contribution: {5} %
+Boil Time:    {6} min""".format(self.name.capitalize(),
+                                '-' * (len(self.name) + 6),
                                 self.percent_alpha_acids,
-                                self.boil_time,
                                 self.percent_ibus,
                                 self.percent_utilization,
-                                self.percent_contribution,)
+                                self.percent_contribution,
+                                self.boil_time,)
         return msg
+
+    @classmethod
+    def get_bigness_factor(cls, sg):
+        """
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        return 1.65 * 0.000125 ** (sg - 1)
+
+    @classmethod
+    def get_boil_time_factor(cls, boil_time):
+        """
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        return (1 - math.exp(-0.04 * boil_time)) / 4.15
+
+    @classmethod
+    def get_percent_utilization(cls, sg, boil_time):
+        """
+        The Bigness factor accounts for reduced utilization due to higher wort
+        gravities. Use an average gravity value for the entire boil to account
+        for changes in the wort volume.
+
+        Bigness factor = 1.65 * 0.000125^(wort gravity - 1)
+
+        The Boil Time factor accounts for the change in utilization due to
+        boil time:
+
+        Boil Time factor = (1 - e^(-0.04 * time in mins)) / 4.15
+
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        bigness_factor = cls.get_bigness_factor(sg)
+        boil_time_factor = cls.get_boil_time_factor(boil_time)
+        return bigness_factor * boil_time_factor * 100
+
+    @classmethod
+    def print_utilization_table(cls):
+        """
+        Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
+
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        boil_time_list = range(0, 60, 3) + range(60, 130, 10)
+        gravity_list = range(1030, 1140, 10)
+
+        title = 'Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity'
+        size = 92
+        print title.center(size)
+        print str('=' * len(title)).center(size)
+        print
+        print ' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0) for l in gravity_list])
+        print '-' * size
+        for boil_time in boil_time_list:
+            line = []
+            line.append(str(boil_time).rjust(4))
+            for sg in gravity_list:
+                aau = cls.get_percent_utilization(sg / 1000.0, boil_time)
+                line.append('{0:7.3f}'.format(aau))
+            print ' '.join([item for item in line])
+        print
 
 
 if __name__ == "__main__":
