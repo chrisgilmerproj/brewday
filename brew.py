@@ -412,6 +412,18 @@ class Beer(object):
         woz = self.get_hops_weight(hop)
         return (woz * (hop.percent_utilization / 100.0) * (hop.percent_alpha_acids / 100.0) * 7490) / (self.gallons_of_beer * self.get_specific_gravity())
 
+    def get_bigness_factor(self, sg):
+        """
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        return 1.65 * 0.000125 ** (sg - 1)
+
+    def get_boil_time_factor(self, boil_time):
+        """
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        return (1 - math.exp(-0.04 * boil_time)) / 4.15
+
     def get_percent_utilization(self, hop):
         """
         The Bigness factor accounts for reduced utilization due to higher wort
@@ -427,9 +439,34 @@ class Beer(object):
 
         Source: http://www.realbeer.com/hops/research.html
         """
-        bigness_factor = 1.65 * 0.000125 ** (self.get_specific_gravity() - 1)
-        boil_time_factor = (1 - math.exp(-0.04 * hop.boil_time)) / 4.15
-        return bigness_factor * boil_time_factor * 100
+        bigness_factor = self.get_bigness_factor(self.get_specific_gravity())
+        boil_time_factor = self.get_boil_time_factor(hop.boil_time)
+        return bigness_factor * boil_time_factor
+
+    def print_utilization_table(self):
+        """
+        Decimal Alpha Acid Utilization vs. Boil Time and Wort Original Gravity
+
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        boil_time_list = range(0, 60, 3) + range(60, 130, 10)
+        gravity_list = range(1030, 1140, 10)
+
+        line = []
+        print 'Decimal Alpha Acid Utilization - Boil Time vs Wort Original Gravity'
+        print
+        print ' '.join(['{0:0.3f}'.format(l/1000.0) for l in [0] + gravity_list])
+        print '-' * 72
+        for boil_time in boil_time_list:
+            line.append(boil_time)
+            for sg in gravity_list:
+                bigness_factor = self.get_bigness_factor(sg / 1000.0)
+                boil_time_factor = self.get_boil_time_factor(boil_time)
+
+                aau = bigness_factor * boil_time_factor
+                line.append(aau)
+            print ' '.join(['{0:0.3f}'.format(l) for l in line])
+            line = []
 
 
 class Grain(object):
