@@ -40,11 +40,11 @@ class TestBeer(unittest.TestCase):
                          hop_list=self.hop_list,
                          percent_brew_house_yield=70.0,  # %
                          gallons_of_beer=5.0,  # G
-                         degrees_plato=14.0,  # P
+                         target_degrees_plato=14.0,  # P
                          mash_temp=152.0,  # F
                          malt_temp=60.0,  # F
                          liquor_to_grist_ratio=3.0 / 1.0,
-                         percent_color_loss=0.30,  # %
+                         percent_color_loss=30.0,  # %
                          target_ibu=40.0)
 
     def test_get_specific_gravity(self):
@@ -53,7 +53,7 @@ class TestBeer(unittest.TestCase):
 
     def test_get_degrees_plato(self):
         deg_plato = self.beer.get_degrees_plato()
-        self.assertEquals(round(deg_plato, 3), 14.211)
+        self.assertEquals(round(deg_plato, 3), 14.003)
 
     def test_get_extract_weight(self):
         pounds_extract = self.beer.get_extract_weight()
