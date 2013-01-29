@@ -235,7 +235,7 @@ class Beer(object):
         """
         return self.get_total_wort_color() * (1.0 - self.percent_color_loss / 100.0)
 
-    def calculate(self):
+    def format(self):
         """
         PALE ALE ANSWERS:
 
@@ -299,7 +299,7 @@ class Beer(object):
             wy = self.get_working_yield(grain)
             pounds_malt = self.get_pounds_malt(grain)
             wort_color = self.get_wort_color(grain)
-            print '{0} Grain'.format(grain.name)
+            print grain.format()
             print '{0:0.2f}% working yield'.format(wy)
             print '{0:0.2f} pounds'.format(pounds_malt)
             print '{0:0.2f} degrees Lovibond'.format(wort_color)
@@ -322,7 +322,7 @@ class Beer(object):
             hops_weight = self.get_hops_weight(hop)
             ibus = self.get_ibu_real_beer(hop)
             utilization = self.get_percent_utilization(hop)
-            print '{0} Hops'.format(hop.name)
+            print hop.format()
             print '{0:0.2f} Ounces'.format(hops_weight)
             print '{0:0.2f} IBUs'.format(ibus)
             print '{0:0.2f}% utilization'.format(utilization)
@@ -473,16 +473,29 @@ class Grain(object):
 
     def __init__(self, name=None,
                  short_name=None,
-                 hot_water_extract=None,
                  color=None,
+                 hot_water_extract=None,
                  percent_extract=None):
         self.name = name
-        self.hot_water_extract = hot_water_extract
+        self.short_name = short_name or name
         self.color = color
+        self.hot_water_extract = hot_water_extract
         self.percent_extract = percent_extract
 
     def __repr__(self):
         return self.name
+
+    def format(self):
+        msg = """{0} Grain
+{1}
+Color:             {2} degL
+Hot Water Extract: {3}
+Extract:           {4} %""".format(self.name.capitalize(),
+                                   '-' * (len(self.name) + 5),
+                                   self.color,
+                                   self.hot_water_extract,
+                                   self.percent_extract)
+        return msg
 
 
 class Hop(object):
@@ -495,7 +508,7 @@ class Hop(object):
                  percent_utilization=None,
                  percent_contribution=None):
         self.name = name
-        self.short_name = short_name
+        self.short_name = short_name or name
         self.percent_alpha_acids = percent_alpha_acids
         self.boil_time = boil_time
         self.percent_ibus = percent_ibus
@@ -503,7 +516,24 @@ class Hop(object):
         self.percent_contribution = percent_contribution
 
     def __repr__(self):
-        return self.name
+        return "{0}, alpha {1}%".format(self.name.capitalize(),
+                                        self.percent_alpha_acids)
+
+    def format(self):
+        msg = """{0} Hops
+{1}
+Alpha Acids:  {2} %
+IBUs:         {4} %
+Utilization:  {5} %
+Contribution: {6} %
+Boil Time:    {3} min""".format(self.name.capitalize(),
+                                '-' * (len(self.name) + 5),
+                                self.percent_alpha_acids,
+                                self.boil_time,
+                                self.percent_ibus,
+                                self.percent_utilization,
+                                self.percent_contribution,)
+        return msg
 
 
 if __name__ == "__main__":
@@ -512,12 +542,12 @@ if __name__ == "__main__":
     pale = Grain(name='pale 2-row',
                  short_name='2-row',
                  hot_water_extract=0.76,
-                 color=2,
+                 color=2.0,
                  percent_extract=95.0)
     crystal = Grain(name='crystal C20',
                     short_name='C20',
                     hot_water_extract=0.70,
-                    color=20,
+                    color=20.0,
                     percent_extract=5.0)
     grain_list = [pale, crystal]
 
@@ -549,4 +579,4 @@ if __name__ == "__main__":
                 percent_color_loss=30.0,  # %
                 target_ibu=40.0)
 
-    beer.calculate()
+    beer.format()
