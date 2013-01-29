@@ -122,10 +122,11 @@ class TestBeer(unittest.TestCase):
         self.assertEquals(round(ibu, 2), 1.89)
 
     def test_get_percent_utilization(self):
-        utilization = self.beer.get_percent_utilization(self.hop_list[0])
-        self.assertEquals(round(utilization, 2), 0.22)
-        utilization = self.beer.get_percent_utilization(self.hop_list[1])
-        self.assertEquals(round(utilization, 2), 0.04)
+        sg = self.beer.get_specific_gravity()
+        utilization = self.hop_list[0].get_percent_utilization(sg, self.hop_list[0].boil_time)
+        self.assertEquals(round(utilization, 2), 21.69)
+        utilization = self.hop_list[1].get_percent_utilization(sg, self.hop_list[1].boil_time)
+        self.assertEquals(round(utilization, 2), 4.32)
 
 
 if __name__ == '__main__':
