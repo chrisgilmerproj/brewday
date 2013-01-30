@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import math
+import string
 
 
 def fahrenheit_to_celsius(temp):
@@ -293,7 +294,7 @@ class Beer(object):
         total_grain_weight = self.get_total_grain_weight()
 
         print
-        print self.name.capitalize()
+        print string.capwords(self.name)
         print '-' * len(self.name)
         print 'Specific Gravity:   {:0.3f}'.format(sg)
         print 'Degrees Plato:      {:0.3f} degP'.format(deg_plato)
@@ -430,7 +431,7 @@ class Grain(object):
 {1}
 Color:             {2} degL
 Hot Water Extract: {3}
-Extract:           {4} %""".format(self.name.capitalize(),
+Extract:           {4} %""".format(string.capwords(self.name),
                                    '-' * (len(self.name) + 6),
                                    self.color,
                                    self.hot_water_extract,
@@ -502,7 +503,7 @@ Alpha Acids:  {2} %
 IBUs:         {3} %
 Utilization:  {4} %
 Contribution: {5} %
-Boil Time:    {6} min""".format(self.name.capitalize(),
+Boil Time:    {6} min""".format(string.capwords(self.name),
                                 '-' * (len(self.name) + 6),
                                 self.percent_alpha_acids,
                                 self.percent_ibus,
