@@ -107,7 +107,7 @@ class Beer(object):
 
         8.32 in the above formula is the weight of one gallon of water.
         To find the weight of a gallon of wort, multiply the specific gravity
-        of the wort by 8.32pounds.
+        of the wort by 8.32 pounds.
 
         Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
@@ -307,11 +307,15 @@ class Beer(object):
 
         for grain in self.grain_list:
             wy = self.get_working_yield(grain)
-            pounds_malt = self.get_pounds_malt(grain)
+            pounds_lme = self.get_pounds_malt(grain)
+            pounds_dry = grain.get_liquid_to_dry_malt_weight(pounds_lme)
+            pounds_grain = grain.get_liquid_malt_to_grain_weight(pounds_lme)
             wort_color = self.get_wort_color(grain)
             print grain.format()
             print 'Working Yield:     {0:0.2f} %'.format(wy)
-            print 'Malt:              {0:0.2f} lbs'.format(pounds_malt)
+            print 'Weight DME:        {0:0.2f} lbs'.format(pounds_dry)
+            print 'Weight LME:        {0:0.2f} lbs'.format(pounds_lme)
+            print 'Weight Grain:      {0:0.2f} lbs'.format(pounds_grain)
             print 'Color:             {0:0.2f} degL'.format(wort_color)
             print
 
@@ -432,6 +436,42 @@ Extract:           {4} %""".format(self.name.capitalize(),
                                    self.hot_water_extract,
                                    self.percent_extract)
         return msg
+
+    @classmethod
+    def get_dry_to_liquid_malt_weight(cls, malt):
+        """
+        Source: http://www.weekendbrewer.com/brewingformulas.htm
+        """
+        return malt * 1.25
+
+    @classmethod
+    def get_liquid_to_dry_malt_weight(cls, malt):
+        """
+        Source: http://www.weekendbrewer.com/brewingformulas.htm
+        """
+        return malt * 1.0 / 1.25
+
+    @classmethod
+    def get_grain_to_liquid_malt_weight(cls, grain):
+        """
+        Source: http://www.weekendbrewer.com/brewingformulas.htm
+        """
+        return grain * 0.75
+
+    @ classmethod
+    def get_liquid_malt_to_grain_weight(cls, malt):
+        return malt * 1.0 / 0.75
+
+    @classmethod
+    def get_specialty_grain_to_liquid_malt_weight(cls, grain):
+        """
+        Source: http://www.weekendbrewer.com/brewingformulas.htm
+        """
+        return grain * 0.89
+
+    @classmethod
+    def get_liquid_malt_to_specialty_grain_weight(cls, malt):
+        return malt * 1.0 / 0.89
 
 
 class Hop(object):
