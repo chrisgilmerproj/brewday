@@ -83,7 +83,7 @@ class Beer(object):
         Source: http://www.brewersfriend.com/2012/10/31/on-the-relationship-between-plato-and-specific-gravity/
         """
         sg = self.get_specific_gravity()
-        #return (sg - 1.0) * 1000 / 4
+        # return (sg - 1.0) * 1000 / 4
         return -616.868 + 1111.14 * sg - 630.272 * sg ** 2 + 135.997 * sg ** 3
 
     def get_brew_house_yield(self, plato_actual, gal_actual):
@@ -330,8 +330,7 @@ class Beer(object):
             print 'Utilization:  {0:0.2f} %'.format(utilization)
             print
 
-        #self.hop_list[0].print_utilization_table()
-
+        # self.hop_list[0].print_utilization_table()
 
     def get_alcohol_by_volume_standard(self, og, fg):
         """
