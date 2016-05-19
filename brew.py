@@ -4,6 +4,11 @@ import math
 import string
 
 
+# 1 oz/gallon = 7489.15 mg/l
+# Use this when calculating IBUS
+HOPS_CONSTANT = 7489.15
+
+
 def fahrenheit_to_celsius(temp):
     return (temp - 32.0) / 1.8
 
