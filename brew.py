@@ -424,7 +424,8 @@ class Beer(object):
         Source: http://www.rooftopbrew.net/ibu.php
         """
         woz = self.get_hops_weight(hop)
-        return (woz * (hop.percent_utilization / 100.0) * (hop.percent_alpha_acids / 100.0) * HOPS_CONSTANT) / (self.gallons_of_beer * self.get_c_gravity())
+        utilization = (hop.percent_utilization / 100.0) / self.get_c_gravity()
+        return (woz * utilization * (hop.percent_alpha_acids / 100.0) * HOPS_CONSTANT) / (self.gallons_of_beer)
 
     def get_ibu_glenn_tinseth(self, hop):
         """
@@ -432,10 +433,8 @@ class Beer(object):
         """
         woz = self.get_hops_weight(hop)
         sg = self.get_specific_gravity()
-        bigness_factor = 1.65 * (0.000125 ** (sg - 1))
-        boil_time_factor = (1 - math.e ** (-0.04 * hop.boil_time)) / 4.15
-        decimal_aa = bigness_factor * boil_time_factor
-        return (woz * decimal_aa * HOPS_CONSTANT) / (self.gallons_of_beer)
+        utilization = hop.get_percent_utilization(sg, hop.boil_time)
+        return (woz * utilization * (hop.percent_alpha_acids / 100.0 ) * HOPS_CONSTANT) / (self.gallons_of_beer)
 
 
 class Grain(object):
@@ -572,7 +571,7 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         """
         bigness_factor = cls.get_bigness_factor(sg)
         boil_time_factor = cls.get_boil_time_factor(boil_time)
-        return bigness_factor * boil_time_factor * 100
+        return bigness_factor * boil_time_factor
 
     @classmethod
     def print_utilization_table(cls):

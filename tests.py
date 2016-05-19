@@ -117,22 +117,22 @@ class TestBeer(unittest.TestCase):
 
     def test_get_ibu_real_beer(self):
         ibu = self.beer.get_ibu_real_beer(self.hop_list[0])
-        self.assertEquals(round(ibu, 2), 36.72)
+        self.assertEquals(round(ibu, 2), 36.74)
         ibu = self.beer.get_ibu_real_beer(self.hop_list[1])
         self.assertEquals(round(ibu, 2), 1.93)
 
     def test_get_ibu_glenn_tinseth(self):
         ibu = self.beer.get_ibu_glenn_tinseth(self.hop_list[0])
-        self.assertEquals(round(ibu, 2), 36.72)
+        self.assertEquals(round(ibu, 2), 25.76)
         ibu = self.beer.get_ibu_glenn_tinseth(self.hop_list[1])
-        self.assertEquals(round(ibu, 2), 1.93)
+        self.assertEquals(round(ibu, 2), 3.46)
 
     def test_get_percent_utilization(self):
         sg = self.beer.get_specific_gravity()
         utilization = self.hop_list[0].get_percent_utilization(sg, self.hop_list[0].boil_time)
-        self.assertEquals(round(utilization, 2), 21.69)
+        self.assertEquals(round(utilization * 100, 2), 21.69)
         utilization = self.hop_list[1].get_percent_utilization(sg, self.hop_list[1].boil_time)
-        self.assertEquals(round(utilization, 2), 4.32)
+        self.assertEquals(round(utilization * 100, 2), 4.32)
 
 
 if __name__ == '__main__':
