@@ -114,14 +114,18 @@ class Beer(object):
 
         BHY  =  [(Pactual)(galactual)(BHYtarget)] / [(Ptarget)(galtarget)]
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return ((plato_actual)(gal_actual)(self.percent_brew_house_yield)) / ((self.target_degrees_plato)(self.gallons_of_beer))
+        num = plato_actual * gal_actual * self.percent_brew_house_yield
+        den = self.target_degrees_plato * self.gallons_of_beer
+        return num / den
 
     def get_extract_weight(self):
         """
         Weight of Extract
-        The weight of extract is the amount of malt extract present in the wort.
+        The weight of extract is the amount of malt extract present in the
+        wort.
 
         Lbs extract =   [(8.32 pounds/gal wort)(gal wort)(S.G.)(P)] / 100
 
@@ -129,9 +133,11 @@ class Beer(object):
         To find the weight of a gallon of wort, multiply the specific gravity
         of the wort by 8.32 pounds.
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return (8.32 * self.gallons_of_beer * self.get_specific_gravity() * self.target_degrees_plato) / 100.0
+        return (8.32 * self.gallons_of_beer * self.get_specific_gravity() *
+                self.target_degrees_plato) / 100.0
 
     def get_working_yield(self, grain):
         """
@@ -142,27 +148,31 @@ class Beer(object):
 
         WY =    (HWE as-is)(BHY)
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         return grain.hot_water_extract * self.percent_brew_house_yield
 
     def get_pounds_malt(self, grain):
         """
         Pounds of Malt
-        It is imperative that you measure your recipes by the percent of extract
-        taken from the malt rather than the weight of the malt.  Do this will
-        all you to compensate for the Working Yield and help you accurately
-        measure your malt bills.  For example, an recipe may call for 5% of
-        caramel 20.  This does not me that you ad 0.5 pounds of caramel 20 malt
-        in a 10 lb recipe. Instead, this means that you will have 5% of the
-        total extract come from the caramel 20 malt.  Use the following formula
-        to calculate the weight of malt based on a percent of extract.
+        It is imperative that you measure your recipes by the percent of
+        extract taken from the malt rather than the weight of the malt.  Do
+        this will all you to compensate for the Working Yield and help you
+        accurately measure your malt bills.  For example, an recipe may call
+        for 5% of caramel 20.  This does not me that you ad 0.5 pounds of
+        caramel 20 malt in a 10 lb recipe. Instead, this means that you will
+        have 5% of the total extract come from the caramel 20 malt.  Use the
+        following formula to calculate the weight of malt based on a percent
+        of extract.
 
         Lbs malt = (Lbs extract)(% Extract) / WY
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return self.get_extract_weight() * grain.percent_extract / self.get_working_yield(grain)
+        return (self.get_extract_weight() * grain.percent_extract /
+                self.get_working_yield(grain))
 
     def get_total_grain_weight(self):
         """
@@ -180,9 +190,11 @@ class Beer(object):
 
         Strike Temp =  [((0.4)(T mash-T malt)) / L:G] +  T mash
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return (((0.4) * (self.mash_temp - self.malt_temp)) / self.liquor_to_grist_ratio) + self.mash_temp
+        return ((((0.4) * (self.mash_temp - self.malt_temp)) /
+                self.liquor_to_grist_ratio) + self.mash_temp)
 
     def get_mash_water_volume(self):
         """
@@ -194,9 +206,11 @@ class Beer(object):
 
         gallons H2O =  (Lbs malt)(L:G)(1gallon H2O) / 8.32 pounds water
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return self.get_total_grain_weight() * self.liquor_to_grist_ratio / 8.32
+        return (self.get_total_grain_weight() * self.liquor_to_grist_ratio /
+                8.32)
 
     def get_hops_weight(self, hop):
         """
@@ -226,9 +240,15 @@ class Beer(object):
         equation, converting oz/gallon to mg/l. For the hops equation, the
         units for the % must be expressed in decimal form.  (e.g. 10%= .10)
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        # nopep8
         """
-        return (self.target_ibu * self.gallons_of_beer * (hop.percent_contribution / 100.0)) / ((hop.percent_alpha_acids / 100.0) * (hop.percent_utilization / 100.0) * HOPS_CONSTANT)
+        num = (self.target_ibu * self.gallons_of_beer *
+               (hop.percent_contribution / 100.0))
+        den = ((hop.percent_alpha_acids / 100.0) *
+               (hop.percent_utilization / 100.0) * HOPS_CONSTANT)
+        return num / den
 
     def get_wort_color(self, grain):
         """
@@ -236,9 +256,11 @@ class Beer(object):
 
         Color of Wort = S [(% extract)(L of malt)(P wort / 8P reference)]
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return grain.percent_extract / 100.0 * grain.color * self.target_degrees_plato / 8
+        return ((grain.percent_extract / 100.0) * grain.color *
+                (self.target_degrees_plato / 8))
 
     def get_total_wort_color(self):
         """
@@ -252,8 +274,10 @@ class Beer(object):
         Color of Beer = (color of wort)(1 - % color loss)
 
         Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        # nopep8
         """
-        return self.get_total_wort_color() * (1.0 - self.percent_color_loss / 100.0)
+        return (self.get_total_wort_color() *
+                (1.0 - self.percent_color_loss / 100.0))
 
     def format(self):
         """
@@ -301,7 +325,7 @@ class Beer(object):
 
         If you make this recipe, add one ounce of Cascade in the sedondary for an excellent dry hop aroma!
 
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html  # nopep8
         """
         sg = self.get_specific_gravity()
         deg_plato = self.get_degrees_plato()
@@ -365,7 +389,8 @@ class Beer(object):
         Method, Beer Advocate Method. Some variations use 131 instead of 131.25.
         The resulting difference is pretty minor.
 
-        Source: http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
+        Source:
+        - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/  # nopep8
         """
         return (og - fg) * 131.25
 
@@ -387,7 +412,8 @@ class Beer(object):
         -Michael L. Hall's article Brew by the Numbers: Add Up What's in Your
         Beer, and Designing Great Beers by Daniels.
 
-        Source: http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
+        Source:
+        - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/  # nopep8
         """
         return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
 
@@ -401,18 +427,19 @@ class Beer(object):
         http://merrycuss.com/calc/sgcorrection.html
         http://hbd.org/brewery/library/HydromCorr0992.html
         http://www.primetab.com/formulas.html
+        # nopep8
         """
-        correction = 1.313454 - 0.132674 * (temp ** 1) + \
-                    (2.057793 * 10 ** -3) * (temp ** 2) - \
-                    (2.627634 * 10 ** -6) * (temp ** 3)
+        correction = (1.313454 - 0.132674 * (temp ** 1) +
+                      (2.057793 * 10 ** -3) * (temp ** 2) -
+                      (2.627634 * 10 ** -6) * (temp ** 3))
         return self.get_specific_gravity() + (correction * 0.001)
 
-    def get_c_gravity(self):
+    @classmethod
+    def get_c_gravity(cls, sg):
         """
         Cgravity is a constant to adjust the boil size when dealing with
         specific gravity greater than 1.050 in the calculation of IBUs.
         """
-        sg = self.get_specific_gravity()
         cgravity = 1
         if sg > 1.050:
             cgravity += (sg - 1.050)/0.2
@@ -424,8 +451,12 @@ class Beer(object):
         Source: http://www.rooftopbrew.net/ibu.php
         """
         woz = self.get_hops_weight(hop)
-        utilization = (hop.percent_utilization / 100.0) / self.get_c_gravity()
-        return (woz * utilization * (hop.percent_alpha_acids / 100.0) * HOPS_CONSTANT) / (self.gallons_of_beer)
+        sg = self.get_specific_gravity()
+        utilization = ((hop.percent_utilization / 100.0) /
+                       self.get_c_gravity(sg))
+        num = (woz * utilization * (hop.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT)
+        return num / (self.gallons_of_beer)
 
     def get_ibu_glenn_tinseth(self, hop):
         """
@@ -434,7 +465,9 @@ class Beer(object):
         woz = self.get_hops_weight(hop)
         sg = self.get_specific_gravity()
         utilization = hop.get_percent_utilization(sg, hop.boil_time)
-        return (woz * utilization * (hop.percent_alpha_acids / 100.0 ) * HOPS_CONSTANT) / (self.gallons_of_beer)
+        num = (woz * utilization * (hop.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT)
+        return num / (self.gallons_of_beer)
 
 
 class Grain(object):
@@ -583,12 +616,14 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         boil_time_list = range(0, 60, 3) + range(60, 130, 10)
         gravity_list = range(1030, 1140, 10)
 
-        title = 'Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity'
+        title = 'Percent Alpha Acid Utilization - ' \
+                'Boil Time vs Wort Original Gravity'
         size = 92
         print title.center(size)
         print str('=' * len(title)).center(size)
         print
-        print ' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0) for l in gravity_list])
+        print ' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0)
+                       for l in gravity_list])
         print '-' * size
         for boil_time in boil_time_list:
             line = []
