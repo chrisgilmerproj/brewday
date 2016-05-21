@@ -129,9 +129,11 @@ class TestBeer(unittest.TestCase):
 
     def test_get_percent_utilization(self):
         sg = self.beer.get_specific_gravity()
-        utilization = self.hop_list[0].get_percent_utilization(sg, self.hop_list[0].boil_time)
+        utilization = self.hop_list[0].get_percent_utilization(
+                sg, self.hop_list[0].boil_time)
         self.assertEquals(round(utilization * 100, 2), 21.69)
-        utilization = self.hop_list[1].get_percent_utilization(sg, self.hop_list[1].boil_time)
+        utilization = self.hop_list[1].get_percent_utilization(
+                sg, self.hop_list[1].boil_time)
         self.assertEquals(round(utilization * 100, 2), 4.32)
 
 

@@ -4,58 +4,9 @@ import math
 import string
 
 
-# Constants
-
-MG_PER_OZ = 28349.5
-GAL_PER_LITER = 0.264172
-# 1 oz/gallon = 7489.15 mg/l
-# Use this when calculating IBUS
-HOPS_CONSTANT = MG_PER_OZ * GAL_PER_LITER
-
-
-def fahrenheit_to_celsius(temp):
-    return (temp - 32.0) / 1.8
-
-
-def celsius_to_fahrenheit(temp):
-    return(temp * 1.8) + 32.0
-
-
-def plato_to_sg(deg_plato):
-    """
-    Specific Gravity (S.G.)
-    S.G. is the density of a liquid or solid compared to that of water.
-    The simple formula for S.G. is:
-
-    S.G. = 1 + 0.004 x Plato
-
-    The more precise calculation of S.G. is:
-
-    S.G. = [(Plato) / (258.6 - (Plato/258.2 x 227.1))] + 1
-
-    Source:
-    http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
-    """
-    return (deg_plato / (258.6 - ((deg_plato / 258.2) * 227.1))) + 1
-
-
-def sg_to_plato(sg):
-    """
-    Plato
-    Degrees Plato is the weight of the extract in a 100gram solution at
-    64 degrees Fahrenheit.
-
-    Plato = [(S.G. - 1) x 1000] / 4
-
-    The more precise calculation of Plato is:
-
-    Plato = -616.868 + 1111.14 * sg - 630.272 * sg ** 2 + 135.997 * sg ** 3
-
-    Source:
-    http://www.brewersfriend.com/2012/10/31/on-the-relationship-between-plato-and-specific-gravity/
-    """
-    # return (sg - 1.0) * 1000 / 4
-    return -616.868 + 1111.14 * sg - 630.272 * sg ** 2 + 135.997 * sg ** 3
+from .constants import HOPS_CONSTANT_US
+from .utilities import plato_to_sg
+from .utilities import sg_to_plato
 
 
 class Beer(object):
@@ -247,7 +198,7 @@ class Beer(object):
         num = (self.target_ibu * self.gallons_of_beer *
                (hop.percent_contribution / 100.0))
         den = ((hop.percent_alpha_acids / 100.0) *
-               (hop.percent_utilization / 100.0) * HOPS_CONSTANT)
+               (hop.percent_utilization / 100.0) * HOPS_CONSTANT_US)
         return num / den
 
     def get_wort_color(self, grain):
@@ -455,7 +406,7 @@ class Beer(object):
         utilization = ((hop.percent_utilization / 100.0) /
                        self.get_c_gravity(sg))
         num = (woz * utilization * (hop.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT)
+               HOPS_CONSTANT_US)
         return num / (self.gallons_of_beer)
 
     def get_ibu_glenn_tinseth(self, hop):
@@ -466,7 +417,7 @@ class Beer(object):
         sg = self.get_specific_gravity()
         utilization = hop.get_percent_utilization(sg, hop.boil_time)
         num = (woz * utilization * (hop.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT)
+               HOPS_CONSTANT_US)
         return num / (self.gallons_of_beer)
 
 
