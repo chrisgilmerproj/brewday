@@ -1,6 +1,6 @@
 import unittest
 
-from brew import Beer, Grain, Hop
+from brew.recipe import Beer, Grain, Hop
 
 
 class TestBeer(unittest.TestCase):
