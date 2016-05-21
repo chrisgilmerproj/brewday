@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
-from brew import Grain, Hop, Recipe
+from brew.grains import Grain
+from brew.hops import Hop
+from brew.recipes import Recipe
 
 
 if __name__ == "__main__":
