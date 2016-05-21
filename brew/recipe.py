@@ -9,7 +9,7 @@ from .utilities import plato_to_sg
 from .utilities import sg_to_plato
 
 
-class Beer(object):
+class Recipe(object):
     """
     Learn to Brew Website:
     http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
@@ -617,16 +617,16 @@ if __name__ == "__main__":
     hop_list = [centennial, cascade]
 
     # Define Beer
-    beer = Beer(name='pale ale',
-                grain_list=grain_list,
-                hop_list=hop_list,
-                percent_brew_house_yield=70.0,  # %
-                gallons_of_beer=5.0,  # G
-                target_degrees_plato=14.0,  # P
-                mash_temp=152.0,  # F
-                malt_temp=60.0,  # F
-                liquor_to_grist_ratio=3.0 / 1.0,
-                percent_color_loss=30.0,  # %
-                target_ibu=40.0)
+    beer = Recipe(name='pale ale',
+                  grain_list=grain_list,
+                  hop_list=hop_list,
+                  percent_brew_house_yield=70.0,  # %
+                  gallons_of_beer=5.0,  # G
+                  target_degrees_plato=14.0,  # P
+                  mash_temp=152.0,  # F
+                  malt_temp=60.0,  # F
+                  liquor_to_grist_ratio=3.0 / 1.0,
+                  percent_color_loss=30.0,  # %
+                  target_ibu=40.0)
 
     beer.format()

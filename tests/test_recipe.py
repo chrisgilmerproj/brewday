@@ -1,9 +1,9 @@
 import unittest
 
-from brew.recipe import Beer, Grain, Hop
+from brew.recipe import Recipe, Grain, Hop
 
 
-class TestBeer(unittest.TestCase):
+class TestRecipe(unittest.TestCase):
 
     def setUp(self):
         # Define Grains
@@ -34,18 +34,18 @@ class TestBeer(unittest.TestCase):
                       percent_contribution=5.0)
         self.hop_list = [centennial, cascade]
 
-        # Define Beers
-        self.beer = Beer(name='pale ale',
-                         grain_list=self.grain_list,
-                         hop_list=self.hop_list,
-                         percent_brew_house_yield=70.0,  # %
-                         gallons_of_beer=5.0,  # G
-                         target_degrees_plato=14.0,  # P
-                         mash_temp=152.0,  # F
-                         malt_temp=60.0,  # F
-                         liquor_to_grist_ratio=3.0 / 1.0,
-                         percent_color_loss=30.0,  # %
-                         target_ibu=40.0)
+        # Define Recipes
+        self.beer = Recipe(name='pale ale',
+                           grain_list=self.grain_list,
+                           hop_list=self.hop_list,
+                           percent_brew_house_yield=70.0,  # %
+                           gallons_of_beer=5.0,  # G
+                           target_degrees_plato=14.0,  # P
+                           mash_temp=152.0,  # F
+                           malt_temp=60.0,  # F
+                           liquor_to_grist_ratio=3.0 / 1.0,
+                           percent_color_loss=30.0,  # %
+                           target_ibu=40.0)
 
     def test_get_specific_gravity(self):
         sg = self.beer.get_specific_gravity()
