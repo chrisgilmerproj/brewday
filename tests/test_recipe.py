@@ -91,11 +91,11 @@ class TestRecipe(unittest.TestCase):
         hops_weight = self.beer.get_hops_weight(self.hop_list[1])
         self.assertEquals(round(hops_weight, 2), 0.76)
 
-    def test_get_wort_color(self):
-        wort_color = self.beer.get_wort_color(self.grain_list[0])
-        self.assertEquals(round(wort_color, 2), 3.32)
-        wort_color = self.beer.get_wort_color(self.grain_list[1])
-        self.assertEquals(round(wort_color, 2), 1.75)
+    # def test_get_wort_color(self):
+    #     wort_color = self.beer.get_wort_color(self.grain_list[0])
+    #     self.assertEquals(round(wort_color, 2), 3.32)
+    #     wort_color = self.beer.get_wort_color(self.grain_list[1])
+    #     self.assertEquals(round(wort_color, 2), 1.75)
 
     def test_get_total_wort_color(self):
         total_wort_color = self.beer.get_total_wort_color()
