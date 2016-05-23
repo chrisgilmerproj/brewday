@@ -112,12 +112,3 @@ class TestRecipe(unittest.TestCase):
     def test_get_hydrometer_adjustment(self):
         sg = self.beer.get_hydrometer_adjustment(float(70))
         self.assertEquals(round(sg, 3), 1.058)
-
-    def test_get_percent_utilization(self):
-        sg = self.beer.get_specific_gravity()
-        utilization = self.hop_list[0].get_percent_utilization(
-                sg, self.hop_list[0].boil_time)
-        self.assertEquals(round(utilization * 100, 2), 21.69)
-        utilization = self.hop_list[1].get_percent_utilization(
-                sg, self.hop_list[1].boil_time)
-        self.assertEquals(round(utilization * 100, 2), 4.32)
