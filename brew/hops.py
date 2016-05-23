@@ -173,3 +173,19 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         den = ((self.percent_alpha_acids / 100.0) *
                (self.percent_utilization / 100.0) * HOPS_CONSTANT_US)
         return num / den
+
+
+class HopAddition(object):
+
+    def __init__(self, hop=None,
+                 weight=None,
+                 boil_time=None):
+        self.hop = hop
+        self.weight = weight
+        self.boil_time = boil_time
+
+    def format(self):
+        msg = """{0}
+Weight:       {1} %
+Boil Time:    {2} min""".format(self.hop, self.weight, self.boil_time)
+        return msg
