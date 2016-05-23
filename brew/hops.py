@@ -86,17 +86,17 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         title = 'Percent Alpha Acid Utilization - ' \
                 'Boil Time vs Wort Original Gravity'
         size = 92
-        print title.center(size)
-        print str('=' * len(title)).center(size)
-        print
-        print ' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0)
-                       for l in gravity_list])
-        print '-' * size
+        print(title.center(size))
+        print(str('=' * len(title)).center(size))
+        print('\n')
+        print(' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0)
+                       for l in gravity_list]))
+        print('-' * size)
         for boil_time in boil_time_list:
             line = []
             line.append(str(boil_time).rjust(4))
             for sg in gravity_list:
                 aau = cls.get_percent_utilization(sg / 1000.0, boil_time)
                 line.append('{0:7.3f}'.format(aau))
-            print ' '.join([item for item in line])
-        print
+            print(' '.join([item for item in line]))
+        print('\n')

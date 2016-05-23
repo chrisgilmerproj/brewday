@@ -286,18 +286,18 @@ class Recipe(object):
         beer_color = self.get_beer_color()
         total_grain_weight = self.get_total_grain_weight()
 
-        print
-        print string.capwords(self.name)
-        print '-' * len(self.name)
-        print 'Specific Gravity:   {:0.3f}'.format(sg)
-        print 'Degrees Plato:      {:0.3f} degP'.format(deg_plato)
-        print 'Extract Weight:     {:0.2f} lbs'.format(pounds_extract)
-        print 'Strike Temperature: {:0.2f} degF'.format(strike_temp)
-        print 'Mash Water Volume:  {:0.2f} gallons'.format(mash_water_vol)
-        print 'Total Grain Weight: {:0.2f} lbs'.format(total_grain_weight)
-        print 'Total Wort Color:   {0:0.2f} degL'.format(total_wort_color)
-        print 'Beer Color:         {0:0.2f} degL'.format(beer_color)
-        print
+        print('\n')
+        print(string.capwords(self.name))
+        print('-' * len(self.name))
+        print('Specific Gravity:   {:0.3f}'.format(sg))
+        print('Degrees Plato:      {:0.3f} degP'.format(deg_plato))
+        print('Extract Weight:     {:0.2f} lbs'.format(pounds_extract))
+        print('Strike Temperature: {:0.2f} degF'.format(strike_temp))
+        print('Mash Water Volume:  {:0.2f} gallons'.format(mash_water_vol))
+        print('Total Grain Weight: {:0.2f} lbs'.format(total_grain_weight))
+        print('Total Wort Color:   {0:0.2f} degL'.format(total_wort_color))
+        print('Beer Color:         {0:0.2f} degL'.format(beer_color))
+        print('\n')
 
         for grain in self.grain_list:
             wy = self.get_working_yield(grain)
@@ -305,23 +305,23 @@ class Recipe(object):
             pounds_dry = grain.get_liquid_to_dry_malt_weight(pounds_lme)
             pounds_grain = grain.get_liquid_malt_to_grain_weight(pounds_lme)
             wort_color = self.get_wort_color(grain)
-            print grain.format()
-            print 'Working Yield:     {0:0.2f} %'.format(wy)
-            print 'Weight DME:        {0:0.2f} lbs'.format(pounds_dry)
-            print 'Weight LME:        {0:0.2f} lbs'.format(pounds_lme)
-            print 'Weight Grain:      {0:0.2f} lbs'.format(pounds_grain)
-            print 'Color:             {0:0.2f} degL'.format(wort_color)
-            print
+            print(grain.format())
+            print('Working Yield:     {0:0.2f} %'.format(wy))
+            print('Weight DME:        {0:0.2f} lbs'.format(pounds_dry))
+            print('Weight LME:        {0:0.2f} lbs'.format(pounds_lme))
+            print('Weight Grain:      {0:0.2f} lbs'.format(pounds_grain))
+            print('Color:             {0:0.2f} degL'.format(wort_color))
+            print('\n')
 
         for hop in self.hop_list:
             hops_weight = self.get_hops_weight(hop)
             ibus = self.get_ibu_real_beer(hop)
             utilization = hop.get_percent_utilization(sg, hop.boil_time)
-            print hop.format()
-            print 'Weight:       {0:0.2f} oz'.format(hops_weight)
-            print 'IBUs:         {0:0.2f}'.format(ibus)
-            print 'Utilization:  {0:0.2f} %'.format(utilization)
-            print
+            print(hop.format())
+            print('Weight:       {0:0.2f} oz'.format(hops_weight))
+            print('IBUs:         {0:0.2f}'.format(ibus))
+            print('Utilization:  {0:0.2f} %'.format(utilization))
+            print('\n')
 
         # self.hop_list[0].print_utilization_table()
 
