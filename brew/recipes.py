@@ -2,8 +2,6 @@
 
 import string
 
-
-from .constants import HOPS_CONSTANT_US
 from .utilities import plato_to_sg
 from .utilities import sg_to_plato
 
@@ -162,44 +160,6 @@ class Recipe(object):
         return (self.get_total_grain_weight() * self.liquor_to_grist_ratio /
                 8.32)
 
-    def get_hops_weight(self, hop):
-        """
-        Weight of Hops
-        IBUs or International Bittering Units measures a bitterness unit for hops.
-        IBUs are the measurement in parts per million (ppm) of iso-alpha acids
-        in the beer.   For example, an IPA with 75 IBUs has 75 milligrams of
-        isomerized alpha acids per liter. The equation used to calculate the
-        weight of hops for the boil is as follows.
-
-        Ounces hops = (IBU Target)(galbeer)(IBU%) / (%a-acid)(%Utilization)(7489)
-
-        The IBU target equals the total bitterness for the beer.  (e.g. an IPA
-        may have an IBU target of 75 IBUs)  The percent IBU is equal to the
-        percent of IBUs from each hop addition.  You may wish for your first hop
-        addition to contribute 95% of the total IBUs.  This would make your
-        IBU% 95%.  The %a-acid is the amount of alpha acid in the hops and can
-        be found on the hop packaging.  The % Utilization is a measurement of
-        the percentage of alpha acid units that will isomerize in the boil.
-        The following chart outlines the typical utilizations and hop boil times.
-
-        60 min = 30% utilization
-        30 min = 15%
-        5   min = 2.5%
-
-        The 7489 is a conversion factor and used to cancel the units in the
-        equation, converting oz/gallon to mg/l. For the hops equation, the
-        units for the % must be expressed in decimal form.  (e.g. 10%= .10)
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
-        # nopep8
-        """
-        num = (self.target_ibu * self.gallons_of_beer *
-               (hop.percent_contribution / 100.0))
-        den = ((hop.percent_alpha_acids / 100.0) *
-               (hop.percent_utilization / 100.0) * HOPS_CONSTANT_US)
-        return num / den
-
     def get_wort_color(self, grain):
         """
         Calculation of Wort and Beer Color
@@ -314,8 +274,9 @@ class Recipe(object):
             print('\n')
 
         for hop in self.hop_list:
-            hops_weight = self.get_hops_weight(hop)
-            ibus = self.get_ibu_real_beer(hop)
+            hops_weight = hop.get_hops_weight(self.target_ibu,
+                                              self.gallons_of_beer)
+            ibus = hop.get_ibu_real_beer(sg)
             utilization = hop.get_percent_utilization(sg, hop.boil_time)
             print(hop.format())
             print('Weight:       {0:0.2f} oz'.format(hops_weight))
@@ -383,38 +344,3 @@ class Recipe(object):
                       (2.057793 * 10 ** -3) * (temp ** 2) -
                       (2.627634 * 10 ** -6) * (temp ** 3))
         return self.get_specific_gravity() + (correction * 0.001)
-
-    @classmethod
-    def get_c_gravity(cls, sg):
-        """
-        Cgravity is a constant to adjust the boil size when dealing with
-        specific gravity greater than 1.050 in the calculation of IBUs.
-        """
-        cgravity = 1
-        if sg > 1.050:
-            cgravity += (sg - 1.050)/0.2
-        return cgravity
-
-    def get_ibu_real_beer(self, hop):
-        """
-        Source: http://www.realbeer.com/hops/research.html
-        Source: http://www.rooftopbrew.net/ibu.php
-        """
-        woz = self.get_hops_weight(hop)
-        sg = self.get_specific_gravity()
-        utilization = ((hop.percent_utilization / 100.0) /
-                       self.get_c_gravity(sg))
-        num = (woz * utilization * (hop.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT_US)
-        return num / (self.gallons_of_beer)
-
-    def get_ibu_glenn_tinseth(self, hop):
-        """
-        Source: http://www.rooftopbrew.net/ibu.php
-        """
-        woz = self.get_hops_weight(hop)
-        sg = self.get_specific_gravity()
-        utilization = hop.get_percent_utilization(sg, hop.boil_time)
-        num = (woz * utilization * (hop.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT_US)
-        return num / (self.gallons_of_beer)

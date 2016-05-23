@@ -24,12 +24,14 @@ class TestRecipe(unittest.TestCase):
         # Define Hops
         centennial = Hop(name='centennial',
                          boil_time=60.0,
+                         weight=0.57,
                          percent_alpha_acids=14.0,
                          percent_ibus=80.0,
                          percent_utilization=32.0,
                          percent_contribution=95.0)
         cascade = Hop(name='cascade',
                       boil_time=5.0,
+                      weight=0.76,
                       percent_alpha_acids=7.0,
                       percent_ibus=20.0,
                       percent_utilization=2.5,
@@ -85,12 +87,6 @@ class TestRecipe(unittest.TestCase):
         mash_water_vol = self.beer.get_mash_water_volume()
         self.assertEquals(round(mash_water_vol, 2), 4.19)
 
-    def test_get_hops_weight(self):
-        hops_weight = self.beer.get_hops_weight(self.hop_list[0])
-        self.assertEquals(round(hops_weight, 2), 0.57)
-        hops_weight = self.beer.get_hops_weight(self.hop_list[1])
-        self.assertEquals(round(hops_weight, 2), 0.76)
-
     # def test_get_wort_color(self):
     #     wort_color = self.beer.get_wort_color(self.grain_list[0])
     #     self.assertEquals(round(wort_color, 2), 3.32)
@@ -116,18 +112,6 @@ class TestRecipe(unittest.TestCase):
     def test_get_hydrometer_adjustment(self):
         sg = self.beer.get_hydrometer_adjustment(float(70))
         self.assertEquals(round(sg, 3), 1.058)
-
-    def test_get_ibu_real_beer(self):
-        ibu = self.beer.get_ibu_real_beer(self.hop_list[0])
-        self.assertEquals(round(ibu, 2), 36.74)
-        ibu = self.beer.get_ibu_real_beer(self.hop_list[1])
-        self.assertEquals(round(ibu, 2), 1.93)
-
-    def test_get_ibu_glenn_tinseth(self):
-        ibu = self.beer.get_ibu_glenn_tinseth(self.hop_list[0])
-        self.assertEquals(round(ibu, 2), 25.76)
-        ibu = self.beer.get_ibu_glenn_tinseth(self.hop_list[1])
-        self.assertEquals(round(ibu, 2), 3.46)
 
     def test_get_percent_utilization(self):
         sg = self.beer.get_specific_gravity()

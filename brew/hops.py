@@ -1,11 +1,14 @@
 import math
 import string
 
+from .constants import HOPS_CONSTANT_US
+
 
 class Hop(object):
 
     def __init__(self, name=None,
                  short_name=None,
+                 weight=None,
                  boil_time=None,
                  percent_alpha_acids=None,
                  percent_ibus=None,
@@ -13,6 +16,7 @@ class Hop(object):
                  percent_contribution=None):
         self.name = name
         self.short_name = short_name or name
+        self.weight = weight
         self.boil_time = boil_time
         self.percent_alpha_acids = percent_alpha_acids
         self.percent_ibus = percent_ibus
@@ -74,6 +78,38 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         return bigness_factor * boil_time_factor
 
     @classmethod
+    def get_c_gravity(cls, sg):
+        """
+        Cgravity is a constant to adjust the boil size when dealing with
+        specific gravity greater than 1.050 in the calculation of IBUs.
+        """
+        cgravity = 1
+        if sg > 1.050:
+            cgravity += (sg - 1.050)/0.2
+        return cgravity
+
+    def get_ibu_real_beer(self, sg, gallons_of_beer):
+        """
+        Source: http://www.realbeer.com/hops/research.html
+        Source: http://www.rooftopbrew.net/ibu.php
+        """
+        utilization = ((self.percent_utilization / 100.0) /
+                       self.get_c_gravity(sg))
+        print(self.weight, utilization, self.percent_alpha_acids, HOPS_CONSTANT_US)
+        num = (self.weight * utilization * (self.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT_US)
+        return num / (gallons_of_beer)
+
+    def get_ibu_glenn_tinseth(self, sg, gallons_of_beer):
+        """
+        Source: http://www.rooftopbrew.net/ibu.php
+        """
+        utilization = self.get_percent_utilization(sg, self.boil_time)
+        num = (self.weight * utilization * (self.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT_US)
+        return num / (gallons_of_beer)
+
+    @classmethod
     def print_utilization_table(cls):
         """
         Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
@@ -100,3 +136,41 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
                 line.append('{0:7.3f}'.format(aau))
             print(' '.join([item for item in line]))
         print('\n')
+
+    def get_hops_weight(self, target_ibu, gallons_of_beer):
+        """
+        Weight of Hops
+        IBUs or International Bittering Units measures a bitterness unit for hops.
+        IBUs are the measurement in parts per million (ppm) of iso-alpha acids
+        in the beer.   For example, an IPA with 75 IBUs has 75 milligrams of
+        isomerized alpha acids per liter. The equation used to calculate the
+        weight of hops for the boil is as follows.
+
+        Ounces hops = (IBU Target)(galbeer)(IBU%) / (%a-acid)(%Utilization)(7489)
+
+        The IBU target equals the total bitterness for the beer.  (e.g. an IPA
+        may have an IBU target of 75 IBUs)  The percent IBU is equal to the
+        percent of IBUs from each hop addition.  You may wish for your first hop
+        addition to contribute 95% of the total IBUs.  This would make your
+        IBU% 95%.  The %a-acid is the amount of alpha acid in the hops and can
+        be found on the hop packaging.  The % Utilization is a measurement of
+        the percentage of alpha acid units that will isomerize in the boil.
+        The following chart outlines the typical utilizations and hop boil times.
+
+        60 min = 30% utilization
+        30 min = 15%
+        5   min = 2.5%
+
+        The 7489 is a conversion factor and used to cancel the units in the
+        equation, converting oz/gallon to mg/l. For the hops equation, the
+        units for the % must be expressed in decimal form.  (e.g. 10%= .10)
+
+        Source:
+        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+        # nopep8
+        """
+        num = (target_ibu * gallons_of_beer *
+               (self.percent_contribution / 100.0))
+        den = ((self.percent_alpha_acids / 100.0) *
+               (self.percent_utilization / 100.0) * HOPS_CONSTANT_US)
+        return num / den
