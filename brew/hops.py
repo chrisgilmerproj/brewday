@@ -95,7 +95,6 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         """
         utilization = ((self.percent_utilization / 100.0) /
                        self.get_c_gravity(sg))
-        print(self.weight, utilization, self.percent_alpha_acids, HOPS_CONSTANT_US)
         num = (self.weight * utilization * (self.percent_alpha_acids / 100.0) *
                HOPS_CONSTANT_US)
         return num / (gallons_of_beer)

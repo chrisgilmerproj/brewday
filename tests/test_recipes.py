@@ -79,6 +79,10 @@ class TestRecipe(unittest.TestCase):
         total_grain_weight = self.beer.get_total_grain_weight()
         self.assertEquals(round(total_grain_weight, 2), 11.62)
 
+    def test_get_total_ibu(self):
+        total_ibu = self.beer.get_total_ibu()
+        self.assertEquals(round(total_ibu, 2), 38.91)
+
     def test_get_strike_temp(self):
         strike_temp = self.beer.get_strike_temp()
         self.assertEquals(round(strike_temp, 2), 164.27)

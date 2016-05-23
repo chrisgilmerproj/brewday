@@ -128,6 +128,14 @@ class Recipe(object):
         """
         return sum([self.get_pounds_malt(g) for g in self.grain_list])
 
+    def get_total_ibu(self):
+        """
+        Convenience method to get total IBU
+        """
+        sg = self.get_specific_gravity()
+        gal = self.gallons_of_beer
+        return sum([hop.get_ibu_real_beer(sg, gal) for hop in self.hop_list])
+
     def get_strike_temp(self):
         """
         Strike Water Temp
@@ -245,6 +253,7 @@ class Recipe(object):
         total_wort_color = self.get_total_wort_color()
         beer_color = self.get_beer_color()
         total_grain_weight = self.get_total_grain_weight()
+        total_ibu = self.get_total_ibu()
 
         print('\n')
         print(string.capwords(self.name))
@@ -255,6 +264,7 @@ class Recipe(object):
         print('Strike Temperature: {:0.2f} degF'.format(strike_temp))
         print('Mash Water Volume:  {:0.2f} gallons'.format(mash_water_vol))
         print('Total Grain Weight: {:0.2f} lbs'.format(total_grain_weight))
+        print('Total IBU:          {:0.2f} ibu'.format(total_ibu))
         print('Total Wort Color:   {0:0.2f} degL'.format(total_wort_color))
         print('Beer Color:         {0:0.2f} degL'.format(beer_color))
         print('\n')
