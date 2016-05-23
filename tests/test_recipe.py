@@ -121,7 +121,3 @@ class TestRecipe(unittest.TestCase):
         utilization = self.hop_list[1].get_percent_utilization(
                 sg, self.hop_list[1].boil_time)
         self.assertEquals(round(utilization * 100, 2), 4.32)
-
-
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
