@@ -134,7 +134,7 @@ class Recipe(object):
         """
         sg = self.get_specific_gravity()
         gal = self.gallons_of_beer
-        return sum([hop_add.get_ibu_real_beer(sg, gal)
+        return sum([hop_add.get_ibus(sg, gal)
                    for hop_add in self.hop_additions])
 
     def get_strike_temp(self):
@@ -287,7 +287,7 @@ class Recipe(object):
         for hop in self.hop_additions:
             hops_weight = hop.get_hops_weight(self.target_ibu,
                                               self.gallons_of_beer)
-            ibus = hop.get_ibu_real_beer(sg)
+            ibus = hop.get_ibus(sg, self.gallons_of_beer)
             utilization = hop.get_percent_utilization(sg, hop.boil_time)
             print(hop.format())
             print('Weight:       {0:0.2f} oz'.format(hops_weight))

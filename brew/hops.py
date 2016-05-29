@@ -34,6 +34,22 @@ Utilization:  {3} %""".format(string.capwords(self.name),
                               self.percent_utilization)
         return msg
 
+
+class HopsUtilization(object):
+    """
+    http://www.boondocks-brewing.com/hops
+    """
+
+    def __init__(self, hop_addition):
+        self.hop_addition = hop_addition
+
+    def get_ibus(self, sg, gallons_of_beer):
+        raise NotImplementedError
+
+    @classmethod
+    def get_percent_utilization(cls, sg, boil_time):
+        raise NotImplementedError
+
     @classmethod
     def print_utilization_table(cls):
         """
@@ -63,26 +79,22 @@ Utilization:  {3} %""".format(string.capwords(self.name),
         print('\n')
 
 
-class HopAddition(object):
+class HopsUtilizationJackieRager(HopsUtilization):
+    """
+    Jackie Rager
 
-    def __init__(self, hop,
-                 weight=None,
-                 boil_time=None,
-                 percent_contribution=None):
-        self.hop = hop
-        self.weight = weight
-        self.boil_time = boil_time
-        self.percent_contribution = percent_contribution
+    Best for extract and partial mash brewing.
 
-    def format(self):
-        msg = """{0}
-Weight:       {1} %
-Contribution: {2} %
-Boil Time:    {3} min""".format(self.hop,
-                                self.weight,
-                                self.percent_contirubtion,
-                                self.boil_time)
-        return msg
+    Source: http://www.rooftopbrew.net/ibu.php
+    """
+
+    def get_ibus(self, sg, gallons_of_beer):
+        utilization = ((self.hop_addition.hop.percent_utilization / 100.0) /
+                       self.get_c_gravity(sg))
+        num = (self.hop_addition.weight * utilization *
+               (self.hop_addition.hop.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT_US)
+        return num / (gallons_of_beer)
 
     @classmethod
     def get_c_gravity(cls, sg):
@@ -95,40 +107,35 @@ Boil Time:    {3} min""".format(self.hop,
             cgravity += (sg - 1.050)/0.2
         return cgravity
 
-    def get_ibu_real_beer(self, sg, gallons_of_beer):
-        """
-        Source: http://www.realbeer.com/hops/research.html
-        Source: http://www.rooftopbrew.net/ibu.php
-        """
-        utilization = ((self.hop.percent_utilization / 100.0) /
-                       self.get_c_gravity(sg))
-        num = (self.weight * utilization *
-               (self.hop.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT_US)
-        return num / (gallons_of_beer)
+    @classmethod
+    def get_percent_utilization(cls, sg, boil_time):
+        return 18.11 + 13.86 * math.tanh((boil_time - 31.32) / 18.27)
 
-    def get_ibu_glenn_tinseth(self, sg, gallons_of_beer):
-        """
-        Source: http://www.rooftopbrew.net/ibu.php
-        """
-        utilization = self.get_percent_utilization(sg, self.boil_time)
-        num = (self.weight * utilization *
-               (self.hop.percent_alpha_acids / 100.0) *
+
+class HopsUtilizationGlennTinseth(HopsUtilization):
+    """
+    Glenn Tinseth
+
+    Best for all grain brewing.
+
+    Source: http://www.realbeer.com/hops/research.html
+    Source: http://www.rooftopbrew.net/ibu.php
+    """
+
+    def get_ibus(self, sg, gallons_of_beer):
+        utilization = self.get_percent_utilization(
+                sg, self.hop_addition.boil_time)
+        num = (self.hop_addition.weight * utilization *
+               (self.hop_addition.hop.percent_alpha_acids / 100.0) *
                HOPS_CONSTANT_US)
         return num / (gallons_of_beer)
 
     @classmethod
     def get_bigness_factor(cls, sg):
-        """
-        Source: http://www.realbeer.com/hops/research.html
-        """
         return 1.65 * 0.000125 ** (sg - 1)
 
     @classmethod
     def get_boil_time_factor(cls, boil_time):
-        """
-        Source: http://www.realbeer.com/hops/research.html
-        """
         return (1 - math.exp(-0.04 * boil_time)) / 4.15
 
     @classmethod
@@ -150,6 +157,33 @@ Boil Time:    {3} min""".format(self.hop,
         bigness_factor = cls.get_bigness_factor(sg)
         boil_time_factor = cls.get_boil_time_factor(boil_time)
         return bigness_factor * boil_time_factor
+
+
+class HopAddition(object):
+
+    def __init__(self, hop,
+                 weight=None,
+                 boil_time=None,
+                 percent_contribution=None,
+                 utilization_cls=HopsUtilizationJackieRager):
+        self.hop = hop
+        self.weight = weight
+        self.boil_time = boil_time
+        self.percent_contribution = percent_contribution
+        self.utilization_cls = utilization_cls(self)
+
+    def format(self):
+        msg = """{0}
+Weight:       {1} %
+Contribution: {2} %
+Boil Time:    {3} min""".format(self.hop,
+                                self.weight,
+                                self.percent_contirubtion,
+                                self.boil_time)
+        return msg
+
+    def get_ibus(self, sg, gallons_of_beer):
+        return self.utilization_cls.get_ibus(sg, gallons_of_beer)
 
     def get_hops_weight(self, target_ibu, gallons_of_beer):
         """
