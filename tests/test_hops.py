@@ -5,7 +5,6 @@ from brew.hops import HopsUtilizationGlennTinseth
 from brew.hops import HopsUtilizationJackieRager
 from brew.utilities import plato_to_sg
 
-from fixtures import hop_additions
 from fixtures import hop_list
 
 
@@ -22,7 +21,6 @@ class TestHops(unittest.TestCase):
 class TestHopAdditions(unittest.TestCase):
 
     def setUp(self):
-        self.hop_additions = hop_additions
         self.addition_kwargs = [
             {
                 'boil_time': 60.0,
@@ -83,11 +81,20 @@ class TestHopAdditions(unittest.TestCase):
     #     self.assertEquals(round(utilization * 100, 2), 4.32)
 
     def test_get_hops_weight(self):
-        hops_weight = self.hop_additions[0].get_hops_weight(
+        self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
+        hop_addition = HopAddition(hop_list[0],
+                                   **self.addition_kwargs[0])
+        hops_weight = hop_addition.get_hops_weight(
+                        self.sg,
                         self.target_ibu,
                         self.gallons_of_beer)
-        self.assertEquals(round(hops_weight, 2), 0.57)
-        hops_weight = self.hop_additions[1].get_hops_weight(
+        self.assertEquals(round(hops_weight, 2), 0.61)
+
+        self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
+        hop_addition = HopAddition(hop_list[0],
+                                   **self.addition_kwargs[0])
+        hops_weight = hop_addition.get_hops_weight(
+                        self.sg,
                         self.target_ibu,
                         self.gallons_of_beer)
-        self.assertEquals(round(hops_weight, 2), 0.76)
+        self.assertEquals(round(hops_weight, 2), 0.61)

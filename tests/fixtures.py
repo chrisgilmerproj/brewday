@@ -18,11 +18,9 @@ grain_list = [pale, crystal]
 
 # Define Hops
 centennial = Hop(name='centennial',
-                 percent_alpha_acids=14.0,
-                 percent_utilization=32.0)
+                 percent_alpha_acids=14.0)
 cascade = Hop(name='cascade',
-              percent_alpha_acids=7.0,
-              percent_utilization=2.5)
+              percent_alpha_acids=7.0)
 hop_list = [centennial, cascade]
 
 centennial_add = HopAddition(centennial,

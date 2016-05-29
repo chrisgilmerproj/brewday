@@ -175,7 +175,7 @@ Boil Time:    {3} min""".format(self.hop,
     def get_ibus(self, sg, gallons_of_beer):
         return self.utilization_cls.get_ibus(sg, gallons_of_beer)
 
-    def get_hops_weight(self, target_ibu, gallons_of_beer):
+    def get_hops_weight(self, sg, target_ibu, gallons_of_beer):
         """
         Weight of Hops
         IBUs or International Bittering Units measures a bitterness unit for hops.
@@ -210,5 +210,6 @@ Boil Time:    {3} min""".format(self.hop,
         num = (target_ibu * gallons_of_beer *
                (self.percent_contribution / 100.0))
         den = ((self.hop.percent_alpha_acids / 100.0) *
-               (self.hop.percent_utilization / 100.0) * HOPS_CONSTANT_US)
+               self.utilization_cls.get_percent_utilization(
+                   sg, self.boil_time) * HOPS_CONSTANT_US)
         return num / den
