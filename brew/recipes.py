@@ -14,7 +14,7 @@ class Recipe(object):
 
     def __init__(self, name='beer',
                  grain_list=None,
-                 hop_list=None,
+                 hop_additions=None,
                  percent_brew_house_yield=70.0,
                  gallons_of_beer=5.0,
                  target_degrees_plato=None,
@@ -26,7 +26,7 @@ class Recipe(object):
                  units='us'):
         self.name = name
         self.grain_list = grain_list
-        self.hop_list = hop_list
+        self.hop_additions = hop_additions
         self.percent_brew_house_yield = percent_brew_house_yield  # %
         self.gallons_of_beer = gallons_of_beer  # G
         self.target_degrees_plato = target_degrees_plato  # P
@@ -134,7 +134,8 @@ class Recipe(object):
         """
         sg = self.get_specific_gravity()
         gal = self.gallons_of_beer
-        return sum([hop.get_ibu_real_beer(sg, gal) for hop in self.hop_list])
+        return sum([hop.get_ibu_real_beer(sg, gal)
+                   for hop in self.hop_additions])
 
     def get_strike_temp(self):
         """
@@ -283,7 +284,7 @@ class Recipe(object):
             print('Color:             {0:0.2f} degL'.format(wort_color))
             print('\n')
 
-        for hop in self.hop_list:
+        for hop in self.hop_additions:
             hops_weight = hop.get_hops_weight(self.target_ibu,
                                               self.gallons_of_beer)
             ibus = hop.get_ibu_real_beer(sg)
@@ -294,7 +295,7 @@ class Recipe(object):
             print('Utilization:  {0:0.2f} %'.format(utilization))
             print('\n')
 
-        # self.hop_list[0].print_utilization_table()
+        # self.hop_additions[0].print_utilization_table()
 
     def get_alcohol_by_volume_standard(self, og, fg):
         """

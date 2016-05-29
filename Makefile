@@ -42,8 +42,8 @@ teardown: ## Remove all virtualenv files
 lint: venv ## Run linting tests
 	$(WITH_VENV) flake8 $(PACKAGE_NAME)/
 
-test: venv ## Run unit tests
-	$(WITH_VENV) tox
+test:  ## Run unit tests
+	tox
 
 package:  ## Create the python package
 	python setup.py sdist

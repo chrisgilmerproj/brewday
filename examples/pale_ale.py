@@ -33,12 +33,12 @@ if __name__ == "__main__":
                   percent_ibus=20.0,
                   percent_utilization=2.5,
                   percent_contribution=5.0)
-    hop_list = [centennial, cascade]
+    hop_additions = [centennial, cascade]
 
     # Define Beer
     beer = Recipe(name='pale ale',
                   grain_list=grain_list,
-                  hop_list=hop_list,
+                  hop_additions=hop_additions,
                   percent_brew_house_yield=70.0,  # %
                   gallons_of_beer=5.0,  # G
                   target_degrees_plato=14.0,  # P

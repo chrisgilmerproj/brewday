@@ -36,12 +36,12 @@ class TestRecipe(unittest.TestCase):
                       percent_ibus=20.0,
                       percent_utilization=2.5,
                       percent_contribution=5.0)
-        self.hop_list = [centennial, cascade]
+        self.hop_additions = [centennial, cascade]
 
         # Define Recipes
         self.beer = Recipe(name='pale ale',
                            grain_list=self.grain_list,
-                           hop_list=self.hop_list,
+                           hop_additions=self.hop_additions,
                            percent_brew_house_yield=70.0,  # %
                            gallons_of_beer=5.0,  # G
                            target_degrees_plato=14.0,  # P
