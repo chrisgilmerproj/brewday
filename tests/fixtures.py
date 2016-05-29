@@ -1,5 +1,6 @@
 from brew.grains import Grain
 from brew.hops import Hop
+from brew.hops import HopAddition
 from brew.recipes import Recipe
 
 # Define Grains
@@ -17,20 +18,22 @@ grain_list = [pale, crystal]
 
 # Define Hops
 centennial = Hop(name='centennial',
-                 boil_time=60.0,
-                 weight=0.57,
                  percent_alpha_acids=14.0,
-                 percent_ibus=80.0,
-                 percent_utilization=32.0,
-                 percent_contribution=95.0)
+                 percent_utilization=32.0)
 cascade = Hop(name='cascade',
-              boil_time=5.0,
-              weight=0.76,
               percent_alpha_acids=7.0,
-              percent_ibus=20.0,
-              percent_utilization=2.5,
-              percent_contribution=5.0)
-hop_additions = [centennial, cascade]
+              percent_utilization=2.5)
+hop_list = [centennial, cascade]
+
+centennial_add = HopAddition(centennial,
+                             boil_time=60.0,
+                             weight=0.57,
+                             percent_contribution=95.0)
+cascade_add = HopAddition(cascade,
+                          boil_time=5.0,
+                          weight=0.76,
+                          percent_contribution=5.0)
+hop_additions = [centennial_add, cascade_add]
 
 # Define Recipes
 recipe = Recipe(name='pale ale',

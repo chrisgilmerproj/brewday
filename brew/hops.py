@@ -4,24 +4,21 @@ import string
 from .constants import HOPS_CONSTANT_US
 
 
+def get_percent_ibus(hop, total_ibus):
+    """Get the percentage the hops contributes to total ibus"""
+    pass
+
+
 class Hop(object):
 
     def __init__(self, name=None,
                  short_name=None,
-                 weight=None,
-                 boil_time=None,
                  percent_alpha_acids=None,
-                 percent_ibus=None,
-                 percent_utilization=None,
-                 percent_contribution=None):
+                 percent_utilization=None):
         self.name = name
         self.short_name = short_name or name
-        self.weight = weight
-        self.boil_time = boil_time
         self.percent_alpha_acids = percent_alpha_acids
-        self.percent_ibus = percent_ibus
         self.percent_utilization = percent_utilization
-        self.percent_contribution = percent_contribution
 
     def __repr__(self):
         return "{0}, alpha {1}%".format(self.name.capitalize(),
@@ -31,17 +28,94 @@ class Hop(object):
         msg = """{0} Hops
 {1}
 Alpha Acids:  {2} %
-IBUs:         {3} %
-Utilization:  {4} %
-Contribution: {5} %
-Boil Time:    {6} min""".format(string.capwords(self.name),
-                                '-' * (len(self.name) + 6),
-                                self.percent_alpha_acids,
-                                self.percent_ibus,
-                                self.percent_utilization,
-                                self.percent_contribution,
-                                self.boil_time,)
+Utilization:  {3} %""".format(string.capwords(self.name),
+                              '-' * (len(self.name) + 6),
+                              self.percent_alpha_acids,
+                              self.percent_utilization)
         return msg
+
+    @classmethod
+    def print_utilization_table(cls):
+        """
+        Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
+
+        Source: http://www.realbeer.com/hops/research.html
+        """
+        boil_time_list = range(0, 60, 3) + range(60, 130, 10)
+        gravity_list = range(1030, 1140, 10)
+
+        title = 'Percent Alpha Acid Utilization - ' \
+                'Boil Time vs Wort Original Gravity'
+        size = 92
+        print(title.center(size))
+        print(str('=' * len(title)).center(size))
+        print('\n')
+        print(' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0)
+                       for l in gravity_list]))
+        print('-' * size)
+        for boil_time in boil_time_list:
+            line = []
+            line.append(str(boil_time).rjust(4))
+            for sg in gravity_list:
+                aau = cls.get_percent_utilization(sg / 1000.0, boil_time)
+                line.append('{0:7.3f}'.format(aau))
+            print(' '.join([item for item in line]))
+        print('\n')
+
+
+class HopAddition(object):
+
+    def __init__(self, hop,
+                 weight=None,
+                 boil_time=None,
+                 percent_contribution=None):
+        self.hop = hop
+        self.weight = weight
+        self.boil_time = boil_time
+        self.percent_contribution = percent_contribution
+
+    def format(self):
+        msg = """{0}
+Weight:       {1} %
+Contribution: {2} %
+Boil Time:    {3} min""".format(self.hop,
+                                self.weight,
+                                self.percent_contirubtion,
+                                self.boil_time)
+        return msg
+
+    @classmethod
+    def get_c_gravity(cls, sg):
+        """
+        Cgravity is a constant to adjust the boil size when dealing with
+        specific gravity greater than 1.050 in the calculation of IBUs.
+        """
+        cgravity = 1
+        if sg > 1.050:
+            cgravity += (sg - 1.050)/0.2
+        return cgravity
+
+    def get_ibu_real_beer(self, sg, gallons_of_beer):
+        """
+        Source: http://www.realbeer.com/hops/research.html
+        Source: http://www.rooftopbrew.net/ibu.php
+        """
+        utilization = ((self.hop.percent_utilization / 100.0) /
+                       self.get_c_gravity(sg))
+        num = (self.weight * utilization *
+               (self.hop.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT_US)
+        return num / (gallons_of_beer)
+
+    def get_ibu_glenn_tinseth(self, sg, gallons_of_beer):
+        """
+        Source: http://www.rooftopbrew.net/ibu.php
+        """
+        utilization = self.get_percent_utilization(sg, self.boil_time)
+        num = (self.weight * utilization *
+               (self.hop.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT_US)
+        return num / (gallons_of_beer)
 
     @classmethod
     def get_bigness_factor(cls, sg):
@@ -77,65 +151,6 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         boil_time_factor = cls.get_boil_time_factor(boil_time)
         return bigness_factor * boil_time_factor
 
-    @classmethod
-    def get_c_gravity(cls, sg):
-        """
-        Cgravity is a constant to adjust the boil size when dealing with
-        specific gravity greater than 1.050 in the calculation of IBUs.
-        """
-        cgravity = 1
-        if sg > 1.050:
-            cgravity += (sg - 1.050)/0.2
-        return cgravity
-
-    def get_ibu_real_beer(self, sg, gallons_of_beer):
-        """
-        Source: http://www.realbeer.com/hops/research.html
-        Source: http://www.rooftopbrew.net/ibu.php
-        """
-        utilization = ((self.percent_utilization / 100.0) /
-                       self.get_c_gravity(sg))
-        num = (self.weight * utilization * (self.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT_US)
-        return num / (gallons_of_beer)
-
-    def get_ibu_glenn_tinseth(self, sg, gallons_of_beer):
-        """
-        Source: http://www.rooftopbrew.net/ibu.php
-        """
-        utilization = self.get_percent_utilization(sg, self.boil_time)
-        num = (self.weight * utilization * (self.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT_US)
-        return num / (gallons_of_beer)
-
-    @classmethod
-    def print_utilization_table(cls):
-        """
-        Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
-
-        Source: http://www.realbeer.com/hops/research.html
-        """
-        boil_time_list = range(0, 60, 3) + range(60, 130, 10)
-        gravity_list = range(1030, 1140, 10)
-
-        title = 'Percent Alpha Acid Utilization - ' \
-                'Boil Time vs Wort Original Gravity'
-        size = 92
-        print(title.center(size))
-        print(str('=' * len(title)).center(size))
-        print('\n')
-        print(' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0)
-                       for l in gravity_list]))
-        print('-' * size)
-        for boil_time in boil_time_list:
-            line = []
-            line.append(str(boil_time).rjust(4))
-            for sg in gravity_list:
-                aau = cls.get_percent_utilization(sg / 1000.0, boil_time)
-                line.append('{0:7.3f}'.format(aau))
-            print(' '.join([item for item in line]))
-        print('\n')
-
     def get_hops_weight(self, target_ibu, gallons_of_beer):
         """
         Weight of Hops
@@ -170,22 +185,6 @@ Boil Time:    {6} min""".format(string.capwords(self.name),
         """
         num = (target_ibu * gallons_of_beer *
                (self.percent_contribution / 100.0))
-        den = ((self.percent_alpha_acids / 100.0) *
-               (self.percent_utilization / 100.0) * HOPS_CONSTANT_US)
+        den = ((self.hop.percent_alpha_acids / 100.0) *
+               (self.hop.percent_utilization / 100.0) * HOPS_CONSTANT_US)
         return num / den
-
-
-class HopAddition(object):
-
-    def __init__(self, hop=None,
-                 weight=None,
-                 boil_time=None):
-        self.hop = hop
-        self.weight = weight
-        self.boil_time = boil_time
-
-    def format(self):
-        msg = """{0}
-Weight:       {1} %
-Boil Time:    {2} min""".format(self.hop, self.weight, self.boil_time)
-        return msg

@@ -134,8 +134,8 @@ class Recipe(object):
         """
         sg = self.get_specific_gravity()
         gal = self.gallons_of_beer
-        return sum([hop.get_ibu_real_beer(sg, gal)
-                   for hop in self.hop_additions])
+        return sum([hop_add.get_ibu_real_beer(sg, gal)
+                   for hop_add in self.hop_additions])
 
     def get_strike_temp(self):
         """
