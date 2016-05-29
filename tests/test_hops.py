@@ -48,14 +48,14 @@ class TestHopAdditions(unittest.TestCase):
                                    **self.addition_kwargs[0])
         ibu = hop_addition.get_ibus(self.sg,
                                     self.gallons_of_beer)
-        self.assertEquals(round(ibu, 2), 36.98)
+        self.assertEquals(round(ibu, 2), 35.62)
 
         self.addition_kwargs[1]['utilization_cls'] = HopsUtilizationJackieRager
         hop_addition = HopAddition(hop_list[1],
                                    **self.addition_kwargs[1])
         ibu = hop_addition.get_ibus(self.sg,
                                     self.gallons_of_beer)
-        self.assertEquals(round(ibu, 2), 1.93)
+        self.assertEquals(round(ibu, 2), 4.41)
 
     def test_get_ibu_glenn_tinseth(self):
         self.addition_kwargs[0]['utilization_cls'] = \

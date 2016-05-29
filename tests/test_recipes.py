@@ -46,7 +46,7 @@ class TestRecipe(unittest.TestCase):
 
     def test_get_total_ibu(self):
         total_ibu = self.recipe.get_total_ibu()
-        self.assertEquals(round(total_ibu, 2), 38.91)
+        self.assertEquals(round(total_ibu, 2), 40.03)
 
     def test_get_strike_temp(self):
         strike_temp = self.recipe.get_strike_temp()

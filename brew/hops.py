@@ -44,7 +44,12 @@ class HopsUtilization(object):
         self.hop_addition = hop_addition
 
     def get_ibus(self, sg, gallons_of_beer):
-        raise NotImplementedError
+        utilization = self.get_percent_utilization(
+                sg, self.hop_addition.boil_time)
+        num = (self.hop_addition.weight * utilization *
+               (self.hop_addition.hop.percent_alpha_acids / 100.0) *
+               HOPS_CONSTANT_US)
+        return num / (gallons_of_beer)
 
     @classmethod
     def get_percent_utilization(cls, sg, boil_time):
@@ -88,14 +93,6 @@ class HopsUtilizationJackieRager(HopsUtilization):
     Source: http://www.rooftopbrew.net/ibu.php
     """
 
-    def get_ibus(self, sg, gallons_of_beer):
-        utilization = ((self.hop_addition.hop.percent_utilization / 100.0) /
-                       self.get_c_gravity(sg))
-        num = (self.hop_addition.weight * utilization *
-               (self.hop_addition.hop.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT_US)
-        return num / (gallons_of_beer)
-
     @classmethod
     def get_c_gravity(cls, sg):
         """
@@ -109,7 +106,8 @@ class HopsUtilizationJackieRager(HopsUtilization):
 
     @classmethod
     def get_percent_utilization(cls, sg, boil_time):
-        return 18.11 + 13.86 * math.tanh((boil_time - 31.32) / 18.27)
+        num = (18.11 + 13.86 * math.tanh((boil_time - 31.32) / 18.27)) / 100.0
+        return num / cls.get_c_gravity(sg)
 
 
 class HopsUtilizationGlennTinseth(HopsUtilization):
@@ -121,14 +119,6 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
     Source: http://www.realbeer.com/hops/research.html
     Source: http://www.rooftopbrew.net/ibu.php
     """
-
-    def get_ibus(self, sg, gallons_of_beer):
-        utilization = self.get_percent_utilization(
-                sg, self.hop_addition.boil_time)
-        num = (self.hop_addition.weight * utilization *
-               (self.hop_addition.hop.percent_alpha_acids / 100.0) *
-               HOPS_CONSTANT_US)
-        return num / (gallons_of_beer)
 
     @classmethod
     def get_bigness_factor(cls, sg):
