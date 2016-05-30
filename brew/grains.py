@@ -15,7 +15,7 @@ class Grain(object):
         self.hot_water_extract = hot_water_extract
         self.percent_extract = percent_extract
 
-    def __repr__(self):
+    def __str__(self):
         return self.name
 
     def format(self):
@@ -54,7 +54,7 @@ class Grain(object):
 
     @ classmethod
     def get_liquid_malt_to_grain_weight(cls, malt):
-        return malt * 1.0 / 0.75
+        return malt / 0.75
 
     @classmethod
     def get_specialty_grain_to_liquid_malt_weight(cls, grain):
@@ -65,4 +65,4 @@ class Grain(object):
 
     @classmethod
     def get_liquid_malt_to_specialty_grain_weight(cls, malt):
-        return malt * 1.0 / 0.89
+        return malt / 0.89
