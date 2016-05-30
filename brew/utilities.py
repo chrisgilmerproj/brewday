@@ -49,3 +49,21 @@ def sg_to_plato(sg):
     """
     # return (sg - 1.0) * 1000 / 4
     return -616.868 + 1111.14 * sg - 630.272 * sg ** 2 + 135.997 * sg ** 3
+
+
+def hydrometer_adjustment(sg, temp):
+    """
+    Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
+        where T is in degrees F.
+
+    Sources:
+    http://www.brewersfriend.com/hydrometer-temp/
+    http://merrycuss.com/calc/sgcorrection.html
+    http://hbd.org/brewery/library/HydromCorr0992.html
+    http://www.primetab.com/formulas.html
+    # nopep8
+    """
+    correction = (1.313454 - 0.132674 * (temp ** 1) +
+                  (2.057793 * 10 ** -3) * (temp ** 2) -
+                  (2.627634 * 10 ** -6) * (temp ** 3))
+    return sg + (correction * 0.001)

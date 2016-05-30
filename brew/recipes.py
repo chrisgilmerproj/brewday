@@ -340,20 +340,3 @@ class Recipe(object):
         - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/  # nopep8
         """
         return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
-
-    def get_hydrometer_adjustment(self, temp):
-        """
-        Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
-            where T is in degrees F.
-
-        Sources:
-        http://www.brewersfriend.com/hydrometer-temp/
-        http://merrycuss.com/calc/sgcorrection.html
-        http://hbd.org/brewery/library/HydromCorr0992.html
-        http://www.primetab.com/formulas.html
-        # nopep8
-        """
-        correction = (1.313454 - 0.132674 * (temp ** 1) +
-                      (2.057793 * 10 ** -3) * (temp ** 2) -
-                      (2.627634 * 10 ** -6) * (temp ** 3))
-        return self.get_specific_gravity() + (correction * 0.001)

@@ -24,7 +24,6 @@ class Hop(object):
 
     def __repr__(self):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
-        print out
         if self.percent_alpha_acids:
             out = "{0}, percent_alpha_acids={1}".format(
                     out, self.percent_alpha_acids)

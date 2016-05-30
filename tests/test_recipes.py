@@ -77,7 +77,3 @@ class TestRecipe(unittest.TestCase):
     def test_get_alcohol_by_volume_alternative(self):
         abv = self.recipe.get_alcohol_by_volume_alternative(1.057, 1.013)
         self.assertEquals(round(abv, 2), 5.95)
-
-    def test_get_hydrometer_adjustment(self):
-        sg = self.recipe.get_hydrometer_adjustment(float(70))
-        self.assertEquals(round(sg, 3), 1.058)
