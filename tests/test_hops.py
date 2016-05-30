@@ -8,7 +8,6 @@ from brew.utilities import plato_to_sg
 
 from fixtures import cascade
 from fixtures import centennial
-from fixtures import hop_list
 
 
 class TestHops(unittest.TestCase):
@@ -52,6 +51,12 @@ class TestHopAdditions(unittest.TestCase):
             },
         ]
 
+        # Additions
+        self.hop_addition1 = HopAddition(self.hop1,
+                                         **self.addition_kwargs[0])
+        self.hop_addition2 = HopAddition(self.hop2,
+                                         **self.addition_kwargs[1])
+
         # Define Hops
         self.plato = 14.0
         self.sg = plato_to_sg(self.plato)
@@ -59,23 +64,17 @@ class TestHopAdditions(unittest.TestCase):
         self.final_volume = 5.0
 
     def test_str(self):
-        hop_addition = HopAddition(hop_list[0],
-                                   **self.addition_kwargs[0])
-        out = str(hop_addition)
+        out = str(self.hop_addition1)
         self.assertEquals(
             out, 'Centennial, alpha 14.0%, weight 0.57 oz, boil time 60.0 min')
 
     def test_repr(self):
-        hop_addition = HopAddition(hop_list[0],
-                                   **self.addition_kwargs[0])
-        out = repr(hop_addition)
+        out = repr(self.hop_addition1)
         self.assertEquals(
             out, "HopAddition(Hop('centennial', percent_alpha_acids=14.0))")
 
     def test_format(self):
-        hop_addition = HopAddition(hop_list[0],
-                                   **self.addition_kwargs[0])
-        out = hop_addition.format()
+        out = self.hop_addition1.format()
         msg = textwrap.dedent("""Centennial, alpha 14.0%
                                  ------------------------
                                  Weight:       0.57 oz
@@ -85,14 +84,14 @@ class TestHopAdditions(unittest.TestCase):
 
     def test_get_ibus_jackie_rager(self):
         self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
-        hop_addition = HopAddition(hop_list[0],
+        hop_addition = HopAddition(self.hop1,
                                    **self.addition_kwargs[0])
         ibu = hop_addition.get_ibus(self.sg,
                                     self.final_volume)
         self.assertEquals(round(ibu, 2), 35.62)
 
         self.addition_kwargs[1]['utilization_cls'] = HopsUtilizationJackieRager
-        hop_addition = HopAddition(hop_list[1],
+        hop_addition = HopAddition(self.hop2,
                                    **self.addition_kwargs[1])
         ibu = hop_addition.get_ibus(self.sg,
                                     self.final_volume)
@@ -101,7 +100,7 @@ class TestHopAdditions(unittest.TestCase):
     def test_get_ibu_glenn_tinseth(self):
         self.addition_kwargs[0]['utilization_cls'] = \
             HopsUtilizationGlennTinseth
-        hop_addition = HopAddition(hop_list[0],
+        hop_addition = HopAddition(self.hop1,
                                    **self.addition_kwargs[0])
         ibu = hop_addition.get_ibus(self.sg,
                                     self.final_volume)
@@ -109,7 +108,7 @@ class TestHopAdditions(unittest.TestCase):
 
         self.addition_kwargs[1]['utilization_cls'] = \
             HopsUtilizationGlennTinseth
-        hop_addition = HopAddition(hop_list[1],
+        hop_addition = HopAddition(self.hop2,
                                    **self.addition_kwargs[1])
         ibu = hop_addition.get_ibus(self.sg,
                                     self.final_volume)
@@ -124,20 +123,14 @@ class TestHopAdditions(unittest.TestCase):
     #     self.assertEquals(round(utilization * 100, 2), 4.32)
 
     def test_get_hops_weight(self):
-        self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
-        hop_addition = HopAddition(hop_list[0],
-                                   **self.addition_kwargs[0])
-        hops_weight = hop_addition.get_hops_weight(
+        hops_weight = self.hop_addition1.get_hops_weight(
                         self.sg,
                         self.target_ibu,
                         self.final_volume)
         self.assertEquals(round(hops_weight, 2), 0.61)
 
-        self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
-        hop_addition = HopAddition(hop_list[0],
-                                   **self.addition_kwargs[0])
-        hops_weight = hop_addition.get_hops_weight(
+        hops_weight = self.hop_addition2.get_hops_weight(
                         self.sg,
                         self.target_ibu,
                         self.final_volume)
-        self.assertEquals(round(hops_weight, 2), 0.61)
+        self.assertEquals(round(hops_weight, 2), 0.34)
