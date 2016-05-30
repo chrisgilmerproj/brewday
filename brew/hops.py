@@ -12,16 +12,23 @@ def get_percent_ibus(hop, total_ibus):
 
 class Hop(object):
 
-    def __init__(self, name=None,
-                 short_name=None,
+    def __init__(self, name,
                  percent_alpha_acids=None):
         self.name = name
-        self.short_name = short_name or name
         self.percent_alpha_acids = percent_alpha_acids
 
-    def __repr__(self):
+    def __str__(self):
         return "{0}, alpha {1}%".format(self.name.capitalize(),
                                         self.percent_alpha_acids)
+
+    def __repr__(self):
+        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        print out
+        if self.percent_alpha_acids:
+            out = "{0}, percent_alpha_acids={1}".format(
+                    out, self.percent_alpha_acids)
+        out = "{0})".format(out)
+        return out
 
     def format(self):
         msg = """{0} Hops

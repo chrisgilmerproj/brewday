@@ -17,6 +17,14 @@ class TestHops(unittest.TestCase):
         self.plato = 14.0
         self.sg = plato_to_sg(self.plato)
 
+    def test_str(self):
+        out = str(self.hop_list[0])
+        self.assertEquals(out, 'Centennial, alpha 14.0%')
+
+    def test_repr(self):
+        out = repr(self.hop_list[0])
+        self.assertEquals(out, "Hop('centennial', percent_alpha_acids=14.0)")
+
 
 class TestHopAdditions(unittest.TestCase):
 
