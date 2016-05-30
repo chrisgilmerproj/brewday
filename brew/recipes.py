@@ -297,7 +297,7 @@ class Recipe(object):
             print('Utilization:  {0:0.2f} %'.format(utilization))
             print('\n')
 
-        # self.hop_additions[0].print_utilization_table()
+        self.hop_additions[0].utilization_cls.print_utilization_table()
 
     def get_alcohol_by_volume_standard(self, og, fg):
         """
