@@ -1,4 +1,5 @@
 import string
+import textwrap
 
 
 class Grain(object):
@@ -18,15 +19,16 @@ class Grain(object):
         return self.name
 
     def format(self):
-        msg = """{0} Grain
-{1}
-Color:             {2} degL
-Hot Water Extract: {3}
-Extract:           {4} %""".format(string.capwords(self.name),
-                                   '-' * (len(self.name) + 6),
-                                   self.color,
-                                   self.hot_water_extract,
-                                   self.percent_extract)
+        msg = textwrap.dedent("""{0} Grain
+                                 {1}
+                                 Color:             {2} degL
+                                 Hot Water Extract: {3}
+                                 Extract:           {4} %""".format(
+                                     string.capwords(self.name),
+                                     '-' * (len(self.name) + 6),
+                                     self.color,
+                                     self.hot_water_extract,
+                                     self.percent_extract))
         return msg
 
     @classmethod
