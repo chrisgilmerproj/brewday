@@ -19,17 +19,18 @@ class TestHops(unittest.TestCase):
         self.sg = plato_to_sg(self.plato)
 
     def test_str(self):
-        out = str(self.hop_list[0])
+        out = str(hop_list[0])
         self.assertEquals(out, 'Centennial, alpha 14.0%')
 
     def test_repr(self):
-        out = repr(self.hop_list[0])
+        out = repr(hop_list[0])
         self.assertEquals(out, "Hop('centennial', percent_alpha_acids=14.0)")
 
     def test_format(self):
-        out = self.hop_list[0].format()
-        msg = textwrap.dedent("""
-                              """)
+        out = hop_list[0].format()
+        msg = textwrap.dedent("""Centennial Hops
+                                 ---------------
+                                 Alpha Acids:  14.0 %""")
         self.assertEquals(out, msg)
 
 
@@ -54,6 +55,31 @@ class TestHopAdditions(unittest.TestCase):
         self.sg = plato_to_sg(self.plato)
         self.target_ibu = 40.0
         self.final_volume = 5.0
+
+    def test_str(self):
+        hop_addition = HopAddition(hop_list[0],
+                                   **self.addition_kwargs[0])
+        out = str(hop_addition)
+        self.assertEquals(
+            out, 'Centennial, alpha 14.0%, weight 0.57 oz, boil time 60.0 min')
+
+    def test_repr(self):
+        hop_addition = HopAddition(hop_list[0],
+                                   **self.addition_kwargs[0])
+        out = repr(hop_addition)
+        self.assertEquals(
+            out, "HopAddition(Hop('centennial', percent_alpha_acids=14.0))")
+
+    def test_format(self):
+        hop_addition = HopAddition(hop_list[0],
+                                   **self.addition_kwargs[0])
+        out = hop_addition.format()
+        msg = textwrap.dedent("""Centennial, alpha 14.0%
+                                 ------------------------
+                                 Weight:       0.57 oz
+                                 Contribution: 95.00 %
+                                 Boil Time:    60.00 min""")
+        self.assertEquals(out, msg)
 
     def test_get_ibus_jackie_rager(self):
         self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager

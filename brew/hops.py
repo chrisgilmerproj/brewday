@@ -36,7 +36,7 @@ class Hop(object):
                                  {1}
                                  Alpha Acids:  {2} %""".format(
                                      string.capwords(self.name),
-                                     '-' * (len(self.name) + 6),
+                                     '-' * (len(self.name) + 5),
                                      self.percent_alpha_acids))
         return msg
 
@@ -225,15 +225,25 @@ class HopAddition(object):
         utilization_kwargs = utilization_cls_kwargs or {}
         self.utilization_cls = utilization_cls(self, **utilization_kwargs)
 
+    def __str__(self):
+        return "{0}, weight {1} oz, boil time {2} min".format(
+                self.hop, self.weight, self.boil_time)
+
+    def __repr__(self):
+        out = "{0}({1}".format(type(self).__name__, repr(self.hop))
+        out = "{0})".format(out)
+        return out
+
     def format(self):
-        msg = """{0}
-------------------------
-Weight:       {1:0.2f} oz
-Contribution: {2:0.2f} %
-Boil Time:    {3:0.2f} min""".format(self.hop,
+        msg = textwrap.dedent("""{0}
+                                 ------------------------
+                                 Weight:       {1:0.2f} oz
+                                 Contribution: {2:0.2f} %
+                                 Boil Time:    {3:0.2f} min""".format(
+                                     self.hop,
                                      self.weight,
                                      self.percent_contribution,
-                                     self.boil_time)
+                                     self.boil_time))
         return msg
 
     def get_ibus(self, sg, final_volume):
