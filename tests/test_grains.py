@@ -15,11 +15,12 @@ class TestGrains(unittest.TestCase):
 
     def test_format(self):
         out = self.grain.format()
-        msg = textwrap.dedent("""Pale 2-row Grain
-                                 ----------------
-                                 Color:             2 degL
-                                 Hot Water Extract: 0.76
-                                 Extract:           95 %""")
+        msg = textwrap.dedent("""\
+            Pale 2-row Grain
+            ----------------
+            Color:             2 degL
+            Hot Water Extract: 0.76
+            Extract:           95 %""")
         self.assertEquals(out, msg)
 
     def test_get_dry_to_liquid_malt_weight(self):

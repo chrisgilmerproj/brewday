@@ -28,9 +28,10 @@ class TestHops(unittest.TestCase):
 
     def test_format(self):
         out = self.hop.format()
-        msg = textwrap.dedent("""Centennial Hops
-                                 ---------------
-                                 Alpha Acids:  14.0 %""")
+        msg = textwrap.dedent("""\
+                Centennial Hops
+                ---------------
+                Alpha Acids:  14.0 %""")
         self.assertEquals(out, msg)
 
 
@@ -76,11 +77,12 @@ class TestHopAdditions(unittest.TestCase):
 
     def test_format(self):
         out = self.hop_addition1.format()
-        msg = textwrap.dedent("""Centennial, alpha 14.0%
-                                 ------------------------
-                                 Weight:       0.57 oz
-                                 Contribution: 95.00 %
-                                 Boil Time:    60.00 min""")
+        msg = textwrap.dedent("""\
+                Centennial, alpha 14.0%
+                ------------------------
+                Weight:       0.57 oz
+                Contribution: 95.00 %
+                Boil Time:    60.00 min""")
         self.assertEquals(out, msg)
 
     def test_get_hops_weight(self):
