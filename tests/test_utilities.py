@@ -1,5 +1,7 @@
 import unittest
 
+from brew.utilities import alcohol_by_volume_alternative
+from brew.utilities import alcohol_by_volume_standard
 from brew.utilities import celsius_to_fahrenheit
 from brew.utilities import fahrenheit_to_celsius
 from brew.utilities import hydrometer_adjustment
@@ -8,6 +10,14 @@ from brew.utilities import sg_to_plato
 
 
 class TestUtilities(unittest.TestCase):
+
+    def test_alcohol_by_volume_alternative(self):
+        abv = alcohol_by_volume_alternative(1.057, 1.013)
+        self.assertEquals(round(abv, 2), 5.95)
+
+    def test_alcohol_by_volume_standard(self):
+        abv = alcohol_by_volume_standard(1.057, 1.013)
+        self.assertEquals(round(abv, 2), 5.78)
 
     def test_fahrenheit_to_celsius(self):
         ctemp = fahrenheit_to_celsius(212.0)
