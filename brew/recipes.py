@@ -3,6 +3,8 @@
 import string
 import textwrap
 
+from .constants import IMPERIAL_UNITS
+from .constants import SI_UNITS
 from .utilities import plato_to_sg
 from .utilities import sg_to_plato
 
@@ -17,6 +19,7 @@ class Recipe(object):
                  grain_list=None,
                  hop_additions=None,
                  percent_brew_house_yield=70.0,
+                 start_volume=7.0,
                  final_volume=5.0,
                  target_degrees_plato=None,
                  mash_temp=None,
@@ -24,11 +27,13 @@ class Recipe(object):
                  liquor_to_grist_ratio=3.0 / 1.0,
                  percent_color_loss=30.0,
                  target_ibu=None,
-                 units='us'):
+                 units=IMPERIAL_UNITS):
         self.name = name
         self.grain_list = grain_list
         self.hop_additions = hop_additions
+
         self.percent_brew_house_yield = percent_brew_house_yield  # %
+        self.start_volume = start_volume  # G
         self.final_volume = final_volume  # G
         self.target_degrees_plato = target_degrees_plato  # P
         self.mash_temp = mash_temp  # F
@@ -40,8 +45,8 @@ class Recipe(object):
         # TODO: Make this work
         # US = Gallons, degF
         # Metric = Liters, degC
-        if units not in ['us', 'metric']:
-            self.units = 'us'
+        if units not in [IMPERIAL_UNITS, SI_UNITS]:
+            self.units = IMPERIAL_UNITS
         else:
             self.units = units
 

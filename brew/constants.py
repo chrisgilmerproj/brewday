@@ -1,3 +1,18 @@
+# Unit Types
+IMPERIAL_UNITS = 'imperial'
+SI_UNITS = 'metric'
+
+IMPERIAL_TYPES = {
+    'volume': 'gallon',
+    'weight_large': 'lbs',
+    'weight_small': 'oz',
+}
+
+SI_TYPES = {
+    'volume': 'liter',
+    'weight_large': 'kg',
+    'weight_small': 'mg',
+}
 
 # Conversions
 # Try to define SI to US units instead of US to SI.
