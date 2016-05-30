@@ -5,7 +5,6 @@ import textwrap
 
 from .constants import IMPERIAL_UNITS
 from .constants import SI_UNITS
-from .utilities import plato_to_sg
 from .utilities import sg_to_plato
 
 
@@ -21,7 +20,7 @@ class Recipe(object):
                  percent_brew_house_yield=70.0,
                  start_volume=7.0,
                  final_volume=5.0,
-                 target_degrees_plato=None,
+                 target_sg=None,
                  mash_temp=None,
                  malt_temp=None,
                  liquor_to_grist_ratio=3.0 / 1.0,
@@ -35,7 +34,9 @@ class Recipe(object):
         self.percent_brew_house_yield = percent_brew_house_yield  # %
         self.start_volume = start_volume  # G
         self.final_volume = final_volume  # G
-        self.target_degrees_plato = target_degrees_plato  # P
+        self.target_sg = target_sg  # SG
+        self.target_degrees_plato = sg_to_plato(self.target_sg)  # P
+
         self.mash_temp = mash_temp  # F
         self.malt_temp = malt_temp  # F
         self.liquor_to_grist_ratio = liquor_to_grist_ratio
@@ -52,12 +53,6 @@ class Recipe(object):
 
     def __str__(self):
         return self.name
-
-    def get_specific_gravity(self):
-        return plato_to_sg(self.target_degrees_plato)
-
-    def get_degrees_plato(self):
-        return sg_to_plato(self.get_specific_gravity())
 
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
@@ -90,7 +85,7 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return (8.32 * self.final_volume * self.get_specific_gravity() *
+        return (8.32 * self.final_volume * self.target_sg *
                 self.target_degrees_plato) / 100.0
 
     def get_working_yield(self, grain):
@@ -138,7 +133,7 @@ class Recipe(object):
         """
         Convenience method to get total IBU
         """
-        sg = self.get_specific_gravity()
+        sg = self.target_sg
         fv = self.final_volume
         return sum([hop_add.get_ibus(sg, fv)
                    for hop_add in self.hop_additions])
@@ -252,8 +247,8 @@ class Recipe(object):
 
         Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html  # nopep8
         """
-        sg = self.get_specific_gravity()
-        deg_plato = self.get_degrees_plato()
+        sg = self.target_sg
+        deg_plato = self.target_degrees_plato
         pounds_extract = self.get_extract_weight()
         strike_temp = self.get_strike_temp()
         mash_water_vol = self.get_mash_water_volume()

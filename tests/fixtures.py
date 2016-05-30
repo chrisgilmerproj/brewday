@@ -39,7 +39,7 @@ recipe = Recipe(name='pale ale',
                 hop_additions=hop_additions,
                 percent_brew_house_yield=70.0,  # %
                 final_volume=5.0,  # G
-                target_degrees_plato=14.0,  # P
+                target_sg=1.057,  # SG
                 mash_temp=152.0,  # F
                 malt_temp=60.0,  # F
                 liquor_to_grist_ratio=3.0 / 1.0,
