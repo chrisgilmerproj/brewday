@@ -2,10 +2,12 @@ import unittest
 
 from brew.utilities import alcohol_by_volume_alternative
 from brew.utilities import alcohol_by_volume_standard
+from brew.utilities import brix_to_sg
 from brew.utilities import celsius_to_fahrenheit
 from brew.utilities import fahrenheit_to_celsius
 from brew.utilities import hydrometer_adjustment
 from brew.utilities import plato_to_sg
+from brew.utilities import sg_to_brix
 from brew.utilities import sg_to_plato
 
 
@@ -42,6 +44,14 @@ class TestUtilities(unittest.TestCase):
     def test_sg_to_plato(self):
         sg = sg_to_plato(1.0570)
         self.assertEquals(round(sg, 2), 14.04)
+
+    def test_brix_to_sg(self):
+        sg = brix_to_sg(22.0)
+        self.assertEquals(round(sg, 3), 1.092)
+
+    def test_sg_to_brix(self):
+        brix = sg_to_brix(1.092)
+        self.assertEquals(round(brix, 1), 22.0)
 
     def test_hydrometer_adjustment(self):
         sg = hydrometer_adjustment(1.050, 59.0)

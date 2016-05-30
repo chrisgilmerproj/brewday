@@ -51,6 +51,24 @@ def sg_to_plato(sg):
     return -616.868 + 1111.14 * sg - 630.272 * sg ** 2 + 135.997 * sg ** 3
 
 
+def brix_to_sg(brix):
+    """
+    Source:
+    Brew Your Own Magazine
+    http://www.brewersfriend.com/brix-converter/
+    """
+    return (brix / (258.6 - ((brix / 258.2) * 227.1))) + 1
+
+
+def sg_to_brix(sg):
+    """
+    Source:
+    http://en.wikipedia.org/wiki/Brix
+    http://www.brewersfriend.com/brix-converter/
+    """
+    return (((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622)
+
+
 def hydrometer_adjustment(sg, temp):
     """
     Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
