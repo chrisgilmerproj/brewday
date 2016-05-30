@@ -62,6 +62,9 @@ class Recipe(object):
         starting_gu = total_gu / self.start_volume
         return 1.0 + starting_gu / 1000
 
+    def get_starting_plato(self):
+        return sg_to_plato(self.get_starting_sg())
+
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
         Brew House Yield (BHY)
