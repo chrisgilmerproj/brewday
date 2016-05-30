@@ -6,6 +6,8 @@ from brew.hops import HopsUtilizationGlennTinseth
 from brew.hops import HopsUtilizationJackieRager
 from brew.utilities import plato_to_sg
 
+from fixtures import cascade
+from fixtures import centennial
 from fixtures import hop_list
 
 
@@ -14,20 +16,18 @@ class TestHops(unittest.TestCase):
     def setUp(self):
 
         # Define Hops
-        self.hop_list = hop_list
-        self.plato = 14.0
-        self.sg = plato_to_sg(self.plato)
+        self.hop = centennial
 
     def test_str(self):
-        out = str(hop_list[0])
+        out = str(self.hop)
         self.assertEquals(out, 'Centennial, alpha 14.0%')
 
     def test_repr(self):
-        out = repr(hop_list[0])
+        out = repr(self.hop)
         self.assertEquals(out, "Hop('centennial', percent_alpha_acids=14.0)")
 
     def test_format(self):
-        out = hop_list[0].format()
+        out = self.hop.format()
         msg = textwrap.dedent("""Centennial Hops
                                  ---------------
                                  Alpha Acids:  14.0 %""")
@@ -37,6 +37,8 @@ class TestHops(unittest.TestCase):
 class TestHopAdditions(unittest.TestCase):
 
     def setUp(self):
+        self.hop1 = centennial
+        self.hop2 = cascade
         self.addition_kwargs = [
             {
                 'boil_time': 60.0,
