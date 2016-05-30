@@ -149,6 +149,64 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
         return bigness_factor * boil_time_factor
 
 
+class HopsUtilizationMarkGaretz(HopsUtilization):
+    @classmethod
+    def concentration_factor(cls, final_volume, boil_volume):
+        return final_volume / boil_volume
+
+    @classmethod
+    def boil_gravity(cls, starting_gravity):
+        cf = cls.get_concentration_factor()
+        return (cf * (starting_gravity - 1)) + 1
+
+    @classmethod
+    def gravity_factor(cls):
+        bg = cls.boil_gravity()
+        return (bg - 1.050) / 0.2 + 1
+
+    @classmethod
+    def hopping_rate_factor(cls, desired_ibus):
+        cf = cls.get_concentration_factor()
+        return ((cf * desired_ibus)/260) + 1
+
+    @classmethod
+    def temperature_factor(cls, elevation):
+        """ elevation in feet """
+        return ((elevation / 550) * 0.02) + 1
+
+    @classmethod
+    def yeast_factor(cls):
+        return 1
+
+    @classmethod
+    def pellet_factor(cls):
+        return 1
+
+    @classmethod
+    def bag_factor(cls):
+        return 1
+
+    @classmethod
+    def filter_factor(cls):
+        return 1
+
+    @classmethod
+    def combined_adjustments(cls):
+        gf = cls.gravity_factor()
+        hf = cls.hopping_rate_factor()
+        tf = cls.temperature_factor()
+        yf = cls.yeast_factor()
+        pf = cls.pellet_factor()
+        bf = cls.bag_factor()
+        ff = cls.filter_factor()
+        return gf * hf * tf * yf * pf * bf * ff
+
+    @classmethod
+    def get_percent_utilization(cls, sg, boil_time):
+        cf = cls.combined_adjustments()
+        return 10000.0 / cf
+
+
 class HopAddition(object):
 
     def __init__(self, hop,
