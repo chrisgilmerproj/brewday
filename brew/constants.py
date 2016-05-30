@@ -6,12 +6,14 @@ IMPERIAL_TYPES = {
     'volume': 'gallon',
     'weight_large': 'lbs',
     'weight_small': 'oz',
+    'temperature': 'degF',
 }
 
 SI_TYPES = {
     'volume': 'liter',
     'weight_large': 'kg',
     'weight_small': 'mg',
+    'temperature': 'degC',
 }
 
 # Conversions
