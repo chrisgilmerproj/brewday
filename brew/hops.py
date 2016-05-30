@@ -1,5 +1,6 @@
 import math
 import string
+import textwrap
 
 from .constants import HOPS_CONSTANT_US
 from .constants import SEA_LEVEL
@@ -31,11 +32,12 @@ class Hop(object):
         return out
 
     def format(self):
-        msg = """{0} Hops
-{1}
-Alpha Acids:  {2} %""".format(string.capwords(self.name),
-                              '-' * (len(self.name) + 6),
-                              self.percent_alpha_acids)
+        msg = textwrap.dedent("""{0} Hops
+                                 {1}
+                                 Alpha Acids:  {2} %""".format(
+                                     string.capwords(self.name),
+                                     '-' * (len(self.name) + 6),
+                                     self.percent_alpha_acids))
         return msg
 
 

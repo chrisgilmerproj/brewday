@@ -1,3 +1,4 @@
+import textwrap
 import unittest
 
 from brew.hops import HopAddition
@@ -24,6 +25,12 @@ class TestHops(unittest.TestCase):
     def test_repr(self):
         out = repr(self.hop_list[0])
         self.assertEquals(out, "Hop('centennial', percent_alpha_acids=14.0)")
+
+    def test_format(self):
+        out = self.hop_list[0].format()
+        msg = textwrap.dedent("""
+                              """)
+        self.assertEquals(out, msg)
 
 
 class TestHopAdditions(unittest.TestCase):
