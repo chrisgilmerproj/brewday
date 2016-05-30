@@ -16,6 +16,14 @@ class TestRecipe(unittest.TestCase):
         # Define Recipes
         self.recipe = recipe
 
+    def test_get_total_gravity_units(self):
+        out = self.recipe.get_total_gravity_units()
+        self.assertEquals(round(out, 2), 285.0)
+
+    def test_get_starting_sg(self):
+        out = self.recipe.get_starting_sg()
+        self.assertEquals(round(out, 3), 1.041)
+
     def test_brew_house_yield(self):
         plato_actual = 15.0
         vol_actual = 5.5

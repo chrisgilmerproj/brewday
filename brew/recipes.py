@@ -54,6 +54,14 @@ class Recipe(object):
     def __str__(self):
         return self.name
 
+    def get_total_gravity_units(self):
+        return ((self.target_sg - 1.0) * 1000) * self.final_volume
+
+    def get_starting_sg(self):
+        total_gu = self.get_total_gravity_units()
+        starting_gu = total_gu / self.start_volume
+        return 1.0 + starting_gu / 1000
+
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
         Brew House Yield (BHY)
