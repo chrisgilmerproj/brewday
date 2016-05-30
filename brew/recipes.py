@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import string
+import textwrap
 
 from .utilities import plato_to_sg
 from .utilities import sg_to_plato
@@ -256,19 +257,28 @@ class Recipe(object):
         total_grain_weight = self.get_total_grain_weight()
         total_ibu = self.get_total_ibu()
 
-        print('\n')
-        print(string.capwords(self.name))
-        print('-' * len(self.name))
-        print('Specific Gravity:   {:0.3f}'.format(sg))
-        print('Degrees Plato:      {:0.3f} degP'.format(deg_plato))
-        print('Extract Weight:     {:0.2f} lbs'.format(pounds_extract))
-        print('Strike Temperature: {:0.2f} degF'.format(strike_temp))
-        print('Mash Water Volume:  {:0.2f} gallons'.format(mash_water_vol))
-        print('Total Grain Weight: {:0.2f} lbs'.format(total_grain_weight))
-        print('Total IBU:          {:0.2f} ibu'.format(total_ibu))
-        print('Total Wort Color:   {0:0.2f} degL'.format(total_wort_color))
-        print('Beer Color:         {0:0.2f} degL'.format(beer_color))
-        print('\n')
+        print(textwrap.dedent("""\
+            {0}
+            -----------------------------------
+            Specific Gravity:   {1:0.3f}
+            Degrees Plato:      {2:0.3f} degP
+            Extract Weight:     {3:0.2f} lbs
+            Strike Temperature: {4:0.2f} degF
+            Mash Water Volume:  {5:0.2f} gallons
+            Total Grain Weight: {6:0.2f} lbs
+            Total IBU:          {7:0.2f} ibu
+            Total Wort Color:   {8:0.2f} degL
+            Beer Color:         {9:0.2f} degL
+            """.format(string.capwords(self.name),
+                       sg,
+                       deg_plato,
+                       pounds_extract,
+                       strike_temp,
+                       mash_water_vol,
+                       total_grain_weight,
+                       total_ibu,
+                       total_wort_color,
+                       beer_color)))
 
         for grain in self.grain_list:
             wy = self.get_working_yield(grain)
@@ -277,12 +287,17 @@ class Recipe(object):
             pounds_grain = grain.get_liquid_malt_to_grain_weight(pounds_lme)
             wort_color = self.get_wort_color(grain)
             print(grain.format())
-            print('Working Yield:     {0:0.2f} %'.format(wy))
-            print('Weight DME:        {0:0.2f} lbs'.format(pounds_dry))
-            print('Weight LME:        {0:0.2f} lbs'.format(pounds_lme))
-            print('Weight Grain:      {0:0.2f} lbs'.format(pounds_grain))
-            print('Color:             {0:0.2f} degL'.format(wort_color))
-            print('\n')
+            print(textwrap.dedent("""\
+                    Working Yield:     {0:0.2f} %
+                    Weight DME:        {1:0.2f} lbs
+                    Weight LME:        {2:0.2f} lbs
+                    Weight Grain:      {3:0.2f} lbs
+                    Color:             {4:0.2f} degL
+                    """.format(wy,
+                               pounds_dry,
+                               pounds_lme,
+                               pounds_grain,
+                               wort_color)))
 
         for hop in self.hop_additions:
             hops_weight = hop.get_hops_weight(sg,
@@ -292,9 +307,12 @@ class Recipe(object):
             utilization = hop.utilization_cls.get_percent_utilization(
                     sg, hop.boil_time) * 100.0
             print(hop.format())
-            print('Weight:       {0:0.2f} oz'.format(hops_weight))
-            print('IBUs:         {0:0.2f}'.format(ibus))
-            print('Utilization:  {0:0.2f} %'.format(utilization))
-            print('\n')
+            print(textwrap.dedent("""\
+                    Weight:       {0:0.2f} oz
+                    IBUs:         {1:0.2f}
+                    Utilization:  {2:0.2f} %
+                    """.format(hops_weight,
+                               ibus,
+                               utilization)))
 
         self.hop_additions[0].utilization_cls.print_utilization_table()

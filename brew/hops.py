@@ -31,12 +31,13 @@ class Hop(object):
         return out
 
     def format(self):
-        msg = textwrap.dedent("""{0} Hops
-                                 {1}
-                                 Alpha Acids:  {2} %""".format(
-                                     string.capwords(self.name),
-                                     '-' * (len(self.name) + 5),
-                                     self.percent_alpha_acids))
+        msg = textwrap.dedent("""\
+                {0} Hops
+                {1}
+                Alpha Acids:  {2} %""".format(
+                    string.capwords(self.name),
+                    '-' * (len(self.name) + 5),
+                    self.percent_alpha_acids))
         return msg
 
 
@@ -253,15 +254,16 @@ class HopAddition(object):
         return out
 
     def format(self):
-        msg = textwrap.dedent("""{0}
-                                 ------------------------
-                                 Weight:       {1:0.2f} oz
-                                 Contribution: {2:0.2f} %
-                                 Boil Time:    {3:0.2f} min""".format(
-                                     self.hop,
-                                     self.weight,
-                                     self.percent_contribution,
-                                     self.boil_time))
+        msg = textwrap.dedent("""\
+                {0}
+                ------------------------
+                Weight:       {1:0.2f} oz
+                Contribution: {2:0.2f} %
+                Boil Time:    {3:0.2f} min""".format(
+                    self.hop,
+                    self.weight,
+                    self.percent_contribution,
+                    self.boil_time))
         return msg
 
     def get_ibus(self, sg, final_volume):
