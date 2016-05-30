@@ -53,7 +53,7 @@ class Recipe(object):
     def get_degrees_plato(self):
         return sg_to_plato(self.get_specific_gravity())
 
-    def get_brew_house_yield(self, plato_actual, gal_actual):
+    def get_brew_house_yield(self, plato_actual, vol_actual):
         """
         Brew House Yield (BHY)
         Brew house yield is a measurement that tells the efficiency of the
@@ -65,7 +65,7 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        num = plato_actual * gal_actual * self.percent_brew_house_yield
+        num = plato_actual * vol_actual * self.percent_brew_house_yield
         den = self.target_degrees_plato * self.final_volume
         return num / den
 
@@ -133,8 +133,8 @@ class Recipe(object):
         Convenience method to get total IBU
         """
         sg = self.get_specific_gravity()
-        gal = self.final_volume
-        return sum([hop_add.get_ibus(sg, gal)
+        fv = self.final_volume
+        return sum([hop_add.get_ibus(sg, fv)
                    for hop_add in self.hop_additions])
 
     def get_strike_temp(self):
