@@ -38,21 +38,21 @@ class TestHopAdditions(unittest.TestCase):
         self.plato = 14.0
         self.sg = plato_to_sg(self.plato)
         self.target_ibu = 40.0
-        self.gallons_of_beer = 5.0
+        self.final_volume = 5.0
 
     def test_get_ibus_jackie_rager(self):
         self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
         hop_addition = HopAddition(hop_list[0],
                                    **self.addition_kwargs[0])
         ibu = hop_addition.get_ibus(self.sg,
-                                    self.gallons_of_beer)
+                                    self.final_volume)
         self.assertEquals(round(ibu, 2), 35.62)
 
         self.addition_kwargs[1]['utilization_cls'] = HopsUtilizationJackieRager
         hop_addition = HopAddition(hop_list[1],
                                    **self.addition_kwargs[1])
         ibu = hop_addition.get_ibus(self.sg,
-                                    self.gallons_of_beer)
+                                    self.final_volume)
         self.assertEquals(round(ibu, 2), 4.41)
 
     def test_get_ibu_glenn_tinseth(self):
@@ -61,7 +61,7 @@ class TestHopAdditions(unittest.TestCase):
         hop_addition = HopAddition(hop_list[0],
                                    **self.addition_kwargs[0])
         ibu = hop_addition.get_ibus(self.sg,
-                                    self.gallons_of_beer)
+                                    self.final_volume)
         self.assertEquals(round(ibu, 2), 25.93)
 
         self.addition_kwargs[1]['utilization_cls'] = \
@@ -69,7 +69,7 @@ class TestHopAdditions(unittest.TestCase):
         hop_addition = HopAddition(hop_list[1],
                                    **self.addition_kwargs[1])
         ibu = hop_addition.get_ibus(self.sg,
-                                    self.gallons_of_beer)
+                                    self.final_volume)
         self.assertEquals(round(ibu, 2), 3.45)
 
     # def test_get_percent_utilization(self):
@@ -87,7 +87,7 @@ class TestHopAdditions(unittest.TestCase):
         hops_weight = hop_addition.get_hops_weight(
                         self.sg,
                         self.target_ibu,
-                        self.gallons_of_beer)
+                        self.final_volume)
         self.assertEquals(round(hops_weight, 2), 0.61)
 
         self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
@@ -96,5 +96,5 @@ class TestHopAdditions(unittest.TestCase):
         hops_weight = hop_addition.get_hops_weight(
                         self.sg,
                         self.target_ibu,
-                        self.gallons_of_beer)
+                        self.final_volume)
         self.assertEquals(round(hops_weight, 2), 0.61)

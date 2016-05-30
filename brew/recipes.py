@@ -16,7 +16,7 @@ class Recipe(object):
                  grain_list=None,
                  hop_additions=None,
                  percent_brew_house_yield=70.0,
-                 gallons_of_beer=5.0,
+                 final_volume=5.0,
                  target_degrees_plato=None,
                  mash_temp=None,
                  malt_temp=None,
@@ -28,7 +28,7 @@ class Recipe(object):
         self.grain_list = grain_list
         self.hop_additions = hop_additions
         self.percent_brew_house_yield = percent_brew_house_yield  # %
-        self.gallons_of_beer = gallons_of_beer  # G
+        self.final_volume = final_volume  # G
         self.target_degrees_plato = target_degrees_plato  # P
         self.mash_temp = mash_temp  # F
         self.malt_temp = malt_temp  # F
@@ -66,7 +66,7 @@ class Recipe(object):
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         num = plato_actual * gal_actual * self.percent_brew_house_yield
-        den = self.target_degrees_plato * self.gallons_of_beer
+        den = self.target_degrees_plato * self.final_volume
         return num / den
 
     def get_extract_weight(self):
@@ -84,7 +84,7 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return (8.32 * self.gallons_of_beer * self.get_specific_gravity() *
+        return (8.32 * self.final_volume * self.get_specific_gravity() *
                 self.target_degrees_plato) / 100.0
 
     def get_working_yield(self, grain):
@@ -133,7 +133,7 @@ class Recipe(object):
         Convenience method to get total IBU
         """
         sg = self.get_specific_gravity()
-        gal = self.gallons_of_beer
+        gal = self.final_volume
         return sum([hop_add.get_ibus(sg, gal)
                    for hop_add in self.hop_additions])
 
@@ -287,8 +287,8 @@ class Recipe(object):
         for hop in self.hop_additions:
             hops_weight = hop.get_hops_weight(sg,
                                               self.target_ibu,
-                                              self.gallons_of_beer)
-            ibus = hop.get_ibus(sg, self.gallons_of_beer)
+                                              self.final_volume)
+            ibus = hop.get_ibus(sg, self.final_volume)
             utilization = hop.utilization_cls.get_percent_utilization(
                     sg, hop.boil_time) * 100.0
             print(hop.format())

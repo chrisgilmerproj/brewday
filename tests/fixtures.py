@@ -38,7 +38,7 @@ recipe = Recipe(name='pale ale',
                 grain_list=grain_list,
                 hop_additions=hop_additions,
                 percent_brew_house_yield=70.0,  # %
-                gallons_of_beer=5.0,  # G
+                final_volume=5.0,  # G
                 target_degrees_plato=14.0,  # P
                 mash_temp=152.0,  # F
                 malt_temp=60.0,  # F
