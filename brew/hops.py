@@ -51,12 +51,10 @@ class HopsUtilization(object):
                HOPS_CONSTANT_US)
         return num / (gallons_of_beer)
 
-    @classmethod
-    def get_percent_utilization(cls, sg, boil_time):
+    def get_percent_utilization(self, sg, boil_time):
         raise NotImplementedError
 
-    @classmethod
-    def print_utilization_table(cls):
+    def print_utilization_table(self):
         """
         Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
 
@@ -78,7 +76,7 @@ class HopsUtilization(object):
             line = []
             line.append(str(boil_time).rjust(4))
             for sg in gravity_list:
-                aau = cls.get_percent_utilization(sg / 1000.0, boil_time)
+                aau = self.get_percent_utilization(sg / 1000.0, boil_time)
                 line.append('{0:7.3f}'.format(aau))
             print(' '.join([item for item in line]))
         print('\n')
@@ -93,8 +91,7 @@ class HopsUtilizationJackieRager(HopsUtilization):
     Source: http://www.rooftopbrew.net/ibu.php
     """
 
-    @classmethod
-    def get_c_gravity(cls, sg):
+    def get_c_gravity(self, sg):
         """
         Cgravity is a constant to adjust the boil size when dealing with
         specific gravity greater than 1.050 in the calculation of IBUs.
@@ -104,10 +101,9 @@ class HopsUtilizationJackieRager(HopsUtilization):
             cgravity += (sg - 1.050)/0.2
         return cgravity
 
-    @classmethod
-    def get_percent_utilization(cls, sg, boil_time):
+    def get_percent_utilization(self, sg, boil_time):
         num = (18.11 + 13.86 * math.tanh((boil_time - 31.32) / 18.27)) / 100.0
-        return num / cls.get_c_gravity(sg)
+        return num / self.get_c_gravity(sg)
 
 
 class HopsUtilizationGlennTinseth(HopsUtilization):
@@ -120,16 +116,13 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
     Source: http://www.rooftopbrew.net/ibu.php
     """
 
-    @classmethod
-    def get_bigness_factor(cls, sg):
+    def get_bigness_factor(self, sg):
         return 1.65 * 0.000125 ** (sg - 1)
 
-    @classmethod
-    def get_boil_time_factor(cls, boil_time):
+    def get_boil_time_factor(self, boil_time):
         return (1 - math.exp(-0.04 * boil_time)) / 4.15
 
-    @classmethod
-    def get_percent_utilization(cls, sg, boil_time):
+    def get_percent_utilization(self, sg, boil_time):
         """
         The Bigness factor accounts for reduced utilization due to higher wort
         gravities. Use an average gravity value for the entire boil to account
@@ -144,67 +137,68 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
 
         Source: http://www.realbeer.com/hops/research.html
         """
-        bigness_factor = cls.get_bigness_factor(sg)
-        boil_time_factor = cls.get_boil_time_factor(boil_time)
+        bigness_factor = self.get_bigness_factor(sg)
+        boil_time_factor = self.get_boil_time_factor(boil_time)
         return bigness_factor * boil_time_factor
 
 
 class HopsUtilizationMarkGaretz(HopsUtilization):
-    @classmethod
-    def concentration_factor(cls, final_volume, boil_volume):
-        return final_volume / boil_volume
 
-    @classmethod
-    def boil_gravity(cls, starting_gravity):
-        cf = cls.get_concentration_factor()
-        return (cf * (starting_gravity - 1)) + 1
+    def __init__(self, hop_addition,
+                 final_volume=None,
+                 boil_volume=None,
+                 starting_gravity=None,
+                 desired_ibus=None,
+                 elevation=None,
+                 ):
+        self.hop_addition = hop_addition
+        self.final_volume = final_volume
+        self.boil_volume = boil_volume
 
-    @classmethod
-    def gravity_factor(cls):
-        bg = cls.boil_gravity()
+    def concentration_factor(self):
+        return self.final_volume / self.boil_volume
+
+    def boil_gravity(self):
+        cf = self.get_concentration_factor()
+        return (cf * (self.starting_gravity - 1)) + 1
+
+    def gravity_factor(self):
+        bg = self.boil_gravity()
         return (bg - 1.050) / 0.2 + 1
 
-    @classmethod
-    def hopping_rate_factor(cls, desired_ibus):
-        cf = cls.get_concentration_factor()
-        return ((cf * desired_ibus)/260) + 1
+    def hopping_rate_factor(self):
+        cf = self.get_concentration_factor()
+        return ((cf * self.desired_ibus)/260) + 1
 
-    @classmethod
-    def temperature_factor(cls, elevation):
+    def temperature_factor(self, elevation):
         """ elevation in feet """
-        return ((elevation / 550) * 0.02) + 1
+        return ((self.elevation / 550) * 0.02) + 1
 
-    @classmethod
-    def yeast_factor(cls):
+    def yeast_factor(self):
         return 1
 
-    @classmethod
-    def pellet_factor(cls):
+    def pellet_factor(self):
         return 1
 
-    @classmethod
-    def bag_factor(cls):
+    def bag_factor(self):
         return 1
 
-    @classmethod
-    def filter_factor(cls):
+    def filter_factor(self):
         return 1
 
-    @classmethod
-    def combined_adjustments(cls):
-        gf = cls.gravity_factor()
-        hf = cls.hopping_rate_factor()
-        tf = cls.temperature_factor()
-        yf = cls.yeast_factor()
-        pf = cls.pellet_factor()
-        bf = cls.bag_factor()
-        ff = cls.filter_factor()
+    def combined_adjustments(self):
+        gf = self.gravity_factor()
+        hf = self.hopping_rate_factor()
+        tf = self.temperature_factor()
+        yf = self.yeast_factor()
+        pf = self.pellet_factor()
+        bf = self.bag_factor()
+        ff = self.filter_factor()
         return gf * hf * tf * yf * pf * bf * ff
 
-    @classmethod
-    def get_percent_utilization(cls, sg, boil_time):
-        cf = cls.combined_adjustments()
-        return 10000.0 / cf
+    def get_percent_utilization(self, sg, boil_time):
+        ca = self.combined_adjustments()
+        return 10000.0 / ca
 
 
 class HopAddition(object):
@@ -213,12 +207,14 @@ class HopAddition(object):
                  weight=None,
                  boil_time=None,
                  percent_contribution=None,
-                 utilization_cls=HopsUtilizationJackieRager):
+                 utilization_cls=HopsUtilizationJackieRager,
+                 utilization_cls_kwargs=None):
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time
         self.percent_contribution = percent_contribution
-        self.utilization_cls = utilization_cls(self)
+        utilization_kwargs = utilization_cls_kwargs or {}
+        self.utilization_cls = utilization_cls(self, **utilization_kwargs)
 
     def format(self):
         msg = """{0}
