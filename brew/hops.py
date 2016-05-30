@@ -14,12 +14,10 @@ class Hop(object):
 
     def __init__(self, name=None,
                  short_name=None,
-                 percent_alpha_acids=None,
-                 percent_utilization=None):
+                 percent_alpha_acids=None):
         self.name = name
         self.short_name = short_name or name
         self.percent_alpha_acids = percent_alpha_acids
-        self.percent_utilization = percent_utilization
 
     def __repr__(self):
         return "{0}, alpha {1}%".format(self.name.capitalize(),
@@ -28,11 +26,9 @@ class Hop(object):
     def format(self):
         msg = """{0} Hops
 {1}
-Alpha Acids:  {2} %
-Utilization:  {3} %""".format(string.capwords(self.name),
+Alpha Acids:  {2} %""".format(string.capwords(self.name),
                               '-' * (len(self.name) + 6),
-                              self.percent_alpha_acids,
-                              self.percent_utilization)
+                              self.percent_alpha_acids)
         return msg
 
 
@@ -222,12 +218,13 @@ class HopAddition(object):
 
     def format(self):
         msg = """{0}
-Weight:       {1} %
-Contribution: {2} %
-Boil Time:    {3} min""".format(self.hop,
-                                self.weight,
-                                self.percent_contirubtion,
-                                self.boil_time)
+------------------------
+Weight:       {1:0.2f} oz
+Contribution: {2:0.2f} %
+Boil Time:    {3:0.2f} min""".format(self.hop,
+                                     self.weight,
+                                     self.percent_contribution,
+                                     self.boil_time)
         return msg
 
     def get_ibus(self, sg, gallons_of_beer):
