@@ -2,6 +2,7 @@ import textwrap
 import unittest
 
 from brew.hops import HopAddition
+from brew.hops import HopsUtilization
 from brew.hops import HopsUtilizationGlennTinseth
 from brew.hops import HopsUtilizationJackieRager
 from brew.utilities import plato_to_sg
@@ -82,46 +83,6 @@ class TestHopAdditions(unittest.TestCase):
                                  Boil Time:    60.00 min""")
         self.assertEquals(out, msg)
 
-    def test_get_ibus_jackie_rager(self):
-        self.addition_kwargs[0]['utilization_cls'] = HopsUtilizationJackieRager
-        hop_addition = HopAddition(self.hop1,
-                                   **self.addition_kwargs[0])
-        ibu = hop_addition.get_ibus(self.sg,
-                                    self.final_volume)
-        self.assertEquals(round(ibu, 2), 35.62)
-
-        self.addition_kwargs[1]['utilization_cls'] = HopsUtilizationJackieRager
-        hop_addition = HopAddition(self.hop2,
-                                   **self.addition_kwargs[1])
-        ibu = hop_addition.get_ibus(self.sg,
-                                    self.final_volume)
-        self.assertEquals(round(ibu, 2), 4.41)
-
-    def test_get_ibu_glenn_tinseth(self):
-        self.addition_kwargs[0]['utilization_cls'] = \
-            HopsUtilizationGlennTinseth
-        hop_addition = HopAddition(self.hop1,
-                                   **self.addition_kwargs[0])
-        ibu = hop_addition.get_ibus(self.sg,
-                                    self.final_volume)
-        self.assertEquals(round(ibu, 2), 25.93)
-
-        self.addition_kwargs[1]['utilization_cls'] = \
-            HopsUtilizationGlennTinseth
-        hop_addition = HopAddition(self.hop2,
-                                   **self.addition_kwargs[1])
-        ibu = hop_addition.get_ibus(self.sg,
-                                    self.final_volume)
-        self.assertEquals(round(ibu, 2), 3.45)
-
-    # def test_get_percent_utilization(self):
-    #     utilization = self.hop_additions[0].get_percent_utilization(
-    #             self.sg, self.hop_additions[0].boil_time)
-    #     self.assertEquals(round(utilization * 100, 2), 21.69)
-    #     utilization = self.hop_additions[1].get_percent_utilization(
-    #             self.sg, self.hop_additions[1].boil_time)
-    #     self.assertEquals(round(utilization * 100, 2), 4.32)
-
     def test_get_hops_weight(self):
         hops_weight = self.hop_addition1.get_hops_weight(
                         self.sg,
@@ -134,3 +95,137 @@ class TestHopAdditions(unittest.TestCase):
                         self.target_ibu,
                         self.final_volume)
         self.assertEquals(round(hops_weight, 2), 0.34)
+
+
+class TestHopsUtilization(unittest.TestCase):
+
+    def setUp(self):
+        self.utilization_cls = HopsUtilization
+        self.hop = centennial
+        self.addition_kwargs = [
+            {
+                'boil_time': 60.0,
+                'weight': 0.57,
+                'percent_contribution': 95.0,
+            }
+        ]
+
+        # Additions
+        self.plato = 14.0
+        self.sg = plato_to_sg(self.plato)
+        self.final_volume = 5.0
+        self.boil_time = 60.0
+        self.hop_addition = HopAddition(self.hop,
+                                        boil_time=self.boil_time,
+                                        weight=0.57,
+                                        percent_contribution=95.0,
+                                        utilization_cls=self.utilization_cls)
+
+    def test_get_ibus_raises(self):
+        with self.assertRaises(NotImplementedError):
+            self.hop_addition.get_ibus(self.sg, self.final_volume)
+
+    def test_get_percent_utilization_raises(self):
+        with self.assertRaises(NotImplementedError):
+            self.hop_addition.utilization_cls.get_percent_utilization(
+                    self.sg, self.final_volume)
+
+
+class TestHopsUtilizationJackieRager(unittest.TestCase):
+
+    def setUp(self):
+        self.utilization_cls = HopsUtilizationJackieRager
+        self.hop = centennial
+        self.addition_kwargs = [
+            {
+                'boil_time': 60.0,
+                'weight': 0.57,
+                'percent_contribution': 95.0,
+            }
+        ]
+
+        # Additions
+        self.plato = 14.0
+        self.sg = plato_to_sg(self.plato)
+        self.final_volume = 5.0
+        self.boil_time = 60.0
+        self.hop_addition = HopAddition(self.hop,
+                                        boil_time=self.boil_time,
+                                        weight=0.57,
+                                        percent_contribution=95.0,
+                                        utilization_cls=self.utilization_cls)
+
+    def test_get_c_gravity(self):
+        out = self.hop_addition.utilization_cls.get_c_gravity(self.sg)
+        self.assertEquals(round(out, 3), 1.034)
+        out = self.hop_addition.utilization_cls.get_c_gravity(1.050)
+        self.assertEquals(round(out, 3), 1.000)
+        out = self.hop_addition.utilization_cls.get_c_gravity(1.010)
+        self.assertEquals(round(out, 3), 1.000)
+
+    def test_get_ibus(self):
+        ibu = self.hop_addition.get_ibus(self.sg,
+                                         self.final_volume)
+        self.assertEquals(round(ibu, 2), 35.62)
+
+    def test_get_percent_utilization(self):
+        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # nopep8
+                self.sg, self.boil_time)
+        self.assertEquals(round(utilization * 100, 2), 29.80)
+
+    def test_get_utilization_table(self):
+        gravity_list = list(range(1030, 1140, 10))
+        boil_time_list = list(range(0, 60, 3)) + list(range(60, 130, 10))
+        table = self.utilization_cls.get_utilization_table(
+                gravity_list,
+                boil_time_list)
+        self.assertEquals(table[0][0], 0.051)
+        self.assertEquals(table[13][5], 0.205)
+        self.assertEquals(table[26][10], 0.228)
+
+    def test_print_utilization_table(self):
+        pass
+
+
+class TestHopsUtilizationGlennTinseth(unittest.TestCase):
+
+    def setUp(self):
+        self.utilization_cls = HopsUtilizationGlennTinseth
+        self.hop = centennial
+        self.addition_kwargs = [
+            {
+                'boil_time': 60.0,
+                'weight': 0.57,
+                'percent_contribution': 95.0,
+            }
+        ]
+
+        # Additions
+        self.plato = 14.0
+        self.sg = plato_to_sg(self.plato)
+        self.final_volume = 5.0
+        self.boil_time = 60.0
+        self.hop_addition = HopAddition(self.hop,
+                                        boil_time=self.boil_time,
+                                        weight=0.57,
+                                        percent_contribution=95.0,
+                                        utilization_cls=self.utilization_cls)
+
+    def test_get_ibus(self):
+        ibu = self.hop_addition.get_ibus(self.sg,
+                                         self.final_volume)
+        self.assertEquals(round(ibu, 2), 25.93)
+
+    def test_get_bigness_factor(self):
+        bf = self.hop_addition.utilization_cls.get_bigness_factor(self.sg)
+        self.assertEquals(round(bf, 2), 0.99)
+
+    def test_get_boil_time_factor(self):
+        bf = self.hop_addition.utilization_cls.get_boil_time_factor(
+                self.boil_time)
+        self.assertEquals(round(bf, 2), 0.22)
+
+    def test_get_percent_utilization(self):
+        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # nopep8
+                self.sg, self.boil_time)
+        self.assertEquals(round(utilization * 100, 2), 21.69)
