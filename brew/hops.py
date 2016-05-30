@@ -2,6 +2,7 @@ import math
 import string
 
 from .constants import HOPS_CONSTANT_US
+from .constants import SEA_LEVEL
 
 
 def get_percent_ibus(hop, total_ibus):
@@ -149,7 +150,7 @@ class HopsUtilizationMarkGaretz(HopsUtilization):
                  boil_volume=None,
                  starting_gravity=None,
                  desired_ibus=None,
-                 elevation=None,
+                 elevation=SEA_LEVEL,
                  ):
         self.hop_addition = hop_addition
         self.final_volume = final_volume
@@ -199,6 +200,9 @@ class HopsUtilizationMarkGaretz(HopsUtilization):
     def get_percent_utilization(self, sg, boil_time):
         ca = self.combined_adjustments()
         return 10000.0 / ca
+
+
+# TODO: Hopville, Daniels, Mosher, Yooper
 
 
 class HopAddition(object):

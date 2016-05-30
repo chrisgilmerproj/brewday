@@ -11,3 +11,8 @@ GAL_PER_LITER = 1.0 / LITER_PER_GAL
 # Use this when calculating IBUS
 HOPS_CONSTANT_US = MG_PER_OZ * GAL_PER_LITER
 HOPS_CONSTANT_SI = 1000
+
+# Elevation
+SEA_LEVEL = 0     # feet or meters
+MILE_HIGH = 5280  # feet
+KM_HIGH = 1000    # meters
