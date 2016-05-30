@@ -24,6 +24,12 @@ class TestRecipe(unittest.TestCase):
         deg_plato = self.recipe.get_degrees_plato()
         self.assertEquals(round(deg_plato, 3), 14.003)
 
+    def test_brew_house_yield(self):
+        plato_actual = 15.0
+        vol_actual = 5.5
+        bhy = self.recipe.get_brew_house_yield(plato_actual, vol_actual)
+        self.assertEqual(bhy, 82.5)
+
     def test_get_extract_weight(self):
         pounds_extract = self.recipe.get_extract_weight()
         self.assertEquals(round(pounds_extract, 2), 6.16)
@@ -56,11 +62,11 @@ class TestRecipe(unittest.TestCase):
         mash_water_vol = self.recipe.get_mash_water_volume()
         self.assertEquals(round(mash_water_vol, 2), 4.19)
 
-    # def test_get_wort_color(self):
-    #     wort_color = self.recipe.get_wort_color(self.grain_list[0])
-    #     self.assertEquals(round(wort_color, 2), 3.32)
-    #     wort_color = self.recipe.get_wort_color(self.grain_list[1])
-    #     self.assertEquals(round(wort_color, 2), 1.75)
+    def test_get_wort_color(self):
+        wort_color = self.recipe.get_wort_color(self.grain_list[0])
+        self.assertEquals(round(wort_color, 2), 3.32)
+        wort_color = self.recipe.get_wort_color(self.grain_list[1])
+        self.assertEquals(round(wort_color, 2), 1.75)
 
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
