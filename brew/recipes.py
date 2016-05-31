@@ -21,7 +21,6 @@ class Recipe(object):
                  start_volume=7.0,
                  final_volume=5.0,
                  target_sg=None,
-                 percent_color_loss=30.0,
                  target_ibu=None,
                  units=IMPERIAL_UNITS):
         self.name = name
@@ -34,7 +33,6 @@ class Recipe(object):
         self.target_sg = target_sg  # SG
         self.target_degrees_plato = sg_to_plato(self.target_sg)  # P
 
-        self.percent_color_loss = percent_color_loss  # %
         self.target_ibu = target_ibu
 
         # TODO: Make this work
@@ -194,7 +192,7 @@ class Recipe(object):
         """
         return sum([self.get_wort_color(g) for g in self.grain_list])
 
-    def get_beer_color(self):
+    def get_beer_color(self, percent_color_loss=30.0):
         """
         We allow for a 30% loss of color during fermentation to calculate the color of beer.
         Color of Beer = (color of wort)(1 - % color loss)
@@ -203,7 +201,7 @@ class Recipe(object):
         # nopep8
         """
         return (self.get_total_wort_color() *
-                (1.0 - self.percent_color_loss / 100.0))
+                (1.0 - percent_color_loss / 100.0))
 
     def format(self):
         """

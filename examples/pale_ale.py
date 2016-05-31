@@ -44,7 +44,6 @@ if __name__ == "__main__":
                   start_volume=7.0,  # G
                   final_volume=5.0,  # G
                   target_sg=1.057,  # SG
-                  percent_color_loss=30.0,  # %
                   target_ibu=40.0)
 
     beer.format()
