@@ -40,8 +40,5 @@ recipe = Recipe(name='pale ale',
                 percent_brew_house_yield=70.0,  # %
                 final_volume=5.0,  # G
                 target_sg=1.057,  # SG
-                mash_temp=152.0,  # F
-                malt_temp=60.0,  # F
-                liquor_to_grist_ratio=3.0 / 1.0,
                 percent_color_loss=30.0,  # %
                 target_ibu=40.0)

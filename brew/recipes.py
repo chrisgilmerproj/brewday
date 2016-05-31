@@ -21,9 +21,6 @@ class Recipe(object):
                  start_volume=7.0,
                  final_volume=5.0,
                  target_sg=None,
-                 mash_temp=None,
-                 malt_temp=None,
-                 liquor_to_grist_ratio=3.0 / 1.0,
                  percent_color_loss=30.0,
                  target_ibu=None,
                  units=IMPERIAL_UNITS):
@@ -37,9 +34,6 @@ class Recipe(object):
         self.target_sg = target_sg  # SG
         self.target_degrees_plato = sg_to_plato(self.target_sg)  # P
 
-        self.mash_temp = mash_temp  # F
-        self.malt_temp = malt_temp  # F
-        self.liquor_to_grist_ratio = liquor_to_grist_ratio
         self.percent_color_loss = percent_color_loss  # %
         self.target_ibu = target_ibu
 
@@ -149,7 +143,8 @@ class Recipe(object):
         return sum([hop_add.get_ibus(sg, fv)
                    for hop_add in self.hop_additions])
 
-    def get_strike_temp(self):
+    @classmethod
+    def get_strike_temp(cls, mash_temp, malt_temp, liquor_to_grist_ratio):
         """
         Strike Water Temp
         As you know when you are mashing, your strike water has to be warmer
@@ -162,10 +157,10 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return ((((0.4) * (self.mash_temp - self.malt_temp)) /
-                self.liquor_to_grist_ratio) + self.mash_temp)
+        return ((((0.4) * (mash_temp - malt_temp)) /
+                liquor_to_grist_ratio) + mash_temp)
 
-    def get_mash_water_volume(self):
+    def get_mash_water_volume(self, liquor_to_grist_ratio):
         """
         Mash Water Volume
         To calculate the mash water volume you will need to know your liquor to
@@ -178,7 +173,7 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return (self.get_total_grain_weight() * self.liquor_to_grist_ratio /
+        return (self.get_total_grain_weight() * liquor_to_grist_ratio /
                 8.32)
 
     def get_wort_color(self, grain):
@@ -261,8 +256,6 @@ class Recipe(object):
         sg = self.target_sg
         deg_plato = self.target_degrees_plato
         pounds_extract = self.get_extract_weight()
-        strike_temp = self.get_strike_temp()
-        mash_water_vol = self.get_mash_water_volume()
         total_wort_color = self.get_total_wort_color()
         beer_color = self.get_beer_color()
         total_grain_weight = self.get_total_grain_weight()
@@ -274,18 +267,14 @@ class Recipe(object):
             Specific Gravity:   {1:0.3f}
             Degrees Plato:      {2:0.3f} degP
             Extract Weight:     {3:0.2f} lbs
-            Strike Temperature: {4:0.2f} degF
-            Mash Water Volume:  {5:0.2f} gallons
-            Total Grain Weight: {6:0.2f} lbs
-            Total IBU:          {7:0.2f} ibu
-            Total Wort Color:   {8:0.2f} degL
-            Beer Color:         {9:0.2f} degL
+            Total Grain Weight: {4:0.2f} lbs
+            Total IBU:          {5:0.2f} ibu
+            Total Wort Color:   {6:0.2f} degL
+            Beer Color:         {7:0.2f} degL
             """.format(string.capwords(self.name),
                        sg,
                        deg_plato,
                        pounds_extract,
-                       strike_temp,
-                       mash_water_vol,
                        total_grain_weight,
                        total_ibu,
                        total_wort_color,

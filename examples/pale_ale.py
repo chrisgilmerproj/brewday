@@ -44,9 +44,6 @@ if __name__ == "__main__":
                   start_volume=7.0,  # G
                   final_volume=5.0,  # G
                   target_sg=1.057,  # SG
-                  mash_temp=152.0,  # F
-                  malt_temp=60.0,  # F
-                  liquor_to_grist_ratio=3.0 / 1.0,
                   percent_color_loss=30.0,  # %
                   target_ibu=40.0)
 

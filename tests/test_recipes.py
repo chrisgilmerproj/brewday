@@ -59,11 +59,11 @@ class TestRecipe(unittest.TestCase):
         self.assertEquals(round(total_ibu, 2), 40.0)
 
     def test_get_strike_temp(self):
-        strike_temp = self.recipe.get_strike_temp()
+        strike_temp = self.recipe.get_strike_temp(152.0, 60.0, 3.0 / 1.0)
         self.assertEquals(round(strike_temp, 2), 164.27)
 
     def test_get_mash_water_volume(self):
-        mash_water_vol = self.recipe.get_mash_water_volume()
+        mash_water_vol = self.recipe.get_mash_water_volume(3.0 / 1.0)
         self.assertEquals(round(mash_water_vol, 2), 4.20)
 
     def test_get_wort_color(self):
