@@ -15,7 +15,7 @@ setup(
                                     "tests"]),
     include_package_data=True,
     zip_safe=False,
-    test_requires=[
+    tests_require=[
         'nose==1.3.1',
         'pluggy==0.3.1',
         'py==1.4.31',
