@@ -184,6 +184,7 @@ def as_is_to_dry_basis_basis(as_is,
     return as_is * 100.0 / (100.0 - moisture_content)
 
 
+# TODO: This is really GU not SG
 def sg_from_dry_basis(dbcg,
                       moisture_content=MOISTURE_FINISHED_MALT,
                       brew_house_efficiency=0.90,
