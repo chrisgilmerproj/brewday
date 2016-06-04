@@ -1,4 +1,6 @@
+#! /usr/bin/env python
 
+from brew.utilities import gu_to_sg
 from brew.utilities import sg_from_dry_basis
 
 
@@ -26,7 +28,7 @@ def get_chart():
                 dbcg / 100.0,
                 moisture_content=mc,
                 brew_house_efficiency=bhe)
-        sg = 1 + (gu / 1000.0)
+        sg = gu_to_sg(gu)
         chart.append([round(dbcg / 100.0, 2), round(gu, 2), round(sg, 4)])
     return chart
 
