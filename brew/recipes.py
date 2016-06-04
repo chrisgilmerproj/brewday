@@ -10,8 +10,10 @@ from .utilities import sg_to_plato
 
 class Recipe(object):
     """
-    Learn to Brew Website:
-    http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
+    Recipe Calculations
+
+    Many equations came from these sources:
+    - http://www.learntobrew.com/beer-calculations/
     """
 
     def __init__(self, name='beer',
@@ -65,9 +67,6 @@ class Recipe(object):
         collected out of the kettle are needed to calculate the BHY.
 
         BHY  =  [(Pactual)(galactual)(BHYtarget)] / [(Ptarget)(galtarget)]
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         num = plato_actual * vol_actual * self.percent_brew_house_yield
         den = self.target_degrees_plato * self.final_volume
@@ -84,9 +83,6 @@ class Recipe(object):
         8.32 in the above formula is the weight of one gallon of water.
         To find the weight of a gallon of wort, multiply the specific gravity
         of the wort by 8.32 pounds.
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         return (8.32 * self.final_volume * self.target_sg *
                 self.target_degrees_plato) / 100.0
@@ -99,9 +95,6 @@ class Recipe(object):
         collected from the malt.
 
         WY =    (HWE as-is)(BHY)
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         return grain_add.grain.hot_water_extract * self.percent_brew_house_yield
 
@@ -119,9 +112,6 @@ class Recipe(object):
         of extract.
 
         Lbs malt = (Lbs extract)(% Extract) / WY
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         return (self.get_extract_weight() * grain_add.percent_malt_bill /
                 self.get_working_yield(grain_add))
@@ -151,9 +141,6 @@ class Recipe(object):
         the strike water, use the following formula.
 
         Strike Temp =  [((0.4)(T mash-T malt)) / L:G] +  T mash
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         return ((((0.4) * (mash_temp - malt_temp)) /
                 liquor_to_grist_ratio) + mash_temp)
@@ -167,9 +154,6 @@ class Recipe(object):
         water to allow for enzyme action and starch conversion take place.
 
         gallons H2O =  (Lbs malt)(L:G)(1gallon H2O) / 8.32 pounds water
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         return (self.get_total_grain_weight() * liquor_to_grist_ratio /
                 8.32)
@@ -179,9 +163,6 @@ class Recipe(object):
         Calculation of Wort and Beer Color
 
         Color of Wort = S [(% extract)(L of malt)(P wort / 8P reference)]
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
         return ((grain_add.percent_malt_bill / 100.0) * grain_add.grain.color *
                 (self.target_degrees_plato / 8))
@@ -196,8 +177,6 @@ class Recipe(object):
         """
         We allow for a 30% loss of color during fermentation to calculate the color of beer.
         Color of Beer = (color of wort)(1 - % color loss)
-
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         # nopep8
         """
         return (self.get_total_wort_color() *
@@ -248,8 +227,6 @@ class Recipe(object):
         Color of Beer = (5.07 color of wort)(1 - 30% color loss)
 
         If you make this recipe, add one ounce of Cascade in the sedondary for an excellent dry hop aroma!
-
-        Source: http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html  # nopep8
         """
         sg = self.target_sg
         deg_plato = self.target_degrees_plato

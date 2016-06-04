@@ -153,21 +153,37 @@ def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
     return coarse_grind + fc_diff
 
 
-def dry_basis_to_as_is_basis(dry_basis, moisture=MOISTURE_FINISHED_MALT):
+def dry_basis_to_as_is_basis(dry_basis,
+                             moisture_content=MOISTURE_FINISHED_MALT):
     """
     Dry Basis to As-Is Basis
 
     dry_basis is a percentage from the malt bill
-    moisture is a percentage of moisture content in finished malt
+    moisture_content is a percentage of moisture content in finished malt
     """
-    return dry_basis * (100.0 - moisture) / 100.0
+    return dry_basis * (100.0 - moisture_content) / 100.0
 
 
-def as_is_to_dry_basis_basis(as_is, moisture=MOISTURE_FINISHED_MALT):
+def as_is_to_dry_basis_basis(as_is,
+                             moisture_content=MOISTURE_FINISHED_MALT):
     """
     As-Is Basis to Dry Basis
 
     asi_is is a percentage from the malt bill
-    moisture is a percentage of moisture content in finished malt
+    moisture_content is a percentage of moisture content in finished malt
     """
-    return as_is * 100.0 / (100.0 - moisture)
+    return as_is * 100.0 / (100.0 - moisture_content)
+
+
+def sg_from_dry_basis(dbcg,
+                      moisture_content=MOISTURE_FINISHED_MALT,
+                      brew_house_efficiency=0.90,
+                      ):
+    return (dbcg - moisture_content - 0.002) * brew_house_efficiency * 46.214
+
+
+def plato_from_dry_basis(dbcg,
+                         moisture_content=MOISTURE_FINISHED_MALT,
+                         brew_house_efficiency=0.90,
+                         ):
+    return (dbcg - moisture_content - 0.002) * brew_house_efficiency * 11.486
