@@ -103,7 +103,7 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return grain_add.hot_water_extract * self.percent_brew_house_yield
+        return grain_add.grain.hot_water_extract * self.percent_brew_house_yield
 
     def get_pounds_malt(self, grain_add):
         """

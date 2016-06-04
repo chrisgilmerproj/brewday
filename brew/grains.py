@@ -17,10 +17,12 @@ class Grain(object):
 
     def __init__(self, name=None,
                  short_name=None,
-                 color=None):
+                 color=None,
+                 hot_water_extract=None):
         self.name = name
         self.short_name = short_name or name
         self.color = color
+        self.hot_water_extract = hot_water_extract
 
     def __str__(self):
         return string.capwords(self.name)
@@ -29,10 +31,12 @@ class Grain(object):
         msg = textwrap.dedent("""\
                 {0} Grain
                 {1}
-                Color:             {2} degL""".format(
+                Color:             {2} degL
+                Hot Water Extract: {3}""".format(
                     string.capwords(self.name),
                     '-' * (len(self.name) + 6),
-                    self.color))
+                    self.color,
+                    self.hot_water_extract))
         return msg
 
     @classmethod
@@ -75,15 +79,13 @@ class Grain(object):
 class GrainAddition(object):
 
     def __init__(self, grain,
-                 hot_water_extract=None,
                  percent_extract=None):
         self.grain = grain
-        self.hot_water_extract = hot_water_extract
         self.percent_extract = percent_extract
 
     def __str__(self):
-        return "{0}, HWE {1}, {2} %".format(
-                self.grain, self.hot_water_extract, self.percent_extract)
+        return "{0}, {1} %".format(
+                self.grain, self.percent_extract)
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.grain))
@@ -94,9 +96,7 @@ class GrainAddition(object):
         msg = textwrap.dedent("""\
                 {0} Addition
                 ----------------
-                Hot Water Extract: {1}
-                Extract:           {2} %""".format(
+                Extract:           {1} %""".format(
                     self.grain,
-                    self.hot_water_extract,
                     self.percent_extract))
         return msg

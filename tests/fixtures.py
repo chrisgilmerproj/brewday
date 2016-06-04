@@ -7,18 +7,18 @@ from brew.recipes import Recipe
 # Define Grains
 pale = Grain(name='pale 2-row',
              short_name='2-row',
-             color=2)
+             color=2,
+             hot_water_extract=0.76)
 crystal = Grain(name='crystal C20',
                 short_name='C20',
-                color=20)
+                color=20,
+                hot_water_extract=0.70)
 grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
-                         hot_water_extract=0.76,
                          percent_extract=95)
 
 crystal_add = GrainAddition(crystal,
-                            hot_water_extract=0.70,
                             percent_extract=5.0)
 grain_additions = [pale_add, crystal_add]
 
