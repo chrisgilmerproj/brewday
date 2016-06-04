@@ -41,3 +41,12 @@ FC_DIFF_SIX_ROW = 1.5
 
 # Moisture in finished malt
 MOISTURE_FINISHED_MALT = 4.0
+
+# Sucrose is considered 100% extractable in water, so the maximum PPG and
+# Plato are listed here
+SUCROSE_PLATO = 11.486
+SUCROSE_PPG = 46.214
+
+# Hot Water Extract is a measure of how many liters of wort are required at a
+# Specific Gravity of 1.001
+LITERS_OF_WORT_AT_SG = 386.0

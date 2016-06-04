@@ -1,5 +1,8 @@
 from .constants import FC_DIFF_TWO_ROW
+from .constants import LITERS_OF_WORT_AT_SG
 from .constants import MOISTURE_FINISHED_MALT
+from .constants import SUCROSE_PLATO
+from .constants import SUCROSE_PPG
 
 
 def fahrenheit_to_celsius(temp):
@@ -179,11 +182,32 @@ def sg_from_dry_basis(dbcg,
                       moisture_content=MOISTURE_FINISHED_MALT,
                       brew_house_efficiency=0.90,
                       ):
-    return (dbcg - moisture_content - 0.002) * brew_house_efficiency * 46.214
+    dbcg_dec = dbcg / 100.0
+    mc_dec = moisture_content / 100.0
+    return (dbcg_dec - mc_dec - 0.002) * brew_house_efficiency * SUCROSE_PPG
 
 
 def plato_from_dry_basis(dbcg,
                          moisture_content=MOISTURE_FINISHED_MALT,
                          brew_house_efficiency=0.90,
                          ):
-    return (dbcg - moisture_content - 0.002) * brew_house_efficiency * 11.486
+    dbcg_dec = dbcg / 100.0
+    mc_dec = moisture_content / 100.0
+    return (dbcg_dec - mc_dec - 0.002) * brew_house_efficiency * SUCROSE_PLATO
+
+
+def basis_to_hwe(basis_percentage):
+    """
+    Return Hot Water Extract as Ldeg/kg, dry basis
+
+    Ldeg/kg means how many litres of wort with a specific gravity of 1.001 you
+    could produce from a kilogram of the fermentable
+
+    For example, if you had a kilogram of sucrose, you could make up 386 litres
+    of wort with a specific gravity of 1.001.
+    """
+    return basis_percentage / 100.0 * LITERS_OF_WORT_AT_SG
+
+
+def hwe_to_basis(hwe):
+    return hwe / LITERS_OF_WORT_AT_SG
