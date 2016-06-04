@@ -41,6 +41,9 @@ FC_DIFF_SIX_ROW = 1.5
 
 # Moisture in finished malt
 MOISTURE_FINISHED_MALT = 4.0
+# I've seen this correction but haven't found a source, set to zero instead
+# MOISTURE_CORRECTION = 0.2
+MOISTURE_CORRECTION = 0.0
 
 # Sucrose is considered 100% extractable in water, so the maximum PPG and
 # Plato are listed here

@@ -1,8 +1,14 @@
 from .constants import FC_DIFF_TWO_ROW
 from .constants import LITERS_OF_WORT_AT_SG
+from .constants import MOISTURE_CORRECTION
 from .constants import MOISTURE_FINISHED_MALT
 from .constants import SUCROSE_PLATO
 from .constants import SUCROSE_PPG
+
+
+"""
+http://www.braukaiser.com/
+"""
 
 
 def fahrenheit_to_celsius(temp):
@@ -184,7 +190,8 @@ def sg_from_dry_basis(dbcg,
                       ):
     dbcg_dec = dbcg / 100.0
     mc_dec = moisture_content / 100.0
-    return (dbcg_dec - mc_dec - 0.002) * brew_house_efficiency * SUCROSE_PPG
+    correction = MOISTURE_CORRECTION / 100.0
+    return (dbcg_dec - mc_dec - correction) * brew_house_efficiency * SUCROSE_PPG
 
 
 def plato_from_dry_basis(dbcg,
@@ -193,7 +200,8 @@ def plato_from_dry_basis(dbcg,
                          ):
     dbcg_dec = dbcg / 100.0
     mc_dec = moisture_content / 100.0
-    return (dbcg_dec - mc_dec - 0.002) * brew_house_efficiency * SUCROSE_PLATO
+    correction = MOISTURE_CORRECTION / 100.0
+    return (dbcg_dec - mc_dec - correction) * brew_house_efficiency * SUCROSE_PLATO
 
 
 def basis_to_hwe(basis_percentage):
