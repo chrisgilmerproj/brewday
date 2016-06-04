@@ -16,10 +16,10 @@ crystal = Grain(name='crystal C20',
 grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
-                         percent_extract=95)
+                         percent_malt_bill=95)
 
 crystal_add = GrainAddition(crystal,
-                            percent_extract=5.0)
+                            percent_malt_bill=5.0)
 grain_additions = [pale_add, crystal_add]
 
 # Define Hops

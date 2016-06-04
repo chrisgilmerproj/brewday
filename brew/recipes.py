@@ -123,7 +123,7 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return (self.get_extract_weight() * grain_add.percent_extract /
+        return (self.get_extract_weight() * grain_add.percent_malt_bill /
                 self.get_working_yield(grain_add))
 
     def get_total_grain_weight(self):
@@ -183,7 +183,7 @@ class Recipe(object):
         Source:
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         """
-        return ((grain_add.percent_extract / 100.0) * grain_add.grain.color *
+        return ((grain_add.percent_malt_bill / 100.0) * grain_add.grain.color *
                 (self.target_degrees_plato / 8))
 
     def get_total_wort_color(self):

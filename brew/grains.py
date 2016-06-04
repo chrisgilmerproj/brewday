@@ -79,13 +79,13 @@ class Grain(object):
 class GrainAddition(object):
 
     def __init__(self, grain,
-                 percent_extract=None):
+                 percent_malt_bill=None):
         self.grain = grain
-        self.percent_extract = percent_extract
+        self.percent_malt_bill = percent_malt_bill
 
     def __str__(self):
         return "{0}, {1} %".format(
-                self.grain, self.percent_extract)
+                self.grain, self.percent_malt_bill)
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.grain))
@@ -96,7 +96,7 @@ class GrainAddition(object):
         msg = textwrap.dedent("""\
                 {0} Addition
                 ----------------
-                Extract:           {1} %""".format(
+                Malt Bill:         {1} %""".format(
                     self.grain,
-                    self.percent_extract))
+                    self.percent_malt_bill))
         return msg

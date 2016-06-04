@@ -62,5 +62,5 @@ class TestGrainAdditions(unittest.TestCase):
         msg = textwrap.dedent("""\
             Pale 2-row Addition
             ----------------
-            Extract:           95 %""")
+            Malt Bill:         95 %""")
         self.assertEquals(out, msg)
