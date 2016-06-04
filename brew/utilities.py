@@ -1,3 +1,5 @@
+from .constants import FC_DIFF_TWO_ROW
+from .constants import MOISTURE_FINISHED_MALT
 
 
 def fahrenheit_to_celsius(temp):
@@ -129,3 +131,43 @@ def alcohol_by_volume_alternative(og, fg):
     - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/  # nopep8
     """
     return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
+
+
+def fine_grind_to_coarse_grind(fine_grind, fc_diff=FC_DIFF_TWO_ROW):
+    """
+    Fine Grind to Coarse Grind
+
+    fine_grind is a percentage from the malt bill
+    fc_diff is the F/C difference percentage from the malt bill
+    """
+    return fine_grind - fc_diff
+
+
+def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
+    """
+    Coarse Grind to Fine Grind
+
+    coarse_grind is a percentage from the malt bill
+    fc_diff is the F/C difference percentage from the malt bill
+    """
+    return coarse_grind + fc_diff
+
+
+def dry_basis_to_as_is_basis(dry_basis, moisture=MOISTURE_FINISHED_MALT):
+    """
+    Dry Basis to As-Is Basis
+
+    dry_basis is a percentage from the malt bill
+    moisture is a percentage of moisture content in finished malt
+    """
+    return dry_basis * (100.0 - moisture) / 100.0
+
+
+def as_is_to_dry_basis_basis(as_is, moisture=MOISTURE_FINISHED_MALT):
+    """
+    As-Is Basis to Dry Basis
+
+    asi_is is a percentage from the malt bill
+    moisture is a percentage of moisture content in finished malt
+    """
+    return as_is * 100.0 / (100.0 - moisture)
