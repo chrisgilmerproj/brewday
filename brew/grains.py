@@ -3,33 +3,36 @@ import textwrap
 
 
 class Grain(object):
+    """
+    Grain
+
+    Hot Water Extract - The international unit for the total soluble extract
+    of a malt, based on specific gravity. HWE is measured as liter*degrees per
+    kilogram, and is equivalent to points/pound/gallon (PPG) when you apply
+    metric conversion factors for volume and weight. The combined conversion
+    factor is 8.3454 X PPG = HWE.
+
+    Percent Extract - The percentage this grain contributes to the beer recipe.
+    """
 
     def __init__(self, name=None,
                  short_name=None,
-                 color=None,
-                 hot_water_extract=None,
-                 percent_extract=None):
+                 color=None):
         self.name = name
         self.short_name = short_name or name
         self.color = color
-        self.hot_water_extract = hot_water_extract
-        self.percent_extract = percent_extract
 
     def __str__(self):
-        return self.name
+        return string.capwords(self.name)
 
     def format(self):
         msg = textwrap.dedent("""\
                 {0} Grain
                 {1}
-                Color:             {2} degL
-                Hot Water Extract: {3}
-                Extract:           {4} %""".format(
+                Color:             {2} degL""".format(
                     string.capwords(self.name),
                     '-' * (len(self.name) + 6),
-                    self.color,
-                    self.hot_water_extract,
-                    self.percent_extract))
+                    self.color))
         return msg
 
     @classmethod
@@ -67,3 +70,33 @@ class Grain(object):
     @classmethod
     def get_liquid_malt_to_specialty_grain_weight(cls, malt):
         return malt / 0.89
+
+
+class GrainAddition(object):
+
+    def __init__(self, grain,
+                 hot_water_extract=None,
+                 percent_extract=None):
+        self.grain = grain
+        self.hot_water_extract = hot_water_extract
+        self.percent_extract = percent_extract
+
+    def __str__(self):
+        return "{0}, HWE {1}, {2} %".format(
+                self.grain, self.hot_water_extract, self.percent_extract)
+
+    def __repr__(self):
+        out = "{0}({1}".format(type(self).__name__, repr(self.grain))
+        out = "{0})".format(out)
+        return out
+
+    def format(self):
+        msg = textwrap.dedent("""\
+                {0} Addition
+                ----------------
+                Hot Water Extract: {1}
+                Extract:           {2} %""".format(
+                    self.grain,
+                    self.hot_water_extract,
+                    self.percent_extract))
+        return msg

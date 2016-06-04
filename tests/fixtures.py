@@ -1,4 +1,5 @@
 from brew.grains import Grain
+from brew.grains import GrainAddition
 from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.recipes import Recipe
@@ -6,15 +7,20 @@ from brew.recipes import Recipe
 # Define Grains
 pale = Grain(name='pale 2-row',
              short_name='2-row',
-             hot_water_extract=0.76,
-             color=2,
-             percent_extract=95)
+             color=2)
 crystal = Grain(name='crystal C20',
                 short_name='C20',
-                hot_water_extract=0.70,
-                color=20,
-                percent_extract=5.0)
+                color=20)
 grain_list = [pale, crystal]
+
+pale_add = GrainAddition(pale,
+                         hot_water_extract=0.76,
+                         percent_extract=95)
+
+crystal_add = GrainAddition(crystal,
+                            hot_water_extract=0.70,
+                            percent_extract=5.0)
+grain_additions = [pale_add, crystal_add]
 
 # Define Hops
 centennial = Hop(name='centennial',
@@ -35,7 +41,7 @@ hop_additions = [centennial_add, cascade_add]
 
 # Define Recipes
 recipe = Recipe(name='pale ale',
-                grain_list=grain_list,
+                grain_additions=grain_additions,
                 hop_additions=hop_additions,
                 percent_brew_house_yield=70.0,  # %
                 start_volume=7.0,  # G

@@ -2,6 +2,7 @@ import textwrap
 import unittest
 
 from fixtures import pale
+from fixtures import pale_add
 
 
 class TestGrains(unittest.TestCase):
@@ -11,16 +12,14 @@ class TestGrains(unittest.TestCase):
 
     def test_str(self):
         out = str(self.grain)
-        self.assertEquals(out, 'pale 2-row')
+        self.assertEquals(out, 'Pale 2-row')
 
     def test_format(self):
         out = self.grain.format()
         msg = textwrap.dedent("""\
             Pale 2-row Grain
             ----------------
-            Color:             2 degL
-            Hot Water Extract: 0.76
-            Extract:           95 %""")
+            Color:             2 degL""")
         self.assertEquals(out, msg)
 
     def test_get_dry_to_liquid_malt_weight(self):
@@ -46,3 +45,22 @@ class TestGrains(unittest.TestCase):
     def test_get_liquid_malt_to_specialty_grain_weight(self):
         out = self.grain.get_liquid_malt_to_specialty_grain_weight(4.45)
         self.assertEquals(out, 5.0)
+
+
+class TestGrainAdditions(unittest.TestCase):
+
+    def setUp(self):
+        self.grain_add = pale_add
+
+    def test_str(self):
+        out = str(self.grain_add)
+        self.assertEquals(out, 'Pale 2-row, HWE 0.76, 95 %')
+
+    def test_format(self):
+        out = self.grain_add.format()
+        msg = textwrap.dedent("""\
+            Pale 2-row Addition
+            ----------------
+            Hot Water Extract: 0.76
+            Extract:           95 %""")
+        self.assertEquals(out, msg)

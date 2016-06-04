@@ -1,6 +1,6 @@
 import unittest
 
-from fixtures import grain_list
+from fixtures import grain_additions
 from fixtures import hop_additions
 from fixtures import recipe
 
@@ -8,7 +8,7 @@ from fixtures import recipe
 class TestRecipe(unittest.TestCase):
 
     def setUp(self):
-        self.grain_list = grain_list
+        self.grain_additions = grain_additions
 
         # Define Hops
         self.hop_additions = hop_additions
@@ -39,15 +39,15 @@ class TestRecipe(unittest.TestCase):
         self.assertEquals(round(pounds_extract, 2), 6.17)
 
     def test_get_working_yield(self):
-        wy = self.recipe.get_working_yield(self.grain_list[0])
+        wy = self.recipe.get_working_yield(self.grain_additions[0])
         self.assertEquals(round(wy, 2), 53.20)
-        wy = self.recipe.get_working_yield(self.grain_list[1])
+        wy = self.recipe.get_working_yield(self.grain_additions[1])
         self.assertEquals(round(wy, 2), 49.00)
 
     def test_get_pounds_malt(self):
-        pounds_malt = self.recipe.get_pounds_malt(self.grain_list[0])
+        pounds_malt = self.recipe.get_pounds_malt(self.grain_additions[0])
         self.assertEquals(round(pounds_malt, 2), 11.02)
-        pounds_malt = self.recipe.get_pounds_malt(self.grain_list[1])
+        pounds_malt = self.recipe.get_pounds_malt(self.grain_additions[1])
         self.assertEquals(round(pounds_malt, 2), 0.63)
 
     def test_get_total_grain_weight(self):
@@ -67,9 +67,9 @@ class TestRecipe(unittest.TestCase):
         self.assertEquals(round(mash_water_vol, 2), 4.20)
 
     def test_get_wort_color(self):
-        wort_color = self.recipe.get_wort_color(self.grain_list[0])
+        wort_color = self.recipe.get_wort_color(self.grain_additions[0])
         self.assertEquals(round(wort_color, 2), 3.33)
-        wort_color = self.recipe.get_wort_color(self.grain_list[1])
+        wort_color = self.recipe.get_wort_color(self.grain_additions[1])
         self.assertEquals(round(wort_color, 2), 1.75)
 
     def test_get_total_wort_color(self):
