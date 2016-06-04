@@ -228,3 +228,17 @@ def basis_to_hwe(basis_percentage):
 
 def hwe_to_basis(hwe):
     return hwe / LITERS_OF_WORT_AT_SG
+
+
+def srm_to_ebc(srm):
+    """
+    Convert SRM to EBC Color
+    """
+    return srm * 1.97
+
+
+def ebc_to_srv(ebc):
+    """
+    Convert EBC to SRM Color
+    """
+    return ebc / 1.97
