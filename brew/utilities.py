@@ -25,6 +25,14 @@ def celsius_to_fahrenheit(temp):
     return(temp * 1.8) + 32.0
 
 
+def sg_to_gu(sg):
+    return (sg - 1) * 1000.0
+
+
+def gu_to_sg(gu):
+    return 1 + (gu / 1000.0)
+
+
 def plato_to_sg(deg_plato):
     """
     Specific Gravity (S.G.)
