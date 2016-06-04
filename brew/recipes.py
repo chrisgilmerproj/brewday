@@ -291,5 +291,3 @@ class Recipe(object):
                     """.format(hops_weight,
                                ibus,
                                utilization)))
-
-        self.hop_additions[0].utilization_cls.print_utilization_table()
