@@ -12,28 +12,28 @@ class HopslistSpider(scrapy.Spider):
     )
 
     def parse(self, response):
-        for href in response.xpath('//ul/li/h6/a/@href').extract():
+        for href in response.xpath("//ul[@class='category-module']/li/h6/a/@href").extract():  # nopep8
             url = response.urljoin(href)
             yield scrapy.Request(url, callback=self.parse_hops_contents)
 
     def parse_hops_contents(self, response):
         item = HopsItem()
-        component = response.xpath("//h2[@class='componentheading']/text()").extract()
+
+        item['source'] = response.url
+
+        component = response.xpath("//h2[@class='componentheading']/text()").extract()  # nopep8
         item['component'] = component[0].strip()
         name = response.xpath("//h2[@class='contentheading']/text()").extract()
         item['name'] = name[0].strip()
         for entry in response.xpath('//table/tbody/tr'):
             category = entry.xpath('td[1]/text()').extract()
             data = entry.xpath('td[2]/text()').extract()
-            cat_safe = ' '.join([c.strip() for c in category]).lower()
+            cat_safe = ' '.join([c.strip() for c in category]).lower().strip()
             data_safe = ' '.join([d.strip() for d in data])
             if cat_safe:
                 cat_safe = cat_safe.replace(' ', '_')
                 cat_safe = cat_safe.replace(' ', '-')
-                cat_safe = cat_safe.replace(' ', '-')
                 if 'humulone' in cat_safe:
                     cat_safe = 'co_humulone_composition'
-                if cat_safe in ['_', '__']:
-                    continue
                 item[cat_safe] = data_safe
         yield item

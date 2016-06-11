@@ -11,6 +11,7 @@ import scrapy
 class HopsItem(scrapy.Item):
     name = scrapy.Field()
     component = scrapy.Field()
+    source = scrapy.Field()
 
     also_known_as = scrapy.Field()
     characteristics = scrapy.Field()
