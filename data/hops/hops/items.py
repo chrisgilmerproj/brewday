@@ -28,7 +28,7 @@ class HopsItem(scrapy.Item):
     resistant_to = scrapy.Field()
     susceptible_to = scrapy.Field()
     storability = scrapy.Field()
-    east_of_harvest = scrapy.Field()
+    ease_of_harvest = scrapy.Field()
     total_oil_composition = scrapy.Field()
     myrcene_oil_composition = scrapy.Field()
     humulene_oil_composition = scrapy.Field()

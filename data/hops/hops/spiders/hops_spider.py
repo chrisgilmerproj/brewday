@@ -35,5 +35,7 @@ class HopslistSpider(scrapy.Spider):
                 cat_safe = cat_safe.replace(' ', '-')
                 if 'humulone' in cat_safe:
                     cat_safe = 'co_humulone_composition'
+                if cat_safe == 'east_of_harvest':
+                    cat_safe = 'ease_of_harvest'
                 item[cat_safe] = data_safe
         yield item
