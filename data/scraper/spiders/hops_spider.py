@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-from hops.items import HopsItem
+from scraper.items import HopsItem
 
 
 class HopslistSpider(scrapy.Spider):
