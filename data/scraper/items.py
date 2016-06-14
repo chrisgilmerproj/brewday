@@ -8,6 +8,26 @@
 import scrapy
 
 
+class CerealsItem(scrapy.Item):
+    name = scrapy.Field()
+    source = scrapy.Field()
+
+    origin = scrapy.Field()
+    supplier = scrapy.Field()
+    cereal_type = scrapy.Field()
+    potential = scrapy.Field()
+    dry_yield = scrapy.Field()
+    coarse_fine_diff = scrapy.Field()
+    moisture = scrapy.Field()
+    color = scrapy.Field()
+    must_mash = scrapy.Field()
+    add_after_boil = scrapy.Field()
+    diastatic_power = scrapy.Field()
+    max_in_batch = scrapy.Field()
+    protein = scrapy.Field()
+    notes = scrapy.Field()
+
+
 class HopsItem(scrapy.Item):
     name = scrapy.Field()
     component = scrapy.Field()
