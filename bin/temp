@@ -1,0 +1,29 @@
+#! /usr/bin/env python
+
+import argparse
+import sys
+
+from brew.utilities import fahrenheit_to_celsius
+from brew.utilities import celsius_to_fahrenheit
+
+
+def main(args):
+    if args.fahrenheit and args.celsius:
+        print("Must provide only one of Fahrenheit or Celsius")
+        sys.exit(1)
+    if args.fahrenheit:
+        out = fahrenheit_to_celsius(args.fahrenheit)
+    elif args.celsius:
+        out = celsius_to_fahrenheit(args.celsius)
+    print(round(out, 2))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Temperature Conversion')
+    parser.add_argument('-c', '--celsius', metavar='C', type=float,
+                        help='Temperature in Celsius')
+    parser.add_argument('-f', '--fahrenheit', metavar='F', type=float,
+                        help='Temperature in Fahrenheit')
+
+    args = parser.parse_args()
+    main(args)
