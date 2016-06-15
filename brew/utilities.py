@@ -1,7 +1,9 @@
 from .constants import FC_DIFF_TWO_ROW
+from .constants import IMPERIAL_UNITS
 from .constants import LITERS_OF_WORT_AT_SG
 from .constants import MOISTURE_CORRECTION
 from .constants import MOISTURE_FINISHED_MALT
+from .constants import SI_UNITS
 from .constants import SUCROSE_PLATO
 from .constants import SUCROSE_PPG
 
@@ -109,18 +111,36 @@ def plato_to_brix(plato):
     return sg_to_brix(plato_to_sg(plato))
 
 
-def hydrometer_adjustment(sg, temp):
+def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     """
+    Adjust for the temperature if it deviates from 59degF.
+
+    http://hbd.org/brewery/library/HydromCorr0992.html
     Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
         where T is in degrees F.
 
     Sources:
     http://www.brewersfriend.com/hydrometer-temp/
-    http://merrycuss.com/calc/sgcorrection.html
+    http://www.topdownbrew.com/SGCorrection.html
     http://hbd.org/brewery/library/HydromCorr0992.html
     http://www.primetab.com/formulas.html
     # nopep8
     """
+    if units == SI_UNITS:
+        temp = celsius_to_fahrenheit(temp)
+    elif units != IMPERIAL_UNITS:
+        raise Exception("Unkown units '{}', must use {} or {}".format(
+            units, IMPERIAL_UNITS, SI_UNITS))
+
+    if temp == 59.0:
+        return sg
+
+    if temp < 0 or 212 < temp:
+        if units == SI_UNITS:
+            raise Exception("Correction does not work outside temps 0 - 100C")
+        else:
+            raise Exception("Correction does not work outside temps 0 - 212F")
+
     correction = (1.313454 - 0.132674 * (temp ** 1) +
                   (2.057793 * 10 ** -3) * (temp ** 2) -
                   (2.627634 * 10 ** -6) * (temp ** 3))
@@ -142,8 +162,8 @@ def alcohol_by_volume_standard(og, fg):
     The resulting difference is pretty minor.
 
     Source:
-    - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/  # nopep8
-    """
+    - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
+    """  # nopep8
     return (og - fg) * 131.25
 
 
@@ -221,7 +241,8 @@ def sg_from_dry_basis(dbcg,
     dbcg_dec = dbcg / 100.0
     mc_dec = moisture_content / 100.0
     correction = MOISTURE_CORRECTION / 100.0
-    return (dbcg_dec - mc_dec - correction) * brew_house_efficiency * SUCROSE_PPG
+    return ((dbcg_dec - mc_dec - correction) *
+            brew_house_efficiency * SUCROSE_PPG)
 
 
 def plato_from_dry_basis(dbcg,
@@ -231,7 +252,8 @@ def plato_from_dry_basis(dbcg,
     dbcg_dec = dbcg / 100.0
     mc_dec = moisture_content / 100.0
     correction = MOISTURE_CORRECTION / 100.0
-    return (dbcg_dec - mc_dec - correction) * brew_house_efficiency * SUCROSE_PLATO
+    return ((dbcg_dec - mc_dec - correction) *
+            brew_house_efficiency * SUCROSE_PLATO)
 
 
 def basis_to_hwe(basis_percentage):
