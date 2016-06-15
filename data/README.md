@@ -24,4 +24,15 @@ $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
 $ scrapy runspider scraper/spiders/hops_spider.py
+$ scrapy runspider scraper/spiders/cereals_spider.py
 ```
+
+# Sources
+
+## Cereals
+
+- http://beersmith.com/grain-list/
+
+## Hops
+
+- http://www.hopslist.com/
