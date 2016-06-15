@@ -19,12 +19,13 @@ class HopslistSpider(scrapy.Spider):
     def parse_hops_contents(self, response):
         item = HopsItem()
 
-        item['source'] = response.url
+        item[u'source'] = response.url
+        item[u'source_id'] = item['source'].split('/')[-1].split('-')[0]
 
         component = response.xpath("//h2[@class='componentheading']/text()").extract()  # nopep8
-        item['component'] = component[0].strip()
+        item[u'component'] = component[0].strip()
         name = response.xpath("//h2[@class='contentheading']/text()").extract()
-        item['name'] = name[0].strip()
+        item[u'name'] = name[0].strip()
         for entry in response.xpath('//table/tbody/tr'):
             category = entry.xpath('td[1]/text()').extract()
             data = entry.xpath('td[2]/text()').extract()
@@ -33,9 +34,9 @@ class HopslistSpider(scrapy.Spider):
             if cat_safe:
                 cat_safe = cat_safe.replace(' ', '_')
                 cat_safe = cat_safe.replace(' ', '-')
-                if 'humulone' in cat_safe:
-                    cat_safe = 'co_humulone_composition'
-                if cat_safe == 'east_of_harvest':
-                    cat_safe = 'ease_of_harvest'
+                if u'humulone' in cat_safe:
+                    cat_safe = u'co_humulone_composition'
+                if cat_safe == u'east_of_harvest':
+                    cat_safe = u'ease_of_harvest'
                 item[cat_safe] = data_safe
         yield item

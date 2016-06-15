@@ -42,7 +42,12 @@ class HopsPipeline(object):
     def process_item(self, item, spider):
         if not isinstance(item, HopsItem):
             return item
-        filename = "{}.json".format(item['source'].split('/')[-1])
+        filename = item['name'].lower().replace(" ", "_")
+        filename = filename.replace("(", "")
+        filename = filename.replace(")", "")
+        filename = filename.replace("'", "")
+        filename = filename.replace("-", "_")
+        filename = "{}.json".format(filename)
         filepath = os.path.join(os.path.abspath(HOPS_DIR), filename)
         with open(filepath, 'wb') as f:
             line = json.dumps(dict(item))
