@@ -237,7 +237,7 @@ def srm_to_ebc(srm):
     return srm * 1.97
 
 
-def ebc_to_srv(ebc):
+def ebc_to_srm(ebc):
     """
     Convert EBC to SRM Color
     """
