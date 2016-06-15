@@ -20,6 +20,8 @@ class BeerSmithSpider(scrapy.Spider):
         item = CerealsItem()
 
         item[u'source'] = response.url
+        source_id = item['source'].split('/')[-1].split('.')[0].split('_')[-1]
+        item[u'source_id'] = source_id
 
         name = response.xpath('//h2/text()').extract()[0]
         item[u'name'] = name

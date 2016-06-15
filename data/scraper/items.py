@@ -11,6 +11,7 @@ import scrapy
 class CerealsItem(scrapy.Item):
     name = scrapy.Field()
     source = scrapy.Field()
+    source_id = scrapy.Field()
 
     origin = scrapy.Field()
     supplier = scrapy.Field()
@@ -32,6 +33,7 @@ class HopsItem(scrapy.Item):
     name = scrapy.Field()
     component = scrapy.Field()
     source = scrapy.Field()
+    source_id = scrapy.Field()
 
     also_known_as = scrapy.Field()
     characteristics = scrapy.Field()
