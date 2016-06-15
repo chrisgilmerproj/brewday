@@ -41,7 +41,8 @@ class Recipe(object):
         # US = Gallons, degF
         # Metric = Liters, degC
         if units not in [IMPERIAL_UNITS, SI_UNITS]:
-            self.units = IMPERIAL_UNITS
+            raise Exception("Unkown units '{}', must use {} or {}".format(
+                units, IMPERIAL_UNITS, SI_UNITS))
         else:
             self.units = units
 
@@ -96,7 +97,8 @@ class Recipe(object):
 
         WY =    (HWE as-is)(BHY)
         """
-        return grain_add.grain.hot_water_extract * self.percent_brew_house_yield
+        return (grain_add.grain.hot_water_extract *
+                self.percent_brew_house_yield)
 
     def get_pounds_malt(self, grain_add):
         """
@@ -227,7 +229,7 @@ class Recipe(object):
         Color of Beer = (5.07 color of wort)(1 - 30% color loss)
 
         If you make this recipe, add one ounce of Cascade in the sedondary for an excellent dry hop aroma!
-        """
+        """  # nopep8
         sg = self.target_sg
         deg_plato = self.target_degrees_plato
         pounds_extract = self.get_extract_weight()
