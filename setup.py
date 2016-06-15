@@ -13,7 +13,8 @@ setup(
                                     "*.tests.*",
                                     "tests.*",
                                     "tests"]),
-    scripts=['bin/temp'],
+    scripts=['bin/sugar',
+             'bin/temp'],
     include_package_data=True,
     zip_safe=False,
     tests_require=[

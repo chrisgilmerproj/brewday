@@ -67,7 +67,7 @@ def sg_to_plato(sg):
     http://www.brewersfriend.com/2012/10/31/on-the-relationship-between-plato-and-specific-gravity/
     """
     # return (sg - 1.0) * 1000 / 4
-    return -616.868 + 1111.14 * sg - 630.272 * sg ** 2 + 135.997 * sg ** 3
+    return ((135.997*sg - 630.272)*sg + 1111.14)*sg - 616.868
 
 
 def brix_to_sg(brix):
@@ -85,7 +85,28 @@ def sg_to_brix(sg):
     http://en.wikipedia.org/wiki/Brix
     http://www.brewersfriend.com/brix-converter/
     """
+    if sg > 1.17874:
+        raise Exception("Above 40 degBx this function no longer works")
     return (((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622)
+
+
+def brix_to_plato(brix):
+    """
+    The difference between the degBx and degP as calculated from the respective
+    polynomials is:
+
+        degP - degBx = (((-2.81615*sg + 8.79724)*sg - 9.1626)*sg + 3.18213)
+
+    The difference is generally less than +/-0.0005 degBx or degP with the
+    exception being for weak solutions.
+
+    https://en.wikipedia.org/wiki/Brix
+    """
+    return sg_to_plato(brix_to_sg(brix))
+
+
+def plato_to_brix(plato):
+    return sg_to_brix(plato_to_sg(plato))
 
 
 def hydrometer_adjustment(sg, temp):
