@@ -32,7 +32,7 @@ clean: ## Clean the library and test files
 	rm -rf */__pycache__/
 	rm -f MANIFEST
 	rm -f $(TEST_OUTPUT)
-	coverage erase
+	coverage erase || rm -f .coverage
 	rm -f $(COVERAGE_OUTPUT)
 	find ./ -type f -name '*.pyc' -delete
 
@@ -46,7 +46,7 @@ test:  ## Run unit tests
 	tox
 
 package:  ## Create the python package
-	python setup.py sdist
+	python setup.py build
 
 install:  ## Install the python package
 	$(WITH_VENV) python setup.py install
