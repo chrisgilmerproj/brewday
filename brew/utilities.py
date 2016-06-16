@@ -1,4 +1,5 @@
 from .constants import FC_DIFF_TWO_ROW
+from .constants import HYDROMETER_ADJUSTMENT_TEMP
 from .constants import IMPERIAL_UNITS
 from .constants import LITERS_OF_WORT_AT_SG
 from .constants import MOISTURE_CORRECTION
@@ -124,15 +125,14 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     http://www.topdownbrew.com/SGCorrection.html
     http://hbd.org/brewery/library/HydromCorr0992.html
     http://www.primetab.com/formulas.html
-    # nopep8
-    """
+    """  # nopep8
     if units == SI_UNITS:
         temp = celsius_to_fahrenheit(temp)
     elif units != IMPERIAL_UNITS:
         raise Exception("Unkown units '{}', must use {} or {}".format(
             units, IMPERIAL_UNITS, SI_UNITS))
 
-    if temp == 59.0:
+    if temp == HYDROMETER_ADJUSTMENT_TEMP:
         return sg
 
     if temp < 0 or 212 < temp:
@@ -186,8 +186,8 @@ def alcohol_by_volume_alternative(og, fg):
     Beer, and Designing Great Beers by Daniels.
 
     Source:
-    - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/  # nopep8
-    """
+    - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
+    """  # nopep8
     return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
 
 

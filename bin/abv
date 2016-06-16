@@ -1,0 +1,85 @@
+#! /usr/bin/env python
+
+"""
+Alcohol By Volume Calculator
+
+This replicates other calculators found here:
+
+    - 
+    - 
+"""  # nopep8
+
+import argparse
+import sys
+
+from brew.constants import HYDROMETER_ADJUSTMENT_TEMP
+from brew.constants import IMPERIAL_UNITS
+from brew.constants import SI_UNITS
+from brew.utilities import alcohol_by_volume_standard
+from brew.utilities import alcohol_by_volume_alternative
+from brew.utilities import fahrenheit_to_celsius
+from brew.utilities import hydrometer_adjustment
+
+
+def main(args):
+    if args.units not in [IMPERIAL_UNITS, SI_UNITS]:
+        print("Units must be in either {} or {}".format(IMPERIAL_UNITS,
+                                                        SI_UNITS))
+        sys.exit(1)
+    if args.units == SI_UNITS:
+        if args.og_temp == HYDROMETER_ADJUSTMENT_TEMP:
+            args.og_temp = fahrenheit_to_celsius(HYDROMETER_ADJUSTMENT_TEMP)
+        if args.fg_temp == HYDROMETER_ADJUSTMENT_TEMP:
+            args.fg_temp = fahrenheit_to_celsius(HYDROMETER_ADJUSTMENT_TEMP)
+
+    # Adjust the gravity based on temperature
+    og = hydrometer_adjustment(args.og, args.og_temp, units=args.units)
+    fg = hydrometer_adjustment(args.fg, args.fg_temp, units=args.units)
+
+    # Ensure the gravity units are not mixed up
+    if og < fg:
+        print("Original Gravity must be higher than Final Gravity")
+        sys.exit(1)
+
+    # Calculate the ABV
+    if args.alternative:
+        out = alcohol_by_volume_alternative(og, fg)
+    else:
+        out = alcohol_by_volume_standard(og, fg)
+
+    if args.verbose:
+        t_unit = 'F' if args.units == IMPERIAL_UNITS else 'C'
+        print("OG     : {:0.3f}".format(args.og))
+        print("OG Adj : {:0.3f}".format(og))
+        print("OG Temp: {:0.2f} {}".format(args.og_temp, t_unit))
+        print("FG     : {:0.3f}".format(args.fg))
+        print("FG Adj : {:0.3f}".format(fg))
+        print("FG Temp: {:0.2f} {}".format(args.fg_temp, t_unit))
+        print("ABV    : {:0.2f} %".format(out))
+    else:
+        print("{:0.2f} %".format(out))
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description='ABV Calculator')
+    parser.add_argument('-o', '--og', metavar='O', type=float,
+                        help='Original Gravity')
+    parser.add_argument('--og-temp', metavar='T', type=float,
+                        default=HYDROMETER_ADJUSTMENT_TEMP,
+                        help='Original Gravity Temperature (default: %(default)s)')  # nopep8
+    parser.add_argument('-f', '--fg', metavar='F', type=float,
+                        help='Final Gravity')
+    parser.add_argument('--fg-temp', metavar='T', type=float,
+                        default=HYDROMETER_ADJUSTMENT_TEMP,
+                        help='Final Gravity Temperature (default: %(default)s)')  # nopep8
+    parser.add_argument('--alternative', action='store_true', default=False,
+                        help='Use alternative ABV equation')
+    parser.add_argument('--units', metavar="U", type=str,
+                        default=IMPERIAL_UNITS,
+                        help='Units to use (default: %(default)s)')
+    parser.add_argument('--verbose', action='store_true', default=False,
+                        help='Verbose Output')
+
+    args = parser.parse_args()
+    main(args)
