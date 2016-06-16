@@ -4,9 +4,8 @@
 Alcohol By Volume Calculator
 
 This replicates other calculators found here:
+    - 
 
-    - 
-    - 
 """  # nopep8
 
 import argparse
@@ -19,6 +18,7 @@ from brew.utilities import alcohol_by_volume_standard
 from brew.utilities import alcohol_by_volume_alternative
 from brew.utilities import fahrenheit_to_celsius
 from brew.utilities import hydrometer_adjustment
+from brew.utilities import refractometer_adjustment
 
 
 def main(args):
@@ -26,6 +26,10 @@ def main(args):
         print("Units must be in either {} or {}".format(IMPERIAL_UNITS,
                                                         SI_UNITS))
         sys.exit(1)
+
+    # Assume that if the units are metric and the adjustment temperature is 59
+    # that its 59F (15C) and not 59C (132F).  It is unlikely that readings are
+    # taken at high temperatures.
     if args.units == SI_UNITS:
         if args.og_temp == HYDROMETER_ADJUSTMENT_TEMP:
             args.og_temp = fahrenheit_to_celsius(HYDROMETER_ADJUSTMENT_TEMP)
@@ -35,6 +39,10 @@ def main(args):
     # Adjust the gravity based on temperature
     og = hydrometer_adjustment(args.og, args.og_temp, units=args.units)
     fg = hydrometer_adjustment(args.fg, args.fg_temp, units=args.units)
+
+    # Adjust the final gravity if using a refractometer
+    if args.refractometer:
+        fg = refractometer_adjustment(og, fg)
 
     # Ensure the gravity units are not mixed up
     if og < fg:
@@ -73,12 +81,16 @@ if __name__ == "__main__":
     parser.add_argument('--fg-temp', metavar='T', type=float,
                         default=HYDROMETER_ADJUSTMENT_TEMP,
                         help='Final Gravity Temperature (default: %(default)s)')  # nopep8
-    parser.add_argument('--alternative', action='store_true', default=False,
+    parser.add_argument('-a', '--alternative', action='store_true',
+                        default=False,
                         help='Use alternative ABV equation')
+    parser.add_argument('-r', '--refractometer', action='store_true',
+                        default=False,
+                        help='Adjust the Final Gravity if using a Refractometer reading')  # nopep8
     parser.add_argument('--units', metavar="U", type=str,
                         default=IMPERIAL_UNITS,
                         help='Units to use (default: %(default)s)')
-    parser.add_argument('--verbose', action='store_true', default=False,
+    parser.add_argument('-v', '--verbose', action='store_true', default=False,
                         help='Verbose Output')
 
     args = parser.parse_args()

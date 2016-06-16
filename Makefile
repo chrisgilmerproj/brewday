@@ -29,6 +29,7 @@ clean: ## Clean the library and test files
 	rm -rf build/
 	rm -rf dist/
 	rm -rf *.egg*/
+	rm -rf __pycache__/
 	rm -rf */__pycache__/
 	rm -f MANIFEST
 	rm -f $(TEST_OUTPUT)
