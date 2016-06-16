@@ -51,7 +51,7 @@ def plato_to_sg(deg_plato):
     Source:
     http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
     """
-    return (deg_plato / (258.6 - ((deg_plato / 258.2) * 227.1))) + 1
+    return (deg_plato / (258.6 - ((deg_plato / 258.2) * 227.1))) + 1.0
 
 
 def sg_to_plato(sg):
@@ -145,6 +145,28 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
                   (2.057793 * 10 ** -3) * (temp ** 2) -
                   (2.627634 * 10 ** -6) * (temp ** 3))
     return sg + (correction * 0.001)
+
+
+def refractometer_adjustment(og, fg):
+    """
+    Adjust for the presence of alcohol in the refractometer reading
+
+    NOTE: This calculation assumes using Brix or Plato, so the input will be
+    converted from SG to Plato and then converted back.
+
+    Returns: Final Gravity
+
+    Sources:
+    http://seanterrill.com/2011/04/07/refractometer-fg-results/
+    """
+    og_brix = sg_to_brix(og)
+    fg_brix = sg_to_brix(fg)
+
+    new_fg = (1.0000 -
+              0.0044993 * og_brix + 0.011774 * fg_brix +
+              0.00027581 * (og_brix ** 2) - 0.0012717 * (fg_brix ** 2) -
+              0.0000072800 * (og_brix ** 3) + 0.000063293 * (fg_brix ** 3))
+    return brix_to_sg(new_fg)
 
 
 def alcohol_by_volume_standard(og, fg):
