@@ -39,10 +39,10 @@ KM_HIGH = 1000    # meters
 FC_DIFF_TWO_ROW = 1.7
 FC_DIFF_SIX_ROW = 1.5
 
-# Moisture in finished malt
-MOISTURE_FINISHED_MALT = 4.0
+# Moisture in finished malt as percentage in decimal form (ie 4% is 0.04)
+MOISTURE_FINISHED_MALT = 0.04
 # I've seen this correction but haven't found a source, set to zero instead
-# MOISTURE_CORRECTION = 0.2
+# MOISTURE_CORRECTION = 0.002
 MOISTURE_CORRECTION = 0.0
 
 # Sucrose is considered 100% extractable in water, so the maximum PPG and
