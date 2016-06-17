@@ -1,5 +1,5 @@
 # Coverage
-coverage==3.7.1
+coverage==4.1
 
 # Lint
 flake8==2.1.0
