@@ -3,6 +3,7 @@ import unittest
 from fixtures import grain_additions
 from fixtures import hop_additions
 from fixtures import recipe
+from brew.recipes import Recipe
 
 
 class TestRecipe(unittest.TestCase):
@@ -15,6 +16,22 @@ class TestRecipe(unittest.TestCase):
 
         # Define Recipes
         self.recipe = recipe
+
+    def test_recipe_raises_bad_units(self):
+        with self.assertRaises(Exception):
+            Recipe(name='pale ale',
+                   grain_additions=grain_additions,
+                   hop_additions=hop_additions,
+                   percent_brew_house_yield=70.0,
+                   start_volume=7.0,
+                   final_volume=5.0,
+                   target_sg=1.057,
+                   target_ibu=40.0,
+                   units='bad')
+
+    def test_str(self):
+        out = str(self.recipe)
+        self.assertEquals(out, 'pale ale')
 
     def test_get_total_gravity_units(self):
         out = self.recipe.get_total_gravity_units()
