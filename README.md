@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/chrisgilmerproj/brewing.svg?branch=master)](https://travis-ci.org/chrisgilmerproj/parker) 
+[![Build Status](https://travis-ci.org/chrisgilmerproj/brewing.svg?branch=master)](https://travis-ci.org/chrisgilmerproj/brewing) 
 [![Github Issues](http://githubbadges.herokuapp.com/chrisgilmerproj/brewing/issues.svg?style=plastic)](https://github.com/chrisgilmerproj/brewing/issues)
 [![Pending Pull-Requests](http://githubbadges.herokuapp.com/chrisgilmerproj/brewing/pulls.svg?style=plastic)](https://github.com/chrisgilmerproj/brewing/pulls)
 
