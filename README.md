@@ -19,3 +19,16 @@ $ PYTHONPATH=$PYTHONPATH: python bin/abv -h
 $ PYTHONPATH=$PYTHONPATH: python bin/sugar -h
 $ PYTHONPATH=$PYTHONPATH: python bin/temp -h
 ```
+
+# Units
+
+The standard for this repository at the moment is to use Imperial Units.  This
+is because most of the equations used as reference use Imperial Units.  As
+tests are updated units may change to SI Units (metric).  Not all methods
+work with SI Units yet.
+
+# Percentages
+
+A fair number of methods require values as a percentage.  To avoid confusion
+all percentages are expected to be in decimal form between the number 0.0
+and 1.0.
