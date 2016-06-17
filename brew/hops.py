@@ -303,8 +303,8 @@ class HopAddition(object):
         # nopep8
         """
         num = (target_ibu * final_volume *
-               (self.percent_contribution / 100.0))
-        den = ((self.hop.percent_alpha_acids / 100.0) *
+               self.percent_contribution)
+        den = (self.hop.percent_alpha_acids *
                self.utilization_cls.get_percent_utilization(
                    sg, self.boil_time) * HOPS_CONSTANT_US)
         return num / den

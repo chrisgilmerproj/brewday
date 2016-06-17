@@ -61,10 +61,10 @@ class TestRecipe(unittest.TestCase):
         wy = self.recipe.get_working_yield(self.grain_additions[1])
         self.assertEquals(round(wy, 2), 0.49)
 
-    def test_get_pounds_malt(self):
-        pounds_malt = self.recipe.get_pounds_malt(self.grain_additions[0])
+    def test_get_malt_weight(self):
+        pounds_malt = self.recipe.get_malt_weight(self.grain_additions[0])
         self.assertEquals(round(pounds_malt, 2), 11.02)
-        pounds_malt = self.recipe.get_pounds_malt(self.grain_additions[1])
+        pounds_malt = self.recipe.get_malt_weight(self.grain_additions[1])
         self.assertEquals(round(pounds_malt, 2), 0.63)
 
     def test_get_total_grain_weight(self):

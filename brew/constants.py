@@ -56,3 +56,7 @@ LITERS_OF_WORT_AT_SG = 386.0
 
 # Most hydrometers are calibrated to 59 degF
 HYDROMETER_ADJUSTMENT_TEMP = 59.0
+
+# Weight of Water
+WATER_WEIGHT_IMPERIAL = 8.32  # lbs / gallon
+WATER_WEIGHT_SI = 1.0  # kg / liter
