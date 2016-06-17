@@ -140,12 +140,12 @@ class TestMaltUtilities(unittest.TestCase):
         self.assertEquals(round(fg, 2), 0.81)
 
     def test_dry_basis_to_as_is_basis(self):
-        asb = dry_basis_to_as_is_basis(40.0)
-        self.assertEquals(round(asb, 2), 38.4)
+        asb = dry_basis_to_as_is_basis(0.40)
+        self.assertEquals(round(asb, 2), 0.38)
 
     def test_as_is_basis_to_dry_basis(self):
-        db = as_is_basis_to_dry_basis(38.4)
-        self.assertEquals(round(db, 2), 40.0)
+        db = as_is_basis_to_dry_basis(0.38)
+        self.assertEquals(round(db, 2), 0.40)
 
     def test_sg_from_dry_basis(self):
         sg = sg_from_dry_basis(0.80)

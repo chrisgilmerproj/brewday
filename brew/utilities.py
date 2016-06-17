@@ -7,11 +7,7 @@ from .constants import MOISTURE_FINISHED_MALT
 from .constants import SI_UNITS
 from .constants import SUCROSE_PLATO
 from .constants import SUCROSE_PPG
-
-
-"""
-http://www.braukaiser.com/
-"""
+from .validators import validate_percentage
 
 
 def fahrenheit_to_celsius(temp):
@@ -219,6 +215,8 @@ def fine_grind_to_coarse_grind(fine_grind, fc_diff=FC_DIFF_TWO_ROW):
     fine_grind is a percentage from the malt bill
     fc_diff is the F/C difference percentage from the malt bill
     """
+    validate_percentage(fine_grind)
+    validate_percentage(fc_diff)
     return fine_grind - fc_diff
 
 
@@ -229,6 +227,8 @@ def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
     coarse_grind is a percentage from the malt bill
     fc_diff is the F/C difference percentage from the malt bill
     """
+    validate_percentage(coarse_grind)
+    validate_percentage(fc_diff)
     return coarse_grind + fc_diff
 
 
@@ -241,6 +241,8 @@ def dry_basis_to_as_is_basis(dry_basis,
     moisture_content is a percentage of moisture content in finished malt
       in decimal form
     """
+    validate_percentage(dry_basis)
+    validate_percentage(moisture_content)
     return dry_basis * (1.0 - moisture_content)
 
 
@@ -253,6 +255,8 @@ def as_is_basis_to_dry_basis(as_is,
     moisture_content is a percentage of moisture content in finished malt
       in decimal form
     """
+    validate_percentage(as_is)
+    validate_percentage(moisture_content)
     return as_is / (1.0 - moisture_content)
 
 
@@ -269,6 +273,10 @@ def sg_from_dry_basis(dbcg,
 
     Returns: Specific Gravity available from Malt
     """
+    validate_percentage(dbcg)
+    validate_percentage(moisture_content)
+    validate_percentage(moisture_correction)
+    validate_percentage(brew_house_efficiency)
     gu = ((dbcg - moisture_content - moisture_correction) *
           brew_house_efficiency * SUCROSE_PPG)
     return gu_to_sg(gu)
@@ -287,6 +295,10 @@ def plato_from_dry_basis(dbcg,
 
     Returns: Degrees Plato available from Malt
     """
+    validate_percentage(dbcg)
+    validate_percentage(moisture_content)
+    validate_percentage(moisture_correction)
+    validate_percentage(brew_house_efficiency)
     return ((dbcg - moisture_content - moisture_correction) *
             brew_house_efficiency * SUCROSE_PLATO)
 
@@ -303,6 +315,7 @@ def basis_to_hwe(basis_percentage):
     For example, if you had a kilogram of sucrose, you could make up 386 litres
     of wort with a specific gravity of 1.001.
     """
+    validate_percentage(basis_percentage)
     return basis_percentage * LITERS_OF_WORT_AT_SG
 
 
