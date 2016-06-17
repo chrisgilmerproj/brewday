@@ -5,11 +5,11 @@ from brew.hops import HopAddition
 from brew.recipes import Recipe
 
 # Define Grains
-pale = Grain(name='pale 2-row',
+pale = Grain('pale 2-row',
              short_name='2-row',
              color=2,
              hot_water_extract=0.76)
-crystal = Grain(name='crystal C20',
+crystal = Grain('crystal C20',
                 short_name='C20',
                 color=20,
                 hot_water_extract=0.70)
