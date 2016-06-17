@@ -2,9 +2,14 @@ import math
 import string
 import textwrap
 
-from .constants import HOPS_CONSTANT_US
-# from .constants import SEA_LEVEL
+from .constants import HOPS_CONSTANT_IMPERIAL
+from .constants import HOPS_CONSTANT_SI
+from .constants import IMPERIAL_TYPES
+from .constants import IMPERIAL_UNITS
+from .constants import SI_TYPES
+from .constants import SI_UNITS
 from .validators import validate_percentage
+from .validators import validate_units
 
 
 def get_percent_ibus(hop, total_ibus):
@@ -47,15 +52,20 @@ class HopsUtilization(object):
     http://www.boondocks-brewing.com/hops
     """
 
-    def __init__(self, hop_addition):
+    def __init__(self, hop_addition,
+                 units=IMPERIAL_UNITS):
         self.hop_addition = hop_addition
+        self.units = validate_units(units)
 
     def get_ibus(self, sg, final_volume):
+        hops_constant = HOPS_CONSTANT_IMPERIAL
+        if self.units == SI_UNITS:
+            hops_constant = HOPS_CONSTANT_SI
         utilization = self.get_percent_utilization(
                 sg, self.hop_addition.boil_time)
         num = (self.hop_addition.weight * utilization *
                self.hop_addition.hop.percent_alpha_acids *
-               HOPS_CONSTANT_US)
+               hops_constant)
         return num / (final_volume)
 
     @classmethod
@@ -237,7 +247,8 @@ class HopAddition(object):
                  boil_time=None,
                  percent_contribution=None,
                  utilization_cls=HopsUtilizationJackieRager,
-                 utilization_cls_kwargs=None):
+                 utilization_cls_kwargs=None,
+                 units=IMPERIAL_UNITS):
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time
@@ -245,9 +256,18 @@ class HopAddition(object):
         utilization_kwargs = utilization_cls_kwargs or {}
         self.utilization_cls = utilization_cls(self, **utilization_kwargs)
 
+        self.units = validate_units(units)
+        if self.units == IMPERIAL_UNITS:
+            self.types = IMPERIAL_TYPES
+        elif self.units == SI_UNITS:
+            self.types = SI_TYPES
+
     def __str__(self):
-        return "{0}, weight {1} oz, boil time {2} min".format(
-                self.hop, self.weight, self.boil_time)
+        return "{hop}, weight {weight} {weight_small}, boil time {boil_time} min".format(  # nopep8
+                hop=self.hop,
+                weight=self.weight,
+                boil_time=self.boil_time,
+                weight_small=self.types['weight_small'])
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.hop))
@@ -256,15 +276,17 @@ class HopAddition(object):
 
     def format(self):
         msg = textwrap.dedent("""\
-                {0}
+                {hop}
                 ------------------------
-                Weight:       {1:0.2f} oz
-                Contribution: {2:0.2f} %
-                Boil Time:    {3:0.2f} min""".format(
-                    self.hop,
-                    self.weight,
-                    self.percent_contribution,
-                    self.boil_time))
+                Weight:       {weight:0.2f} {weight_small}
+                Contribution: {percent_contribution:0.2f} %
+                Boil Time:    {boil_time:0.2f} min""".format(
+                    hop=self.hop,
+                    weight=self.weight,
+                    percent_contribution=self.percent_contribution,
+                    boil_time=self.boil_time,
+                    weight_small=self.types['weight_small'],
+                    ))
         return msg
 
     def get_ibus(self, sg, final_volume):
@@ -302,9 +324,12 @@ class HopAddition(object):
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         # nopep8
         """
+        hops_constant = HOPS_CONSTANT_IMPERIAL
+        if self.units == SI_UNITS:
+            hops_constant = HOPS_CONSTANT_SI
         num = (target_ibu * final_volume *
                self.percent_contribution)
         den = (self.hop.percent_alpha_acids *
                self.utilization_cls.get_percent_utilization(
-                   sg, self.boil_time) * HOPS_CONSTANT_US)
+                   sg, self.boil_time) * hops_constant)
         return num / den
