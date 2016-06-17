@@ -26,7 +26,7 @@ class Grain(object):
         self.name = name
         self.short_name = short_name or name
         self.color = color
-        self.hot_water_extract = hot_water_extract
+        self.hot_water_extract = validate_percentage(hot_water_extract)
 
     def __str__(self):
         return string.capwords(self.name)
