@@ -20,18 +20,18 @@ class TestHops(unittest.TestCase):
 
     def test_str(self):
         out = str(self.hop)
-        self.assertEquals(out, 'Centennial, alpha 14.0%')
+        self.assertEquals(out, 'Centennial, alpha 0.14%')
 
     def test_repr(self):
         out = repr(self.hop)
-        self.assertEquals(out, "Hop('centennial', percent_alpha_acids=14.0)")
+        self.assertEquals(out, "Hop('centennial', percent_alpha_acids=0.14)")
 
     def test_format(self):
         out = self.hop.format()
         msg = textwrap.dedent("""\
                 Centennial Hops
                 ---------------
-                Alpha Acids:  14.0 %""")
+                Alpha Acids:  0.14 %""")
         self.assertEquals(out, msg)
 
 
@@ -44,12 +44,12 @@ class TestHopAdditions(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 95.0,
+                'percent_contribution': 0.95,
             },
             {
                 'boil_time': 5.0,
                 'weight': 0.76,
-                'percent_contribution': 5.0,
+                'percent_contribution': 0.05,
             },
         ]
 
@@ -68,20 +68,20 @@ class TestHopAdditions(unittest.TestCase):
     def test_str(self):
         out = str(self.hop_addition1)
         self.assertEquals(
-            out, 'Centennial, alpha 14.0%, weight 0.57 oz, boil time 60.0 min')
+            out, 'Centennial, alpha 0.14%, weight 0.57 oz, boil time 60.0 min')
 
     def test_repr(self):
         out = repr(self.hop_addition1)
         self.assertEquals(
-            out, "HopAddition(Hop('centennial', percent_alpha_acids=14.0))")
+            out, "HopAddition(Hop('centennial', percent_alpha_acids=0.14))")
 
     def test_format(self):
         out = self.hop_addition1.format()
         msg = textwrap.dedent("""\
-                Centennial, alpha 14.0%
+                Centennial, alpha 0.14%
                 ------------------------
                 Weight:       0.57 oz
-                Contribution: 95.00 %
+                Contribution: 0.95 %
                 Boil Time:    60.00 min""")
         self.assertEquals(out, msg)
 
@@ -108,7 +108,7 @@ class TestHopsUtilization(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 95.0,
+                'percent_contribution': 0.95,
             }
         ]
 
@@ -120,7 +120,7 @@ class TestHopsUtilization(unittest.TestCase):
         self.hop_addition = HopAddition(self.hop,
                                         boil_time=self.boil_time,
                                         weight=0.57,
-                                        percent_contribution=95.0,
+                                        percent_contribution=0.95,
                                         utilization_cls=self.utilization_cls)
 
     def test_get_ibus_raises(self):
@@ -142,7 +142,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 95.0,
+                'percent_contribution': 0.95,
             }
         ]
 
@@ -154,7 +154,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
         self.hop_addition = HopAddition(self.hop,
                                         boil_time=self.boil_time,
                                         weight=0.57,
-                                        percent_contribution=95.0,
+                                        percent_contribution=0.95,
                                         utilization_cls=self.utilization_cls)
 
     def test_get_c_gravity(self):
@@ -198,7 +198,7 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 95.0,
+                'percent_contribution': 0.95,
             }
         ]
 
@@ -210,7 +210,7 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         self.hop_addition = HopAddition(self.hop,
                                         boil_time=self.boil_time,
                                         weight=0.57,
-                                        percent_contribution=95.0,
+                                        percent_contribution=0.95,
                                         utilization_cls=self.utilization_cls)
 
     def test_get_ibus(self):

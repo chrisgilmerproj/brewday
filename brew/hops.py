@@ -4,6 +4,7 @@ import textwrap
 
 from .constants import HOPS_CONSTANT_US
 # from .constants import SEA_LEVEL
+from .validators import validate_percentage
 
 
 def get_percent_ibus(hop, total_ibus):
@@ -16,7 +17,7 @@ class Hop(object):
     def __init__(self, name,
                  percent_alpha_acids=None):
         self.name = name
-        self.percent_alpha_acids = percent_alpha_acids
+        self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
 
     def __str__(self):
         return "{0}, alpha {1}%".format(self.name.capitalize(),
@@ -53,7 +54,7 @@ class HopsUtilization(object):
         utilization = self.get_percent_utilization(
                 sg, self.hop_addition.boil_time)
         num = (self.hop_addition.weight * utilization *
-               (self.hop_addition.hop.percent_alpha_acids / 100.0) *
+               self.hop_addition.hop.percent_alpha_acids *
                HOPS_CONSTANT_US)
         return num / (final_volume)
 
@@ -240,7 +241,7 @@ class HopAddition(object):
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time
-        self.percent_contribution = percent_contribution
+        self.percent_contribution = validate_percentage(percent_contribution)
         utilization_kwargs = utilization_cls_kwargs or {}
         self.utilization_cls = utilization_cls(self, **utilization_kwargs)
 

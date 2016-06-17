@@ -29,17 +29,17 @@ if __name__ == "__main__":
 
     # Define Hops
     centennial = Hop(name='centennial',
-                     percent_alpha_acids=14.0)
+                     percent_alpha_acids=0.14)
     centennial_add = HopAddition(centennial,
                                  weight=0.57,
                                  boil_time=60.0,
-                                 percent_contribution=95.0)
+                                 percent_contribution=0.05)
     cascade = Hop(name='cascade',
-                  percent_alpha_acids=7.0)
+                  percent_alpha_acids=0.07)
     cascade_add = HopAddition(cascade,
                               weight=0.76,
                               boil_time=5.0,
-                              percent_contribution=5.0)
+                              percent_contribution=0.05)
     hop_additions = [centennial_add, cascade_add]
 
     # Define Beer
