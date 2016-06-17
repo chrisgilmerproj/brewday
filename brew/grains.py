@@ -15,7 +15,7 @@ class Grain(object):
     Percent Extract - The percentage this grain contributes to the beer recipe.
     """
 
-    def __init__(self, name=None,
+    def __init__(self, name,
                  short_name=None,
                  color=None,
                  hot_water_extract=None):
@@ -26,6 +26,18 @@ class Grain(object):
 
     def __str__(self):
         return string.capwords(self.name)
+
+    def __repr__(self):
+        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        if self.short_name:
+            out = "{0}, short_name='{1}'".format(out, self.short_name)
+        if self.color:
+            out = "{0}, color={1}".format(out, self.color)
+        if self.hot_water_extract:
+            out = "{0}, hot_water_extract={1}".format(out,
+                                                      self.hot_water_extract)
+        out = "{0})".format(out)
+        return out
 
     def format(self):
         msg = textwrap.dedent("""\
@@ -89,6 +101,9 @@ class GrainAddition(object):
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.grain))
+        if self.percent_malt_bill:
+            out = "{0}, percent_malt_bill={1}".format(out,
+                                                      self.percent_malt_bill)
         out = "{0})".format(out)
         return out
 
