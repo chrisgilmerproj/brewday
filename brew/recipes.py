@@ -3,7 +3,9 @@
 import string
 import textwrap
 
+from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
+from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
@@ -45,6 +47,10 @@ class Recipe(object):
         # US = Gallons, degF
         # Metric = Liters, degC
         self.units = validate_units(units)
+        if self.units == IMPERIAL_UNITS:
+            self.types = IMPERIAL_TYPES
+        elif self.units == SI_UNITS:
+            self.types = SI_TYPES
 
     def __str__(self):
         return self.name
@@ -245,23 +251,25 @@ class Recipe(object):
         total_ibu = self.get_total_ibu()
 
         print(textwrap.dedent("""\
-            {0}
+            {name}
             -----------------------------------
-            Specific Gravity:   {1:0.3f}
-            Degrees Plato:      {2:0.3f} degP
-            Extract Weight:     {3:0.2f} lbs
-            Total Grain Weight: {4:0.2f} lbs
-            Total IBU:          {5:0.2f} ibu
-            Total Wort Color:   {6:0.2f} degL
-            Beer Color:         {7:0.2f} degL
-            """.format(string.capwords(self.name),
-                       sg,
-                       deg_plato,
-                       extract_weight,
-                       total_grain_weight,
-                       total_ibu,
-                       total_wort_color,
-                       beer_color)))
+            Specific Gravity:   {sg:0.3f}
+            Degrees Plato:      {deg_plato:0.3f} degP
+            Extract Weight:     {extract_weight:0.2f} {weight_large}
+            Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
+            Total IBU:          {total_ibu:0.2f} ibu
+            Total Wort Color:   {total_wort_color:0.2f} degL
+            Beer Color:         {beer_color:0.2f} degL
+            """.format(name=string.capwords(self.name),
+                       sg=sg,
+                       deg_plato=deg_plato,
+                       extract_weight=extract_weight,
+                       total_grain_weight=total_grain_weight,
+                       total_ibu=total_ibu,
+                       total_wort_color=total_wort_color,
+                       beer_color=beer_color,
+                       weight_large=self.types['weight_large'],
+                       )))
 
         for grain_add in self.grain_additions:
             wy = self.get_working_yield(grain_add)
@@ -273,16 +281,18 @@ class Recipe(object):
             wort_color = self.get_wort_color(grain_add)
             print(grain_add.format())
             print(textwrap.dedent("""\
-                    Working Yield:     {0:0.2f} %
-                    Weight DME:        {1:0.2f} lbs
-                    Weight LME:        {2:0.2f} lbs
-                    Weight Grain:      {3:0.2f} lbs
-                    Color:             {4:0.2f} degL
-                    """.format(wy,
-                               dry_weight,
-                               lme_weight,
-                               grain_weight,
-                               wort_color)))
+                    Working Yield:     {wy:0.2f} %
+                    Weight DME:        {dry_weight:0.2f} {weight_large}
+                    Weight LME:        {lme_weight:0.2f} {weight_large}
+                    Weight Grain:      {grain_weight:0.2f} {weight_large}
+                    Color:             {wort_color:0.2f} degL
+                    """.format(wy=wy,
+                               dry_weight=dry_weight,
+                               lme_weight=lme_weight,
+                               grain_weight=grain_weight,
+                               wort_color=wort_color,
+                               weight_large=self.types['weight_large'],
+                               )))
 
         for hop in self.hop_additions:
             hops_weight = hop.get_hops_weight(sg,
@@ -293,9 +303,11 @@ class Recipe(object):
                     sg, hop.boil_time) * 100.0
             print(hop.format())
             print(textwrap.dedent("""\
-                    Weight:       {0:0.2f} oz
-                    IBUs:         {1:0.2f}
-                    Utilization:  {2:0.2f} %
-                    """.format(hops_weight,
-                               ibus,
-                               utilization)))
+                    Weight:       {hops_weight:0.2f} {weight_small}
+                    IBUs:         {ibus:0.2f}
+                    Utilization:  {utilization:0.2f} %
+                    """.format(hops_weight=hops_weight,
+                               ibus=ibus,
+                               utilization=utilization,
+                               weight_small=self.types['weight_small']
+                               )))
