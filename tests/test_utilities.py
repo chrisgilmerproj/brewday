@@ -8,9 +8,11 @@ from brew.utilities import basis_to_hwe
 from brew.utilities import brix_to_plato
 from brew.utilities import brix_to_sg
 from brew.utilities import celsius_to_fahrenheit
+from brew.utilities import coarse_grind_to_fine_grind
 from brew.utilities import dry_basis_to_as_is_basis
 from brew.utilities import ebc_to_srm
 from brew.utilities import fahrenheit_to_celsius
+from brew.utilities import fine_grind_to_coarse_grind
 from brew.utilities import gu_to_sg
 from brew.utilities import hwe_to_basis
 from brew.utilities import hydrometer_adjustment
@@ -70,6 +72,10 @@ class TestSugarUtilities(unittest.TestCase):
         brix = sg_to_brix(1.092)
         self.assertEquals(round(brix, 1), 22.0)
 
+    def test_sg_to_brix_raises(self):
+        with self.assertRaises(Exception):
+            sg_to_brix(1.18)
+
     def test_sg_to_plato(self):
         plato = sg_to_plato(1.0570)
         self.assertEquals(round(plato, 2), 14.04)
@@ -124,6 +130,14 @@ class TestABVUtilities(unittest.TestCase):
 
 
 class TestMaltUtilities(unittest.TestCase):
+
+    def test_fine_grind_to_coarse_grind(self):
+        cg = fine_grind_to_coarse_grind(0.81)
+        self.assertEquals(round(cg, 2), 0.79)
+
+    def test_coarse_grind_to_fine_grind(self):
+        fg = coarse_grind_to_fine_grind(0.79)
+        self.assertEquals(round(fg, 2), 0.81)
 
     def test_dry_basis_to_as_is_basis(self):
         asb = dry_basis_to_as_is_basis(40.0)
