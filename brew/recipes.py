@@ -4,6 +4,9 @@ import string
 import textwrap
 
 from .constants import IMPERIAL_UNITS
+from .constants import SI_UNITS
+from .constants import WATER_WEIGHT_IMPERIAL
+from .constants import WATER_WEIGHT_SI
 from .utilities import sg_to_plato
 from .validators import validate_percentage
 from .validators import validate_units
@@ -82,7 +85,10 @@ class Recipe(object):
         To find the weight of a gallon of wort, multiply the specific gravity
         of the wort by 8.32 pounds.
         """
-        return (8.32 * self.final_volume * self.target_sg *
+        water_weight = WATER_WEIGHT_IMPERIAL
+        if self.units == SI_UNITS:
+            water_weight = WATER_WEIGHT_SI
+        return (water_weight * self.final_volume * self.target_sg *
                 self.target_degrees_plato) / 100.0
 
     def get_working_yield(self, grain_add):
@@ -97,7 +103,7 @@ class Recipe(object):
         return (grain_add.grain.hot_water_extract *
                 self.percent_brew_house_yield)
 
-    def get_pounds_malt(self, grain_add):
+    def get_malt_weight(self, grain_add):
         """
         Pounds of Malt
         It is imperative that you measure your recipes by the percent of
@@ -119,7 +125,7 @@ class Recipe(object):
         """
         Convenience method to get total grain weight
         """
-        return sum([self.get_pounds_malt(g) for g in self.grain_additions])
+        return sum([self.get_malt_weight(g) for g in self.grain_additions])
 
     def get_total_ibu(self):
         """
@@ -141,7 +147,7 @@ class Recipe(object):
 
         Strike Temp =  [((0.4)(T mash-T malt)) / L:G] +  T mash
         """
-        return ((((0.4) * (mash_temp - malt_temp)) /
+        return (((0.4 * (mash_temp - malt_temp)) /
                 liquor_to_grist_ratio) + mash_temp)
 
     def get_mash_water_volume(self, liquor_to_grist_ratio):
@@ -154,8 +160,11 @@ class Recipe(object):
 
         gallons H2O =  (Lbs malt)(L:G)(1gallon H2O) / 8.32 pounds water
         """
+        water_weight = WATER_WEIGHT_IMPERIAL
+        if self.units == SI_UNITS:
+            water_weight = WATER_WEIGHT_SI
         return (self.get_total_grain_weight() * liquor_to_grist_ratio /
-                8.32)
+                water_weight)
 
     def get_wort_color(self, grain_add):
         """
@@ -256,7 +265,7 @@ class Recipe(object):
 
         for grain_add in self.grain_additions:
             wy = self.get_working_yield(grain_add)
-            pounds_lme = self.get_pounds_malt(grain_add)
+            pounds_lme = self.get_malt_weight(grain_add)
             pounds_dry = grain_add.grain.get_liquid_to_dry_malt_weight(
                     pounds_lme)
             pounds_grain = grain_add.grain.get_liquid_malt_to_grain_weight(
