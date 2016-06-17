@@ -237,48 +237,64 @@ def dry_basis_to_as_is_basis(dry_basis,
     """
     Dry Basis to As-Is Basis
 
-    dry_basis is a percentage from the malt bill
+    dry_basis is a percentage from the malt bill in decimal form
     moisture_content is a percentage of moisture content in finished malt
+      in decimal form
     """
-    return dry_basis * (100.0 - moisture_content) / 100.0
+    return dry_basis * (1.0 - moisture_content)
 
 
-def as_is_to_dry_basis_basis(as_is,
+def as_is_basis_to_dry_basis(as_is,
                              moisture_content=MOISTURE_FINISHED_MALT):
     """
     As-Is Basis to Dry Basis
 
-    asi_is is a percentage from the malt bill
+    asi_is is a percentage from the malt bill in decimal form
     moisture_content is a percentage of moisture content in finished malt
+      in decimal form
     """
-    return as_is * 100.0 / (100.0 - moisture_content)
+    return as_is / (1.0 - moisture_content)
 
 
-# TODO: This is really GU not SG
 def sg_from_dry_basis(dbcg,
                       moisture_content=MOISTURE_FINISHED_MALT,
-                      brew_house_efficiency=0.90,
-                      ):
-    dbcg_dec = dbcg / 100.0
-    mc_dec = moisture_content / 100.0
-    correction = MOISTURE_CORRECTION / 100.0
-    return ((dbcg_dec - mc_dec - correction) *
-            brew_house_efficiency * SUCROSE_PPG)
+                      moisture_correction=MOISTURE_CORRECTION,
+                      brew_house_efficiency=0.90):
+    """
+    dbcg is Dry Basis Coars Grain in decimal form
+    moisture_content is a percentage of moisture content in finished malt
+      in decimal form
+    moisture_correction is a percentage correction in decimal form
+    brew_house_efficiency is the efficiency in decimal form
+
+    Returns: Specific Gravity available from Malt
+    """
+    gu = ((dbcg - moisture_content - moisture_correction) *
+          brew_house_efficiency * SUCROSE_PPG)
+    return gu_to_sg(gu)
 
 
 def plato_from_dry_basis(dbcg,
                          moisture_content=MOISTURE_FINISHED_MALT,
-                         brew_house_efficiency=0.90,
-                         ):
-    dbcg_dec = dbcg / 100.0
-    mc_dec = moisture_content / 100.0
-    correction = MOISTURE_CORRECTION / 100.0
-    return ((dbcg_dec - mc_dec - correction) *
+                         moisture_correction=MOISTURE_CORRECTION,
+                         brew_house_efficiency=0.90):
+    """
+    dbcg is Dry Basis Coars Grain in decimal form
+    moisture_content is a percentage of moisture content in finished malt
+      in decimal form
+    moisture_correction is a percentage correction in decimal form
+    brew_house_efficiency is the efficiency in decimal form
+
+    Returns: Degrees Plato available from Malt
+    """
+    return ((dbcg - moisture_content - moisture_correction) *
             brew_house_efficiency * SUCROSE_PLATO)
 
 
 def basis_to_hwe(basis_percentage):
     """
+    basis_percentage in decimal form
+
     Return Hot Water Extract as Ldeg/kg, dry basis
 
     Ldeg/kg means how many litres of wort with a specific gravity of 1.001 you
@@ -287,7 +303,7 @@ def basis_to_hwe(basis_percentage):
     For example, if you had a kilogram of sucrose, you could make up 386 litres
     of wort with a specific gravity of 1.001.
     """
-    return basis_percentage / 100.0 * LITERS_OF_WORT_AT_SG
+    return basis_percentage * LITERS_OF_WORT_AT_SG
 
 
 def hwe_to_basis(hwe):

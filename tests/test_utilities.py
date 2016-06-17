@@ -3,16 +3,22 @@ import unittest
 from brew.constants import SI_UNITS
 from brew.utilities import alcohol_by_volume_alternative
 from brew.utilities import alcohol_by_volume_standard
+from brew.utilities import as_is_basis_to_dry_basis
+from brew.utilities import basis_to_hwe
 from brew.utilities import brix_to_plato
 from brew.utilities import brix_to_sg
 from brew.utilities import celsius_to_fahrenheit
+from brew.utilities import dry_basis_to_as_is_basis
 from brew.utilities import ebc_to_srm
 from brew.utilities import fahrenheit_to_celsius
 from brew.utilities import gu_to_sg
+from brew.utilities import hwe_to_basis
 from brew.utilities import hydrometer_adjustment
 from brew.utilities import refractometer_adjustment
+from brew.utilities import plato_from_dry_basis
 from brew.utilities import plato_to_brix
 from brew.utilities import plato_to_sg
+from brew.utilities import sg_from_dry_basis
 from brew.utilities import sg_to_brix
 from brew.utilities import sg_to_plato
 from brew.utilities import sg_to_gu
@@ -115,6 +121,33 @@ class TestABVUtilities(unittest.TestCase):
     def test_refractometer_adjustment(self):
         fg = refractometer_adjustment(1.050, 1.011)
         self.assertEquals(round(fg, 3), 1.004)
+
+
+class TestMaltUtilities(unittest.TestCase):
+
+    def test_dry_basis_to_as_is_basis(self):
+        asb = dry_basis_to_as_is_basis(40.0)
+        self.assertEquals(round(asb, 2), 38.4)
+
+    def test_as_is_basis_to_dry_basis(self):
+        db = as_is_basis_to_dry_basis(38.4)
+        self.assertEquals(round(db, 2), 40.0)
+
+    def test_sg_from_dry_basis(self):
+        sg = sg_from_dry_basis(0.80)
+        self.assertEquals(round(sg, 3), 1.032)
+
+    def test_plato_from_dry_basis(self):
+        plato = plato_from_dry_basis(0.80)
+        self.assertEquals(round(plato, 2), 7.86)
+
+    def test_basis_to_hwe(self):
+        hwe = basis_to_hwe(0.8)
+        self.assertEquals(round(hwe, 2), 308.8)
+
+    def test_hwe_to_basis(self):
+        basis = hwe_to_basis(308.8)
+        self.assertEquals(round(basis, 3), 0.8)
 
 
 class TestColorUtilities(unittest.TestCase):
