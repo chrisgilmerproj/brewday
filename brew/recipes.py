@@ -50,6 +50,12 @@ class Recipe(object):
         elif self.units == SI_UNITS:
             self.types = SI_TYPES
 
+        # Ensure all units are the same
+        for hop_add in self.hop_additions:
+            if hop_add.units != self.units:
+                raise Exception("Hop addition units must be in '{}' not '{}'".format(  # nopep8
+                    self.units, hop_add.units))
+
     def __str__(self):
         return self.name
 
