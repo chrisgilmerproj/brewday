@@ -238,7 +238,7 @@ class Recipe(object):
         """  # nopep8
         sg = self.target_sg
         deg_plato = self.target_degrees_plato
-        pounds_extract = self.get_extract_weight()
+        extract_weight = self.get_extract_weight()
         total_wort_color = self.get_total_wort_color()
         beer_color = self.get_beer_color()
         total_grain_weight = self.get_total_grain_weight()
@@ -257,7 +257,7 @@ class Recipe(object):
             """.format(string.capwords(self.name),
                        sg,
                        deg_plato,
-                       pounds_extract,
+                       extract_weight,
                        total_grain_weight,
                        total_ibu,
                        total_wort_color,
@@ -265,11 +265,11 @@ class Recipe(object):
 
         for grain_add in self.grain_additions:
             wy = self.get_working_yield(grain_add)
-            pounds_lme = self.get_malt_weight(grain_add)
-            pounds_dry = grain_add.grain.get_liquid_to_dry_malt_weight(
-                    pounds_lme)
-            pounds_grain = grain_add.grain.get_liquid_malt_to_grain_weight(
-                    pounds_lme)
+            lme_weight = self.get_malt_weight(grain_add)
+            dry_weight = grain_add.grain.get_liquid_to_dry_malt_weight(
+                    lme_weight)
+            grain_weight = grain_add.grain.get_liquid_malt_to_grain_weight(
+                    lme_weight)
             wort_color = self.get_wort_color(grain_add)
             print(grain_add.format())
             print(textwrap.dedent("""\
@@ -279,9 +279,9 @@ class Recipe(object):
                     Weight Grain:      {3:0.2f} lbs
                     Color:             {4:0.2f} degL
                     """.format(wy,
-                               pounds_dry,
-                               pounds_lme,
-                               pounds_grain,
+                               dry_weight,
+                               lme_weight,
+                               grain_weight,
                                wort_color)))
 
         for hop in self.hop_additions:
