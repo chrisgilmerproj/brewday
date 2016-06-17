@@ -24,19 +24,19 @@ grain_additions = [pale_add, crystal_add]
 
 # Define Hops
 centennial = Hop(name='centennial',
-                 percent_alpha_acids=14.0)
+                 percent_alpha_acids=0.14)
 cascade = Hop(name='cascade',
-              percent_alpha_acids=7.0)
+              percent_alpha_acids=0.07)
 hop_list = [centennial, cascade]
 
 centennial_add = HopAddition(centennial,
                              boil_time=60.0,
                              weight=0.57,
-                             percent_contribution=95.0)
+                             percent_contribution=0.95)
 cascade_add = HopAddition(cascade,
                           boil_time=5.0,
                           weight=0.76,
-                          percent_contribution=5.0)
+                          percent_contribution=0.05)
 hop_additions = [centennial_add, cascade_add]
 
 # Define Recipes
