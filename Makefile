@@ -39,6 +39,7 @@ clean: ## Clean the library and test files
 
 teardown: ## Remove all virtualenv files
 	rm -rf $(VENV_DIR)/
+	rm -rf .tox/
 
 lint: venv ## Run linting tests
 	$(WITH_VENV) flake8 $(PACKAGE_NAME)/
