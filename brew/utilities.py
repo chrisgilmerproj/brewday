@@ -127,19 +127,18 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     http://www.primetab.com/formulas.html
     """  # nopep8
     if units == SI_UNITS:
+        if temp < 0.0 or 100.0 < temp:
+            raise Exception("Correction does not work outside temps 0 - 100C")
         temp = celsius_to_fahrenheit(temp)
-    elif units != IMPERIAL_UNITS:
+    elif units == IMPERIAL_UNITS:
+        if temp < 0.0 or 212.0 < temp:
+            raise Exception("Correction does not work outside temps 0 - 212F")
+    else:
         raise Exception("Unkown units '{}', must use {} or {}".format(
             units, IMPERIAL_UNITS, SI_UNITS))
 
     if temp == HYDROMETER_ADJUSTMENT_TEMP:
         return sg
-
-    if temp < 0 or 212 < temp:
-        if units == SI_UNITS:
-            raise Exception("Correction does not work outside temps 0 - 100C")
-        else:
-            raise Exception("Correction does not work outside temps 0 - 212F")
 
     correction = (1.313454 - 0.132674 * (temp ** 1) +
                   (2.057793 * 10 ** -3) * (temp ** 2) -
