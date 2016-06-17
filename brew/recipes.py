@@ -9,6 +9,8 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
+from .utilities import gu_to_sg
+from .utilities import sg_to_gu
 from .utilities import sg_to_plato
 from .validators import validate_percentage
 from .validators import validate_units
@@ -43,7 +45,7 @@ class Recipe(object):
 
         self.target_ibu = target_ibu
 
-        # TODO: Make this work
+        # Manage units
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
             self.types = IMPERIAL_TYPES
@@ -60,12 +62,12 @@ class Recipe(object):
         return self.name
 
     def get_total_gravity_units(self):
-        return ((self.target_sg - 1.0) * 1000) * self.final_volume
+        return sg_to_gu(self.target_sg) * self.final_volume
 
     def get_starting_sg(self):
         total_gu = self.get_total_gravity_units()
         starting_gu = total_gu / self.start_volume
-        return 1.0 + starting_gu / 1000
+        return gu_to_sg(starting_gu)
 
     def get_starting_plato(self):
         return sg_to_plato(self.get_starting_sg())
@@ -191,14 +193,15 @@ class Recipe(object):
         """
         return sum([self.get_wort_color(g) for g in self.grain_additions])
 
-    def get_beer_color(self, percent_color_loss=30.0):
+    def get_beer_color(self, percent_color_loss=0.30):
         """
         We allow for a 30% loss of color during fermentation to calculate the color of beer.
         Color of Beer = (color of wort)(1 - % color loss)
         # nopep8
         """
+        validate_percentage(percent_color_loss)
         return (self.get_total_wort_color() *
-                (1.0 - percent_color_loss / 100.0))
+                (1.0 - percent_color_loss))
 
     def format(self):
         """
@@ -304,7 +307,7 @@ class Recipe(object):
                                               self.final_volume)
             ibus = hop.get_ibus(sg, self.final_volume)
             utilization = hop.utilization_cls.get_percent_utilization(
-                    sg, hop.boil_time) * 100.0
+                    sg, hop.boil_time)
             print(hop.format())
             print(textwrap.dedent("""\
                     Weight:       {hops_weight:0.2f} {weight_small}
