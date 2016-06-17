@@ -8,6 +8,7 @@ from .constants import SI_UNITS
 from .constants import SUCROSE_PLATO
 from .constants import SUCROSE_PPG
 from .validators import validate_percentage
+from .validators import validate_units
 
 
 def fahrenheit_to_celsius(temp):
@@ -122,6 +123,7 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     http://hbd.org/brewery/library/HydromCorr0992.html
     http://www.primetab.com/formulas.html
     """  # nopep8
+    validate_units(units)
     if units == SI_UNITS:
         if temp < 0.0 or 100.0 < temp:
             raise Exception("Correction does not work outside temps 0 - 100C")
@@ -129,9 +131,6 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     elif units == IMPERIAL_UNITS:
         if temp < 0.0 or 212.0 < temp:
             raise Exception("Correction does not work outside temps 0 - 212F")
-    else:
-        raise Exception("Unkown units '{}', must use {} or {}".format(
-            units, IMPERIAL_UNITS, SI_UNITS))
 
     if temp == HYDROMETER_ADJUSTMENT_TEMP:
         return sg
