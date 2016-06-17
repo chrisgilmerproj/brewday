@@ -35,9 +35,9 @@ MILE_HIGH = 5280  # feet
 KM_HIGH = 1000    # meters
 
 # Grind Constants
-# fine/coarse difference percentage for different grain
-FC_DIFF_TWO_ROW = 1.7
-FC_DIFF_SIX_ROW = 1.5
+# fine/coarse difference percentage for different grain in decimal format
+FC_DIFF_TWO_ROW = 0.017
+FC_DIFF_SIX_ROW = 0.015
 
 # Moisture in finished malt as percentage in decimal form (ie 4% is 0.04)
 MOISTURE_FINISHED_MALT = 0.04
