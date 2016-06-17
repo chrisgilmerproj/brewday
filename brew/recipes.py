@@ -4,9 +4,9 @@ import string
 import textwrap
 
 from .constants import IMPERIAL_UNITS
-from .constants import SI_UNITS
 from .utilities import sg_to_plato
 from .validators import validate_percentage
+from .validators import validate_units
 
 
 class Recipe(object):
@@ -41,11 +41,7 @@ class Recipe(object):
         # TODO: Make this work
         # US = Gallons, degF
         # Metric = Liters, degC
-        if units not in [IMPERIAL_UNITS, SI_UNITS]:
-            raise Exception("Unkown units '{}', must use {} or {}".format(
-                units, IMPERIAL_UNITS, SI_UNITS))
-        else:
-            self.units = units
+        self.units = validate_units(units)
 
     def __str__(self):
         return self.name
