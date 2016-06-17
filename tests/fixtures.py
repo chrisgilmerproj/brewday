@@ -16,10 +16,10 @@ crystal = Grain(name='crystal C20',
 grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
-                         percent_malt_bill=95)
+                         percent_malt_bill=0.95)
 
 crystal_add = GrainAddition(crystal,
-                            percent_malt_bill=5.0)
+                            percent_malt_bill=0.05)
 grain_additions = [pale_add, crystal_add]
 
 # Define Hops
@@ -43,7 +43,7 @@ hop_additions = [centennial_add, cascade_add]
 recipe = Recipe(name='pale ale',
                 grain_additions=grain_additions,
                 hop_additions=hop_additions,
-                percent_brew_house_yield=70.0,  # %
+                percent_brew_house_yield=0.70,  # %
                 start_volume=7.0,  # G
                 final_volume=5.0,  # G
                 target_sg=1.057,  # SG

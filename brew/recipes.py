@@ -6,6 +6,7 @@ import textwrap
 from .constants import IMPERIAL_UNITS
 from .constants import SI_UNITS
 from .utilities import sg_to_plato
+from .validators import validate_percentage
 
 
 class Recipe(object):
@@ -19,7 +20,7 @@ class Recipe(object):
     def __init__(self, name='beer',
                  grain_additions=None,
                  hop_additions=None,
-                 percent_brew_house_yield=70.0,
+                 percent_brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
                  target_sg=None,
@@ -29,7 +30,7 @@ class Recipe(object):
         self.grain_additions = grain_additions
         self.hop_additions = hop_additions
 
-        self.percent_brew_house_yield = percent_brew_house_yield  # %
+        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8 %
         self.start_volume = start_volume  # G
         self.final_volume = final_volume  # G
         self.target_sg = target_sg  # SG
@@ -166,7 +167,7 @@ class Recipe(object):
 
         Color of Wort = S [(% extract)(L of malt)(P wort / 8P reference)]
         """
-        return ((grain_add.percent_malt_bill / 100.0) * grain_add.grain.color *
+        return (grain_add.percent_malt_bill * grain_add.grain.color *
                 (self.target_degrees_plato / 8))
 
     def get_total_wort_color(self):

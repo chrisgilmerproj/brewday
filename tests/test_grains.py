@@ -59,16 +59,16 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_str(self):
         out = str(self.grain_add)
-        self.assertEquals(out, 'Pale 2-row, 95 %')
+        self.assertEquals(out, 'Pale 2-row, 0.95 %')
 
     def test_repr(self):
         out = repr(self.grain_add)
-        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=0.76), percent_malt_bill=95)")  # nopep8
+        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=0.76), percent_malt_bill=0.95)")  # nopep8
 
     def test_format(self):
         out = self.grain_add.format()
         msg = textwrap.dedent("""\
             Pale 2-row Addition
             ----------------
-            Malt Bill:         95 %""")
+            Malt Bill:         0.95 %""")
         self.assertEquals(out, msg)

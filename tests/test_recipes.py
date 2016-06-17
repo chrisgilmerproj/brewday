@@ -49,7 +49,7 @@ class TestRecipe(unittest.TestCase):
         plato_actual = 15.0
         vol_actual = 5.5
         bhy = self.recipe.get_brew_house_yield(plato_actual, vol_actual)
-        self.assertEqual(round(bhy, 2), 82.27)
+        self.assertEqual(round(bhy, 2), 0.82)
 
     def test_get_extract_weight(self):
         pounds_extract = self.recipe.get_extract_weight()
@@ -57,9 +57,9 @@ class TestRecipe(unittest.TestCase):
 
     def test_get_working_yield(self):
         wy = self.recipe.get_working_yield(self.grain_additions[0])
-        self.assertEquals(round(wy, 2), 53.20)
+        self.assertEquals(round(wy, 2), 0.53)
         wy = self.recipe.get_working_yield(self.grain_additions[1])
-        self.assertEquals(round(wy, 2), 49.00)
+        self.assertEquals(round(wy, 2), 0.49)
 
     def test_get_pounds_malt(self):
         pounds_malt = self.recipe.get_pounds_malt(self.grain_additions[0])
