@@ -44,8 +44,6 @@ class Recipe(object):
         self.target_ibu = target_ibu
 
         # TODO: Make this work
-        # US = Gallons, degF
-        # Metric = Liters, degC
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
             self.types = IMPERIAL_TYPES
