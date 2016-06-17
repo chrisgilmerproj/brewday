@@ -1,10 +1,14 @@
 import string
 import textwrap
 
+from .validators import validate_percentage
+
 
 class Grain(object):
     """
     Grain
+
+    Color - The color of the grain in SRM
 
     Hot Water Extract - The international unit for the total soluble extract
     of a malt, based on specific gravity. HWE is measured as liter*degrees per
@@ -93,7 +97,7 @@ class GrainAddition(object):
     def __init__(self, grain,
                  percent_malt_bill=None):
         self.grain = grain
-        self.percent_malt_bill = percent_malt_bill
+        self.percent_malt_bill = validate_percentage(percent_malt_bill)
 
     def __str__(self):
         return "{0}, {1} %".format(
