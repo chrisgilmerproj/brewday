@@ -9,7 +9,7 @@ from brew.constants import SI_UNITS
 from brew.constants import SUCROSE_PLATO
 
 
-class TestRecipeImperial(unittest.TestCase):
+class TestRecipe(unittest.TestCase):
 
     def setUp(self):
         # Define Grains

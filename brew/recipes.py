@@ -217,7 +217,11 @@ class Recipe(object):
         Calculation of Wort and Beer Color
 
         Color of Wort = S [(% extract)(L of malt)(P wort / 8P reference)]
-        """
+
+        TODO:
+        http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
+        http://brewwiki.com/index.php/Estimating_Color
+        """  # nopep8
         return (grain_add.percent_malt_bill * grain_add.grain.color *
                 (self.target_degrees_plato / 8))
 
@@ -231,8 +235,7 @@ class Recipe(object):
         """
         We allow for a 30% loss of color during fermentation to calculate the color of beer.
         Color of Beer = (color of wort)(1 - % color loss)
-        # nopep8
-        """
+        """  # nopep8
         validate_percentage(percent_color_loss)
         return (self.get_total_wort_color() *
                 (1.0 - percent_color_loss))
