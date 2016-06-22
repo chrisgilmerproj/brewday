@@ -46,6 +46,8 @@ class TestRecipeImperialUnits(unittest.TestCase):
         # Define Recipes
         self.recipe = recipe
         self.recipe.set_units(IMPERIAL_UNITS)
+
+    def test_change_units(self):
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
         for hop_add in self.recipe.hop_additions:
             self.assertEquals(hop_add.units, IMPERIAL_UNITS)
@@ -130,6 +132,8 @@ class TestRecipeSIUnits(unittest.TestCase):
         self.recipe = recipe
         self.recipe.set_units(IMPERIAL_UNITS)
         self.recipe = self.recipe.change_units()
+
+    def test_change_units(self):
         self.assertEquals(self.recipe.units, SI_UNITS)
         self.assertEquals(round(self.recipe.start_volume, 2), 26.50)
         self.assertEquals(round(self.recipe.final_volume, 2), 18.93)
