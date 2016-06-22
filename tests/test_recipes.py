@@ -6,6 +6,7 @@ from fixtures import recipe
 from brew.constants import LITER_PER_GAL
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.constants import SUCROSE_PLATO
 
 
 class TestRecipeImperial(unittest.TestCase):
@@ -65,10 +66,9 @@ class TestRecipeImperialUnits(unittest.TestCase):
         self.assertEquals(round(out, 2), 10.17)
 
     def test_brew_house_yield(self):
-        plato_actual = 15.0
         vol_actual = 5.5
-        bhy = self.recipe.get_brew_house_yield(plato_actual, vol_actual)
-        self.assertEqual(round(bhy, 2), 0.82)
+        bhy = self.recipe.get_brew_house_yield(SUCROSE_PLATO, vol_actual)
+        self.assertEqual(round(bhy, 2), 0.63)
 
     def test_get_extract_weight(self):
         extract_weight = self.recipe.get_extract_weight()
@@ -153,10 +153,9 @@ class TestRecipeSIUnits(unittest.TestCase):
         self.assertEquals(round(out, 2), 10.17)
 
     def test_brew_house_yield(self):
-        plato_actual = 15.0
         vol_actual = 5.5 * LITER_PER_GAL
-        bhy = self.recipe.get_brew_house_yield(plato_actual, vol_actual)
-        self.assertEqual(round(bhy, 2), 0.82)
+        bhy = self.recipe.get_brew_house_yield(SUCROSE_PLATO, vol_actual)
+        self.assertEqual(round(bhy, 2), 0.63)
 
     def test_get_extract_weight(self):
         extract_weight = self.recipe.get_extract_weight()
