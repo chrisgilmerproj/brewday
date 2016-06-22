@@ -3,8 +3,10 @@
 import string
 import textwrap
 
+from .constants import GAL_PER_LITER
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
+from .constants import LITER_PER_GAL
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
@@ -24,7 +26,7 @@ class Recipe(object):
     - http://www.learntobrew.com/beer-calculations/
     """
 
-    def __init__(self, name='beer',
+    def __init__(self, name,
                  grain_additions=None,
                  hop_additions=None,
                  percent_brew_house_yield=0.70,
@@ -63,6 +65,29 @@ class Recipe(object):
             self.types = IMPERIAL_TYPES
         elif self.units == SI_UNITS:
             self.types = SI_TYPES
+
+    def change_units(self):
+        """
+        Change units from one type to the other return new instance
+        """
+        if self.units == IMPERIAL_UNITS:
+            start_volume = self.start_volume * LITER_PER_GAL
+            final_volume = self.final_volume * LITER_PER_GAL
+            units = SI_UNITS
+        elif self.units == SI_UNITS:
+            start_volume = self.start_volume * GAL_PER_LITER
+            final_volume = self.final_volume * GAL_PER_LITER
+            units = IMPERIAL_UNITS
+        return Recipe(self.name,
+                      grain_additions=self.grain_additions,
+                      hop_additions=[ha.change_units() for ha in
+                                     self.hop_additions],
+                      percent_brew_house_yield=0.70,
+                      start_volume=start_volume,
+                      final_volume=final_volume,
+                      target_sg=self.target_sg,
+                      target_ibu=self.target_ibu,
+                      units=units)
 
     def get_total_gravity_units(self):
         return sg_to_gu(self.target_sg) * self.final_volume
