@@ -6,6 +6,8 @@ from .constants import HOPS_CONSTANT_IMPERIAL
 from .constants import HOPS_CONSTANT_SI
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
+from .constants import MG_PER_OZ
+from .constants import OZ_PER_MG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .validators import validate_percentage
@@ -66,6 +68,17 @@ class HopsUtilization(object):
         elif self.units == SI_UNITS:
             self.types = SI_TYPES
 
+    def change_units(self):
+        """
+        Change units from one type to the other return new instance
+        """
+        if self.units == IMPERIAL_UNITS:
+            units = SI_UNITS
+        elif self.units == SI_UNITS:
+            units = IMPERIAL_UNITS
+        return HopsUtilization(self.hop_addition,
+                               units=units)
+
     def get_ibus(self, sg, final_volume):
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
@@ -75,7 +88,7 @@ class HopsUtilization(object):
         num = (self.hop_addition.weight * utilization *
                self.hop_addition.hop.percent_alpha_acids *
                hops_constant)
-        return num / (final_volume)
+        return num / final_volume
 
     @classmethod
     def get_percent_utilization(cls, sg, boil_time):
@@ -274,6 +287,23 @@ class HopAddition(object):
             self.types = IMPERIAL_TYPES
         elif self.units == SI_UNITS:
             self.types = SI_TYPES
+
+    def change_units(self):
+        """
+        Change units from one type to the other return new instance
+        """
+        if self.units == IMPERIAL_UNITS:
+            weight = self.weight * MG_PER_OZ
+            units = SI_UNITS
+        elif self.units == SI_UNITS:
+            weight = self.weight * OZ_PER_MG
+            units = IMPERIAL_UNITS
+        return HopAddition(self.hop,
+                           weight=weight,
+                           boil_time=self.boil_time,
+                           percent_contribution=self.percent_contribution,
+                           utilization_cls_kwargs={'units': units},
+                           units=units)
 
     def __str__(self):
         return "{hop}, weight {weight} {weight_small}, boil time {boil_time} min".format(  # nopep8
