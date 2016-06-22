@@ -55,7 +55,16 @@ class HopsUtilization(object):
     def __init__(self, hop_addition,
                  units=IMPERIAL_UNITS):
         self.hop_addition = hop_addition
+
+        # Manage units
+        self.set_units(units)
+
+    def set_units(self, units):
         self.units = validate_units(units)
+        if self.units == IMPERIAL_UNITS:
+            self.types = IMPERIAL_TYPES
+        elif self.units == SI_UNITS:
+            self.types = SI_TYPES
 
     def get_ibus(self, sg, final_volume):
         hops_constant = HOPS_CONSTANT_IMPERIAL
@@ -256,6 +265,10 @@ class HopAddition(object):
         utilization_kwargs = utilization_cls_kwargs or {}
         self.utilization_cls = utilization_cls(self, **utilization_kwargs)
 
+        # Manage units
+        self.set_units(units)
+
+    def set_units(self, units):
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
             self.types = IMPERIAL_TYPES
