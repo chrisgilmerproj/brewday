@@ -91,17 +91,23 @@ class Recipe(object):
         The weight of extract is the amount of malt extract present in the
         wort.
 
-        Lbs extract =   [(8.32 pounds/gal wort)(gal wort)(S.G.)(P)] / 100
+        Lbs extract = (density of water) * (gal of wort) * (SG) * (P/100)
 
-        8.32 in the above formula is the weight of one gallon of water.
+        The weight of one gallon of water in the above formula is 8.32 lbs/gal
+
         To find the weight of a gallon of wort, multiply the specific gravity
-        of the wort by 8.32 pounds.
+        of the wort by the density of water.
+
+        Plato is a percentage of sugars by weight.  So 10 Plato means solution
+        is 10% sugars.  In this equation we convert the degrees plato to a
+        decimal number between 0.0 and 1.0 by dividing it by 100.  This is
+        multiplied by the  weight of a gallon of wort.
         """
-        water_weight = WATER_WEIGHT_IMPERIAL
+        water_density = WATER_WEIGHT_IMPERIAL
         if self.units == SI_UNITS:
-            water_weight = WATER_WEIGHT_SI
-        return (water_weight * self.final_volume * self.target_sg *
-                self.target_degrees_plato) / 100.0
+            water_density = WATER_WEIGHT_SI
+        return (water_density * self.final_volume * self.target_sg *
+                (self.target_degrees_plato / 100.0))
 
     def get_working_yield(self, grain_add):
         """
