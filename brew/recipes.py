@@ -46,11 +46,7 @@ class Recipe(object):
         self.target_ibu = target_ibu
 
         # Manage units
-        self.units = validate_units(units)
-        if self.units == IMPERIAL_UNITS:
-            self.types = IMPERIAL_TYPES
-        elif self.units == SI_UNITS:
-            self.types = SI_TYPES
+        self.set_units(units)
 
         # Ensure all units are the same
         for hop_add in self.hop_additions:
@@ -60,6 +56,13 @@ class Recipe(object):
 
     def __str__(self):
         return self.name
+
+    def set_units(self, units):
+        self.units = validate_units(units)
+        if self.units == IMPERIAL_UNITS:
+            self.types = IMPERIAL_TYPES
+        elif self.units == SI_UNITS:
+            self.types = SI_TYPES
 
     def get_total_gravity_units(self):
         return sg_to_gu(self.target_sg) * self.final_volume
