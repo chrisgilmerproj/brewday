@@ -375,3 +375,19 @@ def srm_to_lovibond(srm):
     https://en.wikipedia.org/wiki/Standard_Reference_Method
     """
     return (srm + 0.76) / 1.3546
+
+
+def srm_to_a430(srm, dilution=1.0):
+    """
+    Get attenuation at A430 from SRM and dilution
+    https://en.wikipedia.org/wiki/Standard_Reference_Method
+    """
+    return srm / (12.7 * dilution)
+
+
+def ebc_to_a430(ebc, dilution=1.0):
+    """
+    Get attenuation at A430 from EBC and dilution
+    https://en.wikipedia.org/wiki/Standard_Reference_Method
+    """
+    return ebc / (25 * dilution)

@@ -13,6 +13,7 @@ from brew.utilities import calculate_srm
 from brew.utilities import celsius_to_fahrenheit
 from brew.utilities import coarse_grind_to_fine_grind
 from brew.utilities import dry_basis_to_as_is_basis
+from brew.utilities import ebc_to_a430
 from brew.utilities import ebc_to_srm
 from brew.utilities import fahrenheit_to_celsius
 from brew.utilities import fine_grind_to_coarse_grind
@@ -28,6 +29,7 @@ from brew.utilities import sg_from_dry_basis
 from brew.utilities import sg_to_brix
 from brew.utilities import sg_to_plato
 from brew.utilities import sg_to_gu
+from brew.utilities import srm_to_a430
 from brew.utilities import srm_to_ebc
 from brew.utilities import srm_to_lovibond
 
@@ -214,3 +216,11 @@ class TestColorUtilities(unittest.TestCase):
     def test_srm_to_lovibond(self):
         out = srm_to_lovibond(40)
         self.assertEquals(round(out, 2), 30.09)
+
+    def test_srm_to_a430(self):
+        out = srm_to_a430(30)
+        self.assertEquals(round(out, 2), 2.36)
+
+    def test_ebc_to_a430(self):
+        out = ebc_to_a430(60)
+        self.assertEquals(round(out, 2), 2.4)
