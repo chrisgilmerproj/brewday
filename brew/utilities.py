@@ -338,23 +338,24 @@ def ebc_to_srm(ebc):
     return ebc / 1.97
 
 
-def calculate_srm(grain_weight, beer_color, vol, units=IMPERIAL_UNITS):
+def calculate_srm(grain_weight, beer_color, final_volume,
+                  units=IMPERIAL_UNITS):
     """
     Morey Equation
     http://www.morebeer.com/brewingtechniques/beerslaw/morey.html
 
     grain_weight - in lbs or kg
     beer_color - in deg Lovibond
-    vol - in gal or liters
+    final_volume - in gal or liters
 
     http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
     """  # nopep8
     validate_units(units)
     if units == SI_UNITS:
         grain_weight = grain_weight * POUND_PER_KG
-        vol = vol * GAL_PER_LITER
+        final_volume = final_volume * GAL_PER_LITER
 
-    mcu = grain_weight * beer_color / vol
+    mcu = grain_weight * beer_color / final_volume
     srm = 1.4922 * (mcu ** 0.6859)
     if srm > 50.0:
         raise Exception("Morey equation does not work above SRM 50")
