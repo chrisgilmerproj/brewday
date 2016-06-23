@@ -1,5 +1,7 @@
 import unittest
 
+from brew.constants import KG_PER_POUND
+from brew.constants import LITER_PER_GAL
 from brew.constants import SI_UNITS
 from brew.utilities import alcohol_by_volume_alternative
 from brew.utilities import alcohol_by_volume_standard
@@ -7,6 +9,7 @@ from brew.utilities import as_is_basis_to_dry_basis
 from brew.utilities import basis_to_hwe
 from brew.utilities import brix_to_plato
 from brew.utilities import brix_to_sg
+from brew.utilities import calculate_srm
 from brew.utilities import celsius_to_fahrenheit
 from brew.utilities import coarse_grind_to_fine_grind
 from brew.utilities import dry_basis_to_as_is_basis
@@ -173,3 +176,24 @@ class TestColorUtilities(unittest.TestCase):
     def test_ebc_to_srm(self):
         srm = ebc_to_srm(5.91)
         self.assertEquals(round(srm, 2), 3.0)
+
+    def test_calculate_srm_imperial(self):
+        weight = 1.0  # lbs
+        color = 30.0  # degL
+        vol = 5.5  # gal
+        srm = calculate_srm(weight, color, vol)
+        self.assertEquals(round(srm, 2), 4.78)
+        ebc = srm_to_ebc(srm)
+        self.assertEquals(round(ebc, 2), 9.41)
+
+    def test_calculate_srm_metric(self):
+        weight = 1.0 * KG_PER_POUND  # kg
+        color = 30.0  # degL
+        vol = 5.5 * LITER_PER_GAL  # liter
+        self.assertEquals(round(weight, 2), 0.45)
+        self.assertEquals(round(vol, 2), 20.82)
+
+        srm = calculate_srm(weight, color, vol, units=SI_UNITS)
+        self.assertEquals(round(srm, 2), 4.78)
+        ebc = srm_to_ebc(srm)
+        self.assertEquals(round(ebc, 2), 9.41)
