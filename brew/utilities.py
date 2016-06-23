@@ -341,6 +341,7 @@ def ebc_to_srm(ebc):
 def calculate_srm(grain_weight, beer_color, vol, units=IMPERIAL_UNITS):
     """
     Morey Equation
+    http://www.morebeer.com/brewingtechniques/beerslaw/morey.html
 
     grain_weight - in lbs or kg
     beer_color - in deg Lovibond
@@ -358,3 +359,19 @@ def calculate_srm(grain_weight, beer_color, vol, units=IMPERIAL_UNITS):
     if srm > 50.0:
         raise Exception("Morey equation does not work above SRM 50")
     return srm
+
+
+def lovibond_to_srm(lovibond):
+    """
+    Convert deg Lovibond to SRM
+    https://en.wikipedia.org/wiki/Standard_Reference_Method
+    """
+    return 1.3546 * lovibond - 0.76
+
+
+def srm_to_lovibond(srm):
+    """
+    Convert SRM to deg Lovibond
+    https://en.wikipedia.org/wiki/Standard_Reference_Method
+    """
+    return (srm + 0.76) / 1.3546

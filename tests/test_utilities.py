@@ -19,6 +19,7 @@ from brew.utilities import fine_grind_to_coarse_grind
 from brew.utilities import gu_to_sg
 from brew.utilities import hwe_to_basis
 from brew.utilities import hydrometer_adjustment
+from brew.utilities import lovibond_to_srm
 from brew.utilities import refractometer_adjustment
 from brew.utilities import plato_from_dry_basis
 from brew.utilities import plato_to_brix
@@ -28,6 +29,7 @@ from brew.utilities import sg_to_brix
 from brew.utilities import sg_to_plato
 from brew.utilities import sg_to_gu
 from brew.utilities import srm_to_ebc
+from brew.utilities import srm_to_lovibond
 
 
 class TestTemperatureUtilities(unittest.TestCase):
@@ -197,3 +199,18 @@ class TestColorUtilities(unittest.TestCase):
         self.assertEquals(round(srm, 2), 4.78)
         ebc = srm_to_ebc(srm)
         self.assertEquals(round(ebc, 2), 9.41)
+
+    def test_calculate_srm_raises(self):
+        weight = 1.0  # lbs
+        color = 1000.0  # degL
+        vol = 1.0  # gal
+        with self.assertRaises(Exception):
+            calculate_srm(weight, color, vol)
+
+    def test_lovibond_to_srm(self):
+        out = lovibond_to_srm(30)
+        self.assertEquals(round(out, 2), 39.88)
+
+    def test_srm_to_lovibond(self):
+        out = srm_to_lovibond(40)
+        self.assertEquals(round(out, 2), 30.09)
