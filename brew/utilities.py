@@ -437,6 +437,8 @@ def calculate_srm_morey_hybrid(grain_weight, beer_color, final_volume,
     5. Difference in color for beers greater than 40 SRM are essentially
        impossible to detect visually; therefore, I limited the analysis to SRM
        of 50 and less.
+
+    http://babblehomebrewers.com/attachments/article/61/beercolor.pdf
     """
     mcu = calculate_mcu(grain_weight, beer_color, final_volume,
                         units=units)
