@@ -1,9 +1,11 @@
 from .constants import FC_DIFF_TWO_ROW
+from .constants import GAL_PER_LITER
 from .constants import HYDROMETER_ADJUSTMENT_TEMP
 from .constants import IMPERIAL_UNITS
 from .constants import LITERS_OF_WORT_AT_SG
 from .constants import MOISTURE_CORRECTION
 from .constants import MOISTURE_FINISHED_MALT
+from .constants import POUND_PER_KG
 from .constants import SI_UNITS
 from .constants import SUCROSE_PLATO
 from .constants import SUCROSE_PPG
@@ -334,3 +336,25 @@ def ebc_to_srm(ebc):
     Convert EBC to SRM Color
     """
     return ebc / 1.97
+
+
+def calculate_srm(grain_weight, beer_color, vol, units=IMPERIAL_UNITS):
+    """
+    Morey Equation
+
+    grain_weight - in lbs or kg
+    beer_color - in deg Lovibond
+    vol - in gal or liters
+
+    http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
+    """  # nopep8
+    validate_units(units)
+    if units == SI_UNITS:
+        grain_weight = grain_weight * POUND_PER_KG
+        vol = vol * GAL_PER_LITER
+
+    mcu = grain_weight * beer_color / vol
+    srm = 1.4922 * (mcu ** 0.6859)
+    if srm > 50.0:
+        raise Exception("Morey equation does not work above SRM 50")
+    return srm
