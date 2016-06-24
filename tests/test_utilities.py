@@ -21,14 +21,14 @@ from brew.utilities import gu_to_sg
 from brew.utilities import hwe_to_basis
 from brew.utilities import hydrometer_adjustment
 from brew.utilities import lovibond_to_srm
-from brew.utilities import refractometer_adjustment
 from brew.utilities import plato_from_dry_basis
 from brew.utilities import plato_to_brix
 from brew.utilities import plato_to_sg
+from brew.utilities import refractometer_adjustment
 from brew.utilities import sg_from_dry_basis
 from brew.utilities import sg_to_brix
-from brew.utilities import sg_to_plato
 from brew.utilities import sg_to_gu
+from brew.utilities import sg_to_plato
 from brew.utilities import srm_to_a430
 from brew.utilities import srm_to_ebc
 from brew.utilities import srm_to_lovibond

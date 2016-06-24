@@ -1,12 +1,12 @@
 import unittest
 
+from brew.constants import IMPERIAL_UNITS
+from brew.constants import LITER_PER_GAL
+from brew.constants import SI_UNITS
+from brew.constants import SUCROSE_PLATO
 from fixtures import grain_additions
 from fixtures import hop_additions
 from fixtures import recipe
-from brew.constants import LITER_PER_GAL
-from brew.constants import IMPERIAL_UNITS
-from brew.constants import SI_UNITS
-from brew.constants import SUCROSE_PLATO
 
 
 class TestRecipe(unittest.TestCase):
