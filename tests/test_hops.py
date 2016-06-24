@@ -6,7 +6,6 @@ from brew.hops import HopsUtilization
 from brew.hops import HopsUtilizationGlennTinseth
 from brew.hops import HopsUtilizationJackieRager
 from brew.utilities import plato_to_sg
-
 from fixtures import cascade
 from fixtures import centennial
 

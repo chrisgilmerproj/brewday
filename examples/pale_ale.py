@@ -6,7 +6,6 @@ from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.recipes import Recipe
 
-
 if __name__ == "__main__":
 
     # Define Grains
