@@ -9,6 +9,42 @@ from ..validators import validate_percentage
 from .sugar import gu_to_sg
 
 
+def dry_to_liquid_malt_weight(malt):
+    """
+    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    """
+    return malt * 1.25
+
+
+def liquid_to_dry_malt_weight(malt):
+    """
+    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    """
+    return malt / 1.25
+
+
+def grain_to_liquid_malt_weight(grain):
+    """
+    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    """
+    return grain * 0.75
+
+
+def liquid_malt_to_grain_weight(malt):
+    return malt / 0.75
+
+
+def specialty_grain_to_liquid_malt_weight(grain):
+    """
+    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    """
+    return grain * 0.89
+
+
+def liquid_malt_to_specialty_grain_weight(malt):
+    return malt / 0.89
+
+
 def fine_grind_to_coarse_grind(fine_grind, fc_diff=FC_DIFF_TWO_ROW):
     """
     Fine Grind to Coarse Grind

@@ -55,42 +55,6 @@ class Grain(object):
                     self.hot_water_extract))
         return msg
 
-    @classmethod
-    def get_dry_to_liquid_malt_weight(cls, malt):
-        """
-        Source: http://www.weekendbrewer.com/brewingformulas.htm
-        """
-        return malt * 1.25
-
-    @classmethod
-    def get_liquid_to_dry_malt_weight(cls, malt):
-        """
-        Source: http://www.weekendbrewer.com/brewingformulas.htm
-        """
-        return malt * 1.0 / 1.25
-
-    @classmethod
-    def get_grain_to_liquid_malt_weight(cls, grain):
-        """
-        Source: http://www.weekendbrewer.com/brewingformulas.htm
-        """
-        return grain * 0.75
-
-    @ classmethod
-    def get_liquid_malt_to_grain_weight(cls, malt):
-        return malt / 0.75
-
-    @classmethod
-    def get_specialty_grain_to_liquid_malt_weight(cls, grain):
-        """
-        Source: http://www.weekendbrewer.com/brewingformulas.htm
-        """
-        return grain * 0.89
-
-    @classmethod
-    def get_liquid_malt_to_specialty_grain_weight(cls, malt):
-        return malt / 0.89
-
 
 class GrainAddition(object):
 
