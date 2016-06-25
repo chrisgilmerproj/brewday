@@ -11,6 +11,8 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
+from .utilities.malt import liquid_malt_to_grain_weight
+from .utilities.malt import liquid_to_dry_malt_weight
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_gu
 from .utilities.sugar import sg_to_plato
@@ -318,9 +320,9 @@ class Recipe(object):
         for grain_add in self.grain_additions:
             wy = self.get_working_yield(grain_add)
             lme_weight = self.get_malt_weight(grain_add)
-            dry_weight = grain_add.grain.get_liquid_to_dry_malt_weight(
+            dry_weight = liquid_to_dry_malt_weight(
                     lme_weight)
-            grain_weight = grain_add.grain.get_liquid_malt_to_grain_weight(
+            grain_weight = liquid_malt_to_grain_weight(
                     lme_weight)
             wort_color = self.get_wort_color(grain_add)
             print(grain_add.format())
