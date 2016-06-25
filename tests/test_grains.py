@@ -16,7 +16,7 @@ class TestGrains(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.grain)
-        self.assertEquals(out, "Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=293.4)")  # nopep8
+        self.assertEquals(out, "Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=308.78)")  # nopep8
 
     def test_format(self):
         out = self.grain.format()
@@ -24,12 +24,12 @@ class TestGrains(unittest.TestCase):
             Pale 2-row Grain
             ----------------
             Color:             2 degL
-            Hot Water Extract: 293.4""")
+            Hot Water Extract: 308.78""")
         self.assertEquals(out, msg)
 
     def test_get_working_yield(self):
         wy = self.grain.get_working_yield(0.70)
-        self.assertEquals(round(wy, 2), 0.53)
+        self.assertEquals(round(wy, 2), 0.56)
 
 
 class TestGrainAdditions(unittest.TestCase):
@@ -43,7 +43,7 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.grain_add)
-        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=293.4), weight=13.96)")  # nopep8
+        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=308.78), weight=13.96)")  # nopep8
 
     def test_format(self):
         out = self.grain_add.format()

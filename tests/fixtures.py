@@ -3,16 +3,17 @@ from brew.grains import GrainAddition
 from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.recipes import Recipe
+from brew.utilities.malt import ppg_to_hwe
 
 # Define Grains
 pale = Grain('pale 2-row',
              short_name='2-row',
              color=2,
-             hot_water_extract=293.4)
+             hot_water_extract=ppg_to_hwe(37))
 crystal = Grain('crystal C20',
                 short_name='C20',
                 color=20,
-                hot_water_extract=270.2)
+                hot_water_extract=ppg_to_hwe(35))
 grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
