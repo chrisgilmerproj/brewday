@@ -11,9 +11,9 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
-from .utilities import gu_to_sg
-from .utilities import sg_to_gu
-from .utilities import sg_to_plato
+from .utilities.sugar import gu_to_sg
+from .utilities.sugar import sg_to_gu
+from .utilities.sugar import sg_to_plato
 from .validators import validate_percentage
 from .validators import validate_units
 

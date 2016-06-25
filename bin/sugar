@@ -10,12 +10,12 @@ This replicates a common calculator seen online:
 import argparse
 import sys
 
-from brew.utilities import brix_to_plato
-from brew.utilities import brix_to_sg
-from brew.utilities import plato_to_brix
-from brew.utilities import plato_to_sg
-from brew.utilities import sg_to_brix
-from brew.utilities import sg_to_plato
+from brew.utilities.sugar import brix_to_plato
+from brew.utilities.sugar import brix_to_sg
+from brew.utilities.sugar import plato_to_brix
+from brew.utilities.sugar import plato_to_sg
+from brew.utilities.sugar import sg_to_brix
+from brew.utilities.sugar import sg_to_plato
 
 
 def main(args):
