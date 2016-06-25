@@ -16,7 +16,7 @@ class TestGrains(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.grain)
-        self.assertEquals(out, "Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=0.76)")  # nopep8
+        self.assertEquals(out, "Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=293.4)")  # nopep8
 
     def test_format(self):
         out = self.grain.format()
@@ -24,7 +24,7 @@ class TestGrains(unittest.TestCase):
             Pale 2-row Grain
             ----------------
             Color:             2 degL
-            Hot Water Extract: 0.76""")
+            Hot Water Extract: 293.4""")
         self.assertEquals(out, msg)
 
     def test_get_working_yield(self):
@@ -39,16 +39,16 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_str(self):
         out = str(self.grain_add)
-        self.assertEquals(out, 'Pale 2-row, 0.95 %')
+        self.assertEquals(out, 'Pale 2-row, weight 13.96 lbs')
 
     def test_repr(self):
         out = repr(self.grain_add)
-        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=0.76), percent_malt_bill=0.95)")  # nopep8
+        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=293.4), weight=13.96)")  # nopep8
 
     def test_format(self):
         out = self.grain_add.format()
         msg = textwrap.dedent("""\
             Pale 2-row Addition
             ----------------
-            Malt Bill:         0.95 %""")
+            Malt Bill:         13.96 lbs""")
         self.assertEquals(out, msg)

@@ -56,6 +56,7 @@ SUCROSE_PPG = 46.214
 # Hot Water Extract is a measure of how many liters of wort are required at a
 # Specific Gravity of 1.001
 LITERS_OF_WORT_AT_SG = 386.0
+PPG_TO_HWE_CONVERSION = LITER_PER_GAL * POUND_PER_KG
 
 # Most hydrometers are calibrated to 59 degF
 HYDROMETER_ADJUSTMENT_TEMP = 59.0

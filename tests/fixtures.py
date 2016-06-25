@@ -8,18 +8,18 @@ from brew.recipes import Recipe
 pale = Grain('pale 2-row',
              short_name='2-row',
              color=2,
-             hot_water_extract=0.76)
+             hot_water_extract=293.4)
 crystal = Grain('crystal C20',
                 short_name='C20',
                 color=20,
-                hot_water_extract=0.70)
+                hot_water_extract=270.2)
 grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
-                         percent_malt_bill=0.95)
+                         weight=13.96)
 
 crystal_add = GrainAddition(crystal,
-                            percent_malt_bill=0.05)
+                            weight=0.78)
 grain_additions = [pale_add, crystal_add]
 
 # Define Hops

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+from brew.utilities.malt import ppg_to_hwe
 from brew.grains import Grain
 from brew.grains import GrainAddition
 from brew.hops import Hop
@@ -9,21 +10,28 @@ from brew.recipes import Recipe
 if __name__ == "__main__":
 
     # Define Grains
+    # pale = Grain('pale 2-row',
+    #              short_name='2-row',
+    #              color=2.0,
+    #              hot_water_extract=293.4)
     pale = Grain('pale 2-row',
                  short_name='2-row',
-                 color=2.0,
-                 hot_water_extract=0.76)
+                 color=1.8,
+                 hot_water_extract=ppg_to_hwe(37))
+    pale_add = GrainAddition(pale,
+                             weight=13.96)
+    # crystal = Grain('crystal C20',
+    #                 short_name='C20',
+    #                 color=20.0,
+    #                 hot_water_extract=270.2)
     crystal = Grain('crystal C20',
                     short_name='C20',
                     color=20.0,
-                    hot_water_extract=0.70)
-    grain_list = [pale, crystal]
-
-    pale_add = GrainAddition(pale,
-                             percent_malt_bill=0.95)
-
+                    hot_water_extract=ppg_to_hwe(35))
+    # OG 32.74
     crystal_add = GrainAddition(crystal,
-                                percent_malt_bill=0.05)
+                                weight=0.78)
+    grain_list = [pale, crystal]
     grain_additions = [pale_add, crystal_add]
 
     # Define Hops
@@ -39,6 +47,7 @@ if __name__ == "__main__":
                               weight=0.76,
                               boil_time=5.0,
                               percent_contribution=0.05)
+    hop_list = [centennial, cascade]
     hop_additions = [centennial_add, cascade_add]
 
     # Define Beer
@@ -52,3 +61,23 @@ if __name__ == "__main__":
                   target_ibu=40.0)
 
     beer.format()
+    # Efficiency 70%
+    # Boil: 7.0 Gal
+    # Fermenter: 5.5 Gal
+    # Final: 5.0 Gal
+    # BG 1.054 (boil gravity)
+    # OG 1.069
+    # FG 1.017
+    # ABV 6.81 (Standard)
+    # IBU 30.03 (Tinseth)
+    # SRM 5.89 (Morey)
+
+    # Pale 2-row 13.96 lbs
+    #     37 PPG, 1.8L, OG 32.87
+    # Crystal 20 0.78 lbs
+    #     35 PPG, 20L, 1.74 OG
+
+    # Centennial: 0.57 oz, 14AA, 60 min
+    #     33.85 IBU, 0.311 Util, 8.0 AAUs
+    # Cascade:    0.76 oz,  7AA,  5 min
+    #     4.50 IBU, 0.062 Util, 5.3 AAUs

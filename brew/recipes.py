@@ -11,6 +11,7 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
+from .utilities.color import calculate_srm
 from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
 from .utilities.sugar import gu_to_sg
@@ -53,6 +54,10 @@ class Recipe(object):
         self.set_units(units)
 
         # Ensure all units are the same
+        for grain_add in self.grain_additions:
+            if grain_add.units != self.units:
+                raise Exception("Grain addition units must be in '{}' not '{}'".format(  # nopep8
+                    self.units, grain_add.units))
         for hop_add in self.hop_additions:
             if hop_add.units != self.units:
                 raise Exception("Hop addition units must be in '{}' not '{}'".format(  # nopep8
@@ -81,7 +86,8 @@ class Recipe(object):
             final_volume = self.final_volume * GAL_PER_LITER
             units = IMPERIAL_UNITS
         return Recipe(self.name,
-                      grain_additions=self.grain_additions,
+                      grain_additions=[ga.change_units() for ga in
+                                       self.grain_additions],
                       hop_additions=[ha.change_units() for ha in
                                      self.hop_additions],
                       percent_brew_house_yield=0.70,
@@ -154,12 +160,19 @@ class Recipe(object):
 
         Lbs malt = (Lbs extract)(% Extract) / WY
         """
-        return (self.get_extract_weight() * grain_add.percent_malt_bill /
+        return (self.get_extract_weight() *
+                self.get_percent_malt_bill(grain_add) /
                 grain_add.grain.get_working_yield(self.percent_brew_house_yield))  # nopep8
 
+    def get_percent_malt_bill(self, grain_add):
+        return grain_add.weight / self.get_total_grain_weight()
+
     def get_total_grain_weight(self):
+        return sum([g.weight for g in self.grain_additions])
+
+    def get_total_malt_weight(self):
         """
-        Convenience method to get total grain weight
+        Convenience method to get total malt weight
         """
         return sum([self.get_malt_weight(g) for g in self.grain_additions])
 
@@ -199,7 +212,7 @@ class Recipe(object):
         water_weight = WATER_WEIGHT_IMPERIAL
         if self.units == SI_UNITS:
             water_weight = WATER_WEIGHT_SI
-        return (self.get_total_grain_weight() * liquor_to_grist_ratio /
+        return (self.get_total_malt_weight() * liquor_to_grist_ratio /
                 water_weight)
 
     def get_wort_color(self, grain_add):
@@ -212,8 +225,12 @@ class Recipe(object):
         http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
         http://brewwiki.com/index.php/Estimating_Color
         """  # nopep8
-        return (grain_add.percent_malt_bill * grain_add.grain.color *
-                (self.target_degrees_plato / 8))
+        malt_weight = self.get_malt_weight(grain_add)
+        grain_weight = liquid_malt_to_grain_weight(malt_weight)
+        return calculate_srm(grain_weight,
+                             grain_add.grain.color,
+                             self.final_volume,
+                             units=self.units)
 
     def get_total_wort_color(self):
         """
