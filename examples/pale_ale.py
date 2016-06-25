@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-from brew.utilities.malt import ppg_to_hwe
 from brew.grains import Grain
 from brew.grains import GrainAddition
 from brew.hops import Hop
@@ -13,13 +12,13 @@ if __name__ == "__main__":
     pale = Grain('pale 2-row',
                  short_name='2-row',
                  color=1.8,
-                 hot_water_extract=ppg_to_hwe(37))
+                 ppg=37)
     pale_add = GrainAddition(pale,
                              weight=13.96)
     crystal = Grain('crystal C20',
                     short_name='C20',
                     color=20.0,
-                    hot_water_extract=ppg_to_hwe(35))
+                    ppg=35)
     # OG 32.74
     crystal_add = GrainAddition(crystal,
                                 weight=0.78)

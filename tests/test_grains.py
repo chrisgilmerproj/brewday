@@ -16,7 +16,7 @@ class TestGrains(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.grain)
-        self.assertEquals(out, "Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=308.78)")  # nopep8
+        self.assertEquals(out, "Grain('pale 2-row', short_name='2-row', color=2, hwe=308.78)")  # nopep8
 
     def test_format(self):
         out = self.grain.format()
@@ -43,7 +43,7 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.grain_add)
-        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hot_water_extract=308.78), weight=13.96)")  # nopep8
+        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hwe=308.78), weight=13.96)")  # nopep8
 
     def test_format(self):
         out = self.grain_add.format()
