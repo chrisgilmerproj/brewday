@@ -319,7 +319,7 @@ class Recipe(object):
                        total_ibu=total_ibu,
                        total_wort_color=total_wort_color,
                        beer_color=beer_color,
-                       weight_large=self.types['weight_large'],
+                       **self.types
                        )))
 
         for grain_add in self.grain_additions:
@@ -342,7 +342,7 @@ class Recipe(object):
                                lme_weight=lme_weight,
                                grain_weight=grain_weight,
                                wort_color=wort_color,
-                               weight_large=self.types['weight_large'],
+                               **self.types
                                )))
 
         for hop in self.hop_additions:
@@ -360,5 +360,5 @@ class Recipe(object):
                     """.format(hops_weight=hops_weight,
                                ibus=ibus,
                                utilization=utilization,
-                               weight_small=self.types['weight_small']
+                               **self.types
                                )))

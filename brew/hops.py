@@ -310,7 +310,7 @@ class HopAddition(object):
                 hop=self.hop,
                 weight=self.weight,
                 boil_time=self.boil_time,
-                weight_small=self.types['weight_small'])
+                **self.types)
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.hop))
@@ -328,8 +328,7 @@ class HopAddition(object):
                     weight=self.weight,
                     percent_contribution=self.percent_contribution,
                     boil_time=self.boil_time,
-                    weight_small=self.types['weight_small'],
-                    ))
+                    **self.types))
         return msg
 
     def get_ibus(self, sg, final_volume):
