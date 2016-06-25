@@ -55,6 +55,19 @@ class Grain(object):
                     self.hot_water_extract))
         return msg
 
+    def get_working_yield(self, percent_brew_house_yield):
+        """
+        Working Yield
+        Working Yield is the product of the Hot Water Extract multiplied by the
+        Brew House Yield.  This product will provide the percent of extract
+        collected from the malt.
+
+        WY =    (HWE as-is)(BHY)
+        """
+        validate_percentage(percent_brew_house_yield)
+        return (self.hot_water_extract *
+                percent_brew_house_yield)
+
 
 class GrainAddition(object):
 

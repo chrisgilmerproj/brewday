@@ -139,18 +139,6 @@ class Recipe(object):
         return (water_density * self.final_volume * self.target_sg *
                 (self.target_degrees_plato / 100.0))
 
-    def get_working_yield(self, grain_add):
-        """
-        Working Yield
-        Working Yield is the product of the Hot Water Extract multiplied by the
-        Brew House Yield.  This product will provide the percent of extract
-        collected from the malt.
-
-        WY =    (HWE as-is)(BHY)
-        """
-        return (grain_add.grain.hot_water_extract *
-                self.percent_brew_house_yield)
-
     def get_malt_weight(self, grain_add):
         """
         Pounds of Malt
@@ -167,7 +155,7 @@ class Recipe(object):
         Lbs malt = (Lbs extract)(% Extract) / WY
         """
         return (self.get_extract_weight() * grain_add.percent_malt_bill /
-                self.get_working_yield(grain_add))
+                grain_add.grain.get_working_yield(self.percent_brew_house_yield))  # nopep8
 
     def get_total_grain_weight(self):
         """
@@ -318,7 +306,7 @@ class Recipe(object):
                        )))
 
         for grain_add in self.grain_additions:
-            wy = self.get_working_yield(grain_add)
+            wy = grain_add.grain.get_working_yield(self.percent_brew_house_yield)  # nopep8
             lme_weight = self.get_malt_weight(grain_add)
             dry_weight = liquid_to_dry_malt_weight(
                     lme_weight)

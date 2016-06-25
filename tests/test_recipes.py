@@ -74,12 +74,6 @@ class TestRecipeImperialUnits(unittest.TestCase):
         extract_weight = self.recipe.get_extract_weight()
         self.assertEquals(round(extract_weight, 2), 6.17)
 
-    def test_get_working_yield(self):
-        wy = self.recipe.get_working_yield(self.grain_additions[0])
-        self.assertEquals(round(wy, 2), 0.53)
-        wy = self.recipe.get_working_yield(self.grain_additions[1])
-        self.assertEquals(round(wy, 2), 0.49)
-
     def test_get_malt_weight(self):
         malt_weight = self.recipe.get_malt_weight(self.grain_additions[0])
         self.assertEquals(round(malt_weight, 2), 11.02)
@@ -160,12 +154,6 @@ class TestRecipeSIUnits(unittest.TestCase):
     def test_get_extract_weight(self):
         extract_weight = self.recipe.get_extract_weight()
         self.assertEquals(round(extract_weight, 2), 2.81)
-
-    def test_get_working_yield(self):
-        wy = self.recipe.get_working_yield(self.grain_additions[0])
-        self.assertEquals(round(wy, 2), 0.53)
-        wy = self.recipe.get_working_yield(self.grain_additions[1])
-        self.assertEquals(round(wy, 2), 0.49)
 
     def test_get_malt_weight(self):
         malt_weight = self.recipe.get_malt_weight(self.grain_additions[0])
