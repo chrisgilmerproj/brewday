@@ -10,20 +10,12 @@ from brew.recipes import Recipe
 if __name__ == "__main__":
 
     # Define Grains
-    # pale = Grain('pale 2-row',
-    #              short_name='2-row',
-    #              color=2.0,
-    #              hot_water_extract=293.4)
     pale = Grain('pale 2-row',
                  short_name='2-row',
                  color=1.8,
                  hot_water_extract=ppg_to_hwe(37))
     pale_add = GrainAddition(pale,
                              weight=13.96)
-    # crystal = Grain('crystal C20',
-    #                 short_name='C20',
-    #                 color=20.0,
-    #                 hot_water_extract=270.2)
     crystal = Grain('crystal C20',
                     short_name='C20',
                     color=20.0,

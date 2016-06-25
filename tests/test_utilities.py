@@ -20,10 +20,12 @@ from brew.utilities.malt import dry_to_liquid_malt_weight
 from brew.utilities.malt import fine_grind_to_coarse_grind
 from brew.utilities.malt import grain_to_liquid_malt_weight
 from brew.utilities.malt import hwe_to_basis
+from brew.utilities.malt import hwe_to_ppg
 from brew.utilities.malt import liquid_malt_to_grain_weight
 from brew.utilities.malt import liquid_malt_to_specialty_grain_weight
 from brew.utilities.malt import liquid_to_dry_malt_weight
 from brew.utilities.malt import plato_from_dry_basis
+from brew.utilities.malt import ppg_to_hwe
 from brew.utilities.malt import sg_from_dry_basis
 from brew.utilities.malt import specialty_grain_to_liquid_malt_weight
 from brew.utilities.sugar import brix_to_plato
@@ -200,6 +202,13 @@ class TestMaltUtilities(unittest.TestCase):
         basis = hwe_to_basis(308.8)
         self.assertEquals(round(basis, 3), 0.8)
 
+    def test_ppg_to_hwe(self):
+        hwe = ppg_to_hwe(37)
+        self.assertEqual(round(hwe, 2), 308.78)
+
+    def test_hwe_to_ppg(self):
+        ppg = hwe_to_ppg(308.78)
+        self.assertEqual(round(ppg, 2), 37)
 
 class TestColorUtilities(unittest.TestCase):
 

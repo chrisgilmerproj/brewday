@@ -47,7 +47,7 @@ class Grain(object):
             out = "{0}, color={1}".format(out, self.color)
         if self.hot_water_extract:
             out = "{0}, hot_water_extract={1}".format(out,
-                                                      self.hot_water_extract)
+                                                      round(self.hot_water_extract, 2))  # nopep8
         out = "{0})".format(out)
         return out
 
@@ -60,7 +60,7 @@ class Grain(object):
                     string.capwords(self.name),
                     '-' * (len(self.name) + 6),
                     self.color,
-                    self.hot_water_extract))
+                    round(self.hot_water_extract, 2)))
         return msg
 
     def get_working_yield(self, percent_brew_house_yield):
