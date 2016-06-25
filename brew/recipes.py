@@ -14,6 +14,7 @@ from .constants import WATER_WEIGHT_SI
 from .utilities.color import calculate_srm
 from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
+from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_gu
 from .utilities.sugar import sg_to_plato
@@ -324,10 +325,9 @@ class Recipe(object):
 
         for grain_add in self.grain_additions:
             wy = grain_add.grain.get_working_yield(self.percent_brew_house_yield)  # nopep8
-            lme_weight = self.get_malt_weight(grain_add)
+            grain_weight = grain_add.weight
+            lme_weight = grain_to_liquid_malt_weight(grain_weight)
             dry_weight = liquid_to_dry_malt_weight(
-                    lme_weight)
-            grain_weight = liquid_malt_to_grain_weight(
                     lme_weight)
             wort_color = self.get_wort_color(grain_add)
             print(grain_add.format())
