@@ -54,14 +54,13 @@ if __name__ == "__main__":
     beer.format()
     # Efficiency 70%
     # Boil: 7.0 Gal
-    # Fermenter: 5.5 Gal
-    # Final: 5.0 Gal
+    # Fermenter: 5.0 Gal
     # BG 1.054 (boil gravity)
-    # OG 1.069
-    # FG 1.017
-    # ABV 6.81 (Standard)
-    # IBU 30.03 (Tinseth)
-    # SRM 5.89 (Morey)
+    # OG 1.076
+    # FG 1.019
+    # ABV 7.49 (Standard)
+    # IBU 33.04 (Tinseth)
+    # SRM 6.29 (Morey)
 
     # Pale 2-row 13.96 lbs
     #     37 PPG, 1.8L, OG 32.87
