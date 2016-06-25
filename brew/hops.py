@@ -14,11 +14,6 @@ from .validators import validate_percentage
 from .validators import validate_units
 
 
-def get_percent_ibus(hop, total_ibus):
-    """Get the percentage the hops contributes to total ibus"""
-    pass
-
-
 class Hop(object):
 
     def __init__(self, name,

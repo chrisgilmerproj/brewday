@@ -177,6 +177,12 @@ class Recipe(object):
         """
         return sum([self.get_malt_weight(g) for g in self.grain_additions])
 
+    def get_percent_ibus(self, hop_add):
+        """Get the percentage the hops contributes to total ibus"""
+        sg = self.target_sg
+        fv = self.final_volume
+        return hop_add.get_ibus(sg, fv) / self.get_total_ibu()
+
     def get_total_ibu(self):
         """
         Convenience method to get total IBU
