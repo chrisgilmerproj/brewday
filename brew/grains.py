@@ -1,7 +1,15 @@
 import string
 import textwrap
 
+from .constants import IMPERIAL_TYPES
+from .constants import IMPERIAL_UNITS
+from .constants import KG_PER_POUND
+from .constants import POUND_PER_KG
+from .constants import SI_TYPES
+from .constants import SI_UNITS
+from .utilities.malt import hwe_to_basis
 from .validators import validate_percentage
+from .validators import validate_units
 
 
 class Grain(object):
@@ -26,7 +34,7 @@ class Grain(object):
         self.name = name
         self.short_name = short_name or name
         self.color = color
-        self.hot_water_extract = validate_percentage(hot_water_extract)
+        self.hot_water_extract = hot_water_extract
 
     def __str__(self):
         return string.capwords(self.name)
@@ -65,34 +73,61 @@ class Grain(object):
         WY =    (HWE as-is)(BHY)
         """
         validate_percentage(percent_brew_house_yield)
-        return (self.hot_water_extract *
+        return (hwe_to_basis(self.hot_water_extract) *
                 percent_brew_house_yield)
 
 
 class GrainAddition(object):
 
     def __init__(self, grain,
-                 percent_malt_bill=None):
+                 weight=None,
+                 units=IMPERIAL_UNITS):
         self.grain = grain
-        self.percent_malt_bill = validate_percentage(percent_malt_bill)
+        self.weight = weight
+
+        # Manage units
+        self.set_units(units)
+
+    def set_units(self, units):
+        self.units = validate_units(units)
+        if self.units == IMPERIAL_UNITS:
+            self.types = IMPERIAL_TYPES
+        elif self.units == SI_UNITS:
+            self.types = SI_TYPES
+
+    def change_units(self):
+        """
+        Change units from one type to the other return new instance
+        """
+        if self.units == IMPERIAL_UNITS:
+            weight = self.weight * KG_PER_POUND
+            units = SI_UNITS
+        elif self.units == SI_UNITS:
+            weight = self.weight * POUND_PER_KG
+            units = IMPERIAL_UNITS
+        return GrainAddition(self.grain,
+                             weight=weight,
+                             units=units)
 
     def __str__(self):
-        return "{0}, {1} %".format(
-                self.grain, self.percent_malt_bill)
+        return "{grain}, weight {weight} {weight_large}".format(
+                grain=self.grain,
+                weight=self.weight,
+                **self.types)
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.grain))
-        if self.percent_malt_bill:
-            out = "{0}, percent_malt_bill={1}".format(out,
-                                                      self.percent_malt_bill)
+        if self.weight:
+            out = "{0}, weight={1}".format(out, self.weight)
         out = "{0})".format(out)
         return out
 
     def format(self):
         msg = textwrap.dedent("""\
-                {0} Addition
+                {grain} Addition
                 ----------------
-                Malt Bill:         {1} %""".format(
-                    self.grain,
-                    self.percent_malt_bill))
+                Malt Bill:         {weight} {weight_large}""".format(
+                    grain=self.grain,
+                    weight=self.weight,
+                    **self.types))
         return msg

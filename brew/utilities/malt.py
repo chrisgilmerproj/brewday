@@ -1,5 +1,6 @@
 
 from ..constants import FC_DIFF_TWO_ROW
+from ..constants import PPG_TO_HWE_CONVERSION
 from ..constants import LITERS_OF_WORT_AT_SG
 from ..constants import MOISTURE_CORRECTION
 from ..constants import MOISTURE_FINISHED_MALT
@@ -158,3 +159,11 @@ def basis_to_hwe(basis_percentage):
 
 def hwe_to_basis(hwe):
     return hwe / LITERS_OF_WORT_AT_SG
+
+
+def ppg_to_hwe(ppg):
+    return ppg * PPG_TO_HWE_CONVERSION
+
+
+def hwe_to_ppg(hwe):
+    return hwe / PPG_TO_HWE_CONVERSION
