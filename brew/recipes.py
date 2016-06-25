@@ -11,6 +11,7 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
+from .utilities.abv import alcohol_by_volume_standard
 from .utilities.color import calculate_srm
 from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
@@ -98,16 +99,31 @@ class Recipe(object):
                       target_ibu=self.target_ibu,
                       units=units)
 
-    def get_total_gravity_units(self):
-        return sg_to_gu(self.target_sg) * self.final_volume
+    def get_original_gravity_units(self):
+        total_points = 0
+        if self.units == IMPERIAL_UNITS:
+            for grain_add in self.grain_additions:
+                total_points += grain_add.grain.ppg * grain_add.weight
+        if self.units == SI_UNITS:
+            for grain_add in self.grain_additions:
+                total_points += grain_add.grain.hwe * grain_add.weight
+        return total_points * self.percent_brew_house_yield / self.final_volume
 
-    def get_starting_sg(self):
-        total_gu = self.get_total_gravity_units()
-        starting_gu = total_gu / self.start_volume
-        return gu_to_sg(starting_gu)
+    def get_original_gravity(self):
+        return gu_to_sg(self.get_original_gravity_units())
 
-    def get_starting_plato(self):
-        return sg_to_plato(self.get_starting_sg())
+    def get_boil_gravity_units(self):
+        total_points = 0
+        if self.units == IMPERIAL_UNITS:
+            for grain_add in self.grain_additions:
+                total_points += grain_add.grain.ppg * grain_add.weight
+        if self.units == SI_UNITS:
+            for grain_add in self.grain_additions:
+                total_points += grain_add.grain.hwe * grain_add.weight
+        return total_points * self.percent_brew_house_yield / self.start_volume
+
+    def get_boil_gravity(self):
+        return gu_to_sg(self.get_boil_gravity_units())
 
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
@@ -143,7 +159,7 @@ class Recipe(object):
         water_density = WATER_WEIGHT_IMPERIAL
         if self.units == SI_UNITS:
             water_density = WATER_WEIGHT_SI
-        return (water_density * self.final_volume * self.target_sg *
+        return (water_density * self.final_volume * self.get_boil_gravity() *
                 (self.target_degrees_plato / 100.0))
 
     def get_malt_weight(self, grain_add):
@@ -179,7 +195,7 @@ class Recipe(object):
 
     def get_percent_ibus(self, hop_add):
         """Get the percentage the hops contributes to total ibus"""
-        sg = self.target_sg
+        sg = self.get_boil_gravity()
         fv = self.final_volume
         return hop_add.get_ibus(sg, fv) / self.get_total_ibu()
 
@@ -187,7 +203,7 @@ class Recipe(object):
         """
         Convenience method to get total IBU
         """
-        sg = self.target_sg
+        sg = self.get_boil_gravity()
         fv = self.final_volume
         return sum([hop_add.get_ibus(sg, fv)
                    for hop_add in self.hop_additions])
@@ -300,8 +316,9 @@ class Recipe(object):
 
         If you make this recipe, add one ounce of Cascade in the sedondary for an excellent dry hop aroma!
         """  # nopep8
-        sg = self.target_sg
-        deg_plato = self.target_degrees_plato
+        og = self.get_original_gravity()
+        bg = self.get_boil_gravity()
+        abv = 7.4  # alcohol_by_volume_standard(og, fg)
         extract_weight = self.get_extract_weight()
         total_wort_color = self.get_total_wort_color()
         beer_color = self.get_beer_color()
@@ -311,16 +328,18 @@ class Recipe(object):
         print(textwrap.dedent("""\
             {name}
             -----------------------------------
-            Specific Gravity:   {sg:0.3f}
-            Degrees Plato:      {deg_plato:0.3f} degP
+            Original Gravity:   {og:0.3f}
+            Boil Gravity:       {bg:0.3f}
+            ABV Standard:       {abv:0.2f} %
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
             Total IBU:          {total_ibu:0.2f} ibu
             Total Wort Color:   {total_wort_color:0.2f} degL
             Beer Color:         {beer_color:0.2f} degL
             """.format(name=string.capwords(self.name),
-                       sg=sg,
-                       deg_plato=deg_plato,
+                       og=og,
+                       bg=bg,
+                       abv=abv,
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,
                        total_ibu=total_ibu,
@@ -352,12 +371,12 @@ class Recipe(object):
                                )))
 
         for hop in self.hop_additions:
-            hops_weight = hop.get_hops_weight(sg,
+            hops_weight = hop.get_hops_weight(bg,
                                               self.target_ibu,
                                               self.final_volume)
-            ibus = hop.get_ibus(sg, self.final_volume)
+            ibus = hop.get_ibus(bg, self.final_volume)
             utilization = hop.utilization_cls.get_percent_utilization(
-                    sg, hop.boil_time)
+                    bg, hop.boil_time)
             print(hop.format())
             print(textwrap.dedent("""\
                     Weight:       {hops_weight:0.2f} {weight_small}
