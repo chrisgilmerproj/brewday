@@ -27,6 +27,10 @@ class TestGrains(unittest.TestCase):
             Hot Water Extract: 0.76""")
         self.assertEquals(out, msg)
 
+    def test_get_working_yield(self):
+        wy = self.grain.get_working_yield(0.70)
+        self.assertEquals(round(wy, 2), 0.53)
+
 
 class TestGrainAdditions(unittest.TestCase):
 
