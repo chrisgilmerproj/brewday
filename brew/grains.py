@@ -8,6 +8,8 @@ from .constants import POUND_PER_KG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .utilities.malt import hwe_to_basis
+from .utilities.malt import hwe_to_ppg
+from .utilities.malt import ppg_to_hwe
 from .validators import validate_percentage
 from .validators import validate_units
 
@@ -30,11 +32,19 @@ class Grain(object):
     def __init__(self, name,
                  short_name=None,
                  color=None,
-                 hot_water_extract=None):
+                 ppg=None,
+                 hwe=None):
         self.name = name
         self.short_name = short_name or name
         self.color = color
-        self.hot_water_extract = hot_water_extract
+        if ppg and hwe:
+            raise Exception("Cannot provide both ppg and hwe")
+        if ppg:
+            self.ppg = ppg
+            self.hwe = ppg_to_hwe(ppg)
+        elif hwe:
+            self.hwe = hwe
+            self.ppg = hwe_to_ppg(hwe)
 
     def __str__(self):
         return string.capwords(self.name)
@@ -45,9 +55,9 @@ class Grain(object):
             out = "{0}, short_name='{1}'".format(out, self.short_name)
         if self.color:
             out = "{0}, color={1}".format(out, self.color)
-        if self.hot_water_extract:
-            out = "{0}, hot_water_extract={1}".format(out,
-                                                      round(self.hot_water_extract, 2))  # nopep8
+        if self.hwe:
+            out = "{0}, hwe={1}".format(out,
+                                                      round(self.hwe, 2))  # nopep8
         out = "{0})".format(out)
         return out
 
@@ -60,7 +70,7 @@ class Grain(object):
                     string.capwords(self.name),
                     '-' * (len(self.name) + 6),
                     self.color,
-                    round(self.hot_water_extract, 2)))
+                    round(self.hwe, 2)))
         return msg
 
     def get_working_yield(self, percent_brew_house_yield):
@@ -73,7 +83,7 @@ class Grain(object):
         WY =    (HWE as-is)(BHY)
         """
         validate_percentage(percent_brew_house_yield)
-        return (hwe_to_basis(self.hot_water_extract) *
+        return (hwe_to_basis(self.hwe) *
                 percent_brew_house_yield)
 
 
