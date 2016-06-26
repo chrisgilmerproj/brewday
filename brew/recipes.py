@@ -33,6 +33,7 @@ class Recipe(object):
     def __init__(self, name,
                  grain_additions=None,
                  hop_additions=None,
+                 yeast_attenuation=0.75,
                  percent_brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
@@ -41,6 +42,7 @@ class Recipe(object):
         self.name = name
         self.grain_additions = grain_additions
         self.hop_additions = hop_additions
+        self.yeast_attenuation = validate_percentage(yeast_attenuation)
 
         self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8 %
         self.start_volume = start_volume  # G
@@ -120,12 +122,11 @@ class Recipe(object):
     def get_boil_gravity(self):
         return gu_to_sg(self.get_boil_gravity_units())
 
-    def get_final_gravity_units(self, attenuation=0.75):
-        validate_percentage(attenuation)
-        return self.get_original_gravity_units() * (1.0 - attenuation)
+    def get_final_gravity_units(self):
+        return self.get_original_gravity_units() * (1.0 - self.yeast_attenuation)  # nopep8
 
-    def get_final_gravity(self, attenuation=0.75):
-        return gu_to_sg(self.get_final_gravity_units(attenuation=attenuation))
+    def get_final_gravity(self):
+        return gu_to_sg(self.get_final_gravity_units())
 
     def get_degrees_plato(self):
         return sg_to_plato(self.get_boil_gravity())
