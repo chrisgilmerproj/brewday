@@ -35,17 +35,29 @@ class TestRecipeSIUnits(unittest.TestCase):
         for hop_add in self.recipe.hop_additions:
             self.assertEquals(hop_add.units, SI_UNITS)
 
+    def test_get_original_gravity_units(self):
+        out = self.recipe.get_original_gravity_units()
+        self.assertEquals(round(out, 2), 76.13)
+
     def test_get_original_gravity(self):
         out = self.recipe.get_original_gravity()
         self.assertEquals(round(out, 3), 1.076)
+
+    def test_get_boil_gravity_units(self):
+        out = self.recipe.get_boil_gravity_units()
+        self.assertEquals(round(out, 2), 54.38)
 
     def test_get_boil_gravity(self):
         out = self.recipe.get_boil_gravity()
         self.assertEquals(round(out, 3), 1.054)
 
-    def test_get_boil_gravity_units(self):
-        out = self.recipe.get_boil_gravity_units()
-        self.assertEquals(round(out, 2), 54.38)
+    def test_get_final_gravity_units(self):
+        out = self.recipe.get_final_gravity_units()
+        self.assertEquals(round(out, 2), 19.03)
+
+    def test_get_final_gravity(self):
+        out = self.recipe.get_final_gravity()
+        self.assertEquals(round(out, 3), 1.019)
 
     def test_brew_house_yield(self):
         vol_actual = 5.5 * LITER_PER_GAL
