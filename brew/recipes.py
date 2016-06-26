@@ -13,6 +13,7 @@ from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
 from .utilities.abv import alcohol_by_volume_standard
 from .utilities.color import calculate_srm
+from .utilities.color import srm_to_ebc
 from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
 from .utilities.malt import grain_to_liquid_malt_weight
@@ -343,7 +344,8 @@ class Recipe(object):
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
             Total IBU:          {total_ibu:0.2f} ibu
             Total Wort Color:   {total_wort_color:0.2f} degL
-            Beer Color:         {beer_color:0.2f} degL
+            Beer Color SRM:     {beer_color_srm:0.2f} degL
+            Beer Color EBC:     {beer_color_ebc:0.2f} degL
             """.format(name=string.capwords(self.name),
                        start_volume=self.start_volume,
                        final_volume=self.final_volume,
@@ -356,7 +358,8 @@ class Recipe(object):
                        total_grain_weight=total_grain_weight,
                        total_ibu=total_ibu,
                        total_wort_color=total_wort_color,
-                       beer_color=beer_color,
+                       beer_color_srm=beer_color,
+                       beer_color_ebc=srm_to_ebc(beer_color),
                        **self.types
                        )))
 
