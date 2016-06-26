@@ -55,8 +55,8 @@ if __name__ == "__main__":
     # Efficiency 70%
     # Boil: 7.0 Gal
     # Fermenter: 5.0 Gal
-    # BG 1.054 (boil gravity)
     # OG 1.076
+    # BG 1.054 (boil gravity)
     # FG 1.019
     # ABV 7.49 (Standard)
     # IBU 33.04 (Tinseth)
