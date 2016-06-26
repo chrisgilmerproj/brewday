@@ -387,19 +387,14 @@ class Recipe(object):
                                )))
 
         for hop in self.hop_additions:
-            hops_weight = hop.get_hops_weight(bg,
-                                              self.target_ibu,
-                                              self.final_volume)
             ibus = hop.get_ibus(bg, self.final_volume)
             utilization = hop.utilization_cls.get_percent_utilization(
                     bg, hop.boil_time)
             print(hop.format())
             print(textwrap.dedent("""\
-                    Weight:       {hops_weight:0.2f} {weight_small}
                     IBUs:         {ibus:0.2f}
                     Utilization:  {utilization:0.2f} %
-                    """.format(hops_weight=hops_weight,
-                               ibus=ibus,
+                    """.format(ibus=ibus,
                                utilization=utilization,
                                **self.types
                                )))
