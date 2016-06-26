@@ -74,7 +74,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
     def test_get_total_ibu(self):
         self.assertEqual(round(self.recipe.get_boil_gravity(), 3), 1.054)
-        self.assertEqual(self.recipe.final_volume, 5.0)
+        self.assertEqual(round(self.recipe.final_volume, 2), 5.0)
         total_ibu = self.recipe.get_total_ibu()
         self.assertEquals(round(total_ibu, 2), 40.51)
 
@@ -94,8 +94,8 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
-        self.assertEquals(round(total_wort_color, 2), 7.96)
+        self.assertEquals(round(total_wort_color, 2), 6.45)
 
     def test_get_beer_color(self):
         recipe_color = self.recipe.get_beer_color()
-        self.assertEquals(round(recipe_color, 2), 5.57)
+        self.assertEquals(round(recipe_color, 2), 4.51)

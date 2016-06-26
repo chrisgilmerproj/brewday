@@ -12,6 +12,7 @@ from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
 from .utilities.abv import alcohol_by_volume_standard
+from .utilities.color import calculate_mcu
 from .utilities.color import calculate_srm
 from .utilities.color import srm_to_ebc
 from .utilities.malt import liquid_malt_to_grain_weight
@@ -242,7 +243,7 @@ class Recipe(object):
         return (self.get_total_malt_weight() * liquor_to_grist_ratio /
                 water_weight)
 
-    def get_wort_color(self, grain_add):
+    def get_wort_color_mcu(self, grain_add):
         """
         Calculation of Wort and Beer Color
 
@@ -254,16 +255,21 @@ class Recipe(object):
         """  # nopep8
         malt_weight = self.get_malt_weight(grain_add)
         grain_weight = liquid_malt_to_grain_weight(malt_weight)
-        return calculate_srm(grain_weight,
+        return calculate_mcu(grain_weight,
                              grain_add.grain.color,
                              self.final_volume,
                              units=self.units)
+
+    def get_wort_color(self, grain_add):
+        mcu = self.get_wort_color_mcu(grain_add)
+        return calculate_srm(mcu)
 
     def get_total_wort_color(self):
         """
         Convenience method to get total wort color
         """
-        return sum([self.get_wort_color(ga) for ga in self.grain_additions])
+        mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
+        return calculate_srm(mcu)
 
     def get_beer_color(self, percent_color_loss=0.30):
         """
@@ -271,8 +277,7 @@ class Recipe(object):
         Color of Beer = (color of wort)(1 - % color loss)
         """  # nopep8
         validate_percentage(percent_color_loss)
-        return (self.get_total_wort_color() *
-                (1.0 - percent_color_loss))
+        return (self.get_total_wort_color() * (1.0 - percent_color_loss))
 
     def format(self):
         """

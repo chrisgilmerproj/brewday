@@ -40,8 +40,7 @@ def calculate_mcu(grain_weight, beer_color, final_volume,
     return mcu
 
 
-def calculate_srm_mosher(grain_weight, beer_color, final_volume,
-                         units=IMPERIAL_UNITS):
+def calculate_srm_mosher(mcu):
     """
     Mosher Equation
 
@@ -49,15 +48,13 @@ def calculate_srm_mosher(grain_weight, beer_color, final_volume,
     beer_color - in deg Lovibond
     final_volume - in gal or liters
     """  # nopep8
-    mcu = calculate_mcu(grain_weight, beer_color, final_volume, units=units)
     if mcu < 7.0:
         raise Exception("Mosher equation does not work for MCU < 7.0")
     srm = (mcu * 0.3) + 4.7
     return srm
 
 
-def calculate_srm_daniels(grain_weight, beer_color, final_volume,
-                          units=IMPERIAL_UNITS):
+def calculate_srm_daniels(mcu):
     """
     Daniels Equation
 
@@ -65,15 +62,13 @@ def calculate_srm_daniels(grain_weight, beer_color, final_volume,
     beer_color - in deg Lovibond
     final_volume - in gal or liters
     """  # nopep8
-    mcu = calculate_mcu(grain_weight, beer_color, final_volume, units=units)
     if mcu < 11.0:
         raise Exception("Daniels equation does not work for MCU < 11.0")
     srm = (mcu * 0.2) + 8.4
     return srm
 
 
-def calculate_srm_daniels_power(grain_weight, beer_color, final_volume,
-                                units=IMPERIAL_UNITS):
+def calculate_srm_daniels_power(mcu):
     """
     Daniels Power Equation based on work by Druey
 
@@ -81,15 +76,13 @@ def calculate_srm_daniels_power(grain_weight, beer_color, final_volume,
     beer_color - in deg Lovibond
     final_volume - in gal or liters
     """  # nopep8
-    mcu = calculate_mcu(grain_weight, beer_color, final_volume, units=units)
     srm = 1.73 * (mcu ** 0.64) - 0.27
     if srm > 50.0:
         raise Exception("Daniels Power equation does not work above SRM 50")
     return srm
 
 
-def calculate_srm_noonan_power(grain_weight, beer_color, final_volume,
-                               units=IMPERIAL_UNITS):
+def calculate_srm_noonan_power(mcu):
     """
     Noonan Power Equation based on work by Druey
 
@@ -97,15 +90,13 @@ def calculate_srm_noonan_power(grain_weight, beer_color, final_volume,
     beer_color - in deg Lovibond
     final_volume - in gal or liters
     """  # nopep8
-    mcu = calculate_mcu(grain_weight, beer_color, final_volume, units=units)
     srm = 15.03 * (mcu ** 0.27) - 15.53
     if srm > 50.0:
         raise Exception("Noonan Power equation does not work above SRM 50")
     return srm
 
 
-def calculate_srm_morey_hybrid(grain_weight, beer_color, final_volume,
-                               units=IMPERIAL_UNITS):
+def calculate_srm_morey_hybrid(mcu):
     """
     A hybrid approach used by Morey.  Assumptions:
 
@@ -122,22 +113,17 @@ def calculate_srm_morey_hybrid(grain_weight, beer_color, final_volume,
 
     http://babblehomebrewers.com/attachments/article/61/beercolor.pdf
     """
-    mcu = calculate_mcu(grain_weight, beer_color, final_volume,
-                        units=units)
     if 0 < mcu < 10:
         return mcu
     elif 10 <= mcu < 37:
-        return calculate_srm_daniels(grain_weight, beer_color, final_volume,
-                                     units=units)
+        return calculate_srm_daniels(mcu)
     elif 37 <= mcu < 50:
-        return calculate_srm_mosher(grain_weight, beer_color, final_volume,
-                                    units=units)
+        return calculate_srm_mosher(mcu)
     else:
         raise Exception("Morey Hybrid does not work above SRM 50")
 
 
-def calculate_srm_morey(grain_weight, beer_color, final_volume,
-                        units=IMPERIAL_UNITS):
+def calculate_srm_morey(mcu):
     """
     Morey Equation
     http://www.morebeer.com/brewingtechniques/beerslaw/morey.html
@@ -148,20 +134,17 @@ def calculate_srm_morey(grain_weight, beer_color, final_volume,
 
     http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
     """  # nopep8
-    mcu = calculate_mcu(grain_weight, beer_color, final_volume, units=units)
     srm = 1.4922 * (mcu ** 0.6859)
     if srm > 50.0:
         raise Exception("Morey equation does not work above SRM 50")
     return srm
 
 
-def calculate_srm(grain_weight, beer_color, final_volume,
-                  units=IMPERIAL_UNITS):
+def calculate_srm(mcu):
     """
     General srm calculation uses the Morey Power Equation
     """
-    return calculate_srm_morey(grain_weight, beer_color, final_volume,
-                               units=units)
+    return calculate_srm_morey(mcu)
 
 
 def lovibond_to_srm(lovibond):
