@@ -262,7 +262,7 @@ class Recipe(object):
         """
         Convenience method to get total wort color
         """
-        return sum([self.get_wort_color(g) for g in self.grain_additions])
+        return sum([self.get_wort_color(ga) for ga in self.grain_additions])
 
     def get_beer_color(self, percent_color_loss=0.30):
         """
