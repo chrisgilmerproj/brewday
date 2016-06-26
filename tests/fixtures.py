@@ -46,5 +46,4 @@ recipe = Recipe(name='pale ale',
                 percent_brew_house_yield=0.70,  # %
                 start_volume=7.0,  # G
                 final_volume=5.0,  # G
-                target_sg=1.057,  # SG
                 target_ibu=40.0)

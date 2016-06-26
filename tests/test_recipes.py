@@ -68,17 +68,17 @@ class TestRecipeImperialUnits(unittest.TestCase):
     def test_brew_house_yield(self):
         vol_actual = 5.5
         bhy = self.recipe.get_brew_house_yield(SUCROSE_PLATO, vol_actual)
-        self.assertEqual(round(bhy, 2), 0.63)
+        self.assertEqual(round(bhy, 2), 0.66)
 
     def test_get_extract_weight(self):
         extract_weight = self.recipe.get_extract_weight()
-        self.assertEquals(round(extract_weight, 2), 6.16)
+        self.assertEquals(round(extract_weight, 2), 5.89)
 
     def test_get_malt_weight(self):
         malt_weight = self.recipe.get_malt_weight(self.grain_additions[0])
-        self.assertEquals(round(malt_weight, 2), 10.42)
+        self.assertEquals(round(malt_weight, 2), 9.96)
         malt_weight = self.recipe.get_malt_weight(self.grain_additions[1])
-        self.assertEquals(round(malt_weight, 2), 0.62)
+        self.assertEquals(round(malt_weight, 2), 0.59)
 
     def test_get_total_grain_weight(self):
         total_grain_weight = self.recipe.get_total_grain_weight()
@@ -86,10 +86,10 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
     def test_get_total_malt_weight(self):
         total_malt_weight = self.recipe.get_total_malt_weight()
-        self.assertEquals(round(total_malt_weight, 2), 11.03)
+        self.assertEquals(round(total_malt_weight, 2), 10.55)
 
     def test_get_total_ibu(self):
-        self.assertEqual(self.recipe.target_sg, 1.057)
+        self.assertEqual(round(self.recipe.get_boil_gravity(), 3), 1.054)
         self.assertEqual(self.recipe.final_volume, 5.0)
         total_ibu = self.recipe.get_total_ibu()
         self.assertEquals(round(total_ibu, 2), 40.51)
@@ -100,21 +100,21 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
     def test_get_mash_water_volume(self):
         mash_water_vol = self.recipe.get_mash_water_volume(3.0 / 1.0)
-        self.assertEquals(round(mash_water_vol, 2), 3.98)
+        self.assertEquals(round(mash_water_vol, 2), 3.8)
 
     def test_get_wort_color(self):
         wort_color = self.recipe.get_wort_color(self.grain_additions[0])
-        self.assertEquals(round(wort_color, 2), 4.84)
+        self.assertEquals(round(wort_color, 2), 4.69)
         wort_color = self.recipe.get_wort_color(self.grain_additions[1])
-        self.assertEquals(round(wort_color, 2), 3.37)
+        self.assertEquals(round(wort_color, 2), 3.27)
 
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
-        self.assertEquals(round(total_wort_color, 2), 8.21)
+        self.assertEquals(round(total_wort_color, 2), 7.96)
 
     def test_get_beer_color(self):
         recipe_color = self.recipe.get_beer_color()
-        self.assertEquals(round(recipe_color, 2), 5.75)
+        self.assertEquals(round(recipe_color, 2), 5.57)
 
 
 class TestRecipeSIUnits(unittest.TestCase):
@@ -155,17 +155,17 @@ class TestRecipeSIUnits(unittest.TestCase):
     def test_brew_house_yield(self):
         vol_actual = 5.5 * LITER_PER_GAL
         bhy = self.recipe.get_brew_house_yield(SUCROSE_PLATO, vol_actual)
-        self.assertEqual(round(bhy, 2), 0.63)
+        self.assertEqual(round(bhy, 2), 0.66)
 
     def test_get_extract_weight(self):
         extract_weight = self.recipe.get_extract_weight()
-        self.assertEquals(round(extract_weight, 2), 2.8)
+        self.assertEquals(round(extract_weight, 2), 2.68)
 
     def test_get_malt_weight(self):
         malt_weight = self.recipe.get_malt_weight(self.grain_additions[0])
-        self.assertEquals(round(malt_weight, 2), 4.74)
+        self.assertEquals(round(malt_weight, 2), 4.53)
         malt_weight = self.recipe.get_malt_weight(self.grain_additions[1])
-        self.assertEquals(round(malt_weight, 2), 0.28)
+        self.assertEquals(round(malt_weight, 2), 0.27)
 
     def test_get_total_grain_weight(self):
         total_grain_weight = self.recipe.get_total_grain_weight()
@@ -173,10 +173,10 @@ class TestRecipeSIUnits(unittest.TestCase):
 
     def test_get_total_malt_weight(self):
         total_malt_weight = self.recipe.get_total_malt_weight()
-        self.assertEquals(round(total_malt_weight, 2), 5.02)
+        self.assertEquals(round(total_malt_weight, 2), 4.8)
 
     def test_get_total_ibu(self):
-        self.assertEqual(self.recipe.target_sg, 1.057)
+        self.assertEqual(round(self.recipe.get_boil_gravity(), 3), 1.054)
         self.assertEqual(round(self.recipe.final_volume, 2), 18.93)
         total_ibu = self.recipe.get_total_ibu()
         self.assertEquals(round(total_ibu, 2), 40.51)
@@ -187,18 +187,18 @@ class TestRecipeSIUnits(unittest.TestCase):
 
     def test_get_mash_water_volume(self):
         mash_water_vol = self.recipe.get_mash_water_volume(3.0 / 1.0)
-        self.assertEquals(round(mash_water_vol, 2), 15.06)
+        self.assertEquals(round(mash_water_vol, 2), 14.4)
 
     def test_get_wort_color(self):
         wort_color = self.recipe.get_wort_color(self.grain_additions[0])
-        self.assertEquals(round(wort_color, 2), 4.85)
+        self.assertEquals(round(wort_color, 2), 4.7)
         wort_color = self.recipe.get_wort_color(self.grain_additions[1])
-        self.assertEquals(round(wort_color, 2), 3.38)
+        self.assertEquals(round(wort_color, 2), 3.28)
 
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
-        self.assertEquals(round(total_wort_color, 2), 8.23)
+        self.assertEquals(round(total_wort_color, 2), 7.98)
 
     def test_get_beer_color(self):
         recipe_color = self.recipe.get_beer_color()
-        self.assertEquals(round(recipe_color, 2), 5.76)
+        self.assertEquals(round(recipe_color, 2), 5.58)

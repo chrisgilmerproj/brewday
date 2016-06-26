@@ -17,7 +17,6 @@ from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
 from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.sugar import gu_to_sg
-from .utilities.sugar import sg_to_gu
 from .utilities.sugar import sg_to_plato
 from .validators import validate_percentage
 from .validators import validate_units
@@ -37,7 +36,6 @@ class Recipe(object):
                  percent_brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
-                 target_sg=None,
                  target_ibu=None,
                  units=IMPERIAL_UNITS):
         self.name = name
@@ -47,8 +45,6 @@ class Recipe(object):
         self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8 %
         self.start_volume = start_volume  # G
         self.final_volume = final_volume  # G
-        self.target_sg = target_sg  # SG
-        self.target_degrees_plato = sg_to_plato(self.target_sg)  # P
 
         self.target_ibu = target_ibu
 
@@ -95,7 +91,6 @@ class Recipe(object):
                       percent_brew_house_yield=0.70,
                       start_volume=start_volume,
                       final_volume=final_volume,
-                      target_sg=self.target_sg,
                       target_ibu=self.target_ibu,
                       units=units)
 
@@ -132,6 +127,9 @@ class Recipe(object):
     def get_final_gravity(self, attenuation=0.75):
         return gu_to_sg(self.get_final_gravity_units(attenuation=attenuation))
 
+    def get_degrees_plato(self):
+        return sg_to_plato(self.get_boil_gravity())
+
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
         Brew House Yield (BHY)
@@ -142,7 +140,7 @@ class Recipe(object):
         BHY  =  [(Pactual)(galactual)(BHYtarget)] / [(Ptarget)(galtarget)]
         """
         num = plato_actual * vol_actual * self.percent_brew_house_yield
-        den = self.target_degrees_plato * self.final_volume
+        den = self.get_degrees_plato() * self.final_volume
         return num / den
 
     def get_extract_weight(self):
@@ -167,7 +165,7 @@ class Recipe(object):
         if self.units == SI_UNITS:
             water_density = WATER_WEIGHT_SI
         return (water_density * self.final_volume * self.get_boil_gravity() *
-                (self.target_degrees_plato / 100.0))
+                (self.get_degrees_plato() / 100.0))
 
     def get_malt_weight(self, grain_add):
         """
