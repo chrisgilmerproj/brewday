@@ -90,7 +90,8 @@ class Recipe(object):
                                        self.grain_additions],
                       hop_additions=[ha.change_units() for ha in
                                      self.hop_additions],
-                      percent_brew_house_yield=0.70,
+                      yeast_attenuation=self.yeast_attenuation,
+                      percent_brew_house_yield=self.percent_brew_house_yield,
                       start_volume=start_volume,
                       final_volume=final_volume,
                       target_ibu=self.target_ibu,
@@ -335,20 +336,26 @@ class Recipe(object):
         print(textwrap.dedent("""\
             {name}
             -----------------------------------
+            Start Volume:       {start_volume:0.1f}
+            Final Volume:       {final_volume:0.1f}
             Original Gravity:   {og:0.3f}
             Boil Gravity:       {bg:0.3f}
             Final Gravity:      {fg:0.3f}
             ABV Standard:       {abv:0.2f} %
+            Yeast Attenuation:  {yeast_attenuation:0.2f} %
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
             Total IBU:          {total_ibu:0.2f} ibu
             Total Wort Color:   {total_wort_color:0.2f} degL
             Beer Color:         {beer_color:0.2f} degL
             """.format(name=string.capwords(self.name),
+                       start_volume=self.start_volume,
+                       final_volume=self.final_volume,
                        og=og,
                        bg=bg,
                        fg=fg,
                        abv=abv,
+                       yeast_attenuation=self.yeast_attenuation,
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,
                        total_ibu=total_ibu,
