@@ -37,7 +37,6 @@ class Recipe(object):
                  percent_brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
-                 target_ibu=None,
                  units=IMPERIAL_UNITS):
         self.name = name
         self.grain_additions = grain_additions
@@ -47,8 +46,6 @@ class Recipe(object):
         self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8 %
         self.start_volume = start_volume  # G
         self.final_volume = final_volume  # G
-
-        self.target_ibu = target_ibu
 
         # Manage units
         self.set_units(units)
@@ -94,7 +91,6 @@ class Recipe(object):
                       percent_brew_house_yield=self.percent_brew_house_yield,
                       start_volume=start_volume,
                       final_volume=final_volume,
-                      target_ibu=self.target_ibu,
                       units=units)
 
     def get_original_gravity_units(self):
