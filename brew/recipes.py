@@ -125,6 +125,13 @@ class Recipe(object):
     def get_boil_gravity(self):
         return gu_to_sg(self.get_boil_gravity_units())
 
+    def get_final_gravity_units(self, attenuation=0.75):
+        validate_percentage(attenuation)
+        return self.get_original_gravity_units() * (1.0 - attenuation)
+
+    def get_final_gravity(self, attenuation=0.75):
+        return gu_to_sg(self.get_final_gravity_units(attenuation=attenuation))
+
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
         Brew House Yield (BHY)
@@ -318,7 +325,8 @@ class Recipe(object):
         """  # nopep8
         og = self.get_original_gravity()
         bg = self.get_boil_gravity()
-        abv = 7.4  # alcohol_by_volume_standard(og, fg)
+        fg = self.get_final_gravity()
+        abv = alcohol_by_volume_standard(og, fg)
         extract_weight = self.get_extract_weight()
         total_wort_color = self.get_total_wort_color()
         beer_color = self.get_beer_color()
@@ -330,6 +338,7 @@ class Recipe(object):
             -----------------------------------
             Original Gravity:   {og:0.3f}
             Boil Gravity:       {bg:0.3f}
+            Final Gravity:      {fg:0.3f}
             ABV Standard:       {abv:0.2f} %
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
@@ -339,6 +348,7 @@ class Recipe(object):
             """.format(name=string.capwords(self.name),
                        og=og,
                        bg=bg,
+                       fg=fg,
                        abv=abv,
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,
