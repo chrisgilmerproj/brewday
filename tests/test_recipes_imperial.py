@@ -95,7 +95,3 @@ class TestRecipeImperialUnits(unittest.TestCase):
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
         self.assertEquals(round(total_wort_color, 2), 6.45)
-
-    def test_get_beer_color(self):
-        recipe_color = self.recipe.get_beer_color()
-        self.assertEquals(round(recipe_color, 2), 4.51)

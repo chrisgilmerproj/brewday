@@ -271,14 +271,6 @@ class Recipe(object):
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
         return calculate_srm(mcu)
 
-    def get_beer_color(self, percent_color_loss=0.30):
-        """
-        We allow for a 30% loss of color during fermentation to calculate the color of beer.
-        Color of Beer = (color of wort)(1 - % color loss)
-        """  # nopep8
-        validate_percentage(percent_color_loss)
-        return (self.get_total_wort_color() * (1.0 - percent_color_loss))
-
     def format(self):
         """
         PALE ALE ANSWERS:
@@ -330,8 +322,7 @@ class Recipe(object):
         fg = self.get_final_gravity()
         abv = alcohol_by_volume_standard(og, fg)
         extract_weight = self.get_extract_weight()
-        total_wort_color = self.get_total_wort_color()
-        beer_color = self.get_beer_color()
+        wort_color_srm = self.get_total_wort_color()
         total_grain_weight = self.get_total_grain_weight()
         total_ibu = self.get_total_ibu()
 
@@ -348,9 +339,8 @@ class Recipe(object):
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
             Total IBU:          {total_ibu:0.2f} ibu
-            Total Wort Color:   {total_wort_color:0.2f} degL
-            Beer Color SRM:     {beer_color_srm:0.2f} degL
-            Beer Color EBC:     {beer_color_ebc:0.2f} degL
+            Wort Color SRM:     {wort_color_srm:0.2f} degL
+            Wort Color EBC:     {wort_color_ebc:0.2f} degL
             """.format(name=string.capwords(self.name),
                        start_volume=self.start_volume,
                        final_volume=self.final_volume,
@@ -362,9 +352,8 @@ class Recipe(object):
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,
                        total_ibu=total_ibu,
-                       total_wort_color=total_wort_color,
-                       beer_color_srm=beer_color,
-                       beer_color_ebc=srm_to_ebc(beer_color),
+                       wort_color_srm=wort_color_srm,
+                       wort_color_ebc=srm_to_ebc(wort_color_srm),
                        **self.types
                        )))
 
