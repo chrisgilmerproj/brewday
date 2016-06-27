@@ -1,11 +1,11 @@
 import textwrap
 import unittest
 
-from fixtures import pale
-from fixtures import pale_add
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.grains import Grain
+from fixtures import pale
+from fixtures import pale_add
 
 
 class TestGrains(unittest.TestCase):

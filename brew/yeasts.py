@@ -1,5 +1,5 @@
-import textwrap
 import string
+import textwrap
 
 from .validators import validate_percentage
 
