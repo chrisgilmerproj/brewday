@@ -80,6 +80,8 @@ class HopsUtilization(object):
             hops_constant = HOPS_CONSTANT_SI
         utilization = self.get_percent_utilization(
                 sg, self.hop_addition.boil_time)
+        # Utilization is 10% higher for pellet vs whole/plug
+        utilization *= 1.10
         num = (self.hop_addition.weight * utilization *
                self.hop_addition.hop.percent_alpha_acids *
                hops_constant)
@@ -139,6 +141,9 @@ class HopsUtilizationJackieRager(HopsUtilization):
     Source: http://www.rooftopbrew.net/ibu.php
     """
 
+    def __str__(self):
+        return "Jackie Rager"
+
     @classmethod
     def get_c_gravity(cls, sg):
         """
@@ -165,6 +170,9 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
     Source: http://www.realbeer.com/hops/research.html
     Source: http://www.rooftopbrew.net/ibu.php
     """
+
+    def __str__(self):
+        return "Glenn Tinseth"
 
     @classmethod
     def get_bigness_factor(cls, sg):
@@ -263,7 +271,7 @@ class HopAddition(object):
                  weight=None,
                  boil_time=None,
                  percent_contribution=None,
-                 utilization_cls=HopsUtilizationJackieRager,
+                 utilization_cls=HopsUtilizationGlennTinseth,
                  utilization_cls_kwargs=None,
                  units=IMPERIAL_UNITS):
         self.hop = hop

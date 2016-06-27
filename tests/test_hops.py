@@ -89,13 +89,13 @@ class TestHopAdditions(unittest.TestCase):
                         self.sg,
                         self.target_ibu,
                         self.final_volume)
-        self.assertEquals(round(hops_weight, 2), 0.61)
+        self.assertEquals(round(hops_weight, 2), 0.84)
 
         hops_weight = self.hop_addition2.get_hops_weight(
                         self.sg,
                         self.target_ibu,
                         self.final_volume)
-        self.assertEquals(round(hops_weight, 2), 0.34)
+        self.assertEquals(round(hops_weight, 2), 0.44)
 
 
 class TestHopsUtilization(unittest.TestCase):
@@ -167,7 +167,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
                                          self.final_volume)
-        self.assertEquals(round(ibu, 2), 35.62)
+        self.assertEquals(round(ibu, 2), 39.18)
 
     def test_get_percent_utilization(self):
         utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # nopep8
@@ -215,7 +215,7 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
                                          self.final_volume)
-        self.assertEquals(round(ibu, 2), 25.93)
+        self.assertEquals(round(ibu, 2), 28.52)
 
     def test_get_bigness_factor(self):
         bf = self.hop_addition.utilization_cls.get_bigness_factor(self.sg)
