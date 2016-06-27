@@ -16,6 +16,17 @@ SI_TYPES = {
     'temperature': 'degC',
 }
 
+# Hops
+
+HOP_TYPE_PELLET = 'pellet'
+HOP_TYPE_WHOLE = 'whole'
+HOP_TYPE_PLUG = 'plug'
+HOP_TYPE_LIST = [
+    HOP_TYPE_PELLET,
+    HOP_TYPE_WHOLE,
+    HOP_TYPE_PLUG,
+]
+
 # Conversions
 # Try to define SI to US units instead of US to SI.
 MG_PER_OZ = 28349.5
