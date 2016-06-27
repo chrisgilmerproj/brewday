@@ -219,6 +219,12 @@ class Recipe(object):
         return sum([hop_add.get_ibus(sg, fv)
                    for hop_add in self.hop_additions])
 
+    def get_bu_to_gu(self):
+        """
+        Returns ratio of Bitterness Units to Original Gravity Units
+        """
+        return self.get_total_ibu() / self.get_original_gravity_units()
+
     @classmethod
     def get_strike_temp(cls, mash_temp, malt_temp, liquor_to_grist_ratio):
         """
@@ -343,6 +349,7 @@ class Recipe(object):
         wort_color_map = self.get_total_wort_color_map()
         total_grain_weight = self.get_total_grain_weight()
         total_ibu = self.get_total_ibu()
+        bu_to_gu = self.get_bu_to_gu()
 
         print(textwrap.dedent("""\
             {name}
@@ -360,6 +367,7 @@ class Recipe(object):
             ABV Alternative:    {abv_alternative:0.2f} %
 
             IBU:                {total_ibu:0.2f} ibu
+            BU/GU:              {bu_to_gu:0.2f}
 
             Morey   (SRM/EBC):  {morey_srm:0.2f} degL / {morey_ebc:0.2f}
             Daneils (SRM/EBC):  {daniels_srm:0.2f} degL / {daniels_ebc:0.2f}
@@ -380,6 +388,7 @@ class Recipe(object):
                        abv_alternative=abv_alternative,
 
                        total_ibu=total_ibu,
+                       bu_to_gu=bu_to_gu,
 
                        morey_srm=wort_color_map['morey'],
                        daniels_srm=wort_color_map['daniels'],
