@@ -41,7 +41,7 @@ class Recipe(object):
     def __init__(self, name,
                  grain_additions=None,
                  hop_additions=None,
-                 yeast_attenuation=0.75,
+                 yeast=None,
                  percent_brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
@@ -49,7 +49,7 @@ class Recipe(object):
         self.name = name
         self.grain_additions = grain_additions
         self.hop_additions = hop_additions
-        self.yeast_attenuation = validate_percentage(yeast_attenuation)
+        self.yeast = yeast
 
         self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8 %
         self.start_volume = start_volume  # G
@@ -95,7 +95,7 @@ class Recipe(object):
                                        self.grain_additions],
                       hop_additions=[ha.change_units() for ha in
                                      self.hop_additions],
-                      yeast_attenuation=self.yeast_attenuation,
+                      yeast=self.yeast,
                       percent_brew_house_yield=self.percent_brew_house_yield,
                       start_volume=start_volume,
                       final_volume=final_volume,
@@ -128,7 +128,7 @@ class Recipe(object):
         return gu_to_sg(self.get_boil_gravity_units())
 
     def get_final_gravity_units(self):
-        return self.get_original_gravity_units() * (1.0 - self.yeast_attenuation)  # nopep8
+        return self.get_original_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # nopep8
 
     def get_final_gravity(self):
         return gu_to_sg(self.get_final_gravity_units())
@@ -453,5 +453,5 @@ class Recipe(object):
         print(textwrap.dedent("""\
             Yeast Attenuation:  {yeast_attenuation:0.2f} %
             """.format(
-                       yeast_attenuation=self.yeast_attenuation,
+                       yeast_attenuation=self.yeast.percent_attenuation,
                        )))
