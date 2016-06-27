@@ -312,10 +312,11 @@ class HopAddition(object):
                            units=units)
 
     def __str__(self):
-        return "{hop}, weight {weight} {weight_small}, boil time {boil_time} min".format(  # nopep8
+        return "{hop}, {weight} {weight_small}, {boil_time} min, {hop_type}".format(  # nopep8
                 hop=self.hop,
                 weight=self.weight,
                 boil_time=self.boil_time,
+                hop_type=self.hop_type,
                 **self.types)
 
     def __repr__(self):
