@@ -96,6 +96,14 @@ class TestHopAdditions(unittest.TestCase):
                         0.05)
         self.assertEquals(round(hops_weight, 2), 0.44)
 
+    def test_get_alpha_acid_units(self):
+        out = self.hop_addition1.get_alpha_acid_units()
+        self.assertEquals(round(out, 2), 7.98)
+
+        ha = self.hop_addition1.change_units()
+        out = ha.get_alpha_acid_units()
+        self.assertEquals(round(out, 2), 7.98)
+
 
 class TestHopsUtilization(unittest.TestCase):
 

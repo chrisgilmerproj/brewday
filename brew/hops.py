@@ -289,6 +289,18 @@ class HopAddition(object):
     def get_ibus(self, sg, final_volume):
         return self.utilization_cls.get_ibus(sg, final_volume)
 
+    def get_alpha_acid_units(self):
+        """
+        Alpha Acid Units
+
+        Defined as ounces of hops * alpha acids
+        """
+        alpha_acids = self.hop.percent_alpha_acids * 100
+        if self.units == IMPERIAL_UNITS:
+            return self.weight * alpha_acids
+        elif self.units == SI_UNITS:
+            return self.weight * OZ_PER_MG * alpha_acids
+
     def get_hops_weight(self, sg, target_ibu, final_volume,
                         percent_contribution):
         """
