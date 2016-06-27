@@ -76,7 +76,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
         self.assertEqual(round(self.recipe.get_boil_gravity(), 3), 1.054)
         self.assertEqual(round(self.recipe.final_volume, 2), 5.0)
         total_ibu = self.recipe.get_total_ibu()
-        self.assertEquals(round(total_ibu, 2), 40.51)
+        self.assertEquals(round(total_ibu, 2), 33.03)
 
     def test_get_strike_temp(self):
         strike_temp = self.recipe.get_strike_temp(152.0, 60.0, 3.0 / 1.0)

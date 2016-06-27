@@ -380,14 +380,18 @@ class Recipe(object):
                                )))
 
         for hop in self.hop_additions:
-            ibus = hop.get_ibus(bg, self.final_volume)
+            ibus = hop.get_ibus(og, self.final_volume)
             utilization = hop.utilization_cls.get_percent_utilization(
                     bg, hop.boil_time)
+            # Utilization is 10% higher for pellet vs whole/plug
+            utilization *= 1.10
             print(hop.format())
             print(textwrap.dedent("""\
                     IBUs:         {ibus:0.2f}
                     Utilization:  {utilization:0.2f} %
+                    Util Cls:     {util_cls}
                     """.format(ibus=ibus,
                                utilization=utilization,
+                               util_cls=str(hop.utilization_cls),
                                **self.types
                                )))
