@@ -207,68 +207,6 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
         return bigness_factor * boil_time_factor
 
 
-# class HopsUtilizationMarkGaretz(HopsUtilization):
-#
-#     def __init__(self, hop_addition,
-#                  final_volume=None,
-#                  boil_volume=None,
-#                  starting_gravity=None,
-#                  desired_ibus=None,
-#                  elevation=SEA_LEVEL,
-#                  ):
-#         self.hop_addition = hop_addition
-#         self.final_volume = final_volume
-#         self.boil_volume = boil_volume
-#
-#     def concentration_factor(self):
-#         return self.final_volume / self.boil_volume
-#
-#     def boil_gravity(self):
-#         cf = self.get_concentration_factor()
-#         return (cf * (self.starting_gravity - 1)) + 1
-#
-#     def gravity_factor(self):
-#         bg = self.boil_gravity()
-#         return (bg - 1.050) / 0.2 + 1
-#
-#     def hopping_rate_factor(self):
-#         cf = self.get_concentration_factor()
-#         return ((cf * self.desired_ibus)/260) + 1
-#
-#     def temperature_factor(self, elevation):
-#         """ elevation in feet """
-#         return ((self.elevation / 550) * 0.02) + 1
-#
-#     def yeast_factor(self):
-#         return 1
-#
-#     def pellet_factor(self):
-#         return 1
-#
-#     def bag_factor(self):
-#         return 1
-#
-#     def filter_factor(self):
-#         return 1
-#
-#     def combined_adjustments(self):
-#         gf = self.gravity_factor()
-#         hf = self.hopping_rate_factor()
-#         tf = self.temperature_factor()
-#         yf = self.yeast_factor()
-#         pf = self.pellet_factor()
-#         bf = self.bag_factor()
-#         ff = self.filter_factor()
-#         return gf * hf * tf * yf * pf * bf * ff
-#
-#     def get_percent_utilization(self, sg, boil_time):
-#         ca = self.combined_adjustments()
-#         return 10000.0 / ca
-
-
-# TODO: Hopville, Daniels, Mosher, Yooper
-
-
 class HopAddition(object):
 
     def __init__(self, hop,
