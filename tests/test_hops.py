@@ -43,12 +43,10 @@ class TestHopAdditions(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 0.95,
             },
             {
                 'boil_time': 5.0,
                 'weight': 0.76,
-                'percent_contribution': 0.05,
             },
         ]
 
@@ -80,7 +78,6 @@ class TestHopAdditions(unittest.TestCase):
                 Centennial, alpha 0.14%
                 ------------------------
                 Weight:       0.57 oz
-                Contribution: 0.95 %
                 Boil Time:    60.00 min""")
         self.assertEquals(out, msg)
 
@@ -88,13 +85,15 @@ class TestHopAdditions(unittest.TestCase):
         hops_weight = self.hop_addition1.get_hops_weight(
                         self.sg,
                         self.target_ibu,
-                        self.final_volume)
+                        self.final_volume,
+                        0.95)
         self.assertEquals(round(hops_weight, 2), 0.84)
 
         hops_weight = self.hop_addition2.get_hops_weight(
                         self.sg,
                         self.target_ibu,
-                        self.final_volume)
+                        self.final_volume,
+                        0.05)
         self.assertEquals(round(hops_weight, 2), 0.44)
 
 
@@ -107,7 +106,6 @@ class TestHopsUtilization(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 0.95,
             }
         ]
 
@@ -119,7 +117,6 @@ class TestHopsUtilization(unittest.TestCase):
         self.hop_addition = HopAddition(self.hop,
                                         boil_time=self.boil_time,
                                         weight=0.57,
-                                        percent_contribution=0.95,
                                         utilization_cls=self.utilization_cls)
 
     def test_get_ibus_raises(self):
@@ -141,7 +138,6 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 0.95,
             }
         ]
 
@@ -153,7 +149,6 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
         self.hop_addition = HopAddition(self.hop,
                                         boil_time=self.boil_time,
                                         weight=0.57,
-                                        percent_contribution=0.95,
                                         utilization_cls=self.utilization_cls)
 
     def test_get_c_gravity(self):
@@ -197,7 +192,6 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
             {
                 'boil_time': 60.0,
                 'weight': 0.57,
-                'percent_contribution': 0.95,
             }
         ]
 
@@ -209,7 +203,6 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         self.hop_addition = HopAddition(self.hop,
                                         boil_time=self.boil_time,
                                         weight=0.57,
-                                        percent_contribution=0.95,
                                         utilization_cls=self.utilization_cls)
 
     def test_get_ibus(self):

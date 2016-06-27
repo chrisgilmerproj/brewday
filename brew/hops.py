@@ -270,14 +270,12 @@ class HopAddition(object):
     def __init__(self, hop,
                  weight=None,
                  boil_time=None,
-                 percent_contribution=None,
                  utilization_cls=HopsUtilizationGlennTinseth,
                  utilization_cls_kwargs=None,
                  units=IMPERIAL_UNITS):
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time
-        self.percent_contribution = validate_percentage(percent_contribution)
         utilization_kwargs = utilization_cls_kwargs or {}
         self.utilization_cls = utilization_cls(self, **utilization_kwargs)
 
@@ -304,7 +302,6 @@ class HopAddition(object):
         return HopAddition(self.hop,
                            weight=weight,
                            boil_time=self.boil_time,
-                           percent_contribution=self.percent_contribution,
                            utilization_cls_kwargs={'units': units},
                            units=units)
 
@@ -325,11 +322,9 @@ class HopAddition(object):
                 {hop}
                 ------------------------
                 Weight:       {weight:0.2f} {weight_small}
-                Contribution: {percent_contribution:0.2f} %
                 Boil Time:    {boil_time:0.2f} min""".format(
                     hop=self.hop,
                     weight=self.weight,
-                    percent_contribution=self.percent_contribution,
                     boil_time=self.boil_time,
                     **self.types))
         return msg
@@ -337,7 +332,8 @@ class HopAddition(object):
     def get_ibus(self, sg, final_volume):
         return self.utilization_cls.get_ibus(sg, final_volume)
 
-    def get_hops_weight(self, sg, target_ibu, final_volume):
+    def get_hops_weight(self, sg, target_ibu, final_volume,
+                        percent_contribution):
         """
         Weight of Hops
         IBUs or International Bittering Units measures a bitterness unit for hops.
@@ -369,11 +365,12 @@ class HopAddition(object):
         - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
         # nopep8
         """
+        validate_percentage(percent_contribution)
+
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
             hops_constant = HOPS_CONSTANT_SI
-        num = (target_ibu * final_volume *
-               self.percent_contribution)
+        num = (target_ibu * final_volume * percent_contribution)
         den = (self.hop.percent_alpha_acids *
                self.utilization_cls.get_percent_utilization(
                    sg, self.boil_time) * hops_constant)
