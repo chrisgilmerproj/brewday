@@ -70,7 +70,7 @@ class TestHopAdditions(unittest.TestCase):
     def test_repr(self):
         out = repr(self.hop_addition1)
         self.assertEquals(
-            out, "HopAddition(Hop('centennial', percent_alpha_acids=0.14))")
+            out, "HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, units='imperial')")  # nopep8
 
     def test_format(self):
         out = self.hop_addition1.format()
