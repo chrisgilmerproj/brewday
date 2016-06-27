@@ -31,12 +31,10 @@ hop_list = [centennial, cascade]
 
 centennial_add = HopAddition(centennial,
                              boil_time=60.0,
-                             weight=0.57,
-                             percent_contribution=0.95)
+                             weight=0.57)
 cascade_add = HopAddition(cascade,
                           boil_time=5.0,
-                          weight=0.76,
-                          percent_contribution=0.05)
+                          weight=0.76)
 hop_additions = [centennial_add, cascade_add]
 
 # Define Recipes

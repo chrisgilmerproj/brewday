@@ -30,14 +30,12 @@ if __name__ == "__main__":
                      percent_alpha_acids=0.14)
     centennial_add = HopAddition(centennial,
                                  weight=0.57,
-                                 boil_time=60.0,
-                                 percent_contribution=0.95)
+                                 boil_time=60.0)
     cascade = Hop(name='cascade',
                   percent_alpha_acids=0.07)
     cascade_add = HopAddition(cascade,
                               weight=0.76,
-                              boil_time=5.0,
-                              percent_contribution=0.05)
+                              boil_time=5.0)
     hop_list = [centennial, cascade]
     hop_additions = [centennial_add, cascade_add]
 
