@@ -220,8 +220,8 @@ class HopAddition(object):
         self.weight = weight
         self.boil_time = boil_time
         self.hop_type = validate_hop_type(hop_type)
-        utilization_kwargs = utilization_cls_kwargs or {}
-        self.utilization_cls = utilization_cls(self, **utilization_kwargs)
+        self.utilization_cls_kwargs = utilization_cls_kwargs or {}
+        self.utilization_cls = utilization_cls(self, **self.utilization_cls_kwargs)  # nopep8
 
         # Manage units
         self.set_units(units)
@@ -259,6 +259,18 @@ class HopAddition(object):
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.hop))
+        if self.weight:
+            out = "{0}, weight={1}".format(out, self.weight)
+        if self.boil_time:
+            out = "{0}, boil_time={1}".format(out, self.boil_time)
+        if self.hop_type:
+            out = "{0}, hop_type='{1}'".format(out, self.hop_type)
+        if self.utilization_cls:
+            out = "{0}, utilization_cls={1}".format(out, type(self.utilization_cls).__name__)  # nopep8
+        if self.utilization_cls_kwargs:
+            out = "{0}, utilization_cls_kwargs={1}".format(out, self.utilization_cls_kwargs)  # nopep8
+        if self.units:
+            out = "{0}, units='{1}'".format(out, self.units)
         out = "{0})".format(out)
         return out
 
