@@ -1,9 +1,9 @@
 
 from ..constants import FC_DIFF_TWO_ROW
-from ..constants import PPG_TO_HWE_CONVERSION
 from ..constants import LITERS_OF_WORT_AT_SG
 from ..constants import MOISTURE_CORRECTION
 from ..constants import MOISTURE_FINISHED_MALT
+from ..constants import PPG_TO_HWE_CONVERSION
 from ..constants import SUCROSE_PLATO
 from ..constants import SUCROSE_PPG
 from ..validators import validate_percentage

@@ -15,9 +15,9 @@ from .utilities.abv import alcohol_by_volume_standard
 from .utilities.color import calculate_mcu
 from .utilities.color import calculate_srm
 from .utilities.color import srm_to_ebc
+from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
-from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_plato
 from .validators import validate_percentage
