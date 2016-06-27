@@ -5,12 +5,12 @@ from brew.constants import LITER_PER_GAL
 from brew.constants import SI_UNITS
 from brew.utilities.color import calculate_mcu
 from brew.utilities.color import calculate_srm
-from brew.utilities.color import calculate_srm_mosher
 from brew.utilities.color import calculate_srm_daniels
 from brew.utilities.color import calculate_srm_daniels_power
-from brew.utilities.color import calculate_srm_noonan_power
-from brew.utilities.color import calculate_srm_morey_hybrid
 from brew.utilities.color import calculate_srm_morey
+from brew.utilities.color import calculate_srm_morey_hybrid
+from brew.utilities.color import calculate_srm_mosher
+from brew.utilities.color import calculate_srm_noonan_power
 from brew.utilities.color import ebc_to_a430
 from brew.utilities.color import ebc_to_srm
 from brew.utilities.color import lovibond_to_srm
@@ -134,15 +134,17 @@ class TestColorUtilities(unittest.TestCase):
         weight = 1.0  # lbs
         color = 1000.0  # degL
         vol = 1.0  # gal
+        mcu = calculate_mcu(weight, color, vol)
         with self.assertRaises(Exception):
-            calculate_srm_morey(weight, color, vol)
+            calculate_srm_morey(mcu)
 
     def test_calculate_srm_raises(self):
         weight = 1.0  # lbs
         color = 1000.0  # degL
         vol = 1.0  # gal
+        mcu = calculate_mcu(weight, color, vol)
         with self.assertRaises(Exception):
-            calculate_srm(weight, color, vol)
+            calculate_srm(mcu)
 
     def test_lovibond_to_srm(self):
         out = lovibond_to_srm(30)
