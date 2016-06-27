@@ -333,6 +333,7 @@ class Recipe(object):
         print(textwrap.dedent("""\
             {name}
             -----------------------------------
+            Brew House Yield:   {bhy:0.2f}
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
             Original Gravity:   {og:0.3f}
@@ -347,6 +348,7 @@ class Recipe(object):
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
             """.format(name=string.capwords(self.name),
+                       bhy=self.percent_brew_house_yield,
                        start_volume=self.start_volume,
                        final_volume=self.final_volume,
                        og=og,
