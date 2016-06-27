@@ -1,5 +1,14 @@
+from .constants import HOP_TYPE_LIST
 from .constants import IMPERIAL_UNITS
 from .constants import SI_UNITS
+
+
+def validate_hop_type(hop_type):
+    if hop_type in HOP_TYPE_LIST:
+        return hop_type
+    else:
+        raise Exception("Unkown hop type '{}', must use {}".format(
+            hop_type, ', '.join(HOP_TYPE_LIST)))
 
 
 def validate_percentage(percent):
