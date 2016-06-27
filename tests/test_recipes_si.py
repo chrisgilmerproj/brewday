@@ -88,6 +88,9 @@ class TestRecipeSIUnits(unittest.TestCase):
         total_ibu = self.recipe.get_total_ibu()
         self.assertEquals(round(total_ibu, 2), 33.03)
 
+    def test_bu_to_gu(self):
+        self.assertEqual(round(self.recipe.get_bu_to_gu(), 2), 0.43)
+
     def test_get_strike_temp(self):
         strike_temp = self.recipe.get_strike_temp(152.0, 60.0, 3.0 / 1.0)
         self.assertEquals(round(strike_temp, 2), 164.27)
