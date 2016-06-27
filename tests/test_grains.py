@@ -3,6 +3,9 @@ import unittest
 
 from fixtures import pale
 from fixtures import pale_add
+from brew.constants import IMPERIAL_UNITS
+from brew.constants import SI_UNITS
+from brew.grains import Grain
 
 
 class TestGrains(unittest.TestCase):
@@ -31,6 +34,22 @@ class TestGrains(unittest.TestCase):
         wy = self.grain.get_working_yield(0.70)
         self.assertEquals(round(wy, 2), 0.56)
 
+    def test_grain_hwe(self):
+        pale = Grain('pale 2-row',
+                     short_name='2-row',
+                     color=2,
+                     hwe=308.0)
+        self.assertEquals(pale.hwe, 308.0)
+        self.assertEquals(round(pale.ppg, 2), 36.91)
+
+    def test_grain_ppg_hwe_raises(self):
+        with self.assertRaises(Exception):
+            Grain('pale 2-row',
+                  short_name='2-row',
+                  color=2,
+                  ppg=37,
+                  hwe=308.0)
+
 
 class TestGrainAdditions(unittest.TestCase):
 
@@ -52,3 +71,18 @@ class TestGrainAdditions(unittest.TestCase):
             ----------------
             Malt Bill:         13.96 lbs""")
         self.assertEquals(out, msg)
+
+    def test_grain_change_units_imperial_to_si(self):
+        self.assertEquals(self.grain_add.units, IMPERIAL_UNITS)
+        self.assertEquals(round(self.grain_add.weight, 2), 13.96)
+        grain_add = self.grain_add.change_units()
+        self.assertEquals(grain_add.units, SI_UNITS)
+        self.assertEquals(round(grain_add.weight, 2), 6.33)
+
+    def test_grain_change_units_si_to_imperial(self):
+        grain_add = self.grain_add.change_units()
+        self.assertEquals(grain_add.units, SI_UNITS)
+        self.assertEquals(round(grain_add.weight, 2), 6.33)
+        grain_add = grain_add.change_units()
+        self.assertEquals(grain_add.units, IMPERIAL_UNITS)
+        self.assertEquals(round(grain_add.weight, 2), 13.96)
