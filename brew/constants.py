@@ -27,6 +27,9 @@ HOP_TYPE_LIST = [
     HOP_TYPE_PLUG,
 ]
 
+# Hop utilization scale factors
+HOP_UTILIZATION_SCALE_PELLET = 1.1  # 110%
+
 # Conversions
 # Try to define SI to US units instead of US to SI.
 MG_PER_OZ = 28349.5

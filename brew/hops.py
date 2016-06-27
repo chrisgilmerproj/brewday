@@ -2,6 +2,8 @@ import math
 import string
 import textwrap
 
+from .constants import HOP_TYPE_PELLET
+from .constants import HOP_UTILIZATION_SCALE_PELLET
 from .constants import HOPS_CONSTANT_IMPERIAL
 from .constants import HOPS_CONSTANT_SI
 from .constants import IMPERIAL_TYPES
@@ -10,6 +12,7 @@ from .constants import MG_PER_OZ
 from .constants import OZ_PER_MG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
+from .validators import validate_hop_type
 from .validators import validate_percentage
 from .validators import validate_units
 
@@ -81,7 +84,8 @@ class HopsUtilization(object):
         utilization = self.get_percent_utilization(
                 sg, self.hop_addition.boil_time)
         # Utilization is 10% higher for pellet vs whole/plug
-        utilization *= 1.10
+        if self.hop_addition.hop_type == HOP_TYPE_PELLET:
+            utilization *= HOP_UTILIZATION_SCALE_PELLET
         num = (self.hop_addition.weight * utilization *
                self.hop_addition.hop.percent_alpha_acids *
                hops_constant)
@@ -270,12 +274,14 @@ class HopAddition(object):
     def __init__(self, hop,
                  weight=None,
                  boil_time=None,
+                 hop_type=HOP_TYPE_PELLET,
                  utilization_cls=HopsUtilizationGlennTinseth,
                  utilization_cls_kwargs=None,
                  units=IMPERIAL_UNITS):
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time
+        self.hop_type = validate_hop_type(hop_type)
         utilization_kwargs = utilization_cls_kwargs or {}
         self.utilization_cls = utilization_cls(self, **utilization_kwargs)
 

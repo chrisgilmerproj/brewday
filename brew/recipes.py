@@ -4,6 +4,8 @@ import string
 import textwrap
 
 from .constants import GAL_PER_LITER
+from .constants import HOP_TYPE_PELLET
+from .constants import HOP_UTILIZATION_SCALE_PELLET
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import LITER_PER_GAL
@@ -384,7 +386,8 @@ class Recipe(object):
             utilization = hop.utilization_cls.get_percent_utilization(
                     bg, hop.boil_time)
             # Utilization is 10% higher for pellet vs whole/plug
-            utilization *= 1.10
+            if hop.hop_type == HOP_TYPE_PELLET:
+                utilization *= HOP_UTILIZATION_SCALE_PELLET
             print(hop.format())
             print(textwrap.dedent("""\
                     IBUs:         {ibus:0.2f}
