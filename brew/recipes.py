@@ -332,19 +332,24 @@ class Recipe(object):
 
         print(textwrap.dedent("""\
             {name}
-            -----------------------------------
+            ===================================
+
             Brew House Yield:   {bhy:0.2f}
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
+
             Original Gravity:   {og:0.3f}
             Boil Gravity:       {bg:0.3f}
             Final Gravity:      {fg:0.3f}
+
             ABV Standard:       {abv_standard:0.2f} %
             ABV Alternative:    {abv_alternative:0.2f} %
+
             IBU:                {total_ibu:0.2f} ibu
+
             SRM:                {wort_color_srm:0.2f} degL
             EBC:                {wort_color_ebc:0.2f}
-            Yeast Attenuation:  {yeast_attenuation:0.2f} %
+
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
             """.format(name=string.capwords(self.name),
@@ -359,11 +364,15 @@ class Recipe(object):
                        total_ibu=total_ibu,
                        wort_color_srm=wort_color_srm,
                        wort_color_ebc=srm_to_ebc(wort_color_srm),
-                       yeast_attenuation=self.yeast_attenuation,
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,
                        **self.types
                        )))
+
+        print(textwrap.dedent("""\
+            Grain
+            ===================================
+            """))
 
         for grain_add in self.grain_additions:
             wy = grain_add.grain.get_working_yield(self.percent_brew_house_yield)  # nopep8
@@ -389,6 +398,11 @@ class Recipe(object):
                                **self.types
                                )))
 
+        print(textwrap.dedent("""\
+            Hops
+            ===================================
+            """))
+
         for hop in self.hop_additions:
             ibus = hop.get_ibus(og, self.final_volume)
             utilization = hop.utilization_cls.get_percent_utilization(
@@ -406,3 +420,14 @@ class Recipe(object):
                                util_cls=str(hop.utilization_cls),
                                **self.types
                                )))
+
+        print(textwrap.dedent("""\
+            Yeast
+            ===================================
+            """))
+
+        print(textwrap.dedent("""\
+            Yeast Attenuation:  {yeast_attenuation:0.2f} %
+            """.format(
+                       yeast_attenuation=self.yeast_attenuation,
+                       )))
