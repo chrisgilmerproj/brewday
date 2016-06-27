@@ -13,6 +13,7 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
+from .utilities.abv import alcohol_by_volume_alternative
 from .utilities.abv import alcohol_by_volume_standard
 from .utilities.color import calculate_mcu
 from .utilities.color import calculate_srm
@@ -322,7 +323,8 @@ class Recipe(object):
         og = self.get_original_gravity()
         bg = self.get_boil_gravity()
         fg = self.get_final_gravity()
-        abv = alcohol_by_volume_standard(og, fg)
+        abv_standard = alcohol_by_volume_standard(og, fg)
+        abv_alternative = alcohol_by_volume_alternative(og, fg)
         extract_weight = self.get_extract_weight()
         wort_color_srm = self.get_total_wort_color()
         total_grain_weight = self.get_total_grain_weight()
@@ -336,26 +338,28 @@ class Recipe(object):
             Original Gravity:   {og:0.3f}
             Boil Gravity:       {bg:0.3f}
             Final Gravity:      {fg:0.3f}
-            ABV Standard:       {abv:0.2f} %
+            ABV Standard:       {abv_standard:0.2f} %
+            ABV Alternative:    {abv_alternative:0.2f} %
+            IBU:                {total_ibu:0.2f} ibu
+            SRM:                {wort_color_srm:0.2f} degL
+            EBC:                {wort_color_ebc:0.2f}
             Yeast Attenuation:  {yeast_attenuation:0.2f} %
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
-            Total IBU:          {total_ibu:0.2f} ibu
-            Wort Color SRM:     {wort_color_srm:0.2f} degL
-            Wort Color EBC:     {wort_color_ebc:0.2f} degL
             """.format(name=string.capwords(self.name),
                        start_volume=self.start_volume,
                        final_volume=self.final_volume,
                        og=og,
                        bg=bg,
                        fg=fg,
-                       abv=abv,
-                       yeast_attenuation=self.yeast_attenuation,
-                       extract_weight=extract_weight,
-                       total_grain_weight=total_grain_weight,
+                       abv_standard=abv_standard,
+                       abv_alternative=abv_alternative,
                        total_ibu=total_ibu,
                        wort_color_srm=wort_color_srm,
                        wort_color_ebc=srm_to_ebc(wort_color_srm),
+                       yeast_attenuation=self.yeast_attenuation,
+                       extract_weight=extract_weight,
+                       total_grain_weight=total_grain_weight,
                        **self.types
                        )))
 
@@ -365,19 +369,21 @@ class Recipe(object):
             lme_weight = grain_to_liquid_malt_weight(grain_weight)
             dry_weight = liquid_to_dry_malt_weight(
                     lme_weight)
-            wort_color = self.get_wort_color(grain_add)
+            wort_color_srm = self.get_wort_color(grain_add)
             print(grain_add.format())
             print(textwrap.dedent("""\
                     Working Yield:     {wy:0.2f} %
                     Weight DME:        {dry_weight:0.2f} {weight_large}
                     Weight LME:        {lme_weight:0.2f} {weight_large}
                     Weight Grain:      {grain_weight:0.2f} {weight_large}
-                    Color:             {wort_color:0.2f} degL
+                    SRM:               {wort_color_srm:0.2f} degL
+                    EBC:               {wort_color_ebc:0.2f}
                     """.format(wy=wy,
                                dry_weight=dry_weight,
                                lme_weight=lme_weight,
                                grain_weight=grain_weight,
-                               wort_color=wort_color,
+                               wort_color_srm=wort_color_srm,
+                               wort_color_ebc=srm_to_ebc(wort_color_srm),
                                **self.types
                                )))
 
