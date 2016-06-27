@@ -17,6 +17,9 @@ from .utilities.abv import alcohol_by_volume_alternative
 from .utilities.abv import alcohol_by_volume_standard
 from .utilities.color import calculate_mcu
 from .utilities.color import calculate_srm
+from .utilities.color import calculate_srm_daniels
+from .utilities.color import calculate_srm_mosher
+from .utilities.color import calculate_srm_morey
 from .utilities.color import srm_to_ebc
 from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.malt import liquid_malt_to_grain_weight
@@ -274,6 +277,17 @@ class Recipe(object):
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
         return calculate_srm(mcu)
 
+    def get_total_wort_color_map(self):
+        """
+        Convenience method to get total wort color
+        """
+        mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
+        return {
+            'morey': calculate_srm_morey(mcu),
+            'daniels': calculate_srm_daniels(mcu),
+            'mosher': calculate_srm_mosher(mcu),
+            }
+
     def format(self):
         """
         PALE ALE ANSWERS:
@@ -326,7 +340,7 @@ class Recipe(object):
         abv_standard = alcohol_by_volume_standard(og, fg)
         abv_alternative = alcohol_by_volume_alternative(og, fg)
         extract_weight = self.get_extract_weight()
-        wort_color_srm = self.get_total_wort_color()
+        wort_color_map = self.get_total_wort_color_map()
         total_grain_weight = self.get_total_grain_weight()
         total_ibu = self.get_total_ibu()
 
@@ -347,8 +361,9 @@ class Recipe(object):
 
             IBU:                {total_ibu:0.2f} ibu
 
-            SRM:                {wort_color_srm:0.2f} degL
-            EBC:                {wort_color_ebc:0.2f}
+            Morey   (SRM/EBC):  {morey_srm:0.2f} degL / {morey_ebc:0.2f}
+            Daneils (SRM/EBC):  {daniels_srm:0.2f} degL / {daniels_ebc:0.2f}
+            Mosher  (SRM/EBC):  {mosher_srm:0.2f} degL / {mosher_ebc:0.2f}
 
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
@@ -356,14 +371,23 @@ class Recipe(object):
                        bhy=self.percent_brew_house_yield,
                        start_volume=self.start_volume,
                        final_volume=self.final_volume,
+
                        og=og,
                        bg=bg,
                        fg=fg,
+
                        abv_standard=abv_standard,
                        abv_alternative=abv_alternative,
+
                        total_ibu=total_ibu,
-                       wort_color_srm=wort_color_srm,
-                       wort_color_ebc=srm_to_ebc(wort_color_srm),
+
+                       morey_srm=wort_color_map['morey'],
+                       daniels_srm=wort_color_map['daniels'],
+                       mosher_srm=wort_color_map['mosher'],
+                       morey_ebc=srm_to_ebc(wort_color_map['morey']),
+                       daniels_ebc=srm_to_ebc(wort_color_map['daniels']),
+                       mosher_ebc=srm_to_ebc(wort_color_map['mosher']),
+
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,
                        **self.types
