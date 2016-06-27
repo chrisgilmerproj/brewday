@@ -65,7 +65,7 @@ class TestHopAdditions(unittest.TestCase):
     def test_str(self):
         out = str(self.hop_addition1)
         self.assertEquals(
-            out, 'Centennial, alpha 0.14%, weight 0.57 oz, boil time 60.0 min')
+            out, 'Centennial, alpha 0.14%, 0.57 oz, 60.0 min, pellet')
 
     def test_repr(self):
         out = repr(self.hop_addition1)
