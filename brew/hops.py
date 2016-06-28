@@ -339,8 +339,10 @@ class HopAddition(object):
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
             hops_constant = HOPS_CONSTANT_SI
-        num = (target_ibu * final_volume * percent_contribution)
-        den = (self.hop.percent_alpha_acids *
-               self.utilization_cls.get_percent_utilization(
-                   sg, self.boil_time) * hops_constant)
-        return num / den
+
+        utilization = self.utilization_cls.get_percent_utilization(
+                sg, self.boil_time)
+
+        num = (target_ibu * final_volume)
+        den = (utilization * self.hop.percent_alpha_acids * hops_constant)
+        return num / den * percent_contribution

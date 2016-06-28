@@ -1,6 +1,7 @@
 import textwrap
 import unittest
 
+from brew.constants import LITER_PER_GAL
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.hops import HopAddition
@@ -106,6 +107,23 @@ class TestHopAdditions(unittest.TestCase):
                         self.final_volume,
                         0.05)
         self.assertEquals(round(hops_weight, 2), 0.44)
+
+    def test_get_hops_weight_metric(self):
+        ha1 = self.hop_addition1.change_units()
+        hops_weight = ha1.get_hops_weight(
+                        self.sg,
+                        self.target_ibu,
+                        self.final_volume * LITER_PER_GAL,
+                        0.95)
+        self.assertEquals(round(hops_weight, 2), 23684.97)
+
+        ha2 = self.hop_addition2.change_units()
+        hops_weight = ha2.get_hops_weight(
+                        self.sg,
+                        self.target_ibu,
+                        self.final_volume * LITER_PER_GAL,
+                        0.05)
+        self.assertEquals(round(hops_weight, 2), 12506.15)
 
     def test_get_alpha_acid_units(self):
         out = self.hop_addition1.get_alpha_acid_units()
