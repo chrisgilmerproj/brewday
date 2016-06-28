@@ -41,11 +41,11 @@ class Grain(object):
         if ppg and hwe:
             raise Exception("Cannot provide both ppg and hwe")
         if ppg:
-            self.ppg = ppg
-            self.hwe = ppg_to_hwe(ppg)
+            self.ppg = float(ppg)
+            self.hwe = ppg_to_hwe(self.ppg)
         elif hwe:
-            self.hwe = hwe
-            self.ppg = hwe_to_ppg(hwe)
+            self.hwe = float(hwe)
+            self.ppg = hwe_to_ppg(self.hwe)
 
     def __str__(self):
         return string.capwords(self.name)
@@ -75,16 +75,12 @@ class Grain(object):
 
     def format(self):
         msg = textwrap.dedent("""\
-                {0} Grain
-                {1}
-                Color:             {2} degL
-                PPG:               {3}
-                Hot Water Extract: {4}""".format(
-                    string.capwords(self.name),
-                    '-' * (len(self.name) + 6),
-                    self.color,
-                    round(self.ppg, 2),
-                    round(self.hwe, 2)))
+                {name} Grain
+                -----------------------------------
+                Color:             {color} degL
+                PPG:               {ppg:0.2f}
+                Hot Water Extract: {hwe:0.2f}""".format(
+                    **self.to_dict()))
         return msg
 
     def get_working_yield(self, percent_brew_house_yield):
@@ -146,12 +142,22 @@ class GrainAddition(object):
         out = "{0})".format(out)
         return out
 
+    def to_dict(self):
+        return {'grain': self.grain.to_dict(),
+                'weight': self.weight,
+                'units': self.units,
+                }
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), sort_keys=True)
+
     def format(self):
+        kwargs = {}
+        kwargs.update(self.to_dict())
+        kwargs.update(self.types)
         msg = textwrap.dedent("""\
-                {grain} Addition
-                ----------------
+                {grain[name]} Addition
+                -----------------------------------
                 Malt Bill:         {weight} {weight_large}""".format(
-                    grain=self.grain,
-                    weight=self.weight,
-                    **self.types))
+                    **kwargs))
         return msg
