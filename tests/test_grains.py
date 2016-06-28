@@ -24,10 +24,10 @@ class TestGrains(unittest.TestCase):
     def test_format(self):
         out = self.grain.format()
         msg = textwrap.dedent("""\
-            Pale 2-row Grain
-            ----------------
+            pale 2-row Grain
+            -----------------------------------
             Color:             2 degL
-            PPG:               37.0
+            PPG:               37.00
             Hot Water Extract: 308.78""")
         self.assertEquals(out, msg)
 
@@ -56,7 +56,7 @@ class TestGrains(unittest.TestCase):
         expected = {'name': 'pale 2-row',
                     'short_name': '2-row',
                     'color': 2,
-                    'ppg': 37,
+                    'ppg': 37.0,
                     'hwe': 308.78,
                     }
         self.assertEquals(out, expected)
@@ -80,11 +80,29 @@ class TestGrainAdditions(unittest.TestCase):
         out = repr(self.grain_add)
         self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2, hwe=308.78), weight=13.96)")  # nopep8
 
+    def test_to_dict(self):
+        out = self.grain_add.to_dict()
+        expected = {'grain': {'name': 'pale 2-row',
+                              'short_name': '2-row',
+                              'color': 2,
+                              'ppg': 37.0,
+                              'hwe': 308.78,
+                              },
+                    'weight': 13.96,
+                    'units': 'imperial',
+                    }
+        self.assertEquals(out, expected)
+
+    def test_to_json(self):
+        out = self.grain_add.to_json()
+        expected = '{"grain": {"color": 2, "hwe": 308.78, "name": "pale 2-row", "ppg": 37.0, "short_name": "2-row"}, "units": "imperial", "weight": 13.96}'  # nopep8
+        self.assertEquals(out, expected)
+
     def test_format(self):
         out = self.grain_add.format()
         msg = textwrap.dedent("""\
-            Pale 2-row Addition
-            ----------------
+            pale 2-row Addition
+            -----------------------------------
             Malt Bill:         13.96 lbs""")
         self.assertEquals(out, msg)
 
