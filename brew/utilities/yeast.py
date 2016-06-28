@@ -1,5 +1,6 @@
 
 from ..constants import IMPERIAL_UNITS
+from ..constants import SI_UNITS
 from .sugar import sg_to_gu
 
 """
@@ -10,6 +11,61 @@ Ale:    0.75 M / (ml * P) = 0.71  B / (G * SG)
 Lager:  1.50 M / (ml * P) = 1.42  B / (G * SG)
 Hybrid: 1.00 M / (ml * P) = 0.948 B / (G * SG)
 """
+
+
+def pitch_rate_conversion(pitch_rate, units=IMPERIAL_UNITS):
+    if units == IMPERIAL_UNITS:
+        pass
+    elif units == SI_UNITS:
+        pass
+
+
+def stir_plate_growth(initial_cells):
+    """
+    Stir Plage Growth
+
+    initial_cells - Billion / gram extract (B/g)
+    Sources:
+    - http://braukaiser.com/blog/blog/2012/11/03/estimating-yeast-growth/
+    """
+    if initial_cells < 1.4:
+        return 1.4
+    if 1.4 <= initial_cells < 3.5:
+        return 2.33 - 0.67 * initial_cells
+    else:
+        return 0.0
+
+
+def get_inoculation_rate(growth_rate):
+    """
+    exponential: y = 3.4485e^-0.018x
+                 R^2 = 0.9613
+
+    power      : y = 29.466x^-0.905
+                 R^2 = 0.9394
+
+    Sources:
+    - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
+    - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
+      Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
+    """
+
+
+def get_growth_rate(inoculation_rate):
+    """
+    exponential: y = 132.79e^-0.758x
+                 R^2 = 0.95234
+
+    power      : y = 41.418x^-1.038
+                 R^2 = 0.9394
+
+    G = (12.54793776 * x^-0.4594858324) - 0.9994994906
+
+    Sources:
+    - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
+    - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
+      Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
+    """
 
 
 def yeast_pitch_rate(original_gravity=1.050,
