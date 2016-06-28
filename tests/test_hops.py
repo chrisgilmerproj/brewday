@@ -1,6 +1,8 @@
 import textwrap
 import unittest
 
+from brew.constants import IMPERIAL_UNITS
+from brew.constants import SI_UNITS
 from brew.hops import HopAddition
 from brew.hops import HopsUtilization
 from brew.hops import HopsUtilizationGlennTinseth
@@ -135,6 +137,14 @@ class TestHopsUtilization(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             self.hop_addition.utilization_cls.get_percent_utilization(
                     self.sg, self.final_volume)
+
+    def test_change_units(self):
+        self.assertEquals(self.hop_addition.utilization_cls.units,
+                          IMPERIAL_UNITS)
+        util = self.hop_addition.utilization_cls.change_units()
+        self.assertEquals(util.units, SI_UNITS)
+        util = util.change_units()
+        self.assertEquals(util.units, IMPERIAL_UNITS)
 
 
 class TestHopsUtilizationJackieRager(unittest.TestCase):

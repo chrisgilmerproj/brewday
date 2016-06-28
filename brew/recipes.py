@@ -403,7 +403,7 @@ class Recipe(object):
                        )))
 
         print(textwrap.dedent("""\
-            Grain
+            Grains
             ===================================
             """))
 
