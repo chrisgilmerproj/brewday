@@ -64,6 +64,15 @@ class TestHopAdditions(unittest.TestCase):
         self.target_ibu = 40.0
         self.final_volume = 5.0
 
+    def test_change_units(self):
+        self.assertEquals(self.hop_addition1.units, IMPERIAL_UNITS)
+        ha = self.hop_addition1.change_units()
+        self.assertEquals(ha.units, SI_UNITS)
+        self.assertEquals(ha.utilization_cls.units, SI_UNITS)
+        ha = ha.change_units()
+        self.assertEquals(ha.units, IMPERIAL_UNITS)
+        self.assertEquals(ha.utilization_cls.units, IMPERIAL_UNITS)
+
     def test_str(self):
         out = str(self.hop_addition1)
         self.assertEquals(
@@ -169,6 +178,10 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
                                         weight=0.57,
                                         utilization_cls=self.utilization_cls)
 
+    def test_str(self):
+        self.assertEquals(str(self.hop_addition.utilization_cls),
+                          "Jackie Rager")
+
     def test_get_c_gravity(self):
         out = self.hop_addition.utilization_cls.get_c_gravity(self.sg)
         self.assertEquals(round(out, 3), 1.034)
@@ -222,6 +235,10 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
                                         boil_time=self.boil_time,
                                         weight=0.57,
                                         utilization_cls=self.utilization_cls)
+
+    def test_str(self):
+        self.assertEquals(str(self.hop_addition.utilization_cls),
+                          "Glenn Tinseth")
 
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
