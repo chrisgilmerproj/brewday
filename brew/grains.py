@@ -1,3 +1,4 @@
+import json
 import string
 import textwrap
 
@@ -61,15 +62,28 @@ class Grain(object):
         out = "{0})".format(out)
         return out
 
+    def to_dict(self):
+        return {'name': self.name,
+                'short_name': self.short_name,
+                'color': self.color,
+                'ppg': round(self.ppg, 2),
+                'hwe': round(self.hwe, 2),
+                }
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), sort_keys=True)
+
     def format(self):
         msg = textwrap.dedent("""\
                 {0} Grain
                 {1}
                 Color:             {2} degL
-                Hot Water Extract: {3}""".format(
+                PPG:               {3}
+                Hot Water Extract: {4}""".format(
                     string.capwords(self.name),
                     '-' * (len(self.name) + 6),
                     self.color,
+                    round(self.ppg, 2),
                     round(self.hwe, 2)))
         return msg
 

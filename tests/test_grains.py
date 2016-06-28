@@ -27,6 +27,7 @@ class TestGrains(unittest.TestCase):
             Pale 2-row Grain
             ----------------
             Color:             2 degL
+            PPG:               37.0
             Hot Water Extract: 308.78""")
         self.assertEquals(out, msg)
 
@@ -49,6 +50,21 @@ class TestGrains(unittest.TestCase):
                   color=2,
                   ppg=37,
                   hwe=308.0)
+
+    def test_to_dict(self):
+        out = self.grain.to_dict()
+        expected = {'name': 'pale 2-row',
+                    'short_name': '2-row',
+                    'color': 2,
+                    'ppg': 37,
+                    'hwe': 308.78,
+                    }
+        self.assertEquals(out, expected)
+
+    def test_to_json(self):
+        out = self.grain.to_json()
+        expected = '{"color": 2, "hwe": 308.78, "name": "pale 2-row", "ppg": 37.0, "short_name": "2-row"}'  # nopep8
+        self.assertEquals(out, expected)
 
 
 class TestGrainAdditions(unittest.TestCase):
