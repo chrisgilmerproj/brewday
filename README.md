@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/chrisgilmerproj/brewing.svg?branch=master)](https://travis-ci.org/chrisgilmerproj/brewing) 
-[![Github Issues](http://githubbadges.herokuapp.com/chrisgilmerproj/brewing/issues.svg?style=plastic)](https://github.com/chrisgilmerproj/brewing/issues)
-[![Pending Pull-Requests](http://githubbadges.herokuapp.com/chrisgilmerproj/brewing/pulls.svg?style=plastic)](https://github.com/chrisgilmerproj/brewing/pulls)
+[![Build Status](https://travis-ci.org/chrisgilmerproj/brewday.svg?branch=master)](https://travis-ci.org/chrisgilmerproj/brewday) 
+[![Github Issues](http://githubbadges.herokuapp.com/chrisgilmerproj/brewday/issues.svg?style=plastic)](https://github.com/chrisgilmerproj/brewday/issues)
+[![Pending Pull-Requests](http://githubbadges.herokuapp.com/chrisgilmerproj/brewday/pulls.svg?style=plastic)](https://github.com/chrisgilmerproj/brewday/pulls)
 
-# Brewing
+# Brew Day
 
 This repositiory is a set of utilities for the homebrewer.  It should help in
 constructing and analyzing recipes.  There are also command line utilities for
@@ -29,6 +29,9 @@ work with SI Units yet.
 
 # Percentages
 
-A fair number of methods require values as a percentage.  To avoid confusion
+A fair number of methods require input values as a percentage.  To avoid confusion
 all percentages are expected to be in decimal form between the number 0.0
 and 1.0.
+
+There still remain some methods that return percentages not in decimal form,
+notably the ABV utilities.
