@@ -91,14 +91,16 @@ class YeastModel(object):
             modifier = sg_to_gu(original_gravity)
         elif units == SI_UNITS:
             modifier = sg_to_plato(original_gravity)
-        pitch_rate = target_pitch_rate * final_volume * modifier
+        pitch_rate_as_is = cells / final_volume / modifier
+        pitch_rate_cells = target_pitch_rate * final_volume * modifier
 
         return {'original_gravity': original_gravity,
                 'final_volume': final_volume,
                 'target_pitch_rate': target_pitch_rate,
                 'viability': round(viability, 2),
                 'cells': round(cells, 2),
-                'pitch_rate': round(pitch_rate, 2),
+                'pitch_rate_as_is': round(pitch_rate_as_is, 2),
+                'pitch_rate_cells': round(pitch_rate_cells, 2),
                 }
 
     def get_starter_volume(self, pitch_rate, cells):
