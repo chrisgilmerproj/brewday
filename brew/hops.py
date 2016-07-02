@@ -1,5 +1,5 @@
+import json
 import math
-import string
 import textwrap
 
 from .constants import HOP_TYPE_PELLET
@@ -36,14 +36,20 @@ class Hop(object):
         out = "{0})".format(out)
         return out
 
+    def to_dict(self):
+        return {'name': self.name,
+                'percent_alpha_acids': self.percent_alpha_acids,
+                }
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), sort_keys=True)
+
     def format(self):
         msg = textwrap.dedent("""\
-                {0} Hops
-                {1}
-                Alpha Acids:  {2} %""".format(
-                    string.capwords(self.name),
-                    '-' * (len(self.name) + 5),
-                    self.percent_alpha_acids))
+                {name} Hops
+                -----------------------------------
+                Alpha Acids:  {percent_alpha_acids} %""".format(
+                    **self.to_dict()))
         return msg
 
 
@@ -274,16 +280,30 @@ class HopAddition(object):
         out = "{0})".format(out)
         return out
 
+    def to_dict(self):
+        return {'hop': self.hop.to_dict(),
+                'weight': self.weight,
+                'boil_time': self.boil_time,
+                'hop_type': self.hop_type,
+                'utilization_cls': str(self.utilization_cls),
+                'utilization_cls_kwargs': self.utilization_cls_kwargs,
+                'units': self.units,
+                }
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), sort_keys=True)
+
     def format(self):
+        kwargs = {}
+        kwargs.update(self.to_dict())
+        kwargs.update(self.types)
         msg = textwrap.dedent("""\
-                {hop}
-                ------------------------
+                {hop[name]} Addition
+                -----------------------------------
                 Weight:       {weight:0.2f} {weight_small}
-                Boil Time:    {boil_time:0.2f} min""".format(
-                    hop=self.hop,
-                    weight=self.weight,
-                    boil_time=self.boil_time,
-                    **self.types))
+                Boil Time:    {boil_time:0.2f} min
+                Hop Type:     {hop_type}""".format(
+                    **kwargs))
         return msg
 
     def get_ibus(self, sg, final_volume):

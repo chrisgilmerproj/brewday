@@ -28,11 +28,23 @@ class TestHops(unittest.TestCase):
         out = repr(self.hop)
         self.assertEquals(out, "Hop('centennial', percent_alpha_acids=0.14)")
 
+    def test_to_dict(self):
+        out = self.hop.to_dict()
+        expected = {'name': 'centennial',
+                    'percent_alpha_acids': 0.14,
+                    }
+        self.assertEquals(out, expected)
+
+    def test_to_json(self):
+        out = self.hop.to_json()
+        expected = '{"name": "centennial", "percent_alpha_acids": 0.14}'
+        self.assertEquals(out, expected)
+
     def test_format(self):
         out = self.hop.format()
         msg = textwrap.dedent("""\
-                Centennial Hops
-                ---------------
+                centennial Hops
+                -----------------------------------
                 Alpha Acids:  0.14 %""")
         self.assertEquals(out, msg)
 
@@ -86,13 +98,32 @@ class TestHopAdditions(unittest.TestCase):
         self.assertEquals(
                 out, "HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, utilization_cls_kwargs={'units': 'imperial'}, units='imperial')")  # nopep8
 
+    def test_to_dict(self):
+        out = self.hop_addition1.to_dict()
+        expected = {'hop': {'name': 'centennial',
+                            'percent_alpha_acids': 0.14},
+                    'weight': 0.57,
+                    'boil_time': 60.0,
+                    'hop_type': 'pellet',
+                    'utilization_cls': 'Glenn Tinseth',
+                    'utilization_cls_kwargs': {'units': 'imperial'},
+                    'units': 'imperial',
+                    }
+        self.assertEquals(out, expected)
+
+    def test_to_json(self):
+        out = self.hop_addition1.to_json()
+        expected = '{"boil_time": 60.0, "hop": {"name": "centennial", "percent_alpha_acids": 0.14}, "hop_type": "pellet", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "imperial"}, "weight": 0.57}'  # nopep8
+        self.assertEquals(out, expected)
+
     def test_format(self):
         out = self.hop_addition1.format()
         msg = textwrap.dedent("""\
-                Centennial, alpha 0.14%
-                ------------------------
+                centennial Addition
+                -----------------------------------
                 Weight:       0.57 oz
-                Boil Time:    60.00 min""")
+                Boil Time:    60.00 min
+                Hop Type:     pellet""")
         self.assertEquals(out, msg)
 
     def test_get_hops_weight(self):
