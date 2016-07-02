@@ -54,6 +54,55 @@ class YeastModel(object):
     def get_growth_rate(self, inoculation_rate):
         raise NotImplementedError
 
+    def get_yeast_pitch_rate(self,
+                             original_gravity=1.050,
+                             final_volume=5.0,
+                             target_pitch_rate=1.42,
+                             yeast_type='liquid',
+                             cells_per_pack=100,
+                             num_packs=1,
+                             days_since_manufacture=30,
+                             units=IMPERIAL_UNITS):
+        """
+        Determine yeast pitch rate
+
+        original_gravity  - specific gravity of original beer
+        final_volume      - volume of the batch post fermentation
+        target_pitch_rate - million cells / (ml * degP)
+        yeast_type        - liquid, dry
+        cells_per_pack    - Billions of cells
+        num_packs         - how many in units
+        days_since_manufacture - the older the yeast the less viable
+        units             - imperial, metric
+
+        Yeast Viability: lose 20% viability / month or 0.66% / day
+
+        Sources:
+        - http://beersmith.com/blog/2011/01/10/yeast-starters-for-home-brewing-beer-part-2/
+        """  # nopep8
+        gu = sg_to_gu(original_gravity)
+        viability = 1.0 - days_since_manufacture * (0.2 / 30.0)
+        cells = cells_per_pack * num_packs * viability
+
+        pitch_rate = target_pitch_rate * gu * final_volume
+
+        return {'original_gravity': original_gravity,
+                'final_volume': final_volume,
+                'target_pitch_rate': target_pitch_rate,
+                'viability': round(viability, 2),
+                'cells': round(cells, 2),
+                'pitch_rate': round(pitch_rate, 2),
+                }
+
+    def get_starter_volume(self, pitch_rate, cells):
+        growth_rate = pitch_rate / cells
+        inoculation_rate = self.get_inoculation_rate(growth_rate)
+        starter_volume = cells / inoculation_rate
+        return {'growth_rate': round(growth_rate, 2),
+                'inoculation_rate': round(inoculation_rate, 2),
+                'starter_volume': round(starter_volume, 2),
+                }
+
 
 class KaiserYeastModel(YeastModel):
     """
@@ -125,50 +174,3 @@ class WhiteYeastModel(YeastModel):
         if growth_rate > 6:
             raise Exception("Model does not allow for growth greater than 6")
         return growth_rate
-
-
-def yeast_pitch_rate(original_gravity=1.050,
-                     final_volume=5.0,
-                     target_pitch_rate=1.42,
-                     yeast_type='liquid',
-                     cells_per_pack=100,
-                     num_packs=1,
-                     days_since_manufacture=30,
-                     yeast_model=WhiteYeastModel(),
-                     units=IMPERIAL_UNITS):
-    """
-    Determine yeast pitch rate
-
-    original_gravity  - specific gravity of original beer
-    final_volume      - volume of the batch post fermentation
-    target_pitch_rate - million cells / (ml * degP)
-    yeast_type        - liquid, dry
-    cells_per_pack    - Billions of cells
-    num_packs         - how many in units
-    days_since_manufacture - the older the yeast the less viable
-    units             - imperial, metric
-
-    Yeast Viability: lose 20% viability / month or 0.66% / day
-
-    Sources:
-    - http://beersmith.com/blog/2011/01/10/yeast-starters-for-home-brewing-beer-part-2/
-    """  # nopep8
-    gu = sg_to_gu(original_gravity)
-
-    pitch_rate = target_pitch_rate * gu * final_volume
-    viability = 1.0 - days_since_manufacture * (0.2 / 30.0)
-
-    cells = cells_per_pack * num_packs * viability
-    growth_rate = pitch_rate / cells
-    inoculation_rate = yeast_model.get_inoculation_rate(growth_rate)
-    starter_volume = cells / inoculation_rate
-    return {'original_gravity': original_gravity,
-            'final_volume': final_volume,
-            'target_pitch_rate': target_pitch_rate,
-            'pitch_rate': round(pitch_rate, 2),
-            'viability': round(viability, 2),
-            'cells': round(cells, 2),
-            'growth_rate': round(growth_rate, 2),
-            'inoculation_rate': round(inoculation_rate, 2),
-            'starter_volume': round(starter_volume, 2),
-            }
