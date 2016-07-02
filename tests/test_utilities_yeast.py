@@ -75,7 +75,8 @@ class TestKaiserYeastModel(unittest.TestCase):
 class TestWhiteYeastModel(unittest.TestCase):
 
     def setUp(self):
-        self.yeast_model = WhiteYeastModel()
+        self.yeast_model_cls = WhiteYeastModel
+        self.yeast_model = self.yeast_model_cls()
 
     def test_get_growth_rate(self):
         inoculation_rate = 6.17
@@ -97,6 +98,7 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'pitch_rate_as_is': 0.32,
                     'pitch_rate_cells': 355.0,
                     'cells_needed': 275.0,
+                    'units': 'imperial',
                     }
         self.assertEquals(out, expected)
 
@@ -110,6 +112,7 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'pitch_rate_as_is': 0.64,
                     'pitch_rate_cells': 355.0,
                     'cells_needed': 195.0,
+                    'units': 'imperial',
                     }
         self.assertEquals(out, expected)
 
@@ -127,27 +130,66 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'pitch_rate_as_is': 0.62,
                     'pitch_rate_cells': 390.21,
                     'cells_needed': 230.21,
-                    }
-        self.assertEquals(out, expected)
-
-    def test_get_starter_volume_two_packs(self):
-        pitch_rate = 355.0
-        available_cells = 160.0
-        out = self.yeast_model.get_starter_volume(pitch_rate,
-                                                  available_cells)
-        expected = {'growth_rate': 2.22,
-                    'inoculation_rate': 19.32,
-                    'starter_volume': 8.28,
+                    'units': 'metric',
                     }
         self.assertEquals(out, expected)
 
     def test_get_starter_volume(self):
-        pitch_rate = 352.0
-        available_cells = 158.0
-        out = self.yeast_model.get_starter_volume(pitch_rate,
-                                                  available_cells)
-        expected = {'growth_rate': 2.23,
-                    'inoculation_rate': 19.21,
-                    'starter_volume': 8.23,
+        available_cells = 160.0
+        out = self.yeast_model.get_starter_volume(available_cells)
+        expected = {'available_cells': 160.0,
+                    'starter_volume': 0.53,
+                    'original_gravity': 1.036,
+                    'inoculation_rate': 80.0,
+                    'growth_rate': 0.68,
+                    'end_cell_count': 268.15,
+                    'units': 'imperial',
+                    }
+        self.assertEquals(out, expected)
+
+    def test_get_starter_volume_metric(self):
+        available_cells = 160.0
+        out = self.yeast_model.get_starter_volume(available_cells,
+                                                  starter_volume=2.0,
+                                                  units=SI_UNITS)
+        expected = {'available_cells': 160.0,
+                    'starter_volume': 2.0,
+                    'original_gravity': 1.036,
+                    'inoculation_rate': 80.0,
+                    'growth_rate': 0.68,
+                    'end_cell_count': 268.15,
+                    'units': 'metric',
+                    }
+        self.assertEquals(out, expected)
+
+    def test_get_starter_volume_metric_shaking(self):
+        available_cells = 160.0
+        yeast_model = self.yeast_model_cls('shaking')
+        out = yeast_model.get_starter_volume(available_cells,
+                                             starter_volume=2.0,
+                                             units=SI_UNITS)
+        expected = {'available_cells': 160.0,
+                    'starter_volume': 2.0,
+                    'original_gravity': 1.036,
+                    'inoculation_rate': 80.0,
+                    'growth_rate': 1.18,
+                    'end_cell_count': 348.15,
+                    'units': 'metric',
+                    }
+        self.assertEquals(out, expected)
+
+    def test_get_starter_volume_metric_stir_plate(self):
+        available_cells = 160.0
+        yeast_model = self.yeast_model_cls('stir plate')
+        out = yeast_model.get_starter_volume(available_cells,
+                                             starter_volume=2.0,
+                                             units=SI_UNITS)
+        expected = {'available_cells': 160.0,
+                    'starter_volume': 2.0,
+                    'original_gravity': 1.036,
+                    'inoculation_rate': 80.0,
+                    'growth_rate': 1.68,
+                    'end_cell_count': 428.15,
+                    'units': 'metric',
                     }
         self.assertEquals(out, expected)

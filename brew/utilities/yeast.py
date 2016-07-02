@@ -102,15 +102,36 @@ class YeastModel(object):
                 'pitch_rate_as_is': round(pitch_rate_as_is, 2),
                 'pitch_rate_cells': round(pitch_rate_cells, 2),
                 'cells_needed': round(pitch_rate_cells - cells, 2),
+                'units': units,
                 }
 
-    def get_starter_volume(self, pitch_rate, cells):
+    def old_get_starter_volume(self, pitch_rate, cells):
         growth_rate = pitch_rate / cells
         inoculation_rate = self.get_inoculation_rate(growth_rate)
         starter_volume = cells / inoculation_rate
         return {'growth_rate': round(growth_rate, 2),
                 'inoculation_rate': round(inoculation_rate, 2),
                 'starter_volume': round(starter_volume, 2),
+                }
+
+    def get_starter_volume(self,
+                           available_cells,
+                           starter_volume=0.528344,
+                           original_gravity=1.036,
+                           units=IMPERIAL_UNITS):
+        if units == IMPERIAL_UNITS:
+            inoculation_rate = available_cells / (starter_volume * LITER_PER_GAL)  # nopep8
+        elif units == SI_UNITS:
+            inoculation_rate = available_cells / starter_volume
+        growth_rate = self.get_growth_rate(inoculation_rate)
+        end_cell_count = available_cells * (growth_rate + 1)
+        return {'available_cells': round(available_cells, 2),
+                'starter_volume': round(starter_volume, 2),
+                'original_gravity': original_gravity,
+                'inoculation_rate': round(inoculation_rate, 2),
+                'growth_rate': round(growth_rate, 2),
+                'end_cell_count': round(end_cell_count, 2),
+                'units': units,
                 }
 
 
@@ -159,12 +180,12 @@ class WhiteYeastModel(YeastModel):
     # Linear Regression Least Squares
     INOCULATION_CONST = [-0.999499, 12.547938, -0.459486]
     METHOD_TO_GROWTH_ADJ = {
-        'no agitation': 1.0,
+        'no agitation': 0.0,
         'shaking': 0.5,
-        'stir plate': 0.0,
+        'stir plate': 1.0,
     }
 
-    def __init__(self, method='stir plate'):
+    def __init__(self, method='no agitation'):
         return super(WhiteYeastModel, self).__init__(method)
 
     def get_inoculation_rate(self, growth_rate):
@@ -177,10 +198,10 @@ class WhiteYeastModel(YeastModel):
 
         G = (12.54793776 * x^-0.4594858324) - 0.9994994906
         """  # nopep8
-        if inoculation_rate > 200:
-            raise Exception("Yeast will not grow at more than 200 M/ml")
+        # if inoculation_rate > 200:
+        #     raise Exception("Yeast will not grow at more than 200 M/ml")
         a, b, c = self.INOCULATION_CONST
-        growth_rate = a + b * inoculation_rate ** c - self.adjustment
-        if growth_rate > 6:
-            raise Exception("Model does not allow for growth greater than 6")
+        growth_rate = a + b * inoculation_rate ** c + self.adjustment
+        # if growth_rate > 6:
+        #     raise Exception("Model does not allow for growth greater than 6")
         return growth_rate
