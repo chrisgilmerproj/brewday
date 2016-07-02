@@ -128,7 +128,7 @@ class WhiteYeastModel(YeastModel):
 
 
 def yeast_pitch_rate(original_gravity=1.050,
-                     start_volume=5.0,
+                     final_volume=5.0,
                      target_pitch_rate=1.42,
                      yeast_type='liquid',
                      cells_per_pack=100,
@@ -140,7 +140,7 @@ def yeast_pitch_rate(original_gravity=1.050,
     Determine yeast pitch rate
 
     original_gravity  - specific gravity of original beer
-    start_volume      - volume of the batch
+    final_volume      - volume of the batch post fermentation
     target_pitch_rate - million cells / (ml * degP)
     yeast_type        - liquid, dry
     cells_per_pack    - Billions of cells
@@ -154,14 +154,17 @@ def yeast_pitch_rate(original_gravity=1.050,
     - http://beersmith.com/blog/2011/01/10/yeast-starters-for-home-brewing-beer-part-2/
     """  # nopep8
     gu = sg_to_gu(original_gravity)
-    pitch_rate = target_pitch_rate * gu * start_volume
 
+    pitch_rate = target_pitch_rate * gu * final_volume
     viability = 1.0 - days_since_manufacture * (0.2 / 30.0)
+
     cells = cells_per_pack * num_packs * viability
     growth_rate = pitch_rate / cells
     inoculation_rate = yeast_model.get_inoculation_rate(growth_rate)
     starter_volume = cells / inoculation_rate
-    return {'pitch_rate': round(pitch_rate, 2),
+    return {'original_gravity': original_gravity,
+            'final_volume': final_volume,
+            'pitch_rate': round(pitch_rate, 2),
             'viability': round(viability, 2),
             'cells': round(cells, 2),
             'growth_rate': round(growth_rate, 2),

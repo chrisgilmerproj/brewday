@@ -29,7 +29,9 @@ class TestYeastUtilities(unittest.TestCase):
 
     def test_yeast_pitch_rate(self):
         out = yeast_pitch_rate()
-        expected = {'pitch_rate': 355.0,
+        expected = {'original_gravity': 1.050,
+                    'final_volume': 5.0,
+                    'pitch_rate': 355.0,
                     'viability': 0.8,
                     'cells': 80.0,
                     'growth_rate': 4.44,
@@ -40,7 +42,9 @@ class TestYeastUtilities(unittest.TestCase):
 
     def test_yeast_pitch_rate_two_packs(self):
         out = yeast_pitch_rate(num_packs=2)
-        expected = {'pitch_rate': 355.0,
+        expected = {'original_gravity': 1.050,
+                    'final_volume': 5.0,
+                    'pitch_rate': 355.0,
                     'viability': 0.8,
                     'cells': 160.0,
                     'growth_rate': 2.22,
