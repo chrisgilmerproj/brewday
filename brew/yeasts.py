@@ -1,4 +1,4 @@
-import string
+import json
 import textwrap
 
 from .validators import validate_percentage
@@ -23,12 +23,18 @@ class Yeast(object):
         out = "{0})".format(out)
         return out
 
+    def to_dict(self):
+        return {'name': self.name,
+                'percent_attenuation': self.percent_attenuation,
+                }
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), sort_keys=True)
+
     def format(self):
         msg = textwrap.dedent("""\
-                {0} Yeast
-                {1}
-                Attenuation:  {2} %""".format(
-                    string.capwords(self.name),
-                    '-' * (len(self.name) + 5),
-                    self.percent_attenuation))
+                {name} Yeast
+                -----------------------------------
+                Attenuation:  {percent_attenuation} %""".format(
+                    **self.to_dict()))
         return msg
