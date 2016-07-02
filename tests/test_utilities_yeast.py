@@ -53,7 +53,11 @@ class TestYeastUtilities(unittest.TestCase):
 class TestYeastModel(unittest.TestCase):
 
     def setUp(self):
-        self.yeast_model = YeastModel
+        self.yeast_model = YeastModel('stir plate')
+
+    def test_yeast_model_raises(self):
+        with self.assertRaises(Exception):
+            YeastModel('not an allowed method')
 
     def test_get_growth_rate(self):
         inoculation_rate = 6.17
@@ -69,7 +73,7 @@ class TestYeastModel(unittest.TestCase):
 class TestKaiserYeastModel(unittest.TestCase):
 
     def setUp(self):
-        self.yeast_model = KaiserYeastModel
+        self.yeast_model = KaiserYeastModel()
 
     def test_get_growth_rate(self):
         inoculation_rate = 1.0
@@ -94,7 +98,7 @@ class TestKaiserYeastModel(unittest.TestCase):
 class TestWhiteYeastModel(unittest.TestCase):
 
     def setUp(self):
-        self.yeast_model = WhiteYeastModel
+        self.yeast_model = WhiteYeastModel()
 
     def test_get_growth_rate(self):
         inoculation_rate = 6.17

@@ -35,13 +35,23 @@ def pitch_rate_conversion(pitch_rate, units=IMPERIAL_UNITS):
 
 
 class YeastModel(object):
+    METHOD_TO_GROWTH_ADJ = {
+        'no agitation': 0.0,
+        'shaking': 0.0,
+        'stir plate': 0.0,
+    }
 
-    @classmethod
-    def get_inoculation_rate(cls, growth_rate):
+    def __init__(self, method):
+        if method not in self.METHOD_TO_GROWTH_ADJ.keys():
+            raise Exception("Method '{}' not allowed for yeast model".format(
+                method))
+        self.method = method
+        self.adjustment = self.METHOD_TO_GROWTH_ADJ[method]
+
+    def get_inoculation_rate(self, growth_rate):
         raise NotImplementedError
 
-    @classmethod
-    def get_growth_rate(cls, inoculation_rate):
+    def get_growth_rate(self, inoculation_rate):
         raise NotImplementedError
 
 
@@ -54,63 +64,67 @@ class KaiserYeastModel(YeastModel):
     Sources:
     - http://braukaiser.com/blog/blog/2012/11/03/estimating-yeast-growth/
     """
+    METHOD_TO_GROWTH_ADJ = {
+        'stir plate': 0.0,
+    }
 
-    @classmethod
-    def get_inoculation_rate(cls, growth_rate):
+    def __init__(self, method='stir plate'):
+        return super(KaiserYeastModel, self).__init__(method)
+
+    def get_inoculation_rate(self, growth_rate):
         if 0 < growth_rate < 1.4:
             return (2.33 - growth_rate) / 0.67
         elif 1.4 <= growth_rate:
             return 1.4
 
-    @classmethod
-    def get_growth_rate(cls, initial_cells):
+    def get_growth_rate(self, initial_cells):
         """
         initial_cells - Billion / gram extract (B/g)
         """
         if initial_cells < 1.4:
-            return 1.4
+            return 1.4 + self.adjustment
         elif 1.4 <= initial_cells < 3.5:
-            return 2.33 - 0.67 * initial_cells
+            return 2.33 - 0.67 * initial_cells + self.adjustment
         else:
-            return 0.0
+            return 0.0 + self.adjustment
 
 
 class WhiteYeastModel(YeastModel):
+    """
+    Sources:
+    - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
+    - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
+      Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
+    """
 
     # Linear Regression Least Squares
     INOCULATION_CONST = [-0.999499, 12.547938, -0.459486]
+    METHOD_TO_GROWTH_ADJ = {
+        'no agitation': 0.0,
+        'shaking': 0.5,
+        'stir plate': 1.0,
+    }
 
-    @classmethod
-    def get_inoculation_rate(cls, growth_rate):
-        """
-        exponential: y = 3.4485e^-0.018x
-                     R^2 = 0.9613
+    def __init__(self, method='no agitation'):
+        return super(WhiteYeastModel, self).__init__(method)
 
-        power      : y = 29.466x^-0.905
-                     R^2 = 0.9394
-
-        Sources:
-        - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
-        - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
-          Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
-        """  # nopep8
-        a, b, c = cls.INOCULATION_CONST
+    def get_inoculation_rate(self, growth_rate):
+        a, b, c = self.INOCULATION_CONST
         return 10 ** (math.log10(b / (growth_rate - a))/-c)
 
-    @classmethod
-    def get_growth_rate(cls, inoculation_rate):
+    def get_growth_rate(self, inoculation_rate):
         """
         initial_cells - Billion / gram extract (B/g)
 
         G = (12.54793776 * x^-0.4594858324) - 0.9994994906
-
-        Sources:
-        - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
-        - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
-          Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
         """  # nopep8
-        a, b, c = cls.INOCULATION_CONST
-        return a + b * inoculation_rate ** c
+        if inoculation_rate > 200:
+            raise Exception("Yeast will not grow at more than 200 M/ml")
+        a, b, c = self.INOCULATION_CONST
+        growth_rate = a + b * inoculation_rate ** c + self.adjustment
+        if growth_rate > 6:
+            raise Exception("Model does not allow for growth greater than 6")
+        return growth_rate
 
 
 def yeast_pitch_rate(original_gravity=1.050,
@@ -120,7 +134,7 @@ def yeast_pitch_rate(original_gravity=1.050,
                      cells_per_pack=100,
                      num_packs=1,
                      days_since_manufacture=30,
-                     yeast_model=WhiteYeastModel,
+                     yeast_model=WhiteYeastModel(),
                      units=IMPERIAL_UNITS):
     """
     Determine yeast pitch rate
