@@ -88,32 +88,40 @@ class TestWhiteYeastModel(unittest.TestCase):
         out = self.yeast_model.get_inoculation_rate(growth_rate)
         self.assertEquals(round(out, 2), 6.17)
 
+    def test_get_viability(self):
+        out = self.yeast_model.get_viability()
+        self.assertEqual(out, 0.79)
+        out = self.yeast_model.get_viability(0)
+        self.assertEqual(out, 1.0)
+        out = self.yeast_model.get_viability(143)
+        self.assertEqual(out, 0.0)
+
     def test_get_yeast_pitch_rate(self):
         out = self.yeast_model.get_yeast_pitch_rate()
         expected = {'original_gravity': 1.050,
                     'final_volume': 5.0,
-                    'viability': 0.8,
-                    'cells': 80.0,
+                    'viability': 0.79,
+                    'cells': 79.0,
                     'target_pitch_rate': 1.42,
                     'pitch_rate_as_is': 0.32,
                     'pitch_rate_cells': 355.0,
-                    'cells_needed': 275.0,
-                    'required_growth_rate': 4.44,
+                    'cells_needed': 276.0,
+                    'required_growth_rate': 4.49,
                     'units': 'imperial',
                     }
         self.assertEquals(out, expected)
 
     def test_get_yeast_pitch_rate_two_packs(self):
         out = self.yeast_model.get_yeast_pitch_rate(num_packs=2)
-        expected = {'original_gravity': 1.050,
+        expected = {'original_gravity': 1.05,
                     'final_volume': 5.0,
-                    'viability': 0.8,
-                    'cells': 160.0,
+                    'viability': 0.79,
+                    'cells': 158.0,
                     'target_pitch_rate': 1.42,
-                    'pitch_rate_as_is': 0.64,
+                    'pitch_rate_as_is': 0.63,
                     'pitch_rate_cells': 355.0,
-                    'cells_needed': 195.0,
-                    'required_growth_rate': 2.22,
+                    'cells_needed': 197.0,
+                    'required_growth_rate': 2.25,
                     'units': 'imperial',
                     }
         self.assertEquals(out, expected)
@@ -126,13 +134,13 @@ class TestWhiteYeastModel(unittest.TestCase):
             units=SI_UNITS)
         expected = {'original_gravity': 1.050,
                     'final_volume': 21.0,
-                    'viability': 0.8,
-                    'cells': 160.0,
+                    'viability': 0.79,
+                    'cells': 158.0,
                     'target_pitch_rate': 1.5,
-                    'pitch_rate_as_is': 0.62,
+                    'pitch_rate_as_is': 0.61,
                     'pitch_rate_cells': 390.21,
-                    'cells_needed': 230.21,
-                    'required_growth_rate': 2.44,
+                    'cells_needed': 232.21,
+                    'required_growth_rate': 2.47,
                     'units': 'metric',
                     }
         self.assertEquals(out, expected)
