@@ -164,6 +164,7 @@ def yeast_pitch_rate(original_gravity=1.050,
     starter_volume = cells / inoculation_rate
     return {'original_gravity': original_gravity,
             'final_volume': final_volume,
+            'target_pitch_rate': target_pitch_rate,
             'pitch_rate': round(pitch_rate, 2),
             'viability': round(viability, 2),
             'cells': round(cells, 2),
