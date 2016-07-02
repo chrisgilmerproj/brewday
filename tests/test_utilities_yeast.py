@@ -89,10 +89,10 @@ class TestWhiteYeastModel(unittest.TestCase):
         self.assertEquals(round(out, 2), 6.17)
 
     def test_get_viability(self):
-        out = self.yeast_model.get_viability()
-        self.assertEqual(out, 0.79)
         out = self.yeast_model.get_viability(0)
         self.assertEqual(out, 1.0)
+        out = self.yeast_model.get_viability(30)
+        self.assertEqual(out, 0.79)
         out = self.yeast_model.get_viability(143)
         self.assertEqual(out, 0.0)
 
