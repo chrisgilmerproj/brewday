@@ -2,8 +2,9 @@ import unittest
 
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
-from brew.utilities.yeast import get_growth_rate
-from brew.utilities.yeast import get_inoculation_rate
+from brew.utilities.yeast import KaiserYeastModel
+from brew.utilities.yeast import WhiteYeastModel
+from brew.utilities.yeast import YeastModel
 from brew.utilities.yeast import pitch_rate_conversion
 from brew.utilities.yeast import yeast_pitch_rate
 
@@ -26,16 +27,6 @@ class TestYeastUtilities(unittest.TestCase):
         out = pitch_rate_conversion(0.976, units=IMPERIAL_UNITS)
         self.assertEquals(round(out, 3), 1.0)
 
-    def test_get_growth_rate(self):
-        inoculation_rate = 6.17
-        out = get_growth_rate(inoculation_rate)
-        self.assertEquals(round(out, 2), 4.44)
-
-    def test_get_inoculation_rate(self):
-        growth_rate = 4.44
-        out = get_inoculation_rate(growth_rate)
-        self.assertEquals(round(out, 2), 6.17)
-
     def test_yeast_pitch_rate(self):
         out = yeast_pitch_rate()
         expected = {'pitch_rate': 355.0,
@@ -57,3 +48,60 @@ class TestYeastUtilities(unittest.TestCase):
                     'starter_volume': 8.28,
                     }
         self.assertEquals(out, expected)
+
+
+class TestYeastModel(unittest.TestCase):
+
+    def setUp(self):
+        self.yeast_model = YeastModel
+
+    def test_get_growth_rate(self):
+        inoculation_rate = 6.17
+        with self.assertRaises(NotImplementedError):
+            self.yeast_model.get_growth_rate(inoculation_rate)
+
+    def test_get_inoculation_rate(self):
+        growth_rate = 4.44
+        with self.assertRaises(NotImplementedError):
+            self.yeast_model.get_inoculation_rate(growth_rate)
+
+
+class TestKaiserYeastModel(unittest.TestCase):
+
+    def setUp(self):
+        self.yeast_model = KaiserYeastModel
+
+    def test_get_growth_rate(self):
+        inoculation_rate = 1.0
+        out = self.yeast_model.get_growth_rate(inoculation_rate)
+        self.assertEquals(round(out, 2), 1.4)
+        inoculation_rate = 2.5
+        out = self.yeast_model.get_growth_rate(inoculation_rate)
+        self.assertEquals(round(out, 2), 0.66)
+        inoculation_rate = 6.17
+        out = self.yeast_model.get_growth_rate(inoculation_rate)
+        self.assertEquals(round(out, 2), 0)
+
+    def test_get_inoculation_rate(self):
+        growth_rate = 4.44
+        out = self.yeast_model.get_inoculation_rate(growth_rate)
+        self.assertEquals(round(out, 2), 1.4)
+        growth_rate = 1.0
+        out = self.yeast_model.get_inoculation_rate(growth_rate)
+        self.assertEquals(round(out, 2), 1.99)
+
+
+class TestWhiteYeastModel(unittest.TestCase):
+
+    def setUp(self):
+        self.yeast_model = WhiteYeastModel
+
+    def test_get_growth_rate(self):
+        inoculation_rate = 6.17
+        out = self.yeast_model.get_growth_rate(inoculation_rate)
+        self.assertEquals(round(out, 2), 4.44)
+
+    def test_get_inoculation_rate(self):
+        growth_rate = 4.44
+        out = self.yeast_model.get_inoculation_rate(growth_rate)
+        self.assertEquals(round(out, 2), 6.17)
