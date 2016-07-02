@@ -101,6 +101,7 @@ class YeastModel(object):
                 'cells': round(cells, 2),
                 'pitch_rate_as_is': round(pitch_rate_as_is, 2),
                 'pitch_rate_cells': round(pitch_rate_cells, 2),
+                'cells_needed': round(pitch_rate_cells - cells, 2),
                 }
 
     def get_starter_volume(self, pitch_rate, cells):
