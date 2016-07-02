@@ -14,10 +14,22 @@ from .sugar import sg_to_plato
 1 billion cells growth per gram of extract (B/g) =
     13.3 Million cells / (ml * P)
 
-Ale:    0.75 M / (ml * P) = 0.71  B / (G * SG)
-Lager:  1.50 M / (ml * P) = 1.42  B / (G * SG)
-Hybrid: 1.00 M / (ml * P) = 0.948 B / (G * SG)
+Ale:    0.75 M / ml / P = 0.71  B / G / SG
+Lager:  1.50 M / ml / P = 1.42  B / G / SG
+Hybrid: 1.00 M / ml / P = 0.948 B / G / SG
 """
+
+# Pitch rate in M / ml / P
+PITCH_RATE_MAP = {
+    'MFG Recommended  (Ale, fresh yeast only)': 0.35,
+    'MFG Recommended+ (Ale, fresh yeast only)': 0.55,
+    'Pro Brewer (Ale, LG)': 0.75,
+    'Pro Brewer (Ale)': 1.0,
+    'Pro Brewer (Ale, HG)': 1.25,
+    'Pro Brewer (Lager, LG)': 1.5,
+    'Pro Brewer (Lager)': 1.75,
+    'Pro Brewer (Lager, HG)': 2.0,
+}
 
 
 def pitch_rate_conversion(pitch_rate, units=IMPERIAL_UNITS):
@@ -57,6 +69,16 @@ class YeastModel(object):
     def get_growth_rate(self, inoculation_rate):
         raise NotImplementedError
 
+    def get_viability(self, days_since_manufacture):
+        """
+        Yeast viability drops 21% each month or 0.7% per day from the date of
+        manufacture.  Assume linear change.
+        """
+        viability = 1.0 - days_since_manufacture * (0.21 / 30.0)
+        if viability < 0:
+            return 0.0
+        return viability
+
     def get_yeast_pitch_rate(self,
                              original_gravity=1.050,
                              final_volume=5.0,
@@ -86,7 +108,8 @@ class YeastModel(object):
         Sources:
         - http://beersmith.com/blog/2011/01/10/yeast-starters-for-home-brewing-beer-part-2/
         """  # nopep8
-        viability = 1.0 - days_since_manufacture * (0.2 / 30.0)
+        viability = self.get_viability(days_since_manufacture)
+
         cells = cells_per_pack * num_packs * viability
 
         if units == IMPERIAL_UNITS:
