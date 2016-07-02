@@ -16,9 +16,6 @@ Lager:  1.50 M / (ml * P) = 1.42  B / (G * SG)
 Hybrid: 1.00 M / (ml * P) = 0.948 B / (G * SG)
 """
 
-# Linear Regression Least Squares
-INOCULATION_CONST = [-0.999499, 12.547938, -0.459486]
-
 
 def pitch_rate_conversion(pitch_rate, units=IMPERIAL_UNITS):
     """
@@ -37,56 +34,83 @@ def pitch_rate_conversion(pitch_rate, units=IMPERIAL_UNITS):
         return pitch_rate * LITER_PER_GAL / plato_per_gu
 
 
-def stir_plate_growth(initial_cells):
-    """
-    Stir Plage Growth
+class YeastModel(object):
 
-    initial_cells - Billion / gram extract (B/g)
+    @classmethod
+    def get_inoculation_rate(cls, growth_rate):
+        raise NotImplementedError
+
+    @classmethod
+    def get_growth_rate(cls, inoculation_rate):
+        raise NotImplementedError
+
+
+class KaiserYeastModel(YeastModel):
+    """
+    Kaiser Yeast Model
+
+    Only works for Stir Plage Growth
+
     Sources:
     - http://braukaiser.com/blog/blog/2012/11/03/estimating-yeast-growth/
     """
-    if initial_cells < 1.4:
-        return 1.4
-    if 1.4 <= initial_cells < 3.5:
-        return 2.33 - 0.67 * initial_cells
-    else:
-        return 0.0
+
+    @classmethod
+    def get_inoculation_rate(cls, growth_rate):
+        if 0 < growth_rate < 1.4:
+            return (2.33 - growth_rate) / 0.67
+        elif 1.4 <= growth_rate:
+            return 1.4
+
+    @classmethod
+    def get_growth_rate(cls, initial_cells):
+        """
+        initial_cells - Billion / gram extract (B/g)
+        """
+        if initial_cells < 1.4:
+            return 1.4
+        elif 1.4 <= initial_cells < 3.5:
+            return 2.33 - 0.67 * initial_cells
+        else:
+            return 0.0
 
 
-def get_inoculation_rate(growth_rate):
-    """
-    exponential: y = 3.4485e^-0.018x
-                 R^2 = 0.9613
+class WhiteYeastModel(YeastModel):
 
-    power      : y = 29.466x^-0.905
-                 R^2 = 0.9394
+    # Linear Regression Least Squares
+    INOCULATION_CONST = [-0.999499, 12.547938, -0.459486]
 
-    Sources:
-    - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
-    - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
-      Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
-    """
-    a, b, c = INOCULATION_CONST
-    return 10 ** (math.log10(b / (growth_rate - a))/-c)
+    @classmethod
+    def get_inoculation_rate(cls, growth_rate):
+        """
+        exponential: y = 3.4485e^-0.018x
+                     R^2 = 0.9613
 
+        power      : y = 29.466x^-0.905
+                     R^2 = 0.9394
 
-def get_growth_rate(inoculation_rate):
-    """
-    exponential: y = 132.79e^-0.758x
-                 R^2 = 0.95234
+        Sources:
+        - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
+        - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
+          Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
+        """  # nopep8
+        a, b, c = cls.INOCULATION_CONST
+        return 10 ** (math.log10(b / (growth_rate - a))/-c)
 
-    power      : y = 41.418x^-1.038
-                 R^2 = 0.9394
+    @classmethod
+    def get_growth_rate(cls, inoculation_rate):
+        """
+        initial_cells - Billion / gram extract (B/g)
 
-    G = (12.54793776 * x^-0.4594858324) - 0.9994994906
+        G = (12.54793776 * x^-0.4594858324) - 0.9994994906
 
-    Sources:
-    - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
-    - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
-      Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
-    """
-    a, b, c = INOCULATION_CONST
-    return a + b * inoculation_rate ** c
+        Sources:
+        - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
+        - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
+          Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
+        """  # nopep8
+        a, b, c = cls.INOCULATION_CONST
+        return a + b * inoculation_rate ** c
 
 
 def yeast_pitch_rate(original_gravity=1.050,
@@ -96,6 +120,7 @@ def yeast_pitch_rate(original_gravity=1.050,
                      cells_per_pack=100,
                      num_packs=1,
                      days_since_manufacture=30,
+                     yeast_model=WhiteYeastModel,
                      units=IMPERIAL_UNITS):
     """
     Determine yeast pitch rate
@@ -120,7 +145,7 @@ def yeast_pitch_rate(original_gravity=1.050,
     viability = 1.0 - days_since_manufacture * (0.2 / 30.0)
     cells = cells_per_pack * num_packs * viability
     growth_rate = pitch_rate / cells
-    inoculation_rate = get_inoculation_rate(growth_rate)
+    inoculation_rate = yeast_model.get_inoculation_rate(growth_rate)
     starter_volume = cells / inoculation_rate
     return {'pitch_rate': round(pitch_rate, 2),
             'viability': round(viability, 2),
