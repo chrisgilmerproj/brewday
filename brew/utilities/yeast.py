@@ -3,6 +3,7 @@ import math
 from ..constants import GAL_PER_LITER
 from ..constants import LITER_PER_GAL
 from ..constants import IMPERIAL_UNITS
+from ..constants import OZ_PER_G
 from ..constants import SI_UNITS
 from .sugar import plato_to_sg
 from .sugar import sg_to_gu
@@ -116,18 +117,26 @@ class YeastModel(object):
 
     def get_starter_volume(self,
                            available_cells,
-                           starter_volume=0.528344,
+                           starter_volume=2.0 * GAL_PER_LITER,
                            original_gravity=1.036,
                            units=IMPERIAL_UNITS):
+        """
+        Calculate the number of cells given a stater volume and gravity
+        """
+        GPL = 2.845833  # g/P/L grams of extract per point of gravity per liter of starter  # nopep8
+        dme = GPL * sg_to_gu(original_gravity) * starter_volume  # in grams
         if units == IMPERIAL_UNITS:
             inoculation_rate = available_cells / (starter_volume * LITER_PER_GAL)  # nopep8
+            dme = dme * OZ_PER_G * LITER_PER_GAL
         elif units == SI_UNITS:
             inoculation_rate = available_cells / starter_volume
         growth_rate = self.get_growth_rate(inoculation_rate)
         end_cell_count = available_cells * (growth_rate + 1)
+
         return {'available_cells': round(available_cells, 2),
                 'starter_volume': round(starter_volume, 2),
                 'original_gravity': original_gravity,
+                'dme': round(dme, 2),
                 'inoculation_rate': round(inoculation_rate, 2),
                 'growth_rate': round(growth_rate, 2),
                 'end_cell_count': round(end_cell_count, 2),
