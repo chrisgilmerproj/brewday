@@ -459,8 +459,4 @@ class Recipe(object):
             ===================================
             """))
 
-        print(textwrap.dedent("""\
-            Yeast Attenuation:  {yeast_attenuation:0.2f} %
-            """.format(
-                       yeast_attenuation=self.yeast.percent_attenuation,
-                       )))
+        print(self.yeast.format())
