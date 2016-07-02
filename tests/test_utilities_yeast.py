@@ -148,7 +148,7 @@ class TestWhiteYeastModel(unittest.TestCase):
                     }
         self.assertEquals(out, expected)
 
-    def test_get_starter_volume_metric(self):
+    def test_get_starter_volume_metric_no_agitation(self):
         available_cells = 160.0
         out = self.yeast_model.get_starter_volume(available_cells,
                                                   starter_volume=2.0,
@@ -197,3 +197,13 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'units': 'metric',
                     }
         self.assertEquals(out, expected)
+
+    def test_get_resulting_pitch_rate_imperial(self):
+        out = self.yeast_model.get_resulting_pitch_rate(268.15)
+        self.assertEquals(round(out, 2), 1.49)
+
+    def test_get_resulting_pitch_rate_metric(self):
+        out = self.yeast_model.get_resulting_pitch_rate(268.15,
+                                                        final_volume=21.0,
+                                                        units=SI_UNITS)
+        self.assertEquals(round(out, 2), 1.41)

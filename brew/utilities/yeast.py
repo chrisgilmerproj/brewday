@@ -143,6 +143,18 @@ class YeastModel(object):
                 'units': units,
                 }
 
+    def get_resulting_pitch_rate(self,
+                                 starter_cell_count,
+                                 original_gravity=1.036,
+                                 final_volume=5.0,
+                                 units=IMPERIAL_UNITS):
+        if units == IMPERIAL_UNITS:
+            modifier = sg_to_gu(original_gravity)
+        elif units == SI_UNITS:
+            modifier = sg_to_plato(original_gravity)
+        pitch_rate = starter_cell_count / final_volume / modifier
+        return pitch_rate
+
 
 class KaiserYeastModel(YeastModel):
     """
