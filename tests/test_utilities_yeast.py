@@ -109,6 +109,21 @@ class TestWhiteYeastModel(unittest.TestCase):
                     }
         self.assertEquals(out, expected)
 
+    def test_get_yeast_pitch_rate_metric(self):
+        out = self.yeast_model.get_yeast_pitch_rate(
+            final_volume=21.0,
+            target_pitch_rate=1.5,
+            num_packs=2,
+            units=SI_UNITS)
+        expected = {'original_gravity': 1.050,
+                    'final_volume': 21.0,
+                    'target_pitch_rate': 1.5,
+                    'pitch_rate': 390.21,
+                    'viability': 0.8,
+                    'cells': 160.0,
+                    }
+        self.assertEquals(out, expected)
+
     def test_get_starter_volume_two_packs(self):
         pitch_rate = 355.0
         available_cells = 160.0
@@ -117,5 +132,16 @@ class TestWhiteYeastModel(unittest.TestCase):
         expected = {'growth_rate': 2.22,
                     'inoculation_rate': 19.32,
                     'starter_volume': 8.28,
+                    }
+        self.assertEquals(out, expected)
+
+    def test_get_starter_volume(self):
+        pitch_rate = 352.0
+        available_cells = 158.0
+        out = self.yeast_model.get_starter_volume(pitch_rate,
+                                                  available_cells)
+        expected = {'growth_rate': 2.23,
+                    'inoculation_rate': 19.21,
+                    'starter_volume': 8.23,
                     }
         self.assertEquals(out, expected)

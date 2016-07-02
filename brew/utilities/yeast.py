@@ -6,6 +6,7 @@ from ..constants import IMPERIAL_UNITS
 from ..constants import SI_UNITS
 from .sugar import plato_to_sg
 from .sugar import sg_to_gu
+from .sugar import sg_to_plato
 
 """
 1 billion cells growth per gram of extract (B/g) =
@@ -77,14 +78,20 @@ class YeastModel(object):
 
         Yeast Viability: lose 20% viability / month or 0.66% / day
 
+        Imperial: B / Gal / GU
+        Metric:   M / ml  / Plato
+
         Sources:
         - http://beersmith.com/blog/2011/01/10/yeast-starters-for-home-brewing-beer-part-2/
         """  # nopep8
-        gu = sg_to_gu(original_gravity)
         viability = 1.0 - days_since_manufacture * (0.2 / 30.0)
         cells = cells_per_pack * num_packs * viability
 
-        pitch_rate = target_pitch_rate * gu * final_volume
+        if units == IMPERIAL_UNITS:
+            modifier = sg_to_gu(original_gravity)
+        elif units == SI_UNITS:
+            modifier = sg_to_plato(original_gravity)
+        pitch_rate = target_pitch_rate * final_volume * modifier
 
         return {'original_gravity': original_gravity,
                 'final_volume': final_volume,
@@ -149,12 +156,12 @@ class WhiteYeastModel(YeastModel):
     # Linear Regression Least Squares
     INOCULATION_CONST = [-0.999499, 12.547938, -0.459486]
     METHOD_TO_GROWTH_ADJ = {
-        'no agitation': 0.0,
+        'no agitation': 1.0,
         'shaking': 0.5,
-        'stir plate': 1.0,
+        'stir plate': 0.0,
     }
 
-    def __init__(self, method='no agitation'):
+    def __init__(self, method='stir plate'):
         return super(WhiteYeastModel, self).__init__(method)
 
     def get_inoculation_rate(self, growth_rate):
@@ -170,7 +177,7 @@ class WhiteYeastModel(YeastModel):
         if inoculation_rate > 200:
             raise Exception("Yeast will not grow at more than 200 M/ml")
         a, b, c = self.INOCULATION_CONST
-        growth_rate = a + b * inoculation_rate ** c + self.adjustment
+        growth_rate = a + b * inoculation_rate ** c - self.adjustment
         if growth_rate > 6:
             raise Exception("Model does not allow for growth greater than 6")
         return growth_rate
