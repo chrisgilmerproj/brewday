@@ -6,7 +6,6 @@ from brew.utilities.yeast import KaiserYeastModel
 from brew.utilities.yeast import WhiteYeastModel
 from brew.utilities.yeast import YeastModel
 from brew.utilities.yeast import pitch_rate_conversion
-from brew.utilities.yeast import yeast_pitch_rate
 
 
 class TestYeastUtilities(unittest.TestCase):
@@ -26,32 +25,6 @@ class TestYeastUtilities(unittest.TestCase):
         self.assertEquals(round(out, 2), 1.5)
         out = pitch_rate_conversion(0.976, units=IMPERIAL_UNITS)
         self.assertEquals(round(out, 3), 1.0)
-
-    def test_yeast_pitch_rate(self):
-        out = yeast_pitch_rate()
-        expected = {'original_gravity': 1.050,
-                    'final_volume': 5.0,
-                    'pitch_rate': 355.0,
-                    'viability': 0.8,
-                    'cells': 80.0,
-                    'growth_rate': 4.44,
-                    'inoculation_rate': 6.17,
-                    'starter_volume': 12.96,
-                    }
-        self.assertEquals(out, expected)
-
-    def test_yeast_pitch_rate_two_packs(self):
-        out = yeast_pitch_rate(num_packs=2)
-        expected = {'original_gravity': 1.050,
-                    'final_volume': 5.0,
-                    'pitch_rate': 355.0,
-                    'viability': 0.8,
-                    'cells': 160.0,
-                    'growth_rate': 2.22,
-                    'inoculation_rate': 19.32,
-                    'starter_volume': 8.28,
-                    }
-        self.assertEquals(out, expected)
 
 
 class TestYeastModel(unittest.TestCase):
@@ -113,3 +86,36 @@ class TestWhiteYeastModel(unittest.TestCase):
         growth_rate = 4.44
         out = self.yeast_model.get_inoculation_rate(growth_rate)
         self.assertEquals(round(out, 2), 6.17)
+
+    def test_get_yeast_pitch_rate(self):
+        out = self.yeast_model.get_yeast_pitch_rate()
+        expected = {'original_gravity': 1.050,
+                    'final_volume': 5.0,
+                    'target_pitch_rate': 1.42,
+                    'pitch_rate': 355.0,
+                    'viability': 0.8,
+                    'cells': 80.0,
+                    }
+        self.assertEquals(out, expected)
+
+    def test_get_yeast_pitch_rate_two_packs(self):
+        out = self.yeast_model.get_yeast_pitch_rate(num_packs=2)
+        expected = {'original_gravity': 1.050,
+                    'final_volume': 5.0,
+                    'target_pitch_rate': 1.42,
+                    'pitch_rate': 355.0,
+                    'viability': 0.8,
+                    'cells': 160.0,
+                    }
+        self.assertEquals(out, expected)
+
+    def test_get_starter_volume_two_packs(self):
+        pitch_rate = 355.0
+        available_cells = 160.0
+        out = self.yeast_model.get_starter_volume(pitch_rate,
+                                                  available_cells)
+        expected = {'growth_rate': 2.22,
+                    'inoculation_rate': 19.32,
+                    'starter_volume': 8.28,
+                    }
+        self.assertEquals(out, expected)
