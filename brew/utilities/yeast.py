@@ -95,6 +95,8 @@ class YeastModel(object):
         pitch_rate_as_is = cells / final_volume / modifier
         pitch_rate_cells = target_pitch_rate * final_volume * modifier
 
+        required_growth_rate = pitch_rate_cells / cells
+
         return {'original_gravity': original_gravity,
                 'final_volume': final_volume,
                 'target_pitch_rate': target_pitch_rate,
@@ -103,16 +105,8 @@ class YeastModel(object):
                 'pitch_rate_as_is': round(pitch_rate_as_is, 2),
                 'pitch_rate_cells': round(pitch_rate_cells, 2),
                 'cells_needed': round(pitch_rate_cells - cells, 2),
+                'required_growth_rate': round(required_growth_rate, 2),
                 'units': units,
-                }
-
-    def old_get_starter_volume(self, pitch_rate, cells):
-        growth_rate = pitch_rate / cells
-        inoculation_rate = self.get_inoculation_rate(growth_rate)
-        starter_volume = cells / inoculation_rate
-        return {'growth_rate': round(growth_rate, 2),
-                'inoculation_rate': round(inoculation_rate, 2),
-                'starter_volume': round(starter_volume, 2),
                 }
 
     def get_starter_volume(self,

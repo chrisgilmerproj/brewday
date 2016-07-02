@@ -98,6 +98,7 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'pitch_rate_as_is': 0.32,
                     'pitch_rate_cells': 355.0,
                     'cells_needed': 275.0,
+                    'required_growth_rate': 4.44,
                     'units': 'imperial',
                     }
         self.assertEquals(out, expected)
@@ -112,6 +113,7 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'pitch_rate_as_is': 0.64,
                     'pitch_rate_cells': 355.0,
                     'cells_needed': 195.0,
+                    'required_growth_rate': 2.22,
                     'units': 'imperial',
                     }
         self.assertEquals(out, expected)
@@ -130,6 +132,7 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'pitch_rate_as_is': 0.62,
                     'pitch_rate_cells': 390.21,
                     'cells_needed': 230.21,
+                    'required_growth_rate': 2.44,
                     'units': 'metric',
                     }
         self.assertEquals(out, expected)
