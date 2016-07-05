@@ -16,7 +16,8 @@ setup(
                                     "tests"]),
     scripts=['bin/abv',
              'bin/sugar',
-             'bin/temp'],
+             'bin/temp',
+             'bin/yeast'],
     include_package_data=True,
     zip_safe=False,
     tests_require=[

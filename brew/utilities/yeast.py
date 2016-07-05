@@ -1,10 +1,13 @@
 import math
 
 from ..constants import GAL_PER_LITER
+from ..constants import IMPERIAL_TYPES
 from ..constants import IMPERIAL_UNITS
 from ..constants import LITER_PER_GAL
 from ..constants import OZ_PER_G
+from ..constants import SI_TYPES
 from ..constants import SI_UNITS
+from ..validators import validate_units
 from .sugar import plato_to_sg
 from .sugar import sg_to_gu
 from .sugar import sg_to_plato
@@ -56,12 +59,20 @@ class YeastModel(object):
         'stir plate': 0.0,
     }
 
-    def __init__(self, method):
+    def __init__(self, method, units=IMPERIAL_UNITS):
         if method not in self.METHOD_TO_GROWTH_ADJ.keys():
             raise Exception("Method '{}' not allowed for yeast model".format(
                 method))
         self.method = method
         self.adjustment = self.METHOD_TO_GROWTH_ADJ[method]
+        self.set_units(units)
+
+    def set_units(self, units):
+        self.units = validate_units(units)
+        if self.units == IMPERIAL_UNITS:
+            self.types = IMPERIAL_TYPES
+        elif self.units == SI_UNITS:
+            self.types = SI_TYPES
 
     def get_inoculation_rate(self, growth_rate):
         raise NotImplementedError
@@ -86,8 +97,7 @@ class YeastModel(object):
                              yeast_type='liquid',
                              cells_per_pack=100,
                              num_packs=1,
-                             days_since_manufacture=30,
-                             units=IMPERIAL_UNITS):
+                             days_since_manufacture=30):
         """
         Determine yeast pitch rate
 
@@ -112,9 +122,9 @@ class YeastModel(object):
 
         cells = cells_per_pack * num_packs * viability
 
-        if units == IMPERIAL_UNITS:
+        if self.units == IMPERIAL_UNITS:
             modifier = sg_to_gu(original_gravity)
-        elif units == SI_UNITS:
+        elif self.units == SI_UNITS:
             modifier = sg_to_plato(original_gravity)
         pitch_rate_as_is = cells / final_volume / modifier
         pitch_rate_cells = target_pitch_rate * final_volume * modifier
@@ -130,23 +140,22 @@ class YeastModel(object):
                 'pitch_rate_cells': round(pitch_rate_cells, 2),
                 'cells_needed': round(pitch_rate_cells - cells, 2),
                 'required_growth_rate': round(required_growth_rate, 2),
-                'units': units,
+                'units': self.units,
                 }
 
     def get_starter_volume(self,
                            available_cells,
                            starter_volume=2.0 * GAL_PER_LITER,
-                           original_gravity=1.036,
-                           units=IMPERIAL_UNITS):
+                           original_gravity=1.036):
         """
         Calculate the number of cells given a stater volume and gravity
         """
         GPL = 2.845833  # g/P/L grams of extract per point of gravity per liter of starter  # nopep8
         dme = GPL * sg_to_gu(original_gravity) * starter_volume  # in grams
-        if units == IMPERIAL_UNITS:
+        if self.units == IMPERIAL_UNITS:
             inoculation_rate = available_cells / (starter_volume * LITER_PER_GAL)  # nopep8
             dme = dme * OZ_PER_G * LITER_PER_GAL
-        elif units == SI_UNITS:
+        elif self.units == SI_UNITS:
             inoculation_rate = available_cells / starter_volume
         growth_rate = self.get_growth_rate(inoculation_rate)
         end_cell_count = available_cells * (growth_rate + 1)
@@ -158,17 +167,16 @@ class YeastModel(object):
                 'inoculation_rate': round(inoculation_rate, 2),
                 'growth_rate': round(growth_rate, 2),
                 'end_cell_count': round(end_cell_count, 2),
-                'units': units,
+                'units': self.units,
                 }
 
     def get_resulting_pitch_rate(self,
                                  starter_cell_count,
                                  original_gravity=1.036,
-                                 final_volume=5.0,
-                                 units=IMPERIAL_UNITS):
-        if units == IMPERIAL_UNITS:
+                                 final_volume=5.0):
+        if self.units == IMPERIAL_UNITS:
             modifier = sg_to_gu(original_gravity)
-        elif units == SI_UNITS:
+        elif self.units == SI_UNITS:
             modifier = sg_to_plato(original_gravity)
         pitch_rate = starter_cell_count / final_volume / modifier
         return pitch_rate
@@ -187,8 +195,8 @@ class KaiserYeastModel(YeastModel):
         'stir plate': 0.0,
     }
 
-    def __init__(self, method='stir plate'):
-        return super(KaiserYeastModel, self).__init__(method)
+    def __init__(self, method='stir plate', units=IMPERIAL_UNITS):
+        return super(KaiserYeastModel, self).__init__(method, units=units)
 
     def get_inoculation_rate(self, growth_rate):
         if 0 < growth_rate < 1.4:
@@ -224,8 +232,8 @@ class WhiteYeastModel(YeastModel):
         'stir plate': 1.0,
     }
 
-    def __init__(self, method='no agitation'):
-        return super(WhiteYeastModel, self).__init__(method)
+    def __init__(self, method='no agitation', units=IMPERIAL_UNITS):
+        return super(WhiteYeastModel, self).__init__(method, units=units)
 
     def get_inoculation_rate(self, growth_rate):
         a, b, c = self.INOCULATION_CONST
