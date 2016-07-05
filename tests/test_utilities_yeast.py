@@ -127,11 +127,11 @@ class TestWhiteYeastModel(unittest.TestCase):
         self.assertEquals(out, expected)
 
     def test_get_yeast_pitch_rate_metric(self):
+        self.yeast_model.set_units(SI_UNITS)
         out = self.yeast_model.get_yeast_pitch_rate(
             final_volume=21.0,
             target_pitch_rate=1.5,
-            num_packs=2,
-            units=SI_UNITS)
+            num_packs=2)
         expected = {'original_gravity': 1.050,
                     'final_volume': 21.0,
                     'viability': 0.79,
@@ -161,9 +161,9 @@ class TestWhiteYeastModel(unittest.TestCase):
 
     def test_get_starter_volume_metric_no_agitation(self):
         available_cells = 160.0
+        self.yeast_model.set_units(SI_UNITS)
         out = self.yeast_model.get_starter_volume(available_cells,
-                                                  starter_volume=2.0,
-                                                  units=SI_UNITS)
+                                                  starter_volume=2.0)
         expected = {'available_cells': 160.0,
                     'starter_volume': 2.0,
                     'original_gravity': 1.036,
@@ -178,9 +178,9 @@ class TestWhiteYeastModel(unittest.TestCase):
     def test_get_starter_volume_metric_shaking(self):
         available_cells = 160.0
         yeast_model = self.yeast_model_cls('shaking')
+        yeast_model.set_units(SI_UNITS)
         out = yeast_model.get_starter_volume(available_cells,
-                                             starter_volume=2.0,
-                                             units=SI_UNITS)
+                                             starter_volume=2.0)
         expected = {'available_cells': 160.0,
                     'starter_volume': 2.0,
                     'original_gravity': 1.036,
@@ -195,9 +195,9 @@ class TestWhiteYeastModel(unittest.TestCase):
     def test_get_starter_volume_metric_stir_plate(self):
         available_cells = 160.0
         yeast_model = self.yeast_model_cls('stir plate')
+        yeast_model.set_units(SI_UNITS)
         out = yeast_model.get_starter_volume(available_cells,
-                                             starter_volume=2.0,
-                                             units=SI_UNITS)
+                                             starter_volume=2.0)
         expected = {'available_cells': 160.0,
                     'starter_volume': 2.0,
                     'original_gravity': 1.036,
@@ -214,7 +214,7 @@ class TestWhiteYeastModel(unittest.TestCase):
         self.assertEquals(round(out, 2), 1.49)
 
     def test_get_resulting_pitch_rate_metric(self):
+        self.yeast_model.set_units(SI_UNITS)
         out = self.yeast_model.get_resulting_pitch_rate(268.15,
-                                                        final_volume=21.0,
-                                                        units=SI_UNITS)
+                                                        final_volume=21.0)
         self.assertEquals(round(out, 2), 1.41)
