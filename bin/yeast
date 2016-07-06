@@ -12,8 +12,10 @@ import argparse
 import textwrap
 import sys
 
+from brew.constants import GAL_PER_LITER
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.utilities.yeast import KaiserYeastModel
 from brew.utilities.yeast import WhiteYeastModel
 
 
@@ -23,7 +25,20 @@ def main(args):
                                                         SI_UNITS))
         sys.exit(1)
 
-    model = WhiteYeastModel(args.method, units=args.units)
+    model_cls = None
+    if args.model == 'white':
+        model_cls = WhiteYeastModel
+    elif args.model == 'kaiser':
+        model_cls = KaiserYeastModel
+    else:
+        print("Unknown Yeast Growth Model '{}', must be 'white' or 'kaiser'".format(args.model))  # nopep8
+        sys.exit(1)
+
+    try:
+        model = model_cls(args.method, units=args.units)
+    except Exception as e:
+        print(e)
+        sys.exit(1)
     data = model.get_yeast_pitch_rate(original_gravity=args.og,
                                       final_volume=args.fv,
                                       target_pitch_rate=args.target_pitch_rate,
@@ -31,6 +46,7 @@ def main(args):
                                       cells_per_pack=args.cells,
                                       num_packs=args.num,
                                       days_since_manufacture=args.days)
+    cells_needed = data['cells_needed']
     data.update(model.types)
     msg = textwrap.dedent("""\
             Yeast Pitch Calculator
@@ -42,12 +58,15 @@ def main(args):
             Cells                 {cells:0.0f} B
             Pitch Rate As-Is      {pitch_rate_as_is:0.2f}
             Pitch Rate Cells      {pitch_rate_cells:0.0f} B
+            Cells Needed          {cells_needed} B
             Required Growth Rate  {required_growth_rate}
-            Units                 {units}""".format(
-                **data))
+            Units                 {units}""".format(**data))
     print(msg)
 
-    data = model.get_starter_volume(available_cells=data['cells'])
+    data = model.get_starter_volume(available_cells=data['cells'],
+                                    starter_volume=args.sv,
+                                    original_gravity=args.sg)
+    end_cell_count = data['end_cell_count']
     data.update(model.types)
     msg = textwrap.dedent("""\
 
@@ -60,20 +79,50 @@ def main(args):
             Inoculation Rate      {inoculation_rate}
             Growth Rate           {growth_rate}
             End Cell Count        {end_cell_count} B
-            Units                 {units}""".format(
-                **data))
+            Units                 {units}""".format(**data))
+    print(msg)
+
+    if cells_needed < end_cell_count:
+        print("\nStarter has enough cells")
+    else:
+        print("\nStarter DOES NOT HAVE enough cells")
+
+    resulting_pitch_rate = model.get_resulting_pitch_rate(
+        starter_cell_count=end_cell_count,
+        original_gravity=args.sg,
+        final_volume=args.fv)
+    data.update(model.types)
+    msg = textwrap.dedent("""\
+
+            Resulting Pitch Rate
+            -----------------------------------
+            Starter Cell Count    {starter_cell_count} B
+            Original Gravity      {original_gravity}
+            Final Volume          {final_volume} {volume}
+            Pitch Rate            {resulting_pitch_rate}""".format(
+        starter_cell_count=end_cell_count,
+        original_gravity=args.sg,
+        final_volume=args.fv,
+        resulting_pitch_rate=resulting_pitch_rate,
+        **model.types))
     print(msg)
 
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Yeast Pitch Calculator')
-    parser.add_argument('-o', '--og', metavar='O', type=float,
+    parser.add_argument('--og', metavar='O', type=float,
                         default=1.05,
-                        help='Original Gravity (default: %(default)s)')
-    parser.add_argument('-f', '--fv', metavar='V', type=float,
+                        help='Wort Original Gravity (default: %(default)s)')
+    parser.add_argument('--fv', metavar='V', type=float,
                         default=5.0,
-                        help='Final Volume (default: %(default)s)')
+                        help='Wort Final Volume (default: %(default)s)')
+    parser.add_argument('--sg', metavar='O', type=float,
+                        default=1.036,
+                        help='Starter Original Gravity (default: %(default)s)')
+    parser.add_argument('--sv', metavar='V', type=float,
+                        default=2.0 * GAL_PER_LITER,
+                        help='Starter Volume (default: %(default)s)')
     parser.add_argument('--target-pitch-rate', metavar='T', type=float,
                         default=1.42,
                         help='Target Pitch Rate (default: %(default)s)')
@@ -89,7 +138,10 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--days', metavar='D', type=int,
                         default=0,
                         help='Number of days since yeast manufacture (default: %(default)s)')  # nopep8
-    parser.add_argument('-m', '--method', metavar='M', type=str,
+    parser.add_argument('--model', metavar='M', type=str,
+                        default='white',
+                        help='Model of yeast growth, white or kaiser (default: %(default)s)')  # nopep8
+    parser.add_argument('--method', metavar='M', type=str,
                         default='stir plate',
                         help='Method of growth (default: %(default)s)')  # nopep8
     parser.add_argument('--units', metavar="U", type=str,
