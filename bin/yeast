@@ -63,6 +63,10 @@ def main(args):
             Units                 {units}""".format(**data))
     print(msg)
 
+    if data['cells'] <= 0:
+        print("\nNo cells available for further calculation")
+        sys.exit(1)
+
     data = model.get_starter_volume(available_cells=data['cells'],
                                     starter_volume=args.sv,
                                     original_gravity=args.sg)
