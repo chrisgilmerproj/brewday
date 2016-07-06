@@ -129,7 +129,10 @@ class YeastModel(object):
         pitch_rate_as_is = cells / final_volume / modifier
         pitch_rate_cells = target_pitch_rate * final_volume * modifier
 
-        required_growth_rate = pitch_rate_cells / cells
+        if cells <= 0:
+            required_growth_rate = 0
+        else:
+            required_growth_rate = pitch_rate_cells / cells
 
         return {'original_gravity': original_gravity,
                 'final_volume': final_volume,
