@@ -38,9 +38,21 @@ def parse_cereals(recipe, data_dir):
 
         cereal_filename = os.path.join(cereal_dir, '{}.json'.format(name))
         grain_json = read_json_file(cereal_filename)
+
+        color = None
+        if 'grain_data' in cereal_data and 'color' in cereal_data['grain_data']:  # nopep8
+            color = cereal_data['grain_data']['color']
+        else:
+            color = float(grain_json['color'][:-4])
+
+        ppg = None
+        if 'grain_data' in cereal_data and 'ppg' in cereal_data['grain_data']:
+            ppg = cereal_data['grain_data']['ppg']
+        else:
+            ppg = sg_to_gu(float(grain_json['potential'][:-3]))
         grain = Grain(grain_json['name'],
-                      color=float(grain_json['color'][:-4]),
-                      ppg=sg_to_gu(float(grain_json['potential'][:-3])))
+                      color=color,
+                      ppg=ppg)
         grain_add = GrainAddition(grain, weight=float(cereal_data['weight']))
         grain_additions.append(grain_add)
 
@@ -106,8 +118,16 @@ def main():
         'final_volume': 5.0,
         'grains': [
             {'name': 'pale malt 2-row us',
+             'grain_data': {
+                 'color': 1.8,
+                 'ppg': 37,
+             },
              'weight': 13.96},
             {'name': 'caramel crystal malt 20l',
+             'grain_data': {
+                 'color': 20.0,
+                 'ppg': 35,
+             },
              'weight': 0.78},
         ],
         'hops': [
