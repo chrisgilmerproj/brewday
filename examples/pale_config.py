@@ -32,16 +32,17 @@ def parse_cereals(recipe, data_dir):
     grain_additions = []
     for cereal_data in recipe['grains']:
         name = format_name(cereal_data['name'])
-        if name in cereal_list:
-            cereal_filename = os.path.join(cereal_dir, '{}.json'.format(name))
-            grain_json = read_json_file(cereal_filename)
-            grain = Grain(grain_json['name'],
-                          color=float(grain_json['color'][:-4]),
-                          ppg=sg_to_gu(float(grain_json['potential'][:-3])))  # nopep8
-            grain_add = GrainAddition(grain, weight=float(cereal_data['weight']))  # nopep8
-            grain_additions.append(grain_add)
-        else:
+        if name not in cereal_list:
             print('Cereal not found: {}'.format(name))
+            continue
+
+        cereal_filename = os.path.join(cereal_dir, '{}.json'.format(name))
+        grain_json = read_json_file(cereal_filename)
+        grain = Grain(grain_json['name'],
+                      color=float(grain_json['color'][:-4]),
+                      ppg=sg_to_gu(float(grain_json['potential'][:-3])))
+        grain_add = GrainAddition(grain, weight=float(cereal_data['weight']))
+        grain_additions.append(grain_add)
 
     return grain_additions
 
@@ -55,18 +56,19 @@ def parse_hops(recipe, data_dir):
     hop_additions = []
     for hop_data in recipe['hops']:
         name = format_name(hop_data['name'])
-        if name in hop_list:
-            hop_filename = os.path.join(hop_dir, '{}.json'.format(name))
-            hop_json = read_json_file(hop_filename)
-            alpha_acids = float(hop_json['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
-            hop = Hop(hop_json['name'],
-                      percent_alpha_acids=alpha_acids)
-            hop_add = HopAddition(hop,
-                                  weight=float(hop_data['weight']),
-                                  boil_time=hop_data['boil_time'])
-            hop_additions.append(hop_add)
-        else:
+        if name not in hop_list:
             print('Hop not found: {}'.format(name))
+            continue
+
+        hop_filename = os.path.join(hop_dir, '{}.json'.format(name))
+        hop_json = read_json_file(hop_filename)
+        alpha_acids = float(hop_json['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
+        hop = Hop(hop_json['name'],
+                  percent_alpha_acids=alpha_acids)
+        hop_add = HopAddition(hop,
+                              weight=float(hop_data['weight']),
+                              boil_time=hop_data['boil_time'])
+        hop_additions.append(hop_add)
     return hop_additions
 
 
