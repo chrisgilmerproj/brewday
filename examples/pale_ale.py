@@ -10,13 +10,13 @@ from brew.yeasts import Yeast
 if __name__ == "__main__":
 
     # Define Grains
-    pale = Grain('pale 2-row',
+    pale = Grain('pale malt 2-row us',
                  short_name='2-row',
                  color=1.8,
                  ppg=37)
     pale_add = GrainAddition(pale,
                              weight=13.96)
-    crystal = Grain('crystal C20',
+    crystal = Grain('caramel crystal malt 20l',
                     short_name='C20',
                     color=20.0,
                     ppg=35)
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     centennial_add = HopAddition(centennial,
                                  weight=0.57,
                                  boil_time=60.0)
-    cascade = Hop('cascade',
+    cascade = Hop('cascade us',
                   percent_alpha_acids=0.07)
     cascade_add = HopAddition(cascade,
                               weight=0.76,
