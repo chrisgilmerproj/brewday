@@ -62,7 +62,13 @@ def parse_hops(recipe, data_dir):
 
         hop_filename = os.path.join(hop_dir, '{}.json'.format(name))
         hop_json = read_json_file(hop_filename)
-        alpha_acids = float(hop_json['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
+
+        alpha_acids = None
+        if 'hop_data' in hop_data and 'percent_alpha_acids' in hop_data['hop_data']:  # nopep8
+            alpha_acids = hop_data['hop_data']['percent_alpha_acids']
+        else:
+            alpha_acids = float(hop_json['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
+
         hop = Hop(hop_json['name'],
                   percent_alpha_acids=alpha_acids)
         hop_add = HopAddition(hop,
@@ -106,9 +112,15 @@ def main():
         ],
         'hops': [
             {'name': 'centennial',
+             'hop_data': {
+                 'percent_alpha_acids': 0.14,
+             },
              'weight': 0.57,
              'boil_time': 60.0},
             {'name': 'cascade us',
+             'hop_data': {
+                 'percent_alpha_acids': 0.07,
+             },
              'weight': 0.76,
              'boil_time': 5.0},
         ],
