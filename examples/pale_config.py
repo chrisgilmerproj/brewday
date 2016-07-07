@@ -77,6 +77,21 @@ def parse_yeast(recipe, data_dir):
     return Yeast(recipe['yeast']['name'])
 
 
+def parse_recipe(recipe, data_dir):
+    grain_additions = parse_cereals(recipe, data_dir)
+    hop_additions = parse_hops(recipe, data_dir)
+    yeast = parse_yeast(recipe, data_dir)
+
+    beer = Recipe(recipe['name'],
+                  grain_additions=grain_additions,
+                  hop_additions=hop_additions,
+                  yeast=yeast,
+                  start_volume=recipe['start_volume'],
+                  final_volume=recipe['final_volume'],
+                  )
+    return beer
+
+
 def main():
 
     recipe = {
@@ -103,17 +118,7 @@ def main():
     }
 
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
-    grain_additions = parse_cereals(recipe, data_dir)
-    hop_additions = parse_hops(recipe, data_dir)
-    yeast = parse_yeast(recipe, data_dir)
-
-    beer = Recipe(recipe['name'],
-                  grain_additions=grain_additions,
-                  hop_additions=hop_additions,
-                  yeast=yeast,
-                  start_volume=recipe['start_volume'],
-                  final_volume=recipe['final_volume'],
-                  )
+    beer = parse_recipe(recipe, data_dir)
     beer.format()
 
 
