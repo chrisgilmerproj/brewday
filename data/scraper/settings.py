@@ -67,6 +67,7 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
     'scraper.pipelines.CerealsPipeline': 300,
     'scraper.pipelines.HopsPipeline': 300,
+    'scraper.pipelines.YeastPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

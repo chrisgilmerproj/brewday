@@ -10,9 +10,11 @@ import os
 
 from scraper.items import CerealsItem
 from scraper.items import HopsItem
+from scraper.items import YeastItem
 
 CEREALS_DIR = './cereals'
 HOPS_DIR = './hops'
+YEAST_DIR = './yeast'
 
 
 class CerealsPipeline(object):
@@ -49,6 +51,30 @@ class HopsPipeline(object):
         filename = filename.replace("-", "_")
         filename = "{}.json".format(filename)
         filepath = os.path.join(os.path.abspath(HOPS_DIR), filename)
+        with open(filepath, 'wb') as f:
+            line = json.dumps(dict(item))
+            f.write(line)
+        return item
+
+
+class YeastPipeline(object):
+
+    def process_item(self, item, spider):
+        if not isinstance(item, YeastItem):
+            return item
+        item[u'name'] = item[u'name'].replace('\u2013', '-')
+
+        if item['yeast_id']:
+            identifier = item['yeast_id'].lower()
+        else:
+            identifier = item['name'].lower()
+        filename = '{}_{}'.format(item['manufacturer'].lower(),
+                                  identifier)
+        filename = filename.replace(" ", "_")
+        filename = filename.replace("-", "_")
+        filename = filename.replace("/", "_")
+        filename = "{}.json".format(filename)
+        filepath = os.path.join(os.path.abspath(YEAST_DIR), filename)
         with open(filepath, 'wb') as f:
             line = json.dumps(dict(item))
             f.write(line)

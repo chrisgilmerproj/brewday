@@ -58,3 +58,15 @@ class HopsItem(scrapy.Item):
     farnesene_oil = scrapy.Field()
     substitutes = scrapy.Field()
     style_guide = scrapy.Field()
+
+
+class YeastItem(scrapy.Item):
+    name = scrapy.Field()
+    source = scrapy.Field()
+
+    manufacturer = scrapy.Field()
+    yeast_id = scrapy.Field()
+    attenuation = scrapy.Field()
+    flocculation = scrapy.Field()
+    optimum_temp = scrapy.Field()
+    alcohol_tolerance = scrapy.Field()

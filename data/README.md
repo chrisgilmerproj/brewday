@@ -23,8 +23,15 @@ ensure there is no copyright problems.
 $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
-$ scrapy runspider scraper/spiders/hops_spider.py
 $ scrapy runspider scraper/spiders/cereals_spider.py
+$ scrapy runspider scraper/spiders/hops_spider.py
+$ scrapy runspider scraper/spiders/yeast_spider.py
+```
+
+## Shell commands
+
+```sh
+$ scrapy shell "http://www.hopslist.com/"
 ```
 
 # Sources
@@ -36,3 +43,7 @@ $ scrapy runspider scraper/spiders/cereals_spider.py
 ## Hops
 
 - http://www.hopslist.com/
+
+## Yeast
+
+- http://www.brewersfriend.com/yeast/
