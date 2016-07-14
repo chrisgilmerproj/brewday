@@ -17,11 +17,13 @@ class YeastlistSpider(scrapy.Spider):
     def parse(self, response):
 
         source = response.url
-        man = response.xpath("//h2/text()").extract()[0]
-        if 'by' in man:
-            manufacturer = man.split(' by ')[-1]
-        elif 'By' in man:
-            manufacturer = man.split(' By ')[-1]
+        manufacturer = response.xpath("//h2/text()").extract()[0]
+        if 'by' in manufacturer:
+            manufacturer = manufacturer.split(' by ')[-1]
+        elif 'By' in manufacturer:
+            manufacturer = manufacturer.split(' By ')[-1]
+        elif 'Other' in manufacturer:
+            manufacturer = 'Other'
         for entry in response.xpath("//div[@class='post']/table/tbody/tr"):
             data = entry.xpath("td/span/text()").extract()
             if len(data) and data[0] != u'\n':
@@ -35,3 +37,15 @@ class YeastlistSpider(scrapy.Spider):
                 item[u'optimum_temp'] = data[4].split()[0]
                 item[u'alcohol_tolerance'] = data[5]
                 yield item
+            elif len(data) == 0:
+                data = entry.xpath("td/text()").extract()
+                if len(data) and data[0] != u'\n':
+                    item = YeastItem()
+                    item[u'name'] = data[0]
+                    item[u'source'] = source
+                    item[u'manufacturer'] = manufacturer
+                    item[u'attenuation'] = data[1]
+                    item[u'flocculation'] = data[2]
+                    item[u'optimum_temp'] = data[3].split()[0]
+                    item[u'alcohol_tolerance'] = data[4]
+                    yield item

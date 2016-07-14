@@ -64,7 +64,7 @@ class YeastPipeline(object):
             return item
         item[u'name'] = item[u'name'].replace('\u2013', '-')
 
-        if item['yeast_id']:
+        if 'yeast_id' in item:
             identifier = item['yeast_id'].lower()
         else:
             identifier = item['name'].lower()
