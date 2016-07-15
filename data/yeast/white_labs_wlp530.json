@@ -1,1 +1,1 @@
-{"attenuation": "75-80%", "name": "Abbey Ale Yeast ", "alcohol_tolerance": "High", "yeast_id": "WLP530", "flocculation": "Med-High", "optimum_temp": "66-72", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}
+{"attenuation": [0.75, 0.8], "name": "Abbey Ale Yeast ", "alcohol_tolerance": "High", "yeast_id": "WLP530", "flocculation": "Med-High", "optimum_temp": "66-72", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}

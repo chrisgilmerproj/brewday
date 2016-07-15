@@ -1,1 +1,1 @@
-{"attenuation": "67-71%", "name": "California Lager", "alcohol_tolerance": "9%", "yeast_id": "2112", "flocculation": "High", "optimum_temp": "58-68", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.67, 0.71], "name": "California Lager", "alcohol_tolerance": "9%", "yeast_id": "2112", "flocculation": "High", "optimum_temp": "58-68", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

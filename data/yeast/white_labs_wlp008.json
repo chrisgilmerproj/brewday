@@ -1,1 +1,1 @@
-{"attenuation": "70-75%", "name": "East Coast Ale Yeast ", "alcohol_tolerance": "Medium", "yeast_id": "WLP008", "flocculation": "Med-Low", "optimum_temp": "68-73", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}
+{"attenuation": [0.7, 0.75], "name": "East Coast Ale Yeast ", "alcohol_tolerance": "Medium", "yeast_id": "WLP008", "flocculation": "Med-Low", "optimum_temp": "68-73", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}

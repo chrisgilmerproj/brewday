@@ -1,1 +1,1 @@
-{"attenuation": "72-76%", "name": "Belgian Ardennes", "alcohol_tolerance": "12%", "yeast_id": "3522", "flocculation": "High", "optimum_temp": "65-85", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.72, 0.76], "name": "Belgian Ardennes", "alcohol_tolerance": "12%", "yeast_id": "3522", "flocculation": "High", "optimum_temp": "65-85", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

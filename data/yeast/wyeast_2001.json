@@ -1,1 +1,1 @@
-{"attenuation": "72-76%", "name": "Urquell Lager", "alcohol_tolerance": "9%", "yeast_id": "2001", "flocculation": "Med-High", "optimum_temp": "48-58", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.72, 0.76], "name": "Urquell Lager", "alcohol_tolerance": "9%", "yeast_id": "2001", "flocculation": "Med-High", "optimum_temp": "48-58", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

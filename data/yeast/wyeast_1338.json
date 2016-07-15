@@ -1,1 +1,1 @@
-{"attenuation": "67-71%", "name": "European Ale", "alcohol_tolerance": "10%", "yeast_id": "1338", "flocculation": "High", "optimum_temp": "62-72", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.67, 0.71], "name": "European Ale", "alcohol_tolerance": "10%", "yeast_id": "1338", "flocculation": "High", "optimum_temp": "62-72", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

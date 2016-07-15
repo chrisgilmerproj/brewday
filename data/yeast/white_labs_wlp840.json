@@ -1,1 +1,1 @@
-{"attenuation": "75-80%", "name": "American Lager Yeast ", "alcohol_tolerance": "Medium", "yeast_id": "WLP840", "flocculation": "Medium", "optimum_temp": "50-55", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}
+{"attenuation": [0.75, 0.8], "name": "American Lager Yeast ", "alcohol_tolerance": "Medium", "yeast_id": "WLP840", "flocculation": "Medium", "optimum_temp": "50-55", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}

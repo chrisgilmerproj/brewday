@@ -58,10 +58,28 @@ class HopsPipeline(object):
 
 
 class YeastPipeline(object):
+    ATTENUATION = {
+        'NA': '0%',
+        '-': '0%',
+        'Low': '72%',
+        'Medium': '75%',
+        'Med-High': '76-77%',
+        'Medium-High': '76-77%',
+        'High': '78%',
+        'Very High': '80%',
+    }
 
     def process_item(self, item, spider):
         if not isinstance(item, YeastItem):
             return item
+        if item[u'attenuation'] in self.ATTENUATION:
+            item[u'attenuation'] = self.ATTENUATION[item[u'attenuation']]
+        item[u'attenuation'] = item[u'attenuation'].replace("<", "")
+        item[u'attenuation'] = item[u'attenuation'].replace(">", "")
+        item[u'attenuation'] = item[u'attenuation'].replace("%", "")
+        item[u'attenuation'] = item[u'attenuation'].split('-')
+        item[u'attenuation'] = [float(att) / 100. for att in item[u'attenuation']]
+
         item[u'name'] = item[u'name'].replace('\u2013', '-')
 
         if 'yeast_id' in item:

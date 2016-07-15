@@ -1,1 +1,1 @@
-{"attenuation": "72-76%", "name": "Belgian Wheat", "alcohol_tolerance": "12%", "yeast_id": "3942", "flocculation": "Medium", "optimum_temp": "64-74", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.72, 0.76], "name": "Belgian Wheat", "alcohol_tolerance": "12%", "yeast_id": "3942", "flocculation": "Medium", "optimum_temp": "64-74", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

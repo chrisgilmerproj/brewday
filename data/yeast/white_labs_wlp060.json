@@ -1,1 +1,1 @@
-{"attenuation": "72-80%", "name": "American Ale Yeast Blend ", "alcohol_tolerance": "Med-High", "yeast_id": "WLP060", "flocculation": "Medium", "optimum_temp": "68-72", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}
+{"attenuation": [0.72, 0.8], "name": "American Ale Yeast Blend ", "alcohol_tolerance": "Med-High", "yeast_id": "WLP060", "flocculation": "Medium", "optimum_temp": "68-72", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}

@@ -1,1 +1,1 @@
-{"attenuation": "<75%", "name": "Sweet Mead/Wine Yeast", "alcohol_tolerance": "15%", "yeast_id": "WLP720", "flocculation": "Low", "optimum_temp": "70-75", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}
+{"attenuation": [0.75], "name": "Sweet Mead/Wine Yeast", "alcohol_tolerance": "15%", "yeast_id": "WLP720", "flocculation": "Low", "optimum_temp": "70-75", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}

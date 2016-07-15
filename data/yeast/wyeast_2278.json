@@ -1,1 +1,1 @@
-{"attenuation": "70-74%", "name": "Czech Pils", "alcohol_tolerance": "9%", "yeast_id": "2278", "flocculation": "Med-High", "optimum_temp": "50-58", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.7, 0.74], "name": "Czech Pils", "alcohol_tolerance": "9%", "yeast_id": "2278", "flocculation": "Med-High", "optimum_temp": "50-58", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

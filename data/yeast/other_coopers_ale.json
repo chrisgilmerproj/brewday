@@ -1,1 +1,1 @@
-{"attenuation": "Medium", "name": "Coopers Ale", "alcohol_tolerance": "Medium", "flocculation": "Medium", "optimum_temp": "65-75", "source": "http://www.brewersfriend.com/yeast-other/", "manufacturer": "Other"}
+{"attenuation": [0.75], "name": "Coopers Ale", "alcohol_tolerance": "Medium", "flocculation": "Medium", "optimum_temp": "65-75", "source": "http://www.brewersfriend.com/yeast-other/", "manufacturer": "Other"}

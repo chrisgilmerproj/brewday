@@ -1,1 +1,1 @@
-{"attenuation": "73-75%", "name": "British Ale", "alcohol_tolerance": "10%", "yeast_id": "1098", "flocculation": "Med-High", "optimum_temp": "64-72", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.73, 0.75], "name": "British Ale", "alcohol_tolerance": "10%", "yeast_id": "1098", "flocculation": "Med-High", "optimum_temp": "64-72", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

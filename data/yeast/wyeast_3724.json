@@ -1,1 +1,1 @@
-{"attenuation": "76-80%", "name": "Belgian Saison", "alcohol_tolerance": "12%", "yeast_id": "3724", "flocculation": "Low", "optimum_temp": "70-95", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.76, 0.8], "name": "Belgian Saison", "alcohol_tolerance": "12%", "yeast_id": "3724", "flocculation": "Low", "optimum_temp": "70-95", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}

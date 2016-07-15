@@ -1,1 +1,1 @@
-{"attenuation": "65-70%", "name": "Pacific Ale Yeast ", "alcohol_tolerance": "Medium", "yeast_id": "WLP041", "flocculation": "High", "optimum_temp": "65-68", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}
+{"attenuation": [0.65, 0.7], "name": "Pacific Ale Yeast ", "alcohol_tolerance": "Medium", "yeast_id": "WLP041", "flocculation": "High", "optimum_temp": "65-68", "source": "http://www.brewersfriend.com/yeast-whitelabs/", "manufacturer": "White Labs"}

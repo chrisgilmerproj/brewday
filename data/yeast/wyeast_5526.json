@@ -1,1 +1,1 @@
-{"attenuation": "Medium", "name": "Brettanomyces lambicus", "alcohol_tolerance": "12%", "yeast_id": "5526", "flocculation": "Very High", "optimum_temp": "60-75", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
+{"attenuation": [0.75], "name": "Brettanomyces lambicus", "alcohol_tolerance": "12%", "yeast_id": "5526", "flocculation": "Very High", "optimum_temp": "60-75", "source": "http://www.brewersfriend.com/yeast-wyeast/", "manufacturer": "Wyeast"}
