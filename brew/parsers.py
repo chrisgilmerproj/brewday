@@ -11,7 +11,7 @@ from brew.yeasts import Yeast
 
 
 def format_name(name):
-    return name.replace(' ', '_').replace('-', '_')
+    return name.lower().replace(' ', '_').replace('-', '_')
 
 
 def read_json_file(filename):
