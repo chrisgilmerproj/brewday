@@ -21,34 +21,43 @@ def read_json_file(filename):
     return data
 
 
+def get_item_json(data_dir, dir_suffix, item_name):
+    item_dir = os.path.join(data_dir, dir_suffix)
+    item_list = [item[:-5] for item in os.listdir(item_dir)]
+
+    name = format_name(item_name)
+    if name not in item_list:
+        raise Exception('Item from {} dir not found: {}'.format(dir_suffix,
+                                                                name))
+
+    item_filename = os.path.join(item_dir, '{}.json'.format(name))
+    return read_json_file(item_filename)
+
+
 def parse_cereals(recipe, data_dir):
-    # Look up cereal data
-    cereal_dir = os.path.join(data_dir, 'cereals/')
-    cereal_list = [cereal[:-5] for cereal in os.listdir(cereal_dir)]
 
     # Create Grains
     grain_additions = []
     for cereal_data in recipe['grains']:
-        name = format_name(cereal_data['name'])
-        if name not in cereal_list:
-            print('Cereal not found: {}'.format(name))
+        try:
+            cereal_json = get_item_json(data_dir,
+                                        'cereals/',
+                                        cereal_data['name'])
+        except Exception:
             continue
-
-        cereal_filename = os.path.join(cereal_dir, '{}.json'.format(name))
-        grain_json = read_json_file(cereal_filename)
 
         color = None
         if 'grain_data' in cereal_data and 'color' in cereal_data['grain_data']:  # nopep8
             color = cereal_data['grain_data']['color']
         else:
-            color = float(grain_json['color'][:-4])
+            color = float(cereal_json['color'][:-4])
 
         ppg = None
         if 'grain_data' in cereal_data and 'ppg' in cereal_data['grain_data']:
             ppg = cereal_data['grain_data']['ppg']
         else:
-            ppg = sg_to_gu(float(grain_json['potential'][:-3]))
-        grain = Grain(grain_json['name'],
+            ppg = sg_to_gu(float(cereal_json['potential'][:-3]))
+        grain = Grain(cereal_json['name'],
                       color=color,
                       ppg=ppg)
         grain_add = GrainAddition(grain, weight=float(cereal_data['weight']))
@@ -58,20 +67,13 @@ def parse_cereals(recipe, data_dir):
 
 
 def parse_hops(recipe, data_dir):
-    # Look up hop data
-    hop_dir = os.path.join(data_dir, 'hops/')
-    hop_list = [hop[:-5] for hop in os.listdir(hop_dir)]
-
     # Create Grains
     hop_additions = []
     for hop_data in recipe['hops']:
-        name = format_name(hop_data['name'])
-        if name not in hop_list:
-            print('Hop not found: {}'.format(name))
+        try:
+            hop_json = get_item_json(data_dir, 'hops/', hop_data['name'])
+        except Exception:
             continue
-
-        hop_filename = os.path.join(hop_dir, '{}.json'.format(name))
-        hop_json = read_json_file(hop_filename)
 
         alpha_acids = None
         if 'hop_data' in hop_data and 'percent_alpha_acids' in hop_data['hop_data']:  # nopep8
@@ -89,16 +91,10 @@ def parse_hops(recipe, data_dir):
 
 
 def parse_yeast(recipe, data_dir):
-    yeast_dir = os.path.join(data_dir, 'yeast/')
-    yeast_list = [yeast[:-5] for yeast in os.listdir(yeast_dir)]
-
-    name = format_name(recipe['yeast']['name'])
-    if name not in yeast_list:
-        print('Yeast not found: {}'.format(name))
+    try:
+        yeast_json = get_item_json(data_dir, 'yeast/', recipe['yeast']['name'])
+    except Exception:
         return Yeast(recipe['yeast']['name'])
-
-    yeast_filename = os.path.join(yeast_dir, '{}.json'.format(name))
-    yeast_json = read_json_file(yeast_filename)
 
     attenuation = None
     if 'percent_attenuation' in recipe['yeast']:
