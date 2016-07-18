@@ -91,8 +91,25 @@ def parse_hops(recipe, data_dir):
 
 
 def parse_yeast(recipe, data_dir):
-    # yeast_dir = os.path.join(data_dir, 'yeast/')
-    return Yeast(recipe['yeast']['name'])
+    yeast_dir = os.path.join(data_dir, 'yeast/')
+    yeast_list = [yeast[:-5] for yeast in os.listdir(yeast_dir)]
+
+    name = format_name(recipe['yeast']['name'])
+    if name not in yeast_list:
+        print('Yeast not found: {}'.format(name))
+        return Yeast(recipe['yeast']['name'])
+
+    yeast_filename = os.path.join(yeast_dir, '{}.json'.format(name))
+    yeast_json = read_json_file(yeast_filename)
+
+    attenuation = None
+    if 'percent_attenuation' in recipe['yeast']:
+        attenuation = recipe['yeast']['percent_attenuation']
+    else:
+        attenuation = yeast_json['attenuation'][0]
+
+    return Yeast(recipe['yeast']['name'],
+                 percent_attenuation=attenuation)
 
 
 def parse_recipe(recipe, data_dir):
@@ -145,7 +162,8 @@ def main():
              'boil_time': 5.0},
         ],
         'yeast': {
-            'name': 'Danstar',
+            'name': 'Wyeast 1056',
+            'percent_attenuation': 0.75,
         },
     }
 

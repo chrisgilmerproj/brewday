@@ -41,7 +41,7 @@ if __name__ == "__main__":
     hop_additions = [centennial_add, cascade_add]
 
     # Define Yeast
-    yeast = Yeast('Danstar')
+    yeast = Yeast('Wyeast 1056')
 
     # Define Beer
     beer = Recipe('pale ale',
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # Crystal 20 0.78 lbs
     #     35 PPG, 20L, 1.74 OG
 
-    # Centennial: 0.57 oz, 14AA, 60 min  (33.61 pellet, 30.56 whole/plug, 0.2812 util)
+    # Centennial: 0.57 oz, 14AA, 60 min  (33.61 pellet, 30.56 whole/plug, 0.2812 util)  # nopep8
     #     33.85 IBU, 0.311 Util, 8.0 AAUs
     # Cascade:    0.76 oz,  7AA,  5 min  (4.58 pellet, 4.17 whole/plug)
     #     4.50 IBU, 0.062 Util, 5.3 AAUs
