@@ -60,7 +60,12 @@ def validate_recipe(recipe):
                        ('hops', (list, tuple)),
                        ('yeast', dict),
                        ]
+    data_field = 'recipe_data'
+    optional_fields = [('percent_brew_house_yield', float),
+                       ('units', str),
+                       ]
     validate_required_fields(recipe, required_fields)
+    validate_optional_fields(recipe, data_field, optional_fields)
 
 
 def validate_grains(grain_data):
@@ -249,6 +254,11 @@ def parse_recipe(recipe, data_dir):
     - hops         (list(dict))
     - yeast        (dict)
 
+    Additionally the recipe may contain override data in the 'recipe_data'
+    attribute with the following keys:
+    - percent_brew_house_yield (float)
+    - units                    (str)
+
     All other fields will be ignored and may be used for other metadata.
 
     The dict objects in the grains, hops, and yeast values are required to have
@@ -261,11 +271,20 @@ def parse_recipe(recipe, data_dir):
     hop_additions = parse_hops(recipe, data_dir)
     yeast = parse_yeast(recipe, data_dir)
 
+    recipe_kwargs = {
+        'grain_additions': grain_additions,
+        'hop_additions': hop_additions,
+        'yeast': yeast,
+        'start_volume': recipe['start_volume'],
+        'final_volume': recipe['final_volume'],
+    }
+    if 'recipe_data' in recipe:
+        if 'percent_brew_house_yield' in recipe['recipe_data']:
+            recipe_kwargs['percent_brew_house_yield'] = \
+                recipe['recipe_data']['percent_brew_house_yield']
+        if 'units' in recipe['recipe_data']:
+            recipe_kwargs['units'] = recipe['recipe_data']['units']
+
     beer = Recipe(recipe['name'],
-                  grain_additions=grain_additions,
-                  hop_additions=hop_additions,
-                  yeast=yeast,
-                  start_volume=recipe['start_volume'],
-                  final_volume=recipe['final_volume'],
-                  )
+                  **recipe_kwargs)
     return beer

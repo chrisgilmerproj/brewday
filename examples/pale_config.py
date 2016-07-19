@@ -45,6 +45,10 @@ def main():
                 'percent_attenuation': 0.75,
             },
         },
+        'recipe_data': {
+            'percent_brew_house_yield': 0.70,
+            'units': 'imperial',
+        },
     }
 
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
