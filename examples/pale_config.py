@@ -41,7 +41,9 @@ def main():
         ],
         'yeast': {
             'name': 'Wyeast 1056',
-            'percent_attenuation': 0.75,
+            'yeast_data': {
+                'percent_attenuation': 0.75,
+            },
         },
     }
 
