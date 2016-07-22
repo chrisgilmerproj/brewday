@@ -7,8 +7,8 @@ from brew.hops import HopAddition
 from brew.recipes import Recipe
 from brew.yeasts import Yeast
 
-if __name__ == "__main__":
 
+def main():
     # Define Grains
     pale = Grain('Pale Malt (2 Row) US',
                  short_name='2-row',
@@ -53,22 +53,7 @@ if __name__ == "__main__":
                   final_volume=5.0,  # G
                   )
     beer.format()
-    # Efficiency 70%
-    # Boil: 7.0 Gal
-    # Fermenter: 5.0 Gal
-    # OG 1.076
-    # BG 1.054 (boil gravity)
-    # FG 1.019
-    # ABV 7.49 (Standard)
-    # IBU 33.04 (Tinseth)
-    # SRM 6.29 (Morey)
 
-    # Pale 2-row 13.96 lbs
-    #     37 PPG, 1.8L, OG 32.87
-    # Crystal 20 0.78 lbs
-    #     35 PPG, 20L, 1.74 OG
 
-    # Centennial: 0.57 oz, 14AA, 60 min  (33.61 pellet, 30.56 whole/plug, 0.2812 util)  # nopep8
-    #     33.85 IBU, 0.311 Util, 8.0 AAUs
-    # Cascade:    0.76 oz,  7AA,  5 min  (4.58 pellet, 4.17 whole/plug)
-    #     4.50 IBU, 0.062 Util, 5.3 AAUs
+if __name__ == "__main__":
+    main()
