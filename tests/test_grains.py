@@ -82,12 +82,13 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_to_dict(self):
         out = self.grain_add.to_dict()
-        expected = {'grain': {'name': 'pale 2-row',
-                              'short_name': '2-row',
-                              'color': 2,
-                              'ppg': 37.0,
-                              'hwe': 308.78,
-                              },
+        expected = {'name': 'pale 2-row',
+                    'grain_data': {
+                        'short_name': '2-row',
+                        'color': 2,
+                        'ppg': 37.0,
+                        'hwe': 308.78,
+                    },
                     'weight': 13.96,
                     'units': 'imperial',
                     }
@@ -95,7 +96,7 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_to_json(self):
         out = self.grain_add.to_json()
-        expected = '{"grain": {"color": 2, "hwe": 308.78, "name": "pale 2-row", "ppg": 37.0, "short_name": "2-row"}, "units": "imperial", "weight": 13.96}'  # nopep8
+        expected = '{"grain_data": {"color": 2, "hwe": 308.78, "ppg": 37.0, "short_name": "2-row"}, "name": "pale 2-row", "units": "imperial", "weight": 13.96}'  # nopep8
         self.assertEquals(out, expected)
 
     def test_format(self):
