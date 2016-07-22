@@ -292,54 +292,9 @@ class Recipe(object):
             'morey': calculate_srm_morey(mcu),
             'daniels': calculate_srm_daniels(mcu),
             'mosher': calculate_srm_mosher(mcu),
-            }
+        }
 
     def format(self):
-        """
-        PALE ALE ANSWERS:
-
-        Specific Gravity = 1.057
-        S.G. = [(14P) / (258.6 - (14P/258.2 x 227.1))] +1
-
-        Lbs extract = 6.16 pounds
-        Lbs extract =   [(8.32 pounds/gal wort)(5gal wort)(1.057 S.G.)(14 P)] / 100
-
-        Working Yield of 2-Row = 0.53
-        WY =    (0.76 HWE as-is)(70% BHY)
-
-        Working Yield of C20 = 0.49
-        WY =    (0.70 HWE as-is)(70% BHY)
-
-        Lbs of 2-Row = 11.04 pounds
-        Lbs malt = (6.15Lbs extract)(95% Extract) / 0.53 WY
-
-        Lbs of C20 = 0.63 pounds
-        Lbs malt = (6.15 Lbs extract)(5% Extract) / 0.49 WY
-
-        Total Grain Weight = 11.67 pounds
-
-        Strike Temperature = 164 degrees F
-        Strike Temp =  [((0.4)(152 T mash- 60 T malt)) / 3 L:G] +  152 T mash
-
-        Mash Water Volume = 4.2 Gallons
-        gallons H2O =  (11.67 Lbs malt)(3 L:G)(1gallon H2O) / 8.32 pounds water
-
-        Centennial Hops = 0.0.57 oz
-        Ounces hops = (40 IBU Target)(5 galbeer)(95% IBU) / (14% a-acid)(32% Utilization)(7489)
-
-        Cascade Hops = 0.76 oz
-        Ounces hops = (40 IBU Target)(5 galbeer)(5% IBU) / (7% a-acid)(2.5% Utilization)(7489)
-
-        Color of Wort = 5.07 degrees Lovibond
-        Color of Wort 2Row = (95% extract)(2L of malt)(14P wort / 8P reference) = 3.32
-        Color of Wort C10 = (5% extract)(20L of malt)(14P wort / 8P reference) = 1.75
-        (3.32 + 1.75 = 5.07)
-
-        Color of Beer = 3.5 degrees Lovibond
-        Color of Beer = (5.07 color of wort)(1 - 30% color loss)
-
-        If you make this recipe, add one ounce of Cascade in the sedondary for an excellent dry hop aroma!
-        """  # nopep8
         og = self.get_original_gravity()
         bg = self.get_boil_gravity()
         fg = self.get_final_gravity()
@@ -411,8 +366,7 @@ class Recipe(object):
             wy = grain_add.grain.get_working_yield(self.percent_brew_house_yield)  # nopep8
             grain_weight = grain_add.weight
             lme_weight = grain_to_liquid_malt_weight(grain_weight)
-            dry_weight = liquid_to_dry_malt_weight(
-                    lme_weight)
+            dry_weight = liquid_to_dry_malt_weight(lme_weight)
             wort_color_srm = self.get_wort_color(grain_add)
             print(grain_add.format())
             print(textwrap.dedent("""\
@@ -439,7 +393,7 @@ class Recipe(object):
         for hop in self.hop_additions:
             ibus = hop.get_ibus(og, self.final_volume)
             utilization = hop.utilization_cls.get_percent_utilization(
-                    bg, hop.boil_time)
+                bg, hop.boil_time)
             # Utilization is 10% higher for pellet vs whole/plug
             if hop.hop_type == HOP_TYPE_PELLET:
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
