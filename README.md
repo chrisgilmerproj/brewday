@@ -12,6 +12,22 @@ The hope is to help improve your planning and execution when making beer.
 
 # Examples
 
+There are two kinds of examples included in the `examples/` directory.  They are:
+
+## `examples/pale_ale.py`
+
+Building a recipe using python objects.  This gives you full control over
+making each and every element of a recipe.
+
+## `examples/pale_config.py`
+
+Building a recipe with a python dict.  This data is parsed and pulls any missing
+data from a directory named `data/`.  You have full control over the required
+elements but leaving out many of them will still cause the recipe to work.
+
+
+# Tools
+
 To be helpful a few tools have been included.  Run them thusly:
 
 ```sh
