@@ -37,6 +37,20 @@ $ PYTHONPATH=$PYTHONPATH: python bin/temp -h
 $ PYTHONPATH=$PYTHONPATH: python bin/yeast -h
 ```
 
+# Data
+
+The `data/` directory holds data used by parsers in the repo to build recipes.
+The data was gathered using Scrapy to gather info from different brewing
+websites.  The scraping code exists there along with the following data dirs:
+
+- `cereals/`
+- `hops/`
+- `water/`
+- `yeast/`
+
+All the data is formatted in `*.json` files.  The files are guaranteed to work
+with the parsers in this library.
+
 # Units
 
 The standard for this repository at the moment is to use Imperial Units.  This
