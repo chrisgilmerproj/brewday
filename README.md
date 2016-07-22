@@ -18,6 +18,7 @@ To be helpful a few tools have been included.  Run them thusly:
 $ PYTHONPATH=$PYTHONPATH: python bin/abv -h
 $ PYTHONPATH=$PYTHONPATH: python bin/sugar -h
 $ PYTHONPATH=$PYTHONPATH: python bin/temp -h
+$ PYTHONPATH=$PYTHONPATH: python bin/yeast -h
 ```
 
 # Units
