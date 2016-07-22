@@ -19,13 +19,15 @@ class Yeast(object):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
         if self.percent_attenuation:
             out = "{0}, percent_attenuation={1}".format(
-                    out, self.percent_attenuation)
+                out, self.percent_attenuation)
         out = "{0})".format(out)
         return out
 
     def to_dict(self):
         return {'name': self.name,
-                'percent_attenuation': self.percent_attenuation,
+                'yeast_data': {
+                    'percent_attenuation': self.percent_attenuation,
+                },
                 }
 
     def to_json(self):
@@ -35,6 +37,6 @@ class Yeast(object):
         msg = textwrap.dedent("""\
                 {name} Yeast
                 -----------------------------------
-                Attenuation:  {percent_attenuation} %""".format(
-                    **self.to_dict()))
+                Attenuation:  {yeast_data[percent_attenuation]} %""".format(
+            **self.to_dict()))
         return msg
