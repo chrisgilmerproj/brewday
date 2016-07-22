@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+import json
 import string
 import textwrap
 
@@ -288,11 +289,85 @@ class Recipe(object):
         Convenience method to get total wort color
         """
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
+        srm_morey = calculate_srm_morey(mcu)
+        srm_daniels = calculate_srm_daniels(mcu)
+        srm_mosher = calculate_srm_mosher(mcu)
+
         return {
-            'morey': calculate_srm_morey(mcu),
-            'daniels': calculate_srm_daniels(mcu),
-            'mosher': calculate_srm_mosher(mcu),
+            'srm': {
+                'morey': srm_morey,
+                'daniels': srm_daniels,
+                'mosher': srm_mosher,
+            },
+            'ebc': {
+                'morey': srm_to_ebc(srm_morey),
+                'daniels': srm_to_ebc(srm_daniels),
+                'mosher': srm_to_ebc(srm_mosher),
+            },
         }
+
+    def to_dict(self):
+        og = self.get_original_gravity()
+        bg = self.get_boil_gravity()
+        fg = self.get_final_gravity()
+        recipe_dict = {
+            'name': string.capwords(self.name),
+            'start_volume': self.start_volume,
+            'final_volume': self.final_volume,
+            'recipe_data': {
+                'percent_brew_house_yield': self.percent_brew_house_yield,
+                'original_gravity': og,
+                'boil_gravity': bg,
+                'final_gravity': fg,
+                'abv_standard': alcohol_by_volume_standard(og, fg),
+                'abv_alternative': alcohol_by_volume_alternative(og, fg),
+                'extract_weight': self.get_extract_weight(),
+                'total_wort_color_map': self.get_total_wort_color_map(),
+                'total_grain_weight': self.get_total_grain_weight(),
+                'total_ibu': self.get_total_ibu(),
+                'bu_to_gu': self.get_bu_to_gu(),
+                'units': self.units,
+            },
+            'grains': [],
+            'hops': [],
+            'yeast': {},
+        }
+
+        for grain_add in self.grain_additions:
+            grain = grain_add.to_dict()
+            lme_weight = grain_to_liquid_malt_weight(grain_add.weight)
+            dry_weight = liquid_to_dry_malt_weight(lme_weight)
+            wort_color_srm = self.get_wort_color(grain_add)
+            grain['grain_data'].update({
+                'working_yield': grain_add.grain.get_working_yield(self.percent_brew_house_yield),  # nopep8
+                'lme_weight': lme_weight,
+                'dry_weight': dry_weight,
+                'wort_color_srm': wort_color_srm,
+                'wort_color_ebc': srm_to_ebc(wort_color_srm),
+            })
+            recipe_dict['grains'].append(grain)
+
+        for hop_add in self.hop_additions:
+            hop = hop_add.to_dict()
+
+            utilization = hop_add.utilization_cls.get_percent_utilization(
+                bg, hop_add.boil_time)
+            # Utilization is 10% higher for pellet vs whole/plug
+            if hop_add.hop_type == HOP_TYPE_PELLET:
+                utilization *= HOP_UTILIZATION_SCALE_PELLET
+
+            hop['hop_data'].update({
+                'ibus': hop_add.get_ibus(og, self.final_volume),
+                'utilization': utilization,
+            })
+            recipe_dict['hops'].append(hop)
+
+        recipe_dict['yeast'] = self.yeast.to_dict()
+
+        return recipe_dict
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), sort_keys=True)
 
     def format(self):
         og = self.get_original_gravity()
@@ -345,12 +420,12 @@ class Recipe(object):
                        total_ibu=total_ibu,
                        bu_to_gu=bu_to_gu,
 
-                       morey_srm=wort_color_map['morey'],
-                       daniels_srm=wort_color_map['daniels'],
-                       mosher_srm=wort_color_map['mosher'],
-                       morey_ebc=srm_to_ebc(wort_color_map['morey']),
-                       daniels_ebc=srm_to_ebc(wort_color_map['daniels']),
-                       mosher_ebc=srm_to_ebc(wort_color_map['mosher']),
+                       morey_srm=wort_color_map['srm']['morey'],
+                       daniels_srm=wort_color_map['srm']['daniels'],
+                       mosher_srm=wort_color_map['srm']['mosher'],
+                       morey_ebc=wort_color_map['ebc']['morey'],
+                       daniels_ebc=wort_color_map['ebc']['daniels'],
+                       mosher_ebc=wort_color_map['ebc']['mosher'],
 
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,

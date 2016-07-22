@@ -80,7 +80,7 @@ class Grain(object):
                 Color:             {color} degL
                 PPG:               {ppg:0.2f}
                 Hot Water Extract: {hwe:0.2f}""".format(
-                    **self.to_dict()))
+            **self.to_dict()))
         return msg
 
     def get_working_yield(self, percent_brew_house_yield):
@@ -131,9 +131,9 @@ class GrainAddition(object):
 
     def __str__(self):
         return "{grain}, weight {weight} {weight_large}".format(
-                grain=self.grain,
-                weight=self.weight,
-                **self.types)
+            grain=self.grain,
+            weight=self.weight,
+            **self.types)
 
     def __repr__(self):
         out = "{0}({1}".format(type(self).__name__, repr(self.grain))
@@ -143,7 +143,9 @@ class GrainAddition(object):
         return out
 
     def to_dict(self):
-        return {'grain': self.grain.to_dict(),
+        grain_data = self.grain.to_dict()
+        return {'name': grain_data.pop('name'),
+                'grain_data': grain_data,
                 'weight': self.weight,
                 'units': self.units,
                 }
@@ -156,8 +158,8 @@ class GrainAddition(object):
         kwargs.update(self.to_dict())
         kwargs.update(self.types)
         msg = textwrap.dedent("""\
-                {grain[name]} Addition
+                {name} Addition
                 -----------------------------------
                 Malt Bill:         {weight} {weight_large}""".format(
-                    **kwargs))
+            **kwargs))
         return msg

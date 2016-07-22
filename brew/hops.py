@@ -31,7 +31,7 @@ class Hop(object):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
         if self.percent_alpha_acids:
             out = "{0}, percent_alpha_acids={1}".format(
-                    out, self.percent_alpha_acids)
+                out, self.percent_alpha_acids)
         out = "{0})".format(out)
         return out
 
@@ -48,7 +48,7 @@ class Hop(object):
                 {name} Hops
                 -----------------------------------
                 Alpha Acids:  {percent_alpha_acids} %""".format(
-                    **self.to_dict()))
+            **self.to_dict()))
         return msg
 
 
@@ -120,7 +120,9 @@ class HopAddition(object):
         return out
 
     def to_dict(self):
-        return {'hop': self.hop.to_dict(),
+        hop_data = self.hop.to_dict()
+        return {'name': hop_data.pop('name'),
+                'hop_data': hop_data,
                 'weight': self.weight,
                 'boil_time': self.boil_time,
                 'hop_type': self.hop_type,
@@ -137,12 +139,12 @@ class HopAddition(object):
         kwargs.update(self.to_dict())
         kwargs.update(self.types)
         msg = textwrap.dedent("""\
-                {hop[name]} Addition
+                {name} Addition
                 -----------------------------------
                 Weight:       {weight:0.2f} {weight_small}
                 Boil Time:    {boil_time:0.2f} min
                 Hop Type:     {hop_type}""".format(
-                    **kwargs))
+            **kwargs))
         return msg
 
     def get_ibus(self, sg, final_volume):
@@ -200,7 +202,7 @@ class HopAddition(object):
             hops_constant = HOPS_CONSTANT_SI
 
         utilization = self.utilization_cls.get_percent_utilization(
-                sg, self.boil_time)
+            sg, self.boil_time)
 
         num = (target_ibu * final_volume)
         den = (utilization * self.hop.percent_alpha_acids * hops_constant)
