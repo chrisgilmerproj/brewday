@@ -25,7 +25,6 @@ Building a recipe with a python dict.  This data is parsed and pulls any missing
 data from a directory named `data/`.  You have full control over the required
 elements but leaving out many of them will still cause the recipe to work.
 
-
 # Tools
 
 To be helpful a few tools have been included.  Run them thusly:
@@ -36,6 +35,20 @@ $ PYTHONPATH=$PYTHONPATH: python bin/sugar -h
 $ PYTHONPATH=$PYTHONPATH: python bin/temp -h
 $ PYTHONPATH=$PYTHONPATH: python bin/yeast -h
 ```
+
+# Charts
+
+In an attempt to understand the data as it is presented in various brewing
+books and websites the `charts/` directory attempts to reproduce them using
+the tools of this library.  Credit is given as best as possible to the
+original author.  Corrections are made where possible to make the charts as
+accurate as possible.
+
+## A not on Graphs
+
+Importantly these charts are generally lists of numbers and NOT graphs.
+To limit the required dependencies of this library any graphs are kept
+in the [BrewSci](https://github.com/chrisgilmerproj/brewsci) repo.
 
 # Data
 
