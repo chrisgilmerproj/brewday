@@ -113,6 +113,10 @@ class TestHopAdditions(unittest.TestCase):
         expected = '{"boil_time": 60.0, "hop_data": {"percent_alpha_acids": 0.14}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "imperial"}, "weight": 0.57}'  # nopep8
         self.assertEquals(out, expected)
 
+    def test_validate(self):
+        data = self.hop_addition1.to_dict()
+        HopAddition.validate(data)
+
     def test_format(self):
         out = self.hop_addition1.format()
         msg = textwrap.dedent("""\
@@ -125,34 +129,34 @@ class TestHopAdditions(unittest.TestCase):
 
     def test_get_hops_weight(self):
         hops_weight = self.hop_addition1.get_hops_weight(
-                        self.sg,
-                        self.target_ibu,
-                        self.final_volume,
-                        0.95)
+            self.sg,
+            self.target_ibu,
+            self.final_volume,
+            0.95)
         self.assertEquals(round(hops_weight, 2), 0.84)
 
         hops_weight = self.hop_addition2.get_hops_weight(
-                        self.sg,
-                        self.target_ibu,
-                        self.final_volume,
-                        0.05)
+            self.sg,
+            self.target_ibu,
+            self.final_volume,
+            0.05)
         self.assertEquals(round(hops_weight, 2), 0.44)
 
     def test_get_hops_weight_metric(self):
         ha1 = self.hop_addition1.change_units()
         hops_weight = ha1.get_hops_weight(
-                        self.sg,
-                        self.target_ibu,
-                        self.final_volume * LITER_PER_GAL,
-                        0.95)
+            self.sg,
+            self.target_ibu,
+            self.final_volume * LITER_PER_GAL,
+            0.95)
         self.assertEquals(round(hops_weight, 2), 23684.97)
 
         ha2 = self.hop_addition2.change_units()
         hops_weight = ha2.get_hops_weight(
-                        self.sg,
-                        self.target_ibu,
-                        self.final_volume * LITER_PER_GAL,
-                        0.05)
+            self.sg,
+            self.target_ibu,
+            self.final_volume * LITER_PER_GAL,
+            0.05)
         self.assertEquals(round(hops_weight, 2), 12506.15)
 
     def test_get_alpha_acid_units(self):

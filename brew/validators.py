@@ -21,3 +21,45 @@ def validate_units(units):
         return units
     raise Exception("Unkown units '{}', must use {} or {}".format(
         units, IMPERIAL_UNITS, SI_UNITS))
+
+
+def validate_required_fields(data, required_fields):
+    """
+    Validate fields which are required as part of the data.
+
+    data: a python dict
+    required_fields: a list of tuples where the first element is a string with
+                     a value that should be a key found in the data dict and
+                     where the second element is a python type or list/tuple of
+                     python types to check the field against.
+    """
+    for field, field_type in required_fields:
+        if field not in data:
+            raise Exception("Required field '{}' missing from recipe".format(
+                field))
+        if not isinstance(data[field], field_type):
+            raise Exception("Required field '{}' is not of type '{}'".format(
+                field, field_type))
+
+
+def validate_optional_fields(data, data_field, optional_fields):
+    """
+    Validate fields which are optional as part of the data.
+
+    data: a python dict
+    data_field: the name of the key in the data that holds the optional data
+    optional_fields: a list of tuples where the first element is a string with
+                     a value that should be a key found in the data dict and
+                     where the second element is a python type or list/tuple of
+                     python types to check the field against.
+    """
+    # If no optional data field present then return
+    if data_field not in data:
+        return
+    for field, field_type in optional_fields:
+        if field in data[data_field]:
+            # With optional fields only check the type as they are overrides
+            # and not all overrides need to be present
+            if not isinstance(data[data_field][field], field_type):
+                raise Exception("Optional field '{}' in '{}' is not of type '{}'".format(  # nopep8
+                    field, data_field, field_type))

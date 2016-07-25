@@ -12,7 +12,9 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .utilities.hops import HopsUtilizationGlennTinseth
 from .validators import validate_hop_type
+from .validators import validate_optional_fields
 from .validators import validate_percentage
+from .validators import validate_required_fields
 from .validators import validate_units
 
 
@@ -133,6 +135,18 @@ class HopAddition(object):
 
     def to_json(self):
         return json.dumps(self.to_dict(), sort_keys=True)
+
+    @classmethod
+    def validate(cls, hop_data):
+        required_fields = [('name', str),
+                           ('weight', float),
+                           ('boil_time', float),
+                           ]
+        data_field = 'hop_data'
+        optional_fields = [('percent_alpha_acids', float),
+                           ]
+        validate_required_fields(hop_data, required_fields)
+        validate_optional_fields(hop_data, data_field, optional_fields)
 
     def format(self):
         kwargs = {}

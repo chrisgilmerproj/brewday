@@ -27,7 +27,9 @@ from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_plato
+from .validators import validate_optional_fields
 from .validators import validate_percentage
+from .validators import validate_required_fields
 from .validators import validate_units
 
 
@@ -368,6 +370,22 @@ class Recipe(object):
 
     def to_json(self):
         return json.dumps(self.to_dict(), sort_keys=True)
+
+    @classmethod
+    def validate(cls, recipe):
+        required_fields = [('name', str),
+                           ('start_volume', (int, float)),
+                           ('final_volume', (int, float)),
+                           ('grains', (list, tuple)),
+                           ('hops', (list, tuple)),
+                           ('yeast', dict),
+                           ]
+        data_field = 'recipe_data'
+        optional_fields = [('percent_brew_house_yield', float),
+                           ('units', str),
+                           ]
+        validate_required_fields(recipe, required_fields)
+        validate_optional_fields(recipe, data_field, optional_fields)
 
     def format(self):
         og = self.get_original_gravity()
