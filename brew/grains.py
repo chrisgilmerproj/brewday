@@ -161,9 +161,9 @@ class GrainAddition(object):
                            ('weight', float),
                            ]
         data_field = 'grain_data'
-        optional_fields = [('color', float),
-                           ('ppg', float),
-                           ('hwe', float),
+        optional_fields = [('color', (int, float)),
+                           ('ppg', (int, float)),
+                           ('hwe', (int, float)),
                            ]
         validate_required_fields(grain_data, required_fields)
         validate_optional_fields(grain_data, data_field, optional_fields)
