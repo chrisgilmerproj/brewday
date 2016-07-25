@@ -11,7 +11,9 @@ from .constants import SI_UNITS
 from .utilities.malt import hwe_to_basis
 from .utilities.malt import hwe_to_ppg
 from .utilities.malt import ppg_to_hwe
+from .validators import validate_optional_fields
 from .validators import validate_percentage
+from .validators import validate_required_fields
 from .validators import validate_units
 
 
@@ -37,7 +39,7 @@ class Grain(object):
                  hwe=None):
         self.name = name
         self.short_name = short_name or name
-        self.color = color
+        self.color = float(color)
         if ppg and hwe:
             raise Exception("Cannot provide both ppg and hwe")
         if ppg:
@@ -152,6 +154,19 @@ class GrainAddition(object):
 
     def to_json(self):
         return json.dumps(self.to_dict(), sort_keys=True)
+
+    @classmethod
+    def validate(cls, grain_data):
+        required_fields = [('name', str),
+                           ('weight', float),
+                           ]
+        data_field = 'grain_data'
+        optional_fields = [('color', float),
+                           ('ppg', float),
+                           ('hwe', float),
+                           ]
+        validate_required_fields(grain_data, required_fields)
+        validate_optional_fields(grain_data, data_field, optional_fields)
 
     def format(self):
         kwargs = {}

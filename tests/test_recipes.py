@@ -2,6 +2,7 @@ import unittest
 
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.recipes import Recipe
 from fixtures import grain_additions
 from fixtures import hop_additions
 from fixtures import recipe
@@ -31,3 +32,7 @@ class TestRecipe(unittest.TestCase):
     def test_set_raises(self):
         with self.assertRaises(Exception):
             self.recipe.set_units('bad')
+
+    def test_validate(self):
+        data = self.recipe.to_dict()
+        Recipe.validate(data)

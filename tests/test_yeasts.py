@@ -1,6 +1,8 @@
 import textwrap
 import unittest
 
+from brew.yeasts import Yeast
+
 from fixtures import yeast
 
 
@@ -32,6 +34,10 @@ class TestYeasts(unittest.TestCase):
         out = self.yeast.to_json()
         expected = '{"name": "Danstar", "yeast_data": {"percent_attenuation": 0.75}}'  # nopep8
         self.assertEquals(out, expected)
+
+    def test_validate(self):
+        data = self.yeast.to_dict()
+        Yeast.validate(data)
 
     def test_format(self):
         out = self.yeast.format()

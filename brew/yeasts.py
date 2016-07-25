@@ -1,7 +1,9 @@
 import json
 import textwrap
 
+from .validators import validate_optional_fields
 from .validators import validate_percentage
+from .validators import validate_required_fields
 
 
 class Yeast(object):
@@ -32,6 +34,16 @@ class Yeast(object):
 
     def to_json(self):
         return json.dumps(self.to_dict(), sort_keys=True)
+
+    @classmethod
+    def validate(cls, yeast_data):
+        required_fields = [('name', str),
+                           ]
+        data_field = 'yeast_data'
+        optional_fields = [('percent_attenuation', float),
+                           ]
+        validate_required_fields(yeast_data, required_fields)
+        validate_optional_fields(yeast_data, data_field, optional_fields)
 
     def format(self):
         msg = textwrap.dedent("""\
