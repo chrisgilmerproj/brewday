@@ -1,9 +1,12 @@
 import unittest
 
-from brew.parsers import format_name
+from brew.parsers import JSONParser
 
 
-class TestParsers(unittest.TestCase):
+class TestJSONParsers(unittest.TestCase):
+
+    def setUp(self):
+        self.parser = JSONParser('./')
 
     def test_format_name(self):
         name_list = [('pale malt 2-row us', 'pale_malt_2_row_us'),
@@ -13,5 +16,5 @@ class TestParsers(unittest.TestCase):
                      ('Wyeast 1056', 'wyeast_1056'),
                      ]
         for name, expected in name_list:
-            out = format_name(name)
+            out = self.parser.format_name(name)
             self.assertEquals(out, expected)
