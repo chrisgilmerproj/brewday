@@ -10,31 +10,36 @@ from brew.utilities.sugar import sg_to_gu
 from brew.yeasts import Yeast
 
 
-def format_name(name):
-    return name.lower().replace(' ', '_').replace('-', '_')
+class JSONParser(object):
+
+    def __init__(self, data_dir):
+        self.data_dir = data_dir
+
+    @classmethod
+    def format_name(cls, name):
+        return name.lower().replace(' ', '_').replace('-', '_')
+
+    @classmethod
+    def read_json_file(cls, filename):
+        data = None
+        with open(filename, 'r') as data_file:
+            data = json.loads(data_file.read())
+        return data
+
+    def get_item_json(self, dir_suffix, item_name):
+        item_dir = os.path.join(self.data_dir, dir_suffix)
+        item_list = [item[:-5] for item in os.listdir(item_dir)]
+
+        name = self.format_name(item_name)
+        if name not in item_list:
+            raise Exception('Item from {} dir not found: {}'.format(dir_suffix,
+                                                                    name))
+
+        item_filename = os.path.join(item_dir, '{}.json'.format(name))
+        return self.read_json_file(item_filename)
 
 
-def read_json_file(filename):
-    data = None
-    with open(filename, 'r') as data_file:
-        data = json.loads(data_file.read())
-    return data
-
-
-def get_item_json(data_dir, dir_suffix, item_name):
-    item_dir = os.path.join(data_dir, dir_suffix)
-    item_list = [item[:-5] for item in os.listdir(item_dir)]
-
-    name = format_name(item_name)
-    if name not in item_list:
-        raise Exception('Item from {} dir not found: {}'.format(dir_suffix,
-                                                                name))
-
-    item_filename = os.path.join(item_dir, '{}.json'.format(name))
-    return read_json_file(item_filename)
-
-
-def parse_cereals(recipe, data_dir):
+def parse_cereals(recipe, parser):
     """
     Parse grains data from a recipe
 
@@ -53,9 +58,8 @@ def parse_cereals(recipe, data_dir):
     for cereal_data in recipe['grains']:
         GrainAddition.validate(cereal_data)
         try:
-            cereal_json = get_item_json(data_dir,
-                                        'cereals/',
-                                        cereal_data['name'])
+            cereal_json = parser.get_item_json('cereals/',
+                                               cereal_data['name'])
         except Exception:
             continue
 
@@ -79,7 +83,7 @@ def parse_cereals(recipe, data_dir):
     return grain_additions
 
 
-def parse_hops(recipe, data_dir):
+def parse_hops(recipe, parser):
     """
     Parse hops data from a recipe
 
@@ -98,7 +102,7 @@ def parse_hops(recipe, data_dir):
     for hop_data in recipe['hops']:
         HopAddition.validate(hop_data)
         try:
-            hop_json = get_item_json(data_dir, 'hops/', hop_data['name'])
+            hop_json = parser.get_item_json('hops/', hop_data['name'])  # nopep8
         except Exception:
             continue
 
@@ -117,7 +121,7 @@ def parse_hops(recipe, data_dir):
     return hop_additions
 
 
-def parse_yeast(recipe, data_dir):
+def parse_yeast(recipe, parser):
     """
     Parse yeast data from a recipe
 
@@ -132,7 +136,7 @@ def parse_yeast(recipe, data_dir):
     yeast_data = recipe['yeast']
     Yeast.validate(yeast_data)
     try:
-        yeast_json = get_item_json(data_dir, 'yeast/', yeast_data['name'])
+        yeast_json = parser.get_item_json('yeast/', yeast_data['name'])  # nopep8
     except Exception:
         return Yeast(yeast_data['name'])
 
@@ -173,11 +177,12 @@ def parse_recipe(recipe, data_dir):
     the key 'name' and the remaining attributes will be looked up in the data
     directory if they are not provided.
     """
+    parser = JSONParser(data_dir)
     Recipe.validate(recipe)
 
-    grain_additions = parse_cereals(recipe, data_dir)
-    hop_additions = parse_hops(recipe, data_dir)
-    yeast = parse_yeast(recipe, data_dir)
+    grain_additions = parse_cereals(recipe, parser)
+    hop_additions = parse_hops(recipe, parser)
+    yeast = parse_yeast(recipe, parser)
 
     recipe_kwargs = {
         'grain_additions': grain_additions,
