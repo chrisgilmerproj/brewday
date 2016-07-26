@@ -42,12 +42,11 @@ def validate_required_fields(data, required_fields):
                 field, field_type))
 
 
-def validate_optional_fields(data, data_field, optional_fields):
+def validate_optional_fields(data, optional_fields, data_field='data'):
     """
     Validate fields which are optional as part of the data.
 
     data: a python dict
-    data_field: the name of the key in the data that holds the optional data
     optional_fields: a list of tuples where the first element is a string with
                      a value that should be a key found in the data dict and
                      where the second element is a python type or list/tuple of

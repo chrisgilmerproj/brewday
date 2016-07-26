@@ -98,7 +98,7 @@ class TestHopAdditions(unittest.TestCase):
     def test_to_dict(self):
         out = self.hop_addition1.to_dict()
         expected = {'name': 'centennial',
-                    'hop_data': {'percent_alpha_acids': 0.14},
+                    'data': {'percent_alpha_acids': 0.14},
                     'weight': 0.57,
                     'boil_time': 60.0,
                     'hop_type': 'pellet',
@@ -110,7 +110,7 @@ class TestHopAdditions(unittest.TestCase):
 
     def test_to_json(self):
         out = self.hop_addition1.to_json()
-        expected = '{"boil_time": 60.0, "hop_data": {"percent_alpha_acids": 0.14}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "imperial"}, "weight": 0.57}'  # nopep8
+        expected = '{"boil_time": 60.0, "data": {"percent_alpha_acids": 0.14}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "imperial"}, "weight": 0.57}'  # nopep8
         self.assertEquals(out, expected)
 
     def test_validate(self):

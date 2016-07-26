@@ -13,13 +13,13 @@ def main():
         'final_volume': 5.0,
         'grains': [
             {'name': 'pale malt 2-row us',
-             'grain_data': {
+             'data': {
                  'color': 1.8,
                  'ppg': 37,
              },
              'weight': 13.96},
             {'name': 'caramel crystal malt 20l',
-             'grain_data': {
+             'data': {
                  'color': 20.0,
                  'ppg': 35,
              },
@@ -27,13 +27,13 @@ def main():
         ],
         'hops': [
             {'name': 'centennial',
-             'hop_data': {
+             'data': {
                  'percent_alpha_acids': 0.14,
              },
              'weight': 0.57,
              'boil_time': 60.0},
             {'name': 'cascade us',
-             'hop_data': {
+             'data': {
                  'percent_alpha_acids': 0.07,
              },
              'weight': 0.76,
@@ -41,11 +41,11 @@ def main():
         ],
         'yeast': {
             'name': 'Wyeast 1056',
-            'yeast_data': {
+            'data': {
                 'percent_attenuation': 0.75,
             },
         },
-        'recipe_data': {
+        'data': {
             'percent_brew_house_yield': 0.70,
             'units': 'imperial',
         },

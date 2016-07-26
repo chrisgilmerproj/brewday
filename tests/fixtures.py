@@ -39,7 +39,7 @@ cascade_add = HopAddition(cascade,
 hop_additions = [centennial_add, cascade_add]
 
 # Define Yeast
-yeast = Yeast("Danstar")
+yeast = Yeast("Wyeast 1056")
 
 # Define Recipes
 recipe = Recipe(name='pale ale',

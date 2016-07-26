@@ -27,7 +27,7 @@ class Yeast(object):
 
     def to_dict(self):
         return {'name': self.name,
-                'yeast_data': {
+                'data': {
                     'percent_attenuation': self.percent_attenuation,
                 },
                 }
@@ -39,16 +39,15 @@ class Yeast(object):
     def validate(cls, yeast_data):
         required_fields = [('name', str),
                            ]
-        data_field = 'yeast_data'
         optional_fields = [('percent_attenuation', float),
                            ]
         validate_required_fields(yeast_data, required_fields)
-        validate_optional_fields(yeast_data, data_field, optional_fields)
+        validate_optional_fields(yeast_data, optional_fields)
 
     def format(self):
         msg = textwrap.dedent("""\
                 {name} Yeast
                 -----------------------------------
-                Attenuation:  {yeast_data[percent_attenuation]} %""".format(
+                Attenuation:  {data[percent_attenuation]} %""".format(
             **self.to_dict()))
         return msg

@@ -316,7 +316,7 @@ class Recipe(object):
             'name': string.capwords(self.name),
             'start_volume': self.start_volume,
             'final_volume': self.final_volume,
-            'recipe_data': {
+            'data': {
                 'percent_brew_house_yield': self.percent_brew_house_yield,
                 'original_gravity': og,
                 'boil_gravity': bg,
@@ -340,7 +340,7 @@ class Recipe(object):
             lme_weight = grain_to_liquid_malt_weight(grain_add.weight)
             dry_weight = liquid_to_dry_malt_weight(lme_weight)
             wort_color_srm = self.get_wort_color(grain_add)
-            grain['grain_data'].update({
+            grain['data'].update({
                 'working_yield': grain_add.grain.get_working_yield(self.percent_brew_house_yield),  # nopep8
                 'lme_weight': lme_weight,
                 'dry_weight': dry_weight,
@@ -358,7 +358,7 @@ class Recipe(object):
             if hop_add.hop_type == HOP_TYPE_PELLET:
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
 
-            hop['hop_data'].update({
+            hop['data'].update({
                 'ibus': hop_add.get_ibus(og, self.final_volume),
                 'utilization': utilization,
             })
@@ -380,12 +380,11 @@ class Recipe(object):
                            ('hops', (list, tuple)),
                            ('yeast', dict),
                            ]
-        data_field = 'recipe_data'
         optional_fields = [('percent_brew_house_yield', float),
                            ('units', str),
                            ]
         validate_required_fields(recipe, required_fields)
-        validate_optional_fields(recipe, data_field, optional_fields)
+        validate_optional_fields(recipe, optional_fields)
 
     def format(self):
         og = self.get_original_gravity()
