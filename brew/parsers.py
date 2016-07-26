@@ -1,3 +1,4 @@
+import glob
 import json
 import os
 
@@ -11,6 +12,7 @@ from brew.yeasts import Yeast
 
 
 class JSONParser(object):
+    DATA = {}
 
     def __init__(self, data_dir):
         self.data_dir = data_dir
@@ -28,15 +30,27 @@ class JSONParser(object):
 
     def get_item(self, dir_suffix, item_name):
         item_dir = os.path.join(self.data_dir, dir_suffix)
-        item_list = [item[:-5] for item in os.listdir(item_dir)]
+
+        # Cache the directory
+        if dir_suffix not in self.DATA:
+            self.DATA[dir_suffix] = {}
+            for item in glob.glob('{}*.json'.format(item_dir)):
+                filename = os.path.basename(item)[:-5]
+                self.DATA[dir_suffix][filename] = {}
 
         name = self.format_name(item_name)
-        if name not in item_list:
+        if name not in self.DATA[dir_suffix]:
             raise Exception('Item from {} dir not found: {}'.format(dir_suffix,
                                                                     name))
 
-        item_filename = os.path.join(item_dir, '{}.json'.format(name))
-        return self.read_json_file(item_filename)
+        # Cache file data
+        if not self.DATA[dir_suffix][name]:
+            item_filename = os.path.join(item_dir, '{}.json'.format(name))
+            data = self.read_json_file(item_filename)
+            self.DATA[dir_suffix][name] = data
+            return data
+        else:
+            return self.DATA[dir_suffix][name]
 
 
 def parse_cereals(recipe, parser):
