@@ -26,7 +26,7 @@ class JSONParser(object):
             data = json.loads(data_file.read())
         return data
 
-    def get_item_json(self, dir_suffix, item_name):
+    def get_item(self, dir_suffix, item_name):
         item_dir = os.path.join(self.data_dir, dir_suffix)
         item_list = [item[:-5] for item in os.listdir(item_dir)]
 
@@ -48,7 +48,7 @@ def parse_cereals(recipe, parser):
     - weight     (float)
     - grain_data (dict) (optional)
 
-    Additionally grains may contain override data in the 'grain_data'
+    Additionally grains may contain override data in the 'data'
     attribute with the following keys:
     - color (float)
     - ppg   (int)
@@ -58,20 +58,19 @@ def parse_cereals(recipe, parser):
     for cereal_data in recipe['grains']:
         GrainAddition.validate(cereal_data)
         try:
-            cereal_json = parser.get_item_json('cereals/',
-                                               cereal_data['name'])
+            cereal_json = parser.get_item('cereals/', cereal_data['name'])
         except Exception:
             continue
 
         color = None
-        if 'grain_data' in cereal_data and 'color' in cereal_data['grain_data']:  # nopep8
-            color = cereal_data['grain_data']['color']
+        if 'data' in cereal_data and 'color' in cereal_data['data']:  # nopep8
+            color = cereal_data['data']['color']
         else:
             color = float(cereal_json['color'][:-4])
 
         ppg = None
-        if 'grain_data' in cereal_data and 'ppg' in cereal_data['grain_data']:
-            ppg = cereal_data['grain_data']['ppg']
+        if 'data' in cereal_data and 'ppg' in cereal_data['data']:
+            ppg = cereal_data['data']['ppg']
         else:
             ppg = sg_to_gu(float(cereal_json['potential'][:-3]))
         grain = Grain(cereal_json['name'],
@@ -93,7 +92,7 @@ def parse_hops(recipe, parser):
     - boil_time (float)
     - hop_data  (dict) (optional)
 
-    Additionally hops may contain override data in the 'hop_data' attribute
+    Additionally hops may contain override data in the 'data' attribute
     with the following keys:
     - percent_alpha_acids (float)
     """
@@ -102,13 +101,13 @@ def parse_hops(recipe, parser):
     for hop_data in recipe['hops']:
         HopAddition.validate(hop_data)
         try:
-            hop_json = parser.get_item_json('hops/', hop_data['name'])  # nopep8
+            hop_json = parser.get_item('hops/', hop_data['name'])  # nopep8
         except Exception:
             continue
 
         alpha_acids = None
-        if 'hop_data' in hop_data and 'percent_alpha_acids' in hop_data['hop_data']:  # nopep8
-            alpha_acids = hop_data['hop_data']['percent_alpha_acids']
+        if 'data' in hop_data and 'percent_alpha_acids' in hop_data['data']:  # nopep8
+            alpha_acids = hop_data['data']['percent_alpha_acids']
         else:
             alpha_acids = float(hop_json['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
 
@@ -129,20 +128,20 @@ def parse_yeast(recipe, parser):
     - name       (str)
     - yeast_data (dict) (optional)
 
-    Additionally yeast may contain override data in the 'yeast_data' attribute
+    Additionally yeast may contain override data in the 'data' attribute
     with the following keys:
     - percent_attenuation (float)
     """
     yeast_data = recipe['yeast']
     Yeast.validate(yeast_data)
     try:
-        yeast_json = parser.get_item_json('yeast/', yeast_data['name'])  # nopep8
+        yeast_json = parser.get_item('yeast/', yeast_data['name'])  # nopep8
     except Exception:
         return Yeast(yeast_data['name'])
 
     attenuation = None
-    if 'yeast_data' in yeast_data and 'percent_attenuation' in yeast_data['yeast_data']:  # nopep8
-        attenuation = yeast_data['yeast_data']['percent_attenuation']
+    if 'data' in yeast_data and 'percent_attenuation' in yeast_data['data']:  # nopep8
+        attenuation = yeast_data['data']['percent_attenuation']
     else:
         attenuation = yeast_json['attenuation'][0]
 
@@ -166,7 +165,7 @@ def parse_recipe(recipe, data_dir):
     - hops         (list(dict))
     - yeast        (dict)
 
-    Additionally the recipe may contain override data in the 'recipe_data'
+    Additionally the recipe may contain override data in the 'data'
     attribute with the following keys:
     - percent_brew_house_yield (float)
     - units                    (str)
@@ -191,12 +190,12 @@ def parse_recipe(recipe, data_dir):
         'start_volume': recipe['start_volume'],
         'final_volume': recipe['final_volume'],
     }
-    if 'recipe_data' in recipe:
-        if 'percent_brew_house_yield' in recipe['recipe_data']:
+    if 'data' in recipe:
+        if 'percent_brew_house_yield' in recipe['data']:
             recipe_kwargs['percent_brew_house_yield'] = \
-                recipe['recipe_data']['percent_brew_house_yield']
-        if 'units' in recipe['recipe_data']:
-            recipe_kwargs['units'] = recipe['recipe_data']['units']
+                recipe['data']['percent_brew_house_yield']
+        if 'units' in recipe['data']:
+            recipe_kwargs['units'] = recipe['data']['units']
 
     beer = Recipe(recipe['name'],
                   **recipe_kwargs)

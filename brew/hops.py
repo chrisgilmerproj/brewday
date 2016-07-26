@@ -124,7 +124,7 @@ class HopAddition(object):
     def to_dict(self):
         hop_data = self.hop.to_dict()
         return {'name': hop_data.pop('name'),
-                'hop_data': hop_data,
+                'data': hop_data,
                 'weight': self.weight,
                 'boil_time': self.boil_time,
                 'hop_type': self.hop_type,
@@ -142,11 +142,10 @@ class HopAddition(object):
                            ('weight', float),
                            ('boil_time', float),
                            ]
-        data_field = 'hop_data'
         optional_fields = [('percent_alpha_acids', float),
                            ]
         validate_required_fields(hop_data, required_fields)
-        validate_optional_fields(hop_data, data_field, optional_fields)
+        validate_optional_fields(hop_data, optional_fields)
 
     def format(self):
         kwargs = {}

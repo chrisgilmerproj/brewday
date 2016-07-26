@@ -147,7 +147,7 @@ class GrainAddition(object):
     def to_dict(self):
         grain_data = self.grain.to_dict()
         return {'name': grain_data.pop('name'),
-                'grain_data': grain_data,
+                'data': grain_data,
                 'weight': self.weight,
                 'units': self.units,
                 }
@@ -160,13 +160,12 @@ class GrainAddition(object):
         required_fields = [('name', str),
                            ('weight', float),
                            ]
-        data_field = 'grain_data'
         optional_fields = [('color', (int, float)),
                            ('ppg', (int, float)),
                            ('hwe', (int, float)),
                            ]
         validate_required_fields(grain_data, required_fields)
-        validate_optional_fields(grain_data, data_field, optional_fields)
+        validate_optional_fields(grain_data, optional_fields)
 
     def format(self):
         kwargs = {}

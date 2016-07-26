@@ -15,16 +15,16 @@ class TestYeasts(unittest.TestCase):
 
     def test_str(self):
         out = str(self.yeast)
-        self.assertEquals(out, 'Danstar, attenuation 0.75%')
+        self.assertEquals(out, 'Wyeast 1056, attenuation 0.75%')
 
     def test_repr(self):
         out = repr(self.yeast)
-        self.assertEquals(out, "Yeast('Danstar', percent_attenuation=0.75)")
+        self.assertEquals(out, "Yeast('Wyeast 1056', percent_attenuation=0.75)")
 
     def test_to_dict(self):
         out = self.yeast.to_dict()
-        expected = {'name': 'Danstar',
-                    'yeast_data': {
+        expected = {'name': 'Wyeast 1056',
+                    'data': {
                         'percent_attenuation': 0.75,
                     },
                     }
@@ -32,7 +32,7 @@ class TestYeasts(unittest.TestCase):
 
     def test_to_json(self):
         out = self.yeast.to_json()
-        expected = '{"name": "Danstar", "yeast_data": {"percent_attenuation": 0.75}}'  # nopep8
+        expected = '{"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}'  # nopep8
         self.assertEquals(out, expected)
 
     def test_validate(self):
@@ -42,7 +42,7 @@ class TestYeasts(unittest.TestCase):
     def test_format(self):
         out = self.yeast.format()
         msg = textwrap.dedent("""\
-                Danstar Yeast
+                Wyeast 1056 Yeast
                 -----------------------------------
                 Attenuation:  0.75 %""")
         self.assertEquals(out, msg)
