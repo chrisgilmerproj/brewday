@@ -52,7 +52,7 @@ def main():
                   start_volume=7.0,  # G
                   final_volume=5.0,  # G
                   )
-    beer.format()
+    print(beer.format())
 
 
 if __name__ == "__main__":
