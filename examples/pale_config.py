@@ -53,7 +53,7 @@ def main():
 
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
     beer = parse_recipe(recipe, data_dir)
-    beer.format()
+    print(beer.format())
 
 
 if __name__ == "__main__":

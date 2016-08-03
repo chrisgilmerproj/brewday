@@ -387,6 +387,8 @@ class Recipe(object):
         validate_optional_fields(recipe, optional_fields)
 
     def format(self):
+        msg = ""
+
         og = self.get_original_gravity()
         bg = self.get_boil_gravity()
         fg = self.get_final_gravity()
@@ -398,7 +400,7 @@ class Recipe(object):
         total_ibu = self.get_total_ibu()
         bu_to_gu = self.get_bu_to_gu()
 
-        print(textwrap.dedent("""\
+        msg += textwrap.dedent("""\
             {name}
             ===================================
 
@@ -422,6 +424,7 @@ class Recipe(object):
 
             Extract Weight:     {extract_weight:0.2f} {weight_large}
             Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
+
             """.format(name=string.capwords(self.name),
                        bhy=self.percent_brew_house_yield,
                        start_volume=self.start_volume,
@@ -447,12 +450,13 @@ class Recipe(object):
                        extract_weight=extract_weight,
                        total_grain_weight=total_grain_weight,
                        **self.types
-                       )))
+                       ))
 
-        print(textwrap.dedent("""\
+        msg += textwrap.dedent("""\
             Grains
             ===================================
-            """))
+
+            """)
 
         for grain_add in self.grain_additions:
             wy = grain_add.grain.get_working_yield(self.percent_brew_house_yield)  # nopep8
@@ -460,14 +464,16 @@ class Recipe(object):
             lme_weight = grain_to_liquid_malt_weight(grain_weight)
             dry_weight = liquid_to_dry_malt_weight(lme_weight)
             wort_color_srm = self.get_wort_color(grain_add)
-            print(grain_add.format())
-            print(textwrap.dedent("""\
+            msg += grain_add.format()
+            msg += textwrap.dedent("""\
+
                     Working Yield:     {wy:0.2f} %
                     Weight DME:        {dry_weight:0.2f} {weight_large}
                     Weight LME:        {lme_weight:0.2f} {weight_large}
                     Weight Grain:      {grain_weight:0.2f} {weight_large}
                     SRM:               {wort_color_srm:0.2f} degL
                     EBC:               {wort_color_ebc:0.2f}
+
                     """.format(wy=wy,
                                dry_weight=dry_weight,
                                lme_weight=lme_weight,
@@ -475,12 +481,13 @@ class Recipe(object):
                                wort_color_srm=wort_color_srm,
                                wort_color_ebc=srm_to_ebc(wort_color_srm),
                                **self.types
-                               )))
+                               ))
 
-        print(textwrap.dedent("""\
+        msg += textwrap.dedent("""\
             Hops
             ===================================
-            """))
+
+            """)
 
         for hop in self.hop_additions:
             ibus = hop.get_ibus(og, self.final_volume)
@@ -489,20 +496,24 @@ class Recipe(object):
             # Utilization is 10% higher for pellet vs whole/plug
             if hop.hop_type == HOP_TYPE_PELLET:
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
-            print(hop.format())
-            print(textwrap.dedent("""\
+            msg += hop.format()
+            msg += textwrap.dedent("""\
+
                     IBUs:         {ibus:0.2f}
                     Utilization:  {utilization:0.2f} %
                     Util Cls:     {util_cls}
+
                     """.format(ibus=ibus,
                                utilization=utilization,
                                util_cls=str(hop.utilization_cls),
                                **self.types
-                               )))
+                               ))
 
-        print(textwrap.dedent("""\
+        msg += textwrap.dedent("""\
             Yeast
             ===================================
-            """))
 
-        print(self.yeast.format())
+            """)
+
+        msg += self.yeast.format()
+        return msg
