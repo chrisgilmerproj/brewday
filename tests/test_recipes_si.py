@@ -1,5 +1,6 @@
 import unittest
 
+from brew.constants import IMPERIAL_UNITS
 from brew.constants import LITER_PER_GAL
 from brew.constants import SI_UNITS
 from brew.constants import SUCROSE_PLATO
@@ -34,6 +35,9 @@ class TestRecipeSIUnits(unittest.TestCase):
             self.assertEquals(grain_add.units, SI_UNITS)
         for hop_add in self.recipe.hop_additions:
             self.assertEquals(hop_add.units, SI_UNITS)
+
+        recipe = self.recipe.change_units()
+        self.assertEquals(recipe.units, IMPERIAL_UNITS)
 
     def test_get_original_gravity_units(self):
         out = self.recipe.get_original_gravity_units()
