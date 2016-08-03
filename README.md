@@ -10,21 +10,10 @@ brew day.
 
 The hope is to help improve your planning and execution when making beer.
 
-# Building Recipes
+# Recipe Examples
 
-There are two kinds of examples included in the `examples/` directory.  They are:
-
-## `examples/pale_ale_objects.py`
-
-Building a recipe using python objects.  This gives you full control over
-making each and every element of a recipe.
-
-## `examples/pale_config_dict.py`
-
-Building a recipe with a python dict.  This dict is parsed and any missing data
-is pulled from a directory named `data/`.  You have full control over the
-required elements but leaving out many of them will still cause the recipe to
-work.
+To see examples of this library in action check out the `examples/` directory or
+read the [Example README.md](./examples/README.md) for more information.
 
 # Tools
 
