@@ -10,7 +10,7 @@ brew day.
 
 The hope is to help improve your planning and execution when making beer.
 
-# Examples
+# Building Recipes
 
 There are two kinds of examples included in the `examples/` directory.  They are:
 
@@ -21,9 +21,10 @@ making each and every element of a recipe.
 
 ## `examples/pale_config.py`
 
-Building a recipe with a python dict.  This data is parsed and pulls any missing
-data from a directory named `data/`.  You have full control over the required
-elements but leaving out many of them will still cause the recipe to work.
+Building a recipe with a python dict.  This dict is parsed and any missing data
+is pulled from a directory named `data/`.  You have full control over the
+required elements but leaving out many of them will still cause the recipe to
+work.
 
 # Tools
 
@@ -44,7 +45,7 @@ the tools of this library.  Credit is given as best as possible to the
 original author.  Corrections are made where possible to make the charts as
 accurate as possible.
 
-## A not on Graphs
+## A note on Graphs
 
 Importantly these charts are generally lists of numbers and NOT graphs.
 To limit the required dependencies of this library any graphs are kept
