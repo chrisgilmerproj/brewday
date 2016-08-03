@@ -86,6 +86,12 @@ class TestRecipeSIUnits(unittest.TestCase):
         total_malt_weight = self.recipe.get_total_malt_weight()
         self.assertEquals(round(total_malt_weight, 2), 4.8)
 
+    def test_get_percent_ibus(self):
+        percent_ibus = self.recipe.get_percent_ibus(self.hop_additions[0])
+        self.assertEquals(round(percent_ibus, 2), 0.88)
+        percent_ibus = self.recipe.get_percent_ibus(self.hop_additions[1])
+        self.assertEquals(round(percent_ibus, 2), 0.12)
+
     def test_get_total_ibu(self):
         self.assertEqual(round(self.recipe.get_boil_gravity(), 3), 1.054)
         self.assertEqual(round(self.recipe.final_volume, 2), 18.93)
