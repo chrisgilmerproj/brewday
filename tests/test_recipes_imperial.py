@@ -108,3 +108,15 @@ class TestRecipeImperialUnits(unittest.TestCase):
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
         self.assertEquals(round(total_wort_color, 2), 6.45)
+
+    def test_get_total_wort_color_map(self):
+        wort_map = self.recipe.get_total_wort_color_map()
+        expected = {
+            'srm': {'daniels': 10.089695626399685,
+                    'morey': 6.449178508078139,
+                    'mosher': 7.234543439599525},
+            'ebc': {'daniels': 19.87670038400738,
+                    'morey': 12.704881660913934,
+                    'mosher': 14.252050576011065},
+        }
+        self.assertEquals(wort_map, expected)
