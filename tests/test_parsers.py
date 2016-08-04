@@ -1,12 +1,12 @@
 import unittest
 
-from brew.parsers import JSONParser
+from brew.parsers import JSONDataLoader
 
 
-class TestJSONParsers(unittest.TestCase):
+class TestJSONDataLoader(unittest.TestCase):
 
     def setUp(self):
-        self.parser = JSONParser('./')
+        self.parser = JSONDataLoader('./')
 
     def test_format_name(self):
         name_list = [('pale malt 2-row us', 'pale_malt_2_row_us'),
