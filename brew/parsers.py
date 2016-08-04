@@ -71,34 +71,28 @@ def parse_cereals(recipe, parser):
     grain_additions = []
     for cereal_data in recipe['grains']:
         GrainAddition.validate(cereal_data)
+
         cereal_json = {}
         try:
             cereal_json = parser.get_item('cereals/', cereal_data['name'])
         except Exception:
-            if 'data' in cereal_data and 'color' in cereal_data['data'] and \
-                    ('ppg' in cereal_data['data'] or 'hwe' in cereal_data['data']):  # nopep8
-                pass
-            else:
-                continue
+            pass
 
-        name = cereal_data['name']
-        if 'name' in cereal_json:
-            name = cereal_json['name']
-
+        name = cereal_json.get('name', cereal_data['name'])
         color = None
-        if 'data' in cereal_data and 'color' in cereal_data['data']:  # nopep8
-            color = cereal_data['data']['color']
-        else:
+        ppg = None
+
+        if 'data' in cereal_data:
+            color = cereal_data['data'].get('color', None)
+            ppg = cereal_data['data'].get('ppg', None)
+
+        if not color:
             color = float(cereal_json['color'][:-4])
 
-        ppg = None
-        if 'data' in cereal_data and 'ppg' in cereal_data['data']:
-            ppg = cereal_data['data']['ppg']
-        else:
+        if not ppg:
             ppg = sg_to_gu(float(cereal_json['potential'][:-3]))
-        grain = Grain(name,
-                      color=color,
-                      ppg=ppg)
+
+        grain = Grain(name, color=color, ppg=ppg)
         grain_add = GrainAddition(grain, weight=float(cereal_data['weight']))
         grain_additions.append(grain_add)
 
