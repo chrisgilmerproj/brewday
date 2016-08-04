@@ -72,7 +72,7 @@ class JSONDataLoader(DataLoader):
         return data
 
 
-def parse_cereals(recipe, loader):
+def parse_cereals(grain_adds, loader):
     """
     Parse grains data from a recipe
 
@@ -88,7 +88,7 @@ def parse_cereals(recipe, loader):
     """
     # Create Grains
     grain_additions = []
-    for cereal in recipe['grains']:
+    for cereal in grain_adds:
         GrainAddition.validate(cereal)
 
         cereal_data = {}
@@ -118,7 +118,7 @@ def parse_cereals(recipe, loader):
     return grain_additions
 
 
-def parse_hops(recipe, loader):
+def parse_hops(hop_adds, loader):
     """
     Parse hops data from a recipe
 
@@ -134,7 +134,7 @@ def parse_hops(recipe, loader):
     """
     # Create Grains
     hop_additions = []
-    for hop in recipe['hops']:
+    for hop in hop_adds:
         HopAddition.validate(hop)
 
         hop_data = {}
@@ -160,7 +160,7 @@ def parse_hops(recipe, loader):
     return hop_additions
 
 
-def parse_yeast(recipe, loader):
+def parse_yeast(yeast, loader):
     """
     Parse yeast data from a recipe
 
@@ -172,7 +172,6 @@ def parse_yeast(recipe, loader):
     with the following keys:
     - percent_attenuation (float)
     """
-    yeast = recipe['yeast']
     Yeast.validate(yeast)
 
     yeast_data = {}
@@ -221,9 +220,9 @@ def parse_recipe(recipe, loader):
     """
     Recipe.validate(recipe)
 
-    grain_additions = parse_cereals(recipe, loader)
-    hop_additions = parse_hops(recipe, loader)
-    yeast = parse_yeast(recipe, loader)
+    grain_additions = parse_cereals(recipe['grains'], loader)
+    hop_additions = parse_hops(recipe['hops'], loader)
+    yeast = parse_yeast(recipe['yeast'], loader)
 
     recipe_kwargs = {
         'grain_additions': grain_additions,
