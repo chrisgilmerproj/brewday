@@ -29,12 +29,11 @@ clean: ## Clean the library and test files
 	rm -rf build/
 	rm -rf dist/
 	rm -rf *.egg*/
-	rm -rf __pycache__/
-	rm -rf */__pycache__/
 	rm -f MANIFEST
 	rm -f $(TEST_OUTPUT)
 	coverage erase || rm -f .coverage
 	rm -f $(COVERAGE_OUTPUT)
+	find ./ -type d -name '__pycache__' -delete
 	find ./ -type f -name '*.pyc' -delete
 
 teardown: ## Remove all virtualenv files
