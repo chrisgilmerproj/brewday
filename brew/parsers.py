@@ -11,22 +11,26 @@ from brew.utilities.sugar import sg_to_gu
 from brew.yeasts import Yeast
 
 
-class JSONParser(object):
+class DataLoader(object):
+    """
+    Base class for loading data from data files inside the data_dir.
+    """
     DATA = {}
+    EXT = ''
 
     def __init__(self, data_dir):
         self.data_dir = data_dir
 
     @classmethod
     def format_name(cls, name):
+        """
+        Reformat a given name to match the filename of a data file.
+        """
         return name.lower().replace(' ', '_').replace('-', '_')
 
     @classmethod
-    def read_json_file(cls, filename):
-        data = None
-        with open(filename, 'r') as data_file:
-            data = json.loads(data_file.read())
-        return data
+    def read_data(cls, filename):
+        raise NotImplementedError
 
     def get_item(self, dir_suffix, item_name):
         item_dir = os.path.join(self.data_dir, dir_suffix)
@@ -34,8 +38,9 @@ class JSONParser(object):
         # Cache the directory
         if dir_suffix not in self.DATA:
             self.DATA[dir_suffix] = {}
-            for item in glob.glob('{}*.json'.format(item_dir)):
-                filename = os.path.basename(item)[:-5]
+            for item in glob.glob('{}*.{}'.format(item_dir, self.EXT)):
+                ext_len = len(self.EXT) + 1
+                filename = os.path.basename(item)[:-ext_len]
                 self.DATA[dir_suffix][filename] = {}
 
         name = self.format_name(item_name)
@@ -45,15 +50,29 @@ class JSONParser(object):
 
         # Cache file data
         if not self.DATA[dir_suffix][name]:
-            item_filename = os.path.join(item_dir, '{}.json'.format(name))
-            data = self.read_json_file(item_filename)
+            item_filename = os.path.join(item_dir, '{}.{}'.format(name, self.EXT))  # nopep8
+            data = self.read_data(item_filename)
             self.DATA[dir_suffix][name] = data
             return data
         else:
             return self.DATA[dir_suffix][name]
 
 
-def parse_cereals(recipe, parser):
+class JSONDataLoader(DataLoader):
+    """
+    Load data from JSON files inside the data_dir.
+    """
+    EXT = 'json'
+
+    @classmethod
+    def read_data(cls, filename):
+        data = None
+        with open(filename, 'r') as data_file:
+            data = json.loads(data_file.read())
+        return data
+
+
+def parse_cereals(recipe, loader):
     """
     Parse grains data from a recipe
 
@@ -74,7 +93,7 @@ def parse_cereals(recipe, parser):
 
         cereal_data = {}
         try:
-            cereal_data = parser.get_item('cereals/', cereal['name'])
+            cereal_data = loader.get_item('cereals/', cereal['name'])
         except Exception:
             pass
 
@@ -99,7 +118,7 @@ def parse_cereals(recipe, parser):
     return grain_additions
 
 
-def parse_hops(recipe, parser):
+def parse_hops(recipe, loader):
     """
     Parse hops data from a recipe
 
@@ -120,7 +139,7 @@ def parse_hops(recipe, parser):
 
         hop_data = {}
         try:
-            hop_data = parser.get_item('hops/', hop['name'])
+            hop_data = loader.get_item('hops/', hop['name'])
         except Exception:
             pass
 
@@ -141,7 +160,7 @@ def parse_hops(recipe, parser):
     return hop_additions
 
 
-def parse_yeast(recipe, parser):
+def parse_yeast(recipe, loader):
     """
     Parse yeast data from a recipe
 
@@ -158,7 +177,7 @@ def parse_yeast(recipe, parser):
 
     yeast_data = {}
     try:
-        yeast_data = parser.get_item('yeast/', yeast['name'])  # nopep8
+        yeast_data = loader.get_item('yeast/', yeast['name'])  # nopep8
     except Exception:
         return Yeast(yeast['name'])
 
@@ -174,13 +193,12 @@ def parse_yeast(recipe, parser):
     return Yeast(name, percent_attenuation=attenuation)
 
 
-def parse_recipe(recipe, data_dir):
+def parse_recipe(recipe, loader):
     """
     Parse a recipe from a python Dict
 
     recipe: a python dict describing the recipe
-    data_dir: a path to a directory holding data to parse for construcitng the
-              recipe
+    loader: a data loader class that loads data from data files
 
     A recipe must have the following top level attributes:
     - name         (str)
@@ -201,12 +219,11 @@ def parse_recipe(recipe, data_dir):
     the key 'name' and the remaining attributes will be looked up in the data
     directory if they are not provided.
     """
-    parser = JSONParser(data_dir)
     Recipe.validate(recipe)
 
-    grain_additions = parse_cereals(recipe, parser)
-    hop_additions = parse_hops(recipe, parser)
-    yeast = parse_yeast(recipe, parser)
+    grain_additions = parse_cereals(recipe, loader)
+    hop_additions = parse_hops(recipe, loader)
+    yeast = parse_yeast(recipe, loader)
 
     recipe_kwargs = {
         'grain_additions': grain_additions,

@@ -15,6 +15,7 @@ You can purchase the book here:
 
 import os
 
+from brew.parsers import JSONDataLoader
 from brew.parsers import parse_recipe
 
 
@@ -79,7 +80,8 @@ def main():
     }
 
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
-    beer = parse_recipe(recipe, data_dir)
+    loader = JSONDataLoader(data_dir)
+    beer = parse_recipe(recipe, loader)
     print(beer.format())
 
 
