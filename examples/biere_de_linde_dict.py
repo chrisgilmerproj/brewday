@@ -23,9 +23,9 @@ def main():
     recipe = {
         'name': "Biere de l'Inde",
         'start_volume': 7.0,
-        'final_volume': 5.5,
+        'final_volume': 6.0,
         'grains': [
-            {'name': 'english pale ale liquid extract',
+            {'name': 'English Pale Ale Liquid Extract',
              'data': {
                  'color': 3.5,
                  'ppg': 36,

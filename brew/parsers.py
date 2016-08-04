@@ -58,9 +58,9 @@ def parse_cereals(recipe, parser):
     Parse grains data from a recipe
 
     Grain must have the following top level attributes:
-    - name       (str)
-    - weight     (float)
-    - grain_data (dict) (optional)
+    - name   (str)
+    - weight (float)
+    - data   (dict) (optional)
 
     Additionally grains may contain override data in the 'data'
     attribute with the following keys:
@@ -69,31 +69,31 @@ def parse_cereals(recipe, parser):
     """
     # Create Grains
     grain_additions = []
-    for cereal_data in recipe['grains']:
-        GrainAddition.validate(cereal_data)
+    for cereal in recipe['grains']:
+        GrainAddition.validate(cereal)
 
-        cereal_json = {}
+        cereal_data = {}
         try:
-            cereal_json = parser.get_item('cereals/', cereal_data['name'])
+            cereal_data = parser.get_item('cereals/', cereal['name'])
         except Exception:
             pass
 
-        name = cereal_json.get('name', cereal_data['name'])
+        name = cereal_data.get('name', cereal['name'])
         color = None
         ppg = None
 
-        if 'data' in cereal_data:
-            color = cereal_data['data'].get('color', None)
-            ppg = cereal_data['data'].get('ppg', None)
+        if 'data' in cereal:
+            color = cereal['data'].get('color', None)
+            ppg = cereal['data'].get('ppg', None)
 
         if not color:
-            color = float(cereal_json['color'][:-4])
+            color = float(cereal_data['color'][:-4])
 
         if not ppg:
-            ppg = sg_to_gu(float(cereal_json['potential'][:-3]))
+            ppg = sg_to_gu(float(cereal_data['potential'][:-3]))
 
-        grain = Grain(name, color=color, ppg=ppg)
-        grain_add = GrainAddition(grain, weight=float(cereal_data['weight']))
+        grain_obj = Grain(name, color=color, ppg=ppg)
+        grain_add = GrainAddition(grain_obj, weight=float(cereal['weight']))
         grain_additions.append(grain_add)
 
     return grain_additions
@@ -107,7 +107,7 @@ def parse_hops(recipe, parser):
     - name      (str)
     - weight    (float)
     - boil_time (float)
-    - hop_data  (dict) (optional)
+    - data      (dict) (optional)
 
     Additionally hops may contain override data in the 'data' attribute
     with the following keys:
@@ -115,24 +115,28 @@ def parse_hops(recipe, parser):
     """
     # Create Grains
     hop_additions = []
-    for hop_data in recipe['hops']:
-        HopAddition.validate(hop_data)
+    for hop in recipe['hops']:
+        HopAddition.validate(hop)
+
+        hop_data = {}
         try:
-            hop_json = parser.get_item('hops/', hop_data['name'])  # nopep8
+            hop_data = parser.get_item('hops/', hop['name'])
         except Exception:
-            continue
+            pass
 
+        name = hop_data.get('name', hop['name'])
         alpha_acids = None
-        if 'data' in hop_data and 'percent_alpha_acids' in hop_data['data']:  # nopep8
-            alpha_acids = hop_data['data']['percent_alpha_acids']
-        else:
-            alpha_acids = float(hop_json['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
 
-        hop = Hop(hop_json['name'],
-                  percent_alpha_acids=alpha_acids)
-        hop_add = HopAddition(hop,
-                              weight=float(hop_data['weight']),
-                              boil_time=hop_data['boil_time'])
+        if 'data' in hop:
+            alpha_acids = hop['data'].get('percent_alpha_acids', None)
+
+        if not alpha_acids:
+            alpha_acids = float(hop_data['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
+
+        hop_obj = Hop(name, percent_alpha_acids=alpha_acids)
+        hop_add = HopAddition(hop_obj,
+                              weight=float(hop['weight']),
+                              boil_time=hop['boil_time'])
         hop_additions.append(hop_add)
     return hop_additions
 
@@ -142,8 +146,8 @@ def parse_yeast(recipe, parser):
     Parse yeast data from a recipe
 
     Yeast must have the following top level attributes:
-    - name       (str)
-    - yeast_data (dict) (optional)
+    - name (str)
+    - data (dict) (optional)
 
     Additionally yeast may contain override data in the 'data' attribute
     with the following keys:
