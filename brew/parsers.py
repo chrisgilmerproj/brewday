@@ -153,21 +153,25 @@ def parse_yeast(recipe, parser):
     with the following keys:
     - percent_attenuation (float)
     """
-    yeast_data = recipe['yeast']
-    Yeast.validate(yeast_data)
+    yeast = recipe['yeast']
+    Yeast.validate(yeast)
+
+    yeast_data = {}
     try:
-        yeast_json = parser.get_item('yeast/', yeast_data['name'])  # nopep8
+        yeast_data = parser.get_item('yeast/', yeast['name'])  # nopep8
     except Exception:
-        return Yeast(yeast_data['name'])
+        return Yeast(yeast['name'])
 
+    name = yeast_data.get('name', yeast['name'])
     attenuation = None
-    if 'data' in yeast_data and 'percent_attenuation' in yeast_data['data']:  # nopep8
-        attenuation = yeast_data['data']['percent_attenuation']
-    else:
-        attenuation = yeast_json['attenuation'][0]
 
-    return Yeast(yeast_data['name'],
-                 percent_attenuation=attenuation)
+    if 'data' in yeast:
+        attenuation = yeast['data'].get('percent_attenuation', None)
+
+    if not attenuation:
+        attenuation = yeast_data['attenuation'][0]
+
+    return Yeast(name, percent_attenuation=attenuation)
 
 
 def parse_recipe(recipe, data_dir):
