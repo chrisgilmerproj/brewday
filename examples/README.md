@@ -29,8 +29,13 @@ work.
 
 - Pale Ale
 
-## Brewing Classic Styles
+## Brewing Classic Styles: 80 Winning Recipes Anyone Can Brew
 
-- Biere de Linde (English IPA)
+Authors: Jamil Zainasheff and John J. Palmer
+
+Used by permission of Brewers Publications (2007). All rights reserved.
+You can purchase the book here: [Brewing Classig Styles](http://www.brewerspublications.com/books/brewing-classic-styles-80-winning-recipes-anyone-can-brew/).
+
+- [Biere de l'Inde (English IPA)](./examples/biere_de_linde_dict.py)
 - Munich Madness
 - Raison de Saison
