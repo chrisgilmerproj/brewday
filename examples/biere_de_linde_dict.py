@@ -23,7 +23,7 @@ def main():
     recipe = {
         'name': "Biere de l'Inde",
         'start_volume': 7.0,
-        'final_volume': 6.0,
+        'final_volume': 5.5,
         'grains': [
             {'name': 'pale liquid extract',
              'data': {
