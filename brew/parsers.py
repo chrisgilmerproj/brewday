@@ -72,7 +72,7 @@ class JSONDataLoader(DataLoader):
         return data
 
 
-def parse_cereals(grain_adds, loader):
+def parse_cereals(cereal, loader):
     """
     Parse grains data from a recipe
 
@@ -86,39 +86,33 @@ def parse_cereals(grain_adds, loader):
     - color (float)
     - ppg   (int)
     """
-    # Create Grains
-    grain_additions = []
-    for cereal in grain_adds:
-        GrainAddition.validate(cereal)
+    GrainAddition.validate(cereal)
 
-        cereal_data = {}
-        try:
-            cereal_data = loader.get_item('cereals/', cereal['name'])
-        except Exception:
-            pass
+    cereal_data = {}
+    try:
+        cereal_data = loader.get_item('cereals/', cereal['name'])
+    except Exception:
+        pass
 
-        name = cereal_data.get('name', cereal['name'])
-        color = None
-        ppg = None
+    name = cereal_data.get('name', cereal['name'])
+    color = None
+    ppg = None
 
-        if 'data' in cereal:
-            color = cereal['data'].get('color', None)
-            ppg = cereal['data'].get('ppg', None)
+    if 'data' in cereal:
+        color = cereal['data'].get('color', None)
+        ppg = cereal['data'].get('ppg', None)
 
-        if not color:
-            color = float(cereal_data['color'][:-4])
+    if not color:
+        color = float(cereal_data['color'][:-4])
 
-        if not ppg:
-            ppg = sg_to_gu(float(cereal_data['potential'][:-3]))
+    if not ppg:
+        ppg = sg_to_gu(float(cereal_data['potential'][:-3]))
 
-        grain_obj = Grain(name, color=color, ppg=ppg)
-        grain_add = GrainAddition(grain_obj, weight=float(cereal['weight']))
-        grain_additions.append(grain_add)
-
-    return grain_additions
+    grain_obj = Grain(name, color=color, ppg=ppg)
+    return GrainAddition(grain_obj, weight=float(cereal['weight']))
 
 
-def parse_hops(hop_adds, loader):
+def parse_hops(hop, loader):
     """
     Parse hops data from a recipe
 
@@ -132,32 +126,27 @@ def parse_hops(hop_adds, loader):
     with the following keys:
     - percent_alpha_acids (float)
     """
-    # Create Grains
-    hop_additions = []
-    for hop in hop_adds:
-        HopAddition.validate(hop)
+    HopAddition.validate(hop)
 
-        hop_data = {}
-        try:
-            hop_data = loader.get_item('hops/', hop['name'])
-        except Exception:
-            pass
+    hop_data = {}
+    try:
+        hop_data = loader.get_item('hops/', hop['name'])
+    except Exception:
+        pass
 
-        name = hop_data.get('name', hop['name'])
-        alpha_acids = None
+    name = hop_data.get('name', hop['name'])
+    alpha_acids = None
 
-        if 'data' in hop:
-            alpha_acids = hop['data'].get('percent_alpha_acids', None)
+    if 'data' in hop:
+        alpha_acids = hop['data'].get('percent_alpha_acids', None)
 
-        if not alpha_acids:
-            alpha_acids = float(hop_data['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
+    if not alpha_acids:
+        alpha_acids = float(hop_data['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
 
-        hop_obj = Hop(name, percent_alpha_acids=alpha_acids)
-        hop_add = HopAddition(hop_obj,
-                              weight=float(hop['weight']),
-                              boil_time=hop['boil_time'])
-        hop_additions.append(hop_add)
-    return hop_additions
+    hop_obj = Hop(name, percent_alpha_acids=alpha_acids)
+    return HopAddition(hop_obj,
+                       weight=float(hop['weight']),
+                       boil_time=hop['boil_time'])
 
 
 def parse_yeast(yeast, loader):
@@ -220,8 +209,14 @@ def parse_recipe(recipe, loader):
     """
     Recipe.validate(recipe)
 
-    grain_additions = parse_cereals(recipe['grains'], loader)
-    hop_additions = parse_hops(recipe['hops'], loader)
+    grain_additions = []
+    for grain in recipe['grains']:
+        grain_additions.append(parse_cereals(grain, loader))
+
+    hop_additions = []
+    for hop in recipe['hops']:
+        hop_additions.append(parse_hops(hop, loader))
+
     yeast = parse_yeast(recipe['yeast'], loader)
 
     recipe_kwargs = {
