@@ -25,9 +25,10 @@ def main():
         'start_volume': 7.0,
         'final_volume': 5.5,
         'grains': [
-            {'name': 'pale liquid extract',
+            {'name': 'english pale ale liquid extract',
              'data': {
                  'color': 3.5,
+                 'ppg': 36,
              },
              'weight': 8.7},
             {'name': 'wheat liquid extract',
