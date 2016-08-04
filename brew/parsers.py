@@ -75,10 +75,12 @@ def parse_cereals(recipe, parser):
         try:
             cereal_json = parser.get_item('cereals/', cereal_data['name'])
         except Exception:
-            if 'data' in cereal_data and 'color' in cereal_data['data'] and ('ppg' in cereal_data['data'] or 'hwe' in cereal_data['data']):
+            if 'data' in cereal_data and 'color' in cereal_data['data'] and \
+                    ('ppg' in cereal_data['data'] or 'hwe' in cereal_data['data']):  # nopep8
                 pass
             else:
                 continue
+
         name = cereal_data['name']
         if 'name' in cereal_json:
             name = cereal_json['name']
