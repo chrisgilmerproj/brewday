@@ -387,70 +387,41 @@ class Recipe(object):
         validate_optional_fields(recipe, optional_fields)
 
     def format(self):
+        kwargs = {}
+        kwargs.update(self.to_dict())
+        kwargs.update(self.types)
+
         msg = ""
 
         og = self.get_original_gravity()
         bg = self.get_boil_gravity()
-        fg = self.get_final_gravity()
-        abv_standard = alcohol_by_volume_standard(og, fg)
-        abv_alternative = alcohol_by_volume_alternative(og, fg)
-        extract_weight = self.get_extract_weight()
-        wort_color_map = self.get_total_wort_color_map()
-        total_grain_weight = self.get_total_grain_weight()
-        total_ibu = self.get_total_ibu()
-        bu_to_gu = self.get_bu_to_gu()
 
         msg += textwrap.dedent("""\
             {name}
             ===================================
 
-            Brew House Yield:   {bhy:0.2f}
+            Brew House Yield:   {data[percent_brew_house_yield]:0.2f}
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
 
-            Original Gravity:   {og:0.3f}
-            Boil Gravity:       {bg:0.3f}
-            Final Gravity:      {fg:0.3f}
+            Original Gravity:   {data[original_gravity]:0.3f}
+            Boil Gravity:       {data[boil_gravity]:0.3f}
+            Final Gravity:      {data[final_gravity]:0.3f}
 
-            ABV Standard:       {abv_standard:0.2f} %
-            ABV Alternative:    {abv_alternative:0.2f} %
+            ABV Standard:       {data[abv_standard]:0.2f} %
+            ABV Alternative:    {data[abv_alternative]:0.2f} %
 
-            IBU:                {total_ibu:0.2f} ibu
-            BU/GU:              {bu_to_gu:0.2f}
+            IBU:                {data[total_ibu]:0.2f} ibu
+            BU/GU:              {data[bu_to_gu]:0.2f}
 
-            Morey   (SRM/EBC):  {morey_srm:0.2f} degL / {morey_ebc:0.2f}
-            Daneils (SRM/EBC):  {daniels_srm:0.2f} degL / {daniels_ebc:0.2f}
-            Mosher  (SRM/EBC):  {mosher_srm:0.2f} degL / {mosher_ebc:0.2f}
+            Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]:0.2f} degL / {data[total_wort_color_map][ebc][morey]:0.2f}
+            Daneils (SRM/EBC):  {data[total_wort_color_map][srm][daniels]:0.2f} degL / {data[total_wort_color_map][ebc][daniels]:0.2f}
+            Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]:0.2f} degL / {data[total_wort_color_map][ebc][mosher]:0.2f}
 
-            Extract Weight:     {extract_weight:0.2f} {weight_large}
-            Total Grain Weight: {total_grain_weight:0.2f} {weight_large}
+            Extract Weight:     {data[extract_weight]:0.2f} {weight_large}
+            Total Grain Weight: {data[total_grain_weight]:0.2f} {weight_large}
 
-            """.format(name=string.capwords(self.name),
-                       bhy=self.percent_brew_house_yield,
-                       start_volume=self.start_volume,
-                       final_volume=self.final_volume,
-
-                       og=og,
-                       bg=bg,
-                       fg=fg,
-
-                       abv_standard=abv_standard,
-                       abv_alternative=abv_alternative,
-
-                       total_ibu=total_ibu,
-                       bu_to_gu=bu_to_gu,
-
-                       morey_srm=wort_color_map['srm']['morey'],
-                       daniels_srm=wort_color_map['srm']['daniels'],
-                       mosher_srm=wort_color_map['srm']['mosher'],
-                       morey_ebc=wort_color_map['ebc']['morey'],
-                       daniels_ebc=wort_color_map['ebc']['daniels'],
-                       mosher_ebc=wort_color_map['ebc']['mosher'],
-
-                       extract_weight=extract_weight,
-                       total_grain_weight=total_grain_weight,
-                       **self.types
-                       ))
+            """.format(**kwargs))  # nopep8
 
         msg += textwrap.dedent("""\
             Grains
