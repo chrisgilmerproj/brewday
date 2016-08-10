@@ -40,6 +40,8 @@ class Recipe(object):
     Many equations came from these sources:
     - http://www.learntobrew.com/beer-calculations/
     """
+    grain_lookup = {}
+    hop_lookup = {}
 
     def __init__(self, name,
                  grain_additions=None,
@@ -61,12 +63,16 @@ class Recipe(object):
         # Manage units
         self.set_units(units)
 
-        # Ensure all units are the same
+        # For each grain and hop:
+        # 1. Add to lookup
+        # 2. Ensure all units are the same
         for grain_add in self.grain_additions:
+            self.grain_lookup[grain_add.grain.name] = grain_add
             if grain_add.units != self.units:
                 raise Exception("Grain addition units must be in '{}' not '{}'".format(  # nopep8
                     self.units, grain_add.units))
         for hop_add in self.hop_additions:
+            self.hop_lookup[hop_add.hop.name] = hop_add
             if hop_add.units != self.units:
                 raise Exception("Hop addition units must be in '{}' not '{}'".format(  # nopep8
                     self.units, hop_add.units))
@@ -387,8 +393,9 @@ class Recipe(object):
         validate_optional_fields(recipe, optional_fields)
 
     def format(self):
+        recipe_data = self.to_dict()
         kwargs = {}
-        kwargs.update(self.to_dict())
+        kwargs.update(recipe_data)
         kwargs.update(self.types)
 
         msg = ""
@@ -429,30 +436,25 @@ class Recipe(object):
 
             """)
 
-        for grain_add in self.grain_additions:
-            wy = grain_add.grain.get_working_yield(self.percent_brew_house_yield)  # nopep8
-            grain_weight = grain_add.weight
-            lme_weight = grain_to_liquid_malt_weight(grain_weight)
-            dry_weight = liquid_to_dry_malt_weight(lme_weight)
-            wort_color_srm = self.get_wort_color(grain_add)
+        for grain_data in recipe_data['grains']:
+            grain_kwargs = {}
+            grain_kwargs.update(grain_data)
+            grain_kwargs.update(self.types)
+
+            grain_name = grain_data['name']
+            grain_add = self.grain_lookup[grain_name]
+
             msg += grain_add.format()
             msg += textwrap.dedent("""\
 
-                    Working Yield:     {wy:0.2f} %
-                    Weight DME:        {dry_weight:0.2f} {weight_large}
-                    Weight LME:        {lme_weight:0.2f} {weight_large}
-                    Weight Grain:      {grain_weight:0.2f} {weight_large}
-                    SRM:               {wort_color_srm:0.2f} degL
-                    EBC:               {wort_color_ebc:0.2f}
+                    Working Yield:     {data[working_yield]:0.2f} %
+                    Weight DME:        {data[dry_weight]:0.2f} {weight_large}
+                    Weight LME:        {data[lme_weight]:0.2f} {weight_large}
+                    Weight Grain:      {weight:0.2f} {weight_large}
+                    SRM:               {data[wort_color_srm]:0.2f} degL
+                    EBC:               {data[wort_color_ebc]:0.2f}
 
-                    """.format(wy=wy,
-                               dry_weight=dry_weight,
-                               lme_weight=lme_weight,
-                               grain_weight=grain_weight,
-                               wort_color_srm=wort_color_srm,
-                               wort_color_ebc=srm_to_ebc(wort_color_srm),
-                               **self.types
-                               ))
+                    """.format(**grain_kwargs))
 
         msg += textwrap.dedent("""\
             Hops
