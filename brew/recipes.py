@@ -399,10 +399,6 @@ class Recipe(object):
         kwargs.update(self.types)
 
         msg = ""
-
-        og = self.get_original_gravity()
-        bg = self.get_boil_gravity()
-
         msg += textwrap.dedent("""\
             {name}
             ===================================
@@ -462,25 +458,22 @@ class Recipe(object):
 
             """)
 
-        for hop in self.hop_additions:
-            ibus = hop.get_ibus(og, self.final_volume)
-            utilization = hop.utilization_cls.get_percent_utilization(
-                bg, hop.boil_time)
-            # Utilization is 10% higher for pellet vs whole/plug
-            if hop.hop_type == HOP_TYPE_PELLET:
-                utilization *= HOP_UTILIZATION_SCALE_PELLET
+        for hop_data in recipe_data['hops']:
+            hop_kwargs = {}
+            hop_kwargs.update(hop_data)
+            hop_kwargs.update(self.types)
+
+            hop_name = hop_data['name']
+            hop = self.hop_lookup[hop_name]
+
             msg += hop.format()
             msg += textwrap.dedent("""\
 
-                    IBUs:         {ibus:0.2f}
-                    Utilization:  {utilization:0.2f} %
-                    Util Cls:     {util_cls}
+                    IBUs:         {data[ibus]:0.2f}
+                    Utilization:  {data[utilization]:0.2f} %
+                    Util Cls:     {utilization_cls}
 
-                    """.format(ibus=ibus,
-                               utilization=utilization,
-                               util_cls=str(hop.utilization_cls),
-                               **self.types
-                               ))
+                    """.format(**hop_kwargs))
 
         msg += textwrap.dedent("""\
             Yeast
