@@ -3,14 +3,20 @@ import string
 import textwrap
 
 from .constants import GRAIN_TYPE_CEREAL
+from .constants import GRAIN_TYPE_DME
+from .constants import GRAIN_TYPE_LME
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import KG_PER_POUND
 from .constants import POUND_PER_KG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
+from .utilities.malt import dry_to_liquid_malt_weight
+from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.malt import hwe_to_basis
 from .utilities.malt import hwe_to_ppg
+from .utilities.malt import liquid_malt_to_grain_weight
+from .utilities.malt import liquid_to_dry_malt_weight
 from .utilities.malt import ppg_to_hwe
 from .validators import validate_optional_fields
 from .validators import validate_percentage
@@ -133,6 +139,22 @@ class GrainAddition(object):
         return GrainAddition(self.grain,
                              weight=weight,
                              units=units)
+
+    def get_weight_map(self):
+        weight_map = {}
+        if self.grain_type == GRAIN_TYPE_CEREAL:
+            weight_map['grain_weight'] = self.weight
+            weight_map['lme_weight'] = grain_to_liquid_malt_weight(self.weight)
+            weight_map['dry_weight'] = liquid_to_dry_malt_weight(weight_map['lme_weight'])  # nopep8
+        elif self.grain_type == GRAIN_TYPE_DME:
+            weight_map['dry_weight'] = self.weight
+            weight_map['lme_weight'] = dry_to_liquid_malt_weight(self.weight)
+            weight_map['grain_weight'] = liquid_malt_to_grain_weight(weight_map['lme_weight'])  # nopep8
+        elif self.grain_type == GRAIN_TYPE_LME:
+            weight_map['lme_weight'] = self.weight
+            weight_map['grain_weight'] = liquid_malt_to_grain_weight(self.weight)  # nopep8
+            weight_map['dry_weight'] = liquid_to_dry_malt_weight(self.weight)
+        return weight_map
 
     def __str__(self):
         return "{grain}, weight {weight} {weight_large}".format(
