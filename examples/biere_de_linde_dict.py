@@ -31,12 +31,14 @@ def main():
                  'color': 3.5,
                  'ppg': 36,
              },
-             'weight': 8.7},
+             'weight': 8.7,
+             'grain_type': 'lme'},
             {'name': 'wheat liquid extract',
              'data': {
                  'color': 4.0,
              },
-             'weight': 0.5},
+             'weight': 0.5,
+             'grain_type': 'lme'},
             {'name': 'biscuit malt',
              'data': {
                  'color': 25.0,
