@@ -109,7 +109,15 @@ def parse_cereals(cereal, loader):
         ppg = sg_to_gu(float(cereal_data['potential'][:-3]))
 
     grain_obj = Grain(name, color=color, ppg=ppg)
-    return GrainAddition(grain_obj, weight=float(cereal['weight']))
+
+    grain_add_kwargs = {
+        'weight': float(cereal['weight']),
+    }
+    if 'grain_type' in cereal:
+        grain_add_kwargs['grain_type'] = cereal['grain_type']
+    if 'units' in cereal:
+        grain_add_kwargs['units'] = cereal['units']
+    return GrainAddition(grain_obj, **grain_add_kwargs)
 
 
 def parse_hops(hop, loader):
@@ -144,9 +152,15 @@ def parse_hops(hop, loader):
         alpha_acids = float(hop_data['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
 
     hop_obj = Hop(name, percent_alpha_acids=alpha_acids)
-    return HopAddition(hop_obj,
-                       weight=float(hop['weight']),
-                       boil_time=hop['boil_time'])
+    hop_add_kwargs = {
+        'weight': float(hop['weight']),
+        'boil_time': hop['boil_time'],
+    }
+    if 'hop_type' in hop:
+        hop_add_kwargs['hop_type'] = hop['hop_type']
+    if 'units' in hop:
+        hop_add_kwargs['units'] = hop['units']
+    return HopAddition(hop_obj, **hop_add_kwargs)
 
 
 def parse_yeast(yeast, loader):
