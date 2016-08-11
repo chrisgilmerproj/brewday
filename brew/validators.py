@@ -1,6 +1,14 @@
+from .constants import GRAIN_TYPE_LIST
 from .constants import HOP_TYPE_LIST
 from .constants import IMPERIAL_UNITS
 from .constants import SI_UNITS
+
+
+def validate_grain_type(grain_type):
+    if grain_type in GRAIN_TYPE_LIST:
+        return grain_type
+    raise Exception("Unkown grain type '{}', must use {}".format(
+        grain_type, ', '.join(GRAIN_TYPE_LIST)))
 
 
 def validate_hop_type(hop_type):

@@ -143,6 +143,8 @@ class HopAddition(object):
                            ('boil_time', float),
                            ]
         optional_fields = [('percent_alpha_acids', float),
+                           ('hop_type', str),
+                           ('units', str),
                            ]
         validate_required_fields(hop_data, required_fields)
         validate_optional_fields(hop_data, optional_fields)

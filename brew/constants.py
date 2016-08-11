@@ -16,6 +16,17 @@ SI_TYPES = {
     'temperature': 'degC',
 }
 
+# Grains
+
+GRAIN_TYPE_CEREAL = 'cereal'
+GRAIN_TYPE_DME = 'dme'
+GRAIN_TYPE_LME = 'lme'
+GRAIN_TYPE_LIST = [
+    GRAIN_TYPE_CEREAL,
+    GRAIN_TYPE_DME,
+    GRAIN_TYPE_LME,
+]
+
 # Hops
 
 HOP_TYPE_PELLET = 'pellet'

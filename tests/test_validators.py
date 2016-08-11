@@ -1,12 +1,22 @@
 import unittest
 
+from brew.constants import GRAIN_TYPE_CEREAL
 from brew.constants import HOP_TYPE_PELLET
+from brew.validators import validate_grain_type
 from brew.validators import validate_hop_type
 from brew.validators import validate_percentage
 from brew.validators import validate_units
 
 
 class TestValidators(unittest.TestCase):
+
+    def test_validate_grain_type(self):
+        out = validate_grain_type(GRAIN_TYPE_CEREAL)
+        self.assertEqual(out, GRAIN_TYPE_CEREAL)
+
+    def test_validate_grain_type_raises(self):
+        with self.assertRaises(Exception):
+            validate_grain_type('bad grain type')
 
     def test_validate_hop_type(self):
         out = validate_hop_type(HOP_TYPE_PELLET)

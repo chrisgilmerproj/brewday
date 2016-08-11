@@ -2,6 +2,7 @@ import json
 import string
 import textwrap
 
+from .constants import GRAIN_TYPE_CEREAL
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import KG_PER_POUND
@@ -103,9 +104,11 @@ class GrainAddition(object):
 
     def __init__(self, grain,
                  weight=None,
+                 grain_type=GRAIN_TYPE_CEREAL,
                  units=IMPERIAL_UNITS):
         self.grain = grain
         self.weight = weight
+        self.grain_type = grain_type
 
         # Manage units
         self.set_units(units)
@@ -141,6 +144,8 @@ class GrainAddition(object):
         out = "{0}({1}".format(type(self).__name__, repr(self.grain))
         if self.weight:
             out = "{0}, weight={1}".format(out, self.weight)
+        if self.grain_type:
+            out = "{0}, grain_type='{1}'".format(out, self.grain_type)
         out = "{0})".format(out)
         return out
 
@@ -149,6 +154,7 @@ class GrainAddition(object):
         return {'name': grain_data.pop('name'),
                 'data': grain_data,
                 'weight': self.weight,
+                'grain_type': self.grain_type,
                 'units': self.units,
                 }
 
@@ -163,6 +169,8 @@ class GrainAddition(object):
         optional_fields = [('color', (int, float)),
                            ('ppg', (int, float)),
                            ('hwe', (int, float)),
+                           ('grain_type', str),
+                           ('units', str),
                            ]
         validate_required_fields(grain_data, required_fields)
         validate_optional_fields(grain_data, optional_fields)
