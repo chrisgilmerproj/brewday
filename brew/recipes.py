@@ -348,6 +348,7 @@ class Recipe(object):
             wort_color_srm = self.get_wort_color(grain_add)
             grain['data'].update({
                 'working_yield': grain_add.grain.get_working_yield(self.percent_brew_house_yield),  # nopep8
+                'grain_weight': grain_add.weight,
                 'lme_weight': lme_weight,
                 'dry_weight': dry_weight,
                 'wort_color_srm': wort_color_srm,
@@ -444,9 +445,10 @@ class Recipe(object):
             msg += textwrap.dedent("""\
 
                     Working Yield:     {data[working_yield]:0.2f} %
+                    Weight:            {weight:0.2f} {weight_large}
                     Weight DME:        {data[dry_weight]:0.2f} {weight_large}
                     Weight LME:        {data[lme_weight]:0.2f} {weight_large}
-                    Weight Grain:      {weight:0.2f} {weight_large}
+                    Weight Grain:      {data[grain_weight]:0.2f} {weight_large}
                     SRM:               {data[wort_color_srm]:0.2f} degL
                     EBC:               {data[wort_color_ebc]:0.2f}
 
