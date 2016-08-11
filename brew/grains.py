@@ -182,6 +182,7 @@ class GrainAddition(object):
         msg = textwrap.dedent("""\
                 {name} Addition
                 -----------------------------------
+                Grain Type:        {grain_type}
                 Malt Bill:         {weight} {weight_large}""".format(
             **kwargs))
         return msg
