@@ -110,6 +110,7 @@ class TestGrainAdditions(unittest.TestCase):
         msg = textwrap.dedent("""\
             pale 2-row Addition
             -----------------------------------
+            Grain Type:        cereal
             Malt Bill:         13.96 lbs""")
         self.assertEquals(out, msg)
 
