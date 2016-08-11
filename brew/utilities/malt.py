@@ -35,6 +35,14 @@ def liquid_malt_to_grain_weight(malt):
     return malt / 0.75
 
 
+def dry_malt_to_grain_weight(malt):
+    return malt * 5.0 / 3.0
+
+
+def grain_to_dry_malt_weight(malt):
+    return malt * 3.0 / 5.0
+
+
 def specialty_grain_to_liquid_malt_weight(grain):
     """
     Source: http://www.weekendbrewer.com/brewingformulas.htm
