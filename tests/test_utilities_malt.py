@@ -5,7 +5,9 @@ from brew.utilities.malt import basis_to_hwe
 from brew.utilities.malt import coarse_grind_to_fine_grind
 from brew.utilities.malt import dry_basis_to_as_is_basis
 from brew.utilities.malt import dry_to_liquid_malt_weight
+from brew.utilities.malt import dry_malt_to_grain_weight
 from brew.utilities.malt import fine_grind_to_coarse_grind
+from brew.utilities.malt import grain_to_dry_malt_weight
 from brew.utilities.malt import grain_to_liquid_malt_weight
 from brew.utilities.malt import hwe_to_basis
 from brew.utilities.malt import hwe_to_ppg
@@ -35,6 +37,14 @@ class TestMaltUtilities(unittest.TestCase):
     def test_liquid_malt_to_grain_weight(self):
         out = liquid_malt_to_grain_weight(3.75)
         self.assertEquals(out, 5.0)
+
+    def test_grain_to_dry_malt_weight(self):
+        out = grain_to_dry_malt_weight(5.0)
+        self.assertEquals(out, 3.0)
+
+    def test_dry_malt_to_grain_weight(self):
+        out = dry_malt_to_grain_weight(3.75)
+        self.assertEquals(out, 6.25)
 
     def test_specialty_grain_to_liquid_malt_weight(self):
         out = specialty_grain_to_liquid_malt_weight(5.0)
