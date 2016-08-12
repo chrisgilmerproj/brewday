@@ -4,6 +4,8 @@ import json
 import string
 import textwrap
 
+from .constants import GRAIN_TYPE_DME
+from .constants import GRAIN_TYPE_LME
 from .constants import GAL_PER_LITER
 from .constants import HOP_TYPE_PELLET
 from .constants import HOP_UTILIZATION_SCALE_PELLET
@@ -109,14 +111,21 @@ class Recipe(object):
                       units=units)
 
     def get_total_points(self):
-        total_points = 0
+        # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
-            for grain_add in self.grain_additions:
-                total_points += grain_add.grain.ppg * grain_add.get_cereal_weight()  # nopep8
+            attr = 'ppg'
         if self.units == SI_UNITS:
-            for grain_add in self.grain_additions:
-                total_points += grain_add.grain.hwe * grain_add.get_cereal_weight()  # nopep8
-        return total_points * self.percent_brew_house_yield
+            attr = 'hwe'
+
+        total_points = 0
+        for grain_add in self.grain_additions:
+            # DME and LME are 100% efficient in disolving in water
+            # Cereal extraction depends on brew house yield
+            efficiency = self.percent_brew_house_yield
+            if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
+                efficiency = 1.0
+            total_points += getattr(grain_add.grain, attr) * grain_add.weight * efficiency  # nopep8
+        return total_points
 
     def get_original_gravity_units(self):
         return self.get_total_points() / self.final_volume
@@ -199,7 +208,7 @@ class Recipe(object):
         return grain_add.get_cereal_weight() / self.get_total_grain_weight()
 
     def get_total_grain_weight(self):
-        return sum([g.weight for g in self.grain_additions])
+        return sum([g.get_cereal_weight() for g in self.grain_additions])
 
     def get_total_malt_weight(self):
         """
