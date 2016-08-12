@@ -36,6 +36,7 @@ def main():
             {'name': 'wheat liquid extract',
              'data': {
                  'color': 4.0,
+                 'ppg': 36,
              },
              'weight': 0.5,
              'grain_type': 'lme'},
