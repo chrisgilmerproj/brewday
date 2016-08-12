@@ -142,21 +142,36 @@ class GrainAddition(object):
                              weight=weight,
                              units=units)
 
-    def get_weight_map(self):
-        weight_map = {}
+    def get_cereal_weight(self):
         if self.grain_type == GRAIN_TYPE_CEREAL:
-            weight_map['grain_weight'] = self.weight
-            weight_map['lme_weight'] = grain_to_liquid_malt_weight(self.weight)
-            weight_map['dry_weight'] = grain_to_dry_malt_weight(self.weight)
+            return self.weight
         elif self.grain_type == GRAIN_TYPE_DME:
-            weight_map['dry_weight'] = self.weight
-            weight_map['lme_weight'] = dry_to_liquid_malt_weight(self.weight)
-            weight_map['grain_weight'] = dry_malt_to_grain_weight(self.weight)
+            return dry_malt_to_grain_weight(self.weight)
         elif self.grain_type == GRAIN_TYPE_LME:
-            weight_map['lme_weight'] = self.weight
-            weight_map['grain_weight'] = liquid_malt_to_grain_weight(self.weight)  # nopep8
-            weight_map['dry_weight'] = liquid_to_dry_malt_weight(self.weight)
-        return weight_map
+            return liquid_to_dry_malt_weight(self.weight)
+
+    def get_lme_weight(self):
+        if self.grain_type == GRAIN_TYPE_CEREAL:
+            return grain_to_liquid_malt_weight(self.weight)
+        elif self.grain_type == GRAIN_TYPE_DME:
+            return dry_to_liquid_malt_weight(self.weight)
+        elif self.grain_type == GRAIN_TYPE_LME:
+            return self.weight
+
+    def get_dry_weight(self):
+        if self.grain_type == GRAIN_TYPE_CEREAL:
+            return grain_to_dry_malt_weight(self.weight)
+        elif self.grain_type == GRAIN_TYPE_DME:
+            return self.weight
+        elif self.grain_type == GRAIN_TYPE_LME:
+            return liquid_to_dry_malt_weight(self.weight)
+
+    def get_weight_map(self):
+        return {
+            'grain_weight': self.get_cereal_weight(),
+            'lme_weight': self.get_lme_weight(),
+            'dry_weight': self.get_dry_weight(),
+        }
 
     def __str__(self):
         return "{grain}, weight {weight} {weight_large}".format(
