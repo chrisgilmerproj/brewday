@@ -143,6 +143,9 @@ class GrainAddition(object):
                              units=units)
 
     def get_cereal_weight(self):
+        """
+        Get the weight of the addition in cereal weight
+        """
         if self.grain_type == GRAIN_TYPE_CEREAL:
             return self.weight
         elif self.grain_type == GRAIN_TYPE_DME:
@@ -151,6 +154,9 @@ class GrainAddition(object):
             return liquid_to_dry_malt_weight(self.weight)
 
     def get_lme_weight(self):
+        """
+        Get the weight of the addition in Liquid Malt Extract weight
+        """
         if self.grain_type == GRAIN_TYPE_CEREAL:
             return grain_to_liquid_malt_weight(self.weight)
         elif self.grain_type == GRAIN_TYPE_DME:
@@ -159,6 +165,9 @@ class GrainAddition(object):
             return self.weight
 
     def get_dry_weight(self):
+        """
+        Get the weight of the addition in Dry Malt Extract weight
+        """
         if self.grain_type == GRAIN_TYPE_CEREAL:
             return grain_to_dry_malt_weight(self.weight)
         elif self.grain_type == GRAIN_TYPE_DME:

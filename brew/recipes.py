@@ -112,10 +112,10 @@ class Recipe(object):
         total_points = 0
         if self.units == IMPERIAL_UNITS:
             for grain_add in self.grain_additions:
-                total_points += grain_add.grain.ppg * grain_add.weight
+                total_points += grain_add.grain.ppg * grain_add.get_cereal_weight()  # nopep8
         if self.units == SI_UNITS:
             for grain_add in self.grain_additions:
-                total_points += grain_add.grain.hwe * grain_add.weight
+                total_points += grain_add.grain.hwe * grain_add.get_cereal_weight()  # nopep8
         return total_points * self.percent_brew_house_yield / self.final_volume
 
     def get_original_gravity(self):
@@ -125,10 +125,10 @@ class Recipe(object):
         total_points = 0
         if self.units == IMPERIAL_UNITS:
             for grain_add in self.grain_additions:
-                total_points += grain_add.grain.ppg * grain_add.weight
+                total_points += grain_add.grain.ppg * grain_add.get_cereal_weight()  # nopep8
         if self.units == SI_UNITS:
             for grain_add in self.grain_additions:
-                total_points += grain_add.grain.hwe * grain_add.weight
+                total_points += grain_add.grain.hwe * grain_add.get_cereal_weight()  # nopep8
         return total_points * self.percent_brew_house_yield / self.start_volume
 
     def get_boil_gravity(self):
@@ -200,7 +200,7 @@ class Recipe(object):
                 grain_add.grain.get_working_yield(self.percent_brew_house_yield))  # nopep8
 
     def get_percent_malt_bill(self, grain_add):
-        return grain_add.weight / self.get_total_grain_weight()
+        return grain_add.get_cereal_weight() / self.get_total_grain_weight()
 
     def get_total_grain_weight(self):
         return sum([g.weight for g in self.grain_additions])
