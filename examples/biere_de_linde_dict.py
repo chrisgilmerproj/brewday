@@ -43,11 +43,14 @@ def main():
              'data': {
                  'color': 25.0,
              },
-             'weight': 0.5},
+             'weight': 0.5,
+             'grain_type': 'specialty'},
             {'name': 'caramel crystal malt 40l',
-             'weight': 0.5},
+             'weight': 0.5,
+             'grain_type': 'specialty'},
             {'name': 'caramel crystal malt 120l',
-             'weight': 0.375},
+             'weight': 0.375,
+             'grain_type': 'specialty'},
         ],
         'hops': [
             {'name': 'challenger',
