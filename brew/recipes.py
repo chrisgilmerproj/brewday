@@ -343,17 +343,14 @@ class Recipe(object):
 
         for grain_add in self.grain_additions:
             grain = grain_add.to_dict()
-            lme_weight = grain_to_liquid_malt_weight(grain_add.weight)
-            dry_weight = liquid_to_dry_malt_weight(lme_weight)
+            weight_map = grain_add.get_weight_map()
             wort_color_srm = self.get_wort_color(grain_add)
             grain['data'].update({
                 'working_yield': grain_add.grain.get_working_yield(self.percent_brew_house_yield),  # nopep8
-                'grain_weight': grain_add.weight,
-                'lme_weight': lme_weight,
-                'dry_weight': dry_weight,
                 'wort_color_srm': wort_color_srm,
                 'wort_color_ebc': srm_to_ebc(wort_color_srm),
             })
+            grain['data'].update(weight_map)
             recipe_dict['grains'].append(grain)
 
         for hop_add in self.hop_additions:
