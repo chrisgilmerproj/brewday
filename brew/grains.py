@@ -151,7 +151,7 @@ class GrainAddition(object):
         elif self.grain_type == GRAIN_TYPE_DME:
             return dry_malt_to_grain_weight(self.weight)
         elif self.grain_type == GRAIN_TYPE_LME:
-            return liquid_to_dry_malt_weight(self.weight)
+            return liquid_malt_to_grain_weight(self.weight)
 
     def get_lme_weight(self):
         """
