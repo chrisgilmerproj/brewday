@@ -92,24 +92,22 @@ class TestRecipe(unittest.TestCase):
             pale 2-row Addition
             -----------------------------------
             Grain Type:        cereal
-            Malt Bill:         13.96 lbs
-            Working Yield:     0.56 %
             Weight:            13.96 lbs
             Weight DME:        8.38 lbs
             Weight LME:        10.47 lbs
             Weight Grain:      13.96 lbs
+            Working Yield:     0.56 %
             SRM:               4.69 degL
             EBC:               9.24
 
             crystal C20 Addition
             -----------------------------------
             Grain Type:        cereal
-            Malt Bill:         0.78 lbs
-            Working Yield:     0.53 %
             Weight:            0.78 lbs
             Weight DME:        0.47 lbs
             Weight LME:        0.58 lbs
             Weight Grain:      0.78 lbs
+            Working Yield:     0.53 %
             SRM:               3.27 degL
             EBC:               6.44
 

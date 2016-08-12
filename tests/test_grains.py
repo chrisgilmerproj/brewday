@@ -111,7 +111,7 @@ class TestGrainAdditions(unittest.TestCase):
             pale 2-row Addition
             -----------------------------------
             Grain Type:        cereal
-            Malt Bill:         13.96 lbs""")
+            Weight:            13.96 lbs""")
         self.assertEquals(out, msg)
 
     def test_grain_change_units_imperial_to_si(self):

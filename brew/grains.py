@@ -207,6 +207,6 @@ class GrainAddition(object):
                 {name} Addition
                 -----------------------------------
                 Grain Type:        {grain_type}
-                Malt Bill:         {weight} {weight_large}""".format(
+                Weight:            {weight:0.2f} {weight_large}""".format(
             **kwargs))
         return msg
