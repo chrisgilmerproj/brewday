@@ -116,16 +116,16 @@ class Recipe(object):
         if self.units == SI_UNITS:
             for grain_add in self.grain_additions:
                 total_points += grain_add.grain.hwe * grain_add.get_cereal_weight()  # nopep8
-        return total_points
+        return total_points * self.percent_brew_house_yield
 
     def get_original_gravity_units(self):
-        return self.get_total_points() * self.percent_brew_house_yield / self.final_volume  # nopep8
+        return self.get_total_points() / self.final_volume
 
     def get_original_gravity(self):
         return gu_to_sg(self.get_original_gravity_units())
 
     def get_boil_gravity_units(self):
-        return self.get_total_points() * self.percent_brew_house_yield / self.start_volume  # nopep8
+        return self.get_total_points() / self.start_volume
 
     def get_boil_gravity(self):
         return gu_to_sg(self.get_boil_gravity_units())
