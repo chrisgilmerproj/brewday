@@ -444,11 +444,10 @@ class Recipe(object):
             msg += grain_add.format()
             msg += textwrap.dedent("""\
 
-                    Working Yield:     {data[working_yield]:0.2f} %
-                    Weight:            {weight:0.2f} {weight_large}
                     Weight DME:        {data[dry_weight]:0.2f} {weight_large}
                     Weight LME:        {data[lme_weight]:0.2f} {weight_large}
                     Weight Grain:      {data[grain_weight]:0.2f} {weight_large}
+                    Working Yield:     {data[working_yield]:0.2f} %
                     SRM:               {data[wort_color_srm]:0.2f} degL
                     EBC:               {data[wort_color_ebc]:0.2f}
 
