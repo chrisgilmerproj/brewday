@@ -29,6 +29,7 @@ setup(
     classifiers=(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
+        "Intended Audience :: Education",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Other Audience",
         "License :: OSI Approved :: MIT License",
