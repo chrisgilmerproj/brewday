@@ -42,3 +42,7 @@ def alcohol_by_volume_alternative(og, fg):
     - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
     """  # nopep8
     return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
+
+
+def alcohol_by_weight(abv):
+    return abv * 0.79336
