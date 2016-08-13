@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 setup(
-    name='brew',
+    name='brewday',
     version='0.0.1',
     author='Chris Gilmer',
     author_email='chris.gilmer@gmail.com',
