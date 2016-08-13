@@ -11,6 +11,18 @@ Used by permission of Brewers Publications (2007). All rights reserved.
 You can purchase the book here:
 
 - http://www.brewerspublications.com/books/brewing-classic-styles-80-winning-recipes-anyone-can-brew/
+
+Original Stats:
+
+OG:      1.062 (15.2P)
+FG:      1.015 ( 4.0P)
+ADF:     74%
+IBU:     50
+Color:   11 SRM (22 EBC)
+Alcohol: 6.2% ABV (4.8% ABW)
+Boil:    60 min
+Pre-Boil Volume:  7 Gal (26.5L)
+Pre-Boil Gravity: 1.053 (13.0P)
 """  # nopep8
 
 import os
@@ -29,14 +41,14 @@ def main():
             {'name': 'English Pale Ale Liquid Extract',
              'data': {
                  'color': 3.5,
-                 'ppg': 36,
+                 'ppg': 37,
              },
              'weight': 8.7,
              'grain_type': 'lme'},
             {'name': 'wheat liquid extract',
              'data': {
                  'color': 4.0,
-                 'ppg': 36,
+                 'ppg': 37,
              },
              'weight': 0.5,
              'grain_type': 'lme'},
