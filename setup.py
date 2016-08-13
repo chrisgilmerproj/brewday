@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='brewday',
-    version='0.0.1',
+    version='0.0.2',
     author='Chris Gilmer',
     author_email='chris.gilmer@gmail.com',
     maintainer='Chris Gilmer',
