@@ -62,19 +62,9 @@ class TestRecipeImperialUnits(unittest.TestCase):
         extract_weight = self.recipe.get_extract_weight()
         self.assertEquals(round(extract_weight, 2), 5.89)
 
-    def test_get_malt_weight(self):
-        malt_weight = self.recipe.get_malt_weight(self.grain_additions[0])
-        self.assertEquals(round(malt_weight, 2), 9.96)
-        malt_weight = self.recipe.get_malt_weight(self.grain_additions[1])
-        self.assertEquals(round(malt_weight, 2), 0.59)
-
     def test_get_total_grain_weight(self):
         total_grain_weight = self.recipe.get_total_grain_weight()
         self.assertEquals(round(total_grain_weight, 2), 14.74)
-
-    def test_get_total_malt_weight(self):
-        total_malt_weight = self.recipe.get_total_malt_weight()
-        self.assertEquals(round(total_malt_weight, 2), 10.55)
 
     def test_get_percent_ibus(self):
         percent_ibus = self.recipe.get_percent_ibus(self.hop_additions[0])
@@ -97,26 +87,26 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
     def test_get_mash_water_volume(self):
         mash_water_vol = self.recipe.get_mash_water_volume(3.0 / 1.0)
-        self.assertEquals(round(mash_water_vol, 2), 3.8)
+        self.assertEquals(round(mash_water_vol, 2), 2.23)
 
     def test_get_wort_color(self):
         wort_color = self.recipe.get_wort_color(self.grain_additions[0])
-        self.assertEquals(round(wort_color, 2), 4.69)
+        self.assertEquals(round(wort_color, 2), 4.85)
         wort_color = self.recipe.get_wort_color(self.grain_additions[1])
-        self.assertEquals(round(wort_color, 2), 3.27)
+        self.assertEquals(round(wort_color, 2), 3.26)
 
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
-        self.assertEquals(round(total_wort_color, 2), 6.45)
+        self.assertEquals(round(total_wort_color, 2), 6.58)
 
     def test_get_total_wort_color_map(self):
         wort_map = self.recipe.get_total_wort_color_map()
         expected = {
-            'srm': {'daniels': 10.089695626399685,
-                    'morey': 6.449178508078139,
-                    'mosher': 7.234543439599525},
-            'ebc': {'daniels': 19.87670038400738,
-                    'morey': 12.704881660913934,
-                    'mosher': 14.252050576011065},
+            'srm': {'daniels': 10.1408,
+                    'mosher': 7.3112,
+                    'morey': 6.582338571537348},
+            'ebc': {'daniels': 19.977376,
+                    'mosher': 14.403064,
+                    'morey': 12.967206985928575},
         }
         self.assertEquals(wort_map, expected)

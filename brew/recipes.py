@@ -185,36 +185,49 @@ class Recipe(object):
         return (water_density * self.final_volume * self.get_boil_gravity() *
                 (self.get_degrees_plato() / 100.0))
 
-    def get_malt_weight(self, grain_add):
-        """
-        Pounds of Malt
-        It is imperative that you measure your recipes by the percent of
-        extract taken from the malt rather than the weight of the malt.  Do
-        this will all you to compensate for the Working Yield and help you
-        accurately measure your malt bills.  For example, an recipe may call
-        for 5% of caramel 20.  This does not me that you ad 0.5 pounds of
-        caramel 20 malt in a 10 lb recipe. Instead, this means that you will
-        have 5% of the total extract come from the caramel 20 malt.  Use the
-        following formula to calculate the weight of malt based on a percent
-        of extract.
-
-        Lbs malt = (Lbs extract)(% Extract) / WY
-        """
-        return (self.get_extract_weight() *
-                self.get_percent_malt_bill(grain_add) /
-                grain_add.grain.get_working_yield(self.percent_brew_house_yield))  # nopep8
-
     def get_percent_malt_bill(self, grain_add):
-        return grain_add.get_cereal_weight() / self.get_total_grain_weight()
+        """
+        Percent malt bill is how much extract each grain addition adds to the
+        recipe. To ensure different additions are measured equally each is
+        converted to dry weight.
+        """
+        return self.get_grain_add_dry_weight(grain_add) / self.get_total_dry_weight()  # nopep8
+
+    def get_grain_add_dry_weight(self, grain_add):
+        """
+        When converting Grain to DME its important to remember
+        that you can't get 100% efficiency from grains.  Multiplying by
+        the brew house yield will decrease the size of the DME
+        accordingly.
+        """
+        if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
+            return grain_add.get_dry_weight()
+        else:
+            return grain_add.get_dry_weight() * self.percent_brew_house_yield  # nopep8
+
+    def get_total_dry_weight(self):
+        weights = []
+        for grain_add in self.grain_additions:
+            weights.append(self.get_grain_add_dry_weight(grain_add))
+        return sum(weights)
+
+    def get_grain_add_cereal_weight(self, grain_add):
+        """
+        When converting DME or LME to grain its important to remember
+        that you can't get 100% efficiency from grains.  Dividing by
+        the brew house yield will increase the size of the grain
+        accordingly.
+        """
+        if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
+            return grain_add.get_cereal_weight() / self.percent_brew_house_yield  # nopep8
+        else:
+            return grain_add.get_cereal_weight()
 
     def get_total_grain_weight(self):
-        return sum([g.get_cereal_weight() for g in self.grain_additions])
-
-    def get_total_malt_weight(self):
-        """
-        Convenience method to get total malt weight
-        """
-        return sum([self.get_malt_weight(g) for g in self.grain_additions])
+        weights = []
+        for grain_add in self.grain_additions:
+            weights.append(self.get_grain_add_cereal_weight(grain_add))
+        return sum(weights)
 
     def get_percent_ibus(self, hop_add):
         """Get the percentage the hops contributes to total ibus"""
@@ -264,7 +277,7 @@ class Recipe(object):
         water_weight = WATER_WEIGHT_IMPERIAL
         if self.units == SI_UNITS:
             water_weight = WATER_WEIGHT_SI
-        return (self.get_total_malt_weight() * liquor_to_grist_ratio /
+        return (self.get_total_dry_weight() * liquor_to_grist_ratio /
                 water_weight)
 
     def get_wort_color_mcu(self, grain_add):
@@ -273,13 +286,12 @@ class Recipe(object):
 
         Color of Wort = S [(% extract)(L of malt)(P wort / 8P reference)]
 
-        TODO:
+        Source:
         http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
         http://brewwiki.com/index.php/Estimating_Color
         """  # nopep8
-        malt_weight = self.get_malt_weight(grain_add)
-        grain_weight = liquid_malt_to_grain_weight(malt_weight)
-        return calculate_mcu(grain_weight,
+        weight = self.get_grain_add_cereal_weight(grain_add)
+        return calculate_mcu(weight,
                              grain_add.grain.color,
                              self.final_volume,
                              units=self.units)
@@ -350,6 +362,7 @@ class Recipe(object):
             wort_color_srm = self.get_wort_color(grain_add)
             grain['data'].update({
                 'working_yield': grain_add.grain.get_working_yield(self.percent_brew_house_yield),  # nopep8
+                'percent_malt_bill': self.get_percent_malt_bill(grain_add),
                 'wort_color_srm': wort_color_srm,
                 'wort_color_ebc': srm_to_ebc(wort_color_srm),
             })
@@ -447,6 +460,7 @@ class Recipe(object):
                     Weight DME:        {data[dry_weight]:0.2f} {weight_large}
                     Weight LME:        {data[lme_weight]:0.2f} {weight_large}
                     Weight Grain:      {data[grain_weight]:0.2f} {weight_large}
+                    Percent Malt Bill: {data[percent_malt_bill]:0.2f} %
                     Working Yield:     {data[working_yield]:0.2f} %
                     SRM:               {data[wort_color_srm]:0.2f} degL
                     EBC:               {data[wort_color_ebc]:0.2f}
