@@ -16,8 +16,8 @@ from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.utilities.abv import alcohol_by_volume_alternative
 from brew.utilities.abv import alcohol_by_volume_standard
-from brew.utilities.abv import hydrometer_adjustment
-from brew.utilities.abv import refractometer_adjustment
+from brew.utilities.sugar import hydrometer_adjustment
+from brew.utilities.sugar import refractometer_adjustment
 from brew.utilities.temperature import fahrenheit_to_celsius
 
 
