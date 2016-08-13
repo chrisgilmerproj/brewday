@@ -19,7 +19,6 @@ from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.malt import hwe_to_basis
 from .utilities.malt import hwe_to_ppg
 from .utilities.malt import liquid_malt_to_grain_weight
-from .utilities.malt import liquid_malt_to_specialty_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
 from .utilities.malt import specialty_grain_to_liquid_malt_weight
 from .utilities.malt import ppg_to_hwe
