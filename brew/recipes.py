@@ -18,13 +18,13 @@ from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
 from .utilities.abv import alcohol_by_volume_alternative
 from .utilities.abv import alcohol_by_volume_standard
+from .utilities.abv import alcohol_by_weight
 from .utilities.color import calculate_mcu
 from .utilities.color import calculate_srm
 from .utilities.color import calculate_srm_daniels
 from .utilities.color import calculate_srm_morey
 from .utilities.color import calculate_srm_mosher
 from .utilities.color import srm_to_ebc
-from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_plato
 from .validators import validate_optional_fields
@@ -333,6 +333,8 @@ class Recipe(object):
         og = self.get_original_gravity()
         bg = self.get_boil_gravity()
         fg = self.get_final_gravity()
+        abv_standard = alcohol_by_volume_standard(og, fg)
+        abv_alternative = alcohol_by_volume_alternative(og, fg)
         recipe_dict = {
             'name': string.capwords(self.name),
             'start_volume': self.start_volume,
@@ -342,8 +344,10 @@ class Recipe(object):
                 'original_gravity': og,
                 'boil_gravity': bg,
                 'final_gravity': fg,
-                'abv_standard': alcohol_by_volume_standard(og, fg),
-                'abv_alternative': alcohol_by_volume_alternative(og, fg),
+                'abv_standard': abv_standard,
+                'abv_alternative': abv_alternative,
+                'abw_standard': alcohol_by_weight(abv_standard),
+                'abw_alternative': alcohol_by_weight(abv_alternative),
                 'extract_weight': self.get_extract_weight(),
                 'total_wort_color_map': self.get_total_wort_color_map(),
                 'total_grain_weight': self.get_total_grain_weight(),
@@ -425,8 +429,8 @@ class Recipe(object):
             Boil Gravity:       {data[boil_gravity]:0.3f}
             Final Gravity:      {data[final_gravity]:0.3f}
 
-            ABV Standard:       {data[abv_standard]:0.2f} %
-            ABV Alternative:    {data[abv_alternative]:0.2f} %
+            ABV / ABW Standard: {data[abv_standard]:0.2f} % / {data[abw_standard]:0.2f} %
+            ABV / ABW Alt:      {data[abv_alternative]:0.2f} % / {data[abw_alternative]:0.2f} %
 
             IBU:                {data[total_ibu]:0.2f} ibu
             BU/GU:              {data[bu_to_gu]:0.2f}
