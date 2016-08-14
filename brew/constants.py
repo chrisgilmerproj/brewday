@@ -94,3 +94,6 @@ HYDROMETER_ADJUSTMENT_TEMP = 59.0
 # Weight of Water
 WATER_WEIGHT_IMPERIAL = 8.32  # lbs / gallon
 WATER_WEIGHT_SI = 1.0  # kg / liter
+
+# Alcohol
+ALCOHOL_SPECIFIC_GRAVITY = 0.7936

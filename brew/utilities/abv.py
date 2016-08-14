@@ -1,3 +1,4 @@
+from ..constants import ALCOHOL_SPECIFIC_GRAVITY
 
 
 def alcohol_by_volume_standard(og, fg):
@@ -45,4 +46,4 @@ def alcohol_by_volume_alternative(og, fg):
 
 
 def alcohol_by_weight(abv):
-    return abv * 0.79336
+    return abv * ALCOHOL_SPECIFIC_GRAVITY
