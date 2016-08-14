@@ -2,8 +2,6 @@
 [![Versions](https://img.shields.io/pypi/pyversions/brewday.svg)](https://img.shields.io/pypi/pyversions/brewday.svg)
 [![Build Status](https://travis-ci.org/chrisgilmerproj/brewday.svg?branch=master)](https://travis-ci.org/chrisgilmerproj/brewday) 
 [![License](https://img.shields.io/pypi/l/brewday.svg)](https://opensource.org/licenses/MIT)
-[![Github Issues](http://githubbadges.herokuapp.com/chrisgilmerproj/brewday/issues.svg?style=plastic)](https://github.com/chrisgilmerproj/brewday/issues)
-[![Pending Pull-Requests](http://githubbadges.herokuapp.com/chrisgilmerproj/brewday/pulls.svg?style=plastic)](https://github.com/chrisgilmerproj/brewday/pulls)
 
 # Brew Day
 
