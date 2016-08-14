@@ -1,11 +1,6 @@
-import os
-
 from setuptools import find_packages
 from setuptools import setup
 
-
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 VERSION = '0.0.2'
 
@@ -18,7 +13,6 @@ setup(
     maintainer_email='chris.gilmer@gmail.com',
     license="MIT",
     description='Brew Day Tools',
-    long_description=read('README.md'),
     url='https://github.com/chrisgilmerproj/brewday',
     download_url='https://github.com/chrisgilmerproj/brewday/tarball/{}'.format(VERSION),  # nopep8
     packages=find_packages(exclude=["*.tests",
