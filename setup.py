@@ -1,15 +1,18 @@
 from setuptools import find_packages
 from setuptools import setup
 
+VERSION = '0.0.2'
+
 setup(
     name='brewday',
-    version='0.0.2',
+    version=VERSION,
     author='Chris Gilmer',
     author_email='chris.gilmer@gmail.com',
     maintainer='Chris Gilmer',
     maintainer_email='chris.gilmer@gmail.com',
     description='Brew Day Tools',
     url='https://github.com/chrisgilmerproj/brewday',
+    download_url='https://github.com/chrisgilmerproj/brewday/tarball/{}'.format(VERSION),  # nopep8
     packages=find_packages(exclude=["*.tests",
                                     "*.tests.*",
                                     "tests.*",
