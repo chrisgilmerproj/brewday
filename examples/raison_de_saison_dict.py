@@ -72,13 +72,13 @@ def main():
         'hops': [
             {'name': 'Hallertau US',
              'data': {
-                 'percent_alpha_acids': 0.04,
+                 'percent_alpha_acids': 0.05,
              },
              'weight': 1.7,
              'boil_time': 60.0},
             {'name': 'Hallertau US',
              'data': {
-                 'percent_alpha_acids': 0.04,
+                 'percent_alpha_acids': 0.05,
              },
              'weight': 0.75,
              'boil_time': 0.0},
