@@ -34,7 +34,7 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        'name': "Biere de l'Inde",
+        'name': "Biere de l'Inde (Extract)",
         'start_volume': 7.0,
         'final_volume': 6.0,
         'grains': [

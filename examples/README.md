@@ -37,5 +37,5 @@ Used by permission of Brewers Publications (2007). All rights reserved.
 You can purchase the book here: [Brewing Classig Styles](http://www.brewerspublications.com/books/brewing-classic-styles-80-winning-recipes-anyone-can-brew/).
 
 - [Biere de l'Inde (English IPA)](./biere_de_linde_dict.py)
-- Munich Madness
+- [Munich Madness](./munich_madness_dict.py)
 - Raison de Saison
