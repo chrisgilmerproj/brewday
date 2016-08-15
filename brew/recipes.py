@@ -232,25 +232,27 @@ class Recipe(object):
         return sum(weights)
 
     def get_percent_ibus(self, hop_add):
-        """Get the percentage the hops contributes to total ibus"""
-        sg = self.get_boil_gravity()
+        """
+        Get the percentage the hops contributes to total ibus
+        """
+        bg = self.get_boil_gravity()
         fv = self.final_volume
-        return hop_add.get_ibus(sg, fv) / self.get_total_ibu()
+        return hop_add.get_ibus(bg, fv) / self.get_total_ibu()
 
     def get_total_ibu(self):
         """
-        Convenience method to get total IBU
+        Convenience method to get total IBU for the recipe
         """
-        sg = self.get_boil_gravity()
+        bg = self.get_boil_gravity()
         fv = self.final_volume
-        return sum([hop_add.get_ibus(sg, fv)
+        return sum([hop_add.get_ibus(bg, fv)
                    for hop_add in self.hop_additions])
 
     def get_bu_to_gu(self):
         """
         Returns ratio of Bitterness Units to Original Gravity Units
         """
-        return self.get_total_ibu() / self.get_original_gravity_units()
+        return self.get_total_ibu() / self.get_boil_gravity_units()
 
     @classmethod
     def get_strike_temp(cls, mash_temp, malt_temp, liquor_to_grist_ratio):
@@ -378,6 +380,8 @@ class Recipe(object):
         for hop_add in self.hop_additions:
             hop = hop_add.to_dict()
 
+            ibus = hop_add.get_ibus(bg, self.final_volume)
+
             utilization = hop_add.utilization_cls.get_percent_utilization(
                 bg, hop_add.boil_time)
             # Utilization is 10% higher for pellet vs whole/plug
@@ -385,7 +389,7 @@ class Recipe(object):
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
 
             hop['data'].update({
-                'ibus': hop_add.get_ibus(og, self.final_volume),
+                'ibus': ibus,
                 'utilization': utilization,
             })
             recipe_dict['hops'].append(hop)
