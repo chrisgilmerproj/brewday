@@ -72,7 +72,9 @@ class Recipe(object):
                 raise Exception("Grain addition units must be in '{}' not '{}'".format(  # nopep8
                     self.units, grain_add.units))
         for hop_add in self.hop_additions:
-            self.hop_lookup[hop_add.hop.name] = hop_add
+            # The same hops may be used several times, so we must distinguish
+            hop_key = '{}_{}'.format(hop_add.hop.name, hop_add.boil_time)
+            self.hop_lookup[hop_key] = hop_add
             if hop_add.units != self.units:
                 raise Exception("Hop addition units must be in '{}' not '{}'".format(  # nopep8
                     self.units, hop_add.units))
@@ -482,8 +484,9 @@ class Recipe(object):
             hop_kwargs.update(hop_data)
             hop_kwargs.update(self.types)
 
-            hop_name = hop_data['name']
-            hop = self.hop_lookup[hop_name]
+            hop_key = '{}_{}'.format(hop_data['name'],
+                                     hop_data['boil_time'])
+            hop = self.hop_lookup[hop_key]
 
             msg += hop.format()
             msg += textwrap.dedent("""\
