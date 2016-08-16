@@ -352,9 +352,7 @@ class Recipe(object):
                 'abv_alternative': abv_alternative,
                 'abw_standard': alcohol_by_weight(abv_standard),
                 'abw_alternative': alcohol_by_weight(abv_alternative),
-                'extract_weight': self.get_extract_weight(),
                 'total_wort_color_map': self.get_total_wort_color_map(),
-                'total_grain_weight': self.get_total_grain_weight(),
                 'total_ibu': self.get_total_ibu(),
                 'bu_to_gu': self.get_bu_to_gu(),
                 'units': self.units,
@@ -442,9 +440,6 @@ class Recipe(object):
             Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]:0.2f} degL / {data[total_wort_color_map][ebc][morey]:0.2f}
             Daneils (SRM/EBC):  {data[total_wort_color_map][srm][daniels]:0.2f} degL / {data[total_wort_color_map][ebc][daniels]:0.2f}
             Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]:0.2f} degL / {data[total_wort_color_map][ebc][mosher]:0.2f}
-
-            Extract Weight:     {data[extract_weight]:0.2f} {weight_large}
-            Total Grain Weight: {data[total_grain_weight]:0.2f} {weight_large}
 
             """.format(**kwargs))  # nopep8
 
