@@ -1,8 +1,10 @@
+import textwrap
 import unittest
 
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.constants import SUCROSE_PLATO
+from brew.recipes import Recipe
 from fixtures import grain_additions
 from fixtures import hop_additions
 from fixtures import recipe
@@ -19,7 +21,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
         # Define Recipes
         self.recipe = recipe
-        self.recipe.set_units(IMPERIAL_UNITS)
+        self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
 
     def test_change_units(self):
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
@@ -28,6 +30,8 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
         recipe = self.recipe.change_units()
         self.assertEquals(recipe.units, SI_UNITS)
+        self.recipe.change_units()
+        self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
 
     def test_get_original_gravity_units(self):
         out = self.recipe.get_original_gravity_units()
@@ -110,3 +114,88 @@ class TestRecipeImperialUnits(unittest.TestCase):
                     'morey': 12.967206985928575},
         }
         self.assertEquals(wort_map, expected)
+
+    def test_to_json(self):
+        self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
+        out = self.recipe.to_json()
+        expected = '{"data": {"abv_alternative": 7.977918720821163, "abv_standard": 7.494519374999988, "abw_alternative": 6.331276296843674, "abw_standard": 5.94765057599999, "boil_gravity": 1.054382, "bu_to_gu": 0.6073963307717897, "final_gravity": 1.0190337, "original_gravity": 1.0761348, "percent_brew_house_yield": 0.7, "total_ibu": 33.031427260031464, "total_wort_color_map": {"ebc": {"daniels": 19.977376, "morey": 12.967206985928575, "mosher": 14.403064}, "srm": {"daniels": 10.1408, "morey": 6.582338571537348, "mosher": 7.3112}}, "units": "imperial"}, "final_volume": 5.0, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.9470827679782903, "ppg": 37.0, "short_name": "2-row", "working_yield": 0.5599638594662277, "wort_color_ebc": 9.563637764412702, "wort_color_srm": 4.854638459092742}, "grain_type": "cereal", "name": "pale 2-row", "units": "imperial", "weight": 13.96}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.052917232021709615, "ppg": 35.0, "short_name": "C20", "working_yield": 0.5296955427383235, "wort_color_ebc": 6.415550056502296, "wort_color_srm": 3.256624394163602}, "grain_type": "cereal", "name": "crystal C20", "units": "imperial", "weight": 0.78}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.156452036327824, "percent_alpha_acids": 0.14, "utilization": 0.24393229918399}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {}, "weight": 0.57}, {"boil_time": 5.0, "data": {"ibus": 3.874975223703636, "percent_alpha_acids": 0.07, "utilization": 0.04862894228803807}, "hop_type": "pellet", "name": "cascade", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {}, "weight": 0.76}], "name": "Pale Ale", "start_volume": 7.0, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # nopep8
+        self.assertEquals(out, expected)
+
+    def test_format(self):
+        self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
+        out = self.recipe.format()
+        expected = textwrap.dedent("""\
+            Pale Ale
+            ===================================
+
+            Brew House Yield:   0.70
+            Start Volume:       7.0
+            Final Volume:       5.0
+
+            Original Gravity:   1.076
+            Boil Gravity:       1.054
+            Final Gravity:      1.019
+
+            ABV / ABW Standard: 7.49 % / 5.95 %
+            ABV / ABW Alt:      7.98 % / 6.33 %
+
+            IBU:                33.03 ibu
+            BU/GU:              0.61
+
+            Morey   (SRM/EBC):  6.58 degL / 12.97
+            Daneils (SRM/EBC):  10.14 degL / 19.98
+            Mosher  (SRM/EBC):  7.31 degL / 14.40
+
+            Grains
+            ===================================
+
+            pale 2-row Addition
+            -----------------------------------
+            Grain Type:        cereal
+            Weight:            13.96 lbs
+            Percent Malt Bill: 0.95 %
+            Working Yield:     0.56 %
+            SRM:               4.85 degL
+            EBC:               9.56
+
+            crystal C20 Addition
+            -----------------------------------
+            Grain Type:        cereal
+            Weight:            0.78 lbs
+            Percent Malt Bill: 0.05 %
+            Working Yield:     0.53 %
+            SRM:               3.26 degL
+            EBC:               6.42
+
+            Hops
+            ===================================
+
+            centennial Addition
+            -----------------------------------
+            Weight:       0.57 oz
+            Boil Time:    60.00 min
+            Hop Type:     pellet
+            IBUs:         29.16
+            Utilization:  0.24 %
+            Util Cls:     Glenn Tinseth
+
+            cascade Addition
+            -----------------------------------
+            Weight:       0.76 oz
+            Boil Time:    5.00 min
+            Hop Type:     pellet
+            IBUs:         3.87
+            Utilization:  0.05 %
+            Util Cls:     Glenn Tinseth
+
+            Yeast
+            ===================================
+
+            Wyeast 1056 Yeast
+            -----------------------------------
+            Attenuation:  0.75 %""")
+        self.assertEquals(out, expected)
+
+    def test_validate(self):
+        data = self.recipe.to_dict()
+        Recipe.validate(data)
