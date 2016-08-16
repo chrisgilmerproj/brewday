@@ -456,6 +456,8 @@ class Recipe(object):
 
             grain_name = grain_data['name']
             grain_add = self.grain_lookup[grain_name]
+            if grain_add.units != self.units:
+                grain_add = grain_add.change_units()
 
             msg += grain_add.format()
             msg += textwrap.dedent("""\
@@ -481,6 +483,8 @@ class Recipe(object):
             hop_key = '{}_{}'.format(hop_data['name'],
                                      hop_data['boil_time'])
             hop = self.hop_lookup[hop_key]
+            if hop.units != self.units:
+                hop = hop.change_units()
 
             msg += hop.format()
             msg += textwrap.dedent("""\
