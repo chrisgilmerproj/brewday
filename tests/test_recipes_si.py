@@ -41,6 +41,7 @@ class TestRecipeSIUnits(unittest.TestCase):
 
         recipe = self.recipe.change_units()
         self.assertEquals(recipe.units, IMPERIAL_UNITS)
+        self.assertEquals(self.recipe.units, SI_UNITS)
 
     def test_get_original_gravity_units(self):
         out = self.recipe.get_original_gravity_units()
@@ -125,11 +126,13 @@ class TestRecipeSIUnits(unittest.TestCase):
         self.assertEquals(wort_map, expected)
 
     def test_to_json(self):
+        self.assertEquals(self.recipe.units, SI_UNITS)
         out = self.recipe.to_json()
         expected = '{"data": {"abv_alternative": 7.977918720821163, "abv_standard": 7.494519374999988, "abw_alternative": 6.331276296843674, "abw_standard": 5.94765057599999, "boil_gravity": 1.054382, "bu_to_gu": 0.6073963307717898, "final_gravity": 1.0190337, "original_gravity": 1.0761348, "percent_brew_house_yield": 0.7, "total_ibu": 33.031427260031464, "total_wort_color_map": {"ebc": {"daniels": 19.977376, "morey": 12.967206985928575, "mosher": 14.403064}, "srm": {"daniels": 10.1408, "morey": 6.582338571537348, "mosher": 7.3112}}, "units": "metric"}, "final_volume": 18.92705, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.9470827679782904, "ppg": 37.0, "short_name": "2-row", "working_yield": 0.5599638594662277, "wort_color_ebc": 9.563637764412702, "wort_color_srm": 4.854638459092742}, "grain_type": "cereal", "name": "pale 2-row", "units": "metric", "weight": 6.33214432}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.05291723202170964, "ppg": 35.0, "short_name": "C20", "working_yield": 0.5296955427383235, "wort_color_ebc": 6.415550056502296, "wort_color_srm": 3.256624394163602}, "grain_type": "cereal", "name": "crystal C20", "units": "metric", "weight": 0.35380176}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.156452036327828, "percent_alpha_acids": 0.14, "utilization": 0.24393229918399}, "hop_type": "pellet", "name": "centennial", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 16159.214999999998}, {"boil_time": 5.0, "data": {"ibus": 3.8749752237036366, "percent_alpha_acids": 0.07, "utilization": 0.04862894228803807}, "hop_type": "pellet", "name": "cascade", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 21545.62}], "name": "Pale Ale", "start_volume": 26.497870000000002, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # nopep8
         self.assertEquals(out, expected)
 
     def test_format(self):
+        self.assertEquals(self.recipe.units, SI_UNITS)
         out = self.recipe.format()
         expected = textwrap.dedent("""\
             Pale Ale

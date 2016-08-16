@@ -30,7 +30,6 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
         recipe = self.recipe.change_units()
         self.assertEquals(recipe.units, SI_UNITS)
-        self.recipe.change_units()
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
 
     def test_get_original_gravity_units(self):
