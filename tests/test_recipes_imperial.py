@@ -167,7 +167,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             -----------------------------------
             Hop Type:     pellet
             Weight:       0.57 oz
-            Boil Time:    60.00 min
+            Boil Time:    60.0 min
             IBUs:         29.2
             Utilization:  0.24 %
             Util Cls:     Glenn Tinseth
@@ -176,7 +176,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             -----------------------------------
             Hop Type:     pellet
             Weight:       0.76 oz
-            Boil Time:    5.00 min
+            Boil Time:    5.0 min
             IBUs:         3.9
             Utilization:  0.05 %
             Util Cls:     Glenn Tinseth
