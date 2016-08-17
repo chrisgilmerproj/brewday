@@ -170,7 +170,6 @@ class TestRecipeImperialUnits(unittest.TestCase):
             Boil Time:    60.0 min
             IBUs:         29.2
             Utilization:  0.24 %
-            Util Cls:     Glenn Tinseth
 
             cascade Addition
             -----------------------------------
@@ -179,7 +178,6 @@ class TestRecipeImperialUnits(unittest.TestCase):
             Boil Time:    5.0 min
             IBUs:         3.9
             Utilization:  0.05 %
-            Util Cls:     Glenn Tinseth
 
             Yeast
             ===================================
