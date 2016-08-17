@@ -493,7 +493,6 @@ class Recipe(object):
 
                     IBUs:         {data[ibus]:0.1f}
                     Utilization:  {data[utilization]:0.2f} %
-                    Util Cls:     {utilization_cls}
 
                     """.format(**hop_kwargs))
 
