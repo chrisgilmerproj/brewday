@@ -123,6 +123,7 @@ class TestHopAdditions(unittest.TestCase):
                 centennial Addition
                 -----------------------------------
                 Hop Type:     pellet
+                AA %:         0.14 %
                 Weight:       0.57 oz
                 Boil Time:    60.0 min""")
         self.assertEquals(out, msg)

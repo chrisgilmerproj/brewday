@@ -166,6 +166,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             centennial Addition
             -----------------------------------
             Hop Type:     pellet
+            AA %:         0.14 %
             Weight:       0.57 oz
             Boil Time:    60.0 min
             IBUs:         29.2
@@ -174,6 +175,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             cascade Addition
             -----------------------------------
             Hop Type:     pellet
+            AA %:         0.07 %
             Weight:       0.76 oz
             Boil Time:    5.0 min
             IBUs:         3.9
