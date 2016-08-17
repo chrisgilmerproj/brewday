@@ -426,7 +426,7 @@ class Recipe(object):
             {name}
             ===================================
 
-            Brew House Yield:   {data[percent_brew_house_yield]:0.2f}
+            Brew House Yield:   {data[percent_brew_house_yield]:0.2f} %
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
 
