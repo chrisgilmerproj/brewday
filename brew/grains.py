@@ -78,7 +78,7 @@ class Grain(object):
     def to_dict(self):
         return {'name': self.name,
                 'short_name': self.short_name,
-                'color': self.color,
+                'color': round(self.color, 1),
                 'ppg': round(self.ppg, 2),
                 'hwe': round(self.hwe, 2),
                 }
@@ -210,7 +210,7 @@ class GrainAddition(object):
         grain_data = self.grain.to_dict()
         return {'name': grain_data.pop('name'),
                 'data': grain_data,
-                'weight': self.weight,
+                'weight': round(self.weight, 2),
                 'grain_type': self.grain_type,
                 'units': self.units,
                 }

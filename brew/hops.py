@@ -39,7 +39,7 @@ class Hop(object):
 
     def to_dict(self):
         return {'name': self.name,
-                'percent_alpha_acids': self.percent_alpha_acids,
+                'percent_alpha_acids': round(self.percent_alpha_acids, 2),
                 }
 
     def to_json(self):
@@ -125,8 +125,8 @@ class HopAddition(object):
         hop_data = self.hop.to_dict()
         return {'name': hop_data.pop('name'),
                 'data': hop_data,
-                'weight': self.weight,
-                'boil_time': self.boil_time,
+                'weight': round(self.weight, 2),
+                'boil_time': round(self.boil_time, 1),
                 'hop_type': self.hop_type,
                 'utilization_cls': str(self.utilization_cls),
                 'utilization_cls_kwargs': self.utilization_cls_kwargs,
