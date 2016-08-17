@@ -156,9 +156,9 @@ class HopAddition(object):
         msg = textwrap.dedent("""\
                 {name} Addition
                 -----------------------------------
+                Hop Type:     {hop_type}
                 Weight:       {weight:0.2f} {weight_small}
-                Boil Time:    {boil_time:0.2f} min
-                Hop Type:     {hop_type}""".format(
+                Boil Time:    {boil_time:0.2f} min""".format(
             **kwargs))
         return msg
 
