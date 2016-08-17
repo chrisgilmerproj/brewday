@@ -157,6 +157,7 @@ class HopAddition(object):
                 {name} Addition
                 -----------------------------------
                 Hop Type:     {hop_type}
+                AA %:         {data[percent_alpha_acids]:0.2f} %
                 Weight:       {weight:0.2f} {weight_small}
                 Boil Time:    {boil_time:0.1f} min""".format(
             **kwargs))
