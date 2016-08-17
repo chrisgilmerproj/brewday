@@ -124,7 +124,7 @@ class TestHopAdditions(unittest.TestCase):
                 -----------------------------------
                 Hop Type:     pellet
                 Weight:       0.57 oz
-                Boil Time:    60.00 min""")
+                Boil Time:    60.0 min""")
         self.assertEquals(out, msg)
 
     def test_get_hops_weight(self):

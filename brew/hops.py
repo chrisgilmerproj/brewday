@@ -158,7 +158,7 @@ class HopAddition(object):
                 -----------------------------------
                 Hop Type:     {hop_type}
                 Weight:       {weight:0.2f} {weight_small}
-                Boil Time:    {boil_time:0.2f} min""".format(
+                Boil Time:    {boil_time:0.1f} min""".format(
             **kwargs))
         return msg
 
