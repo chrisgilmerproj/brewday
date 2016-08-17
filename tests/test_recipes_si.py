@@ -161,8 +161,7 @@ class TestRecipeSIUnits(unittest.TestCase):
             Weight:            6.33 kg
             Percent Malt Bill: 0.95 %
             Working Yield:     0.56 %
-            SRM:               4.9 degL
-            EBC:               9.6
+            SRM/EBC:           4.9 degL / 9.6
 
             crystal C20 Addition
             -----------------------------------
@@ -170,8 +169,7 @@ class TestRecipeSIUnits(unittest.TestCase):
             Weight:            0.35 kg
             Percent Malt Bill: 0.05 %
             Working Yield:     0.53 %
-            SRM:               3.3 degL
-            EBC:               6.4
+            SRM/EBC:           3.3 degL / 6.4
 
             Hops
             ===================================
