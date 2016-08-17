@@ -2,6 +2,7 @@
 
 ## Version 0.0.3
 
+- Clean up Recipe.format() to be more succinct
 - Round all calculations in to_dict() and format()
 - Improve test coverage for Recipe to_json() and to_dict()
 - Remove malt weight and total grain weight from Recipe
