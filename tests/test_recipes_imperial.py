@@ -167,18 +167,18 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
             centennial Addition
             -----------------------------------
+            Hop Type:     pellet
             Weight:       0.57 oz
             Boil Time:    60.00 min
-            Hop Type:     pellet
             IBUs:         29.2
             Utilization:  0.24 %
             Util Cls:     Glenn Tinseth
 
             cascade Addition
             -----------------------------------
+            Hop Type:     pellet
             Weight:       0.76 oz
             Boil Time:    5.00 min
-            Hop Type:     pellet
             IBUs:         3.9
             Utilization:  0.05 %
             Util Cls:     Glenn Tinseth
