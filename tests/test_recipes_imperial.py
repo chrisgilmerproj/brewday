@@ -123,7 +123,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             Pale Ale
             ===================================
 
-            Brew House Yield:   0.70
+            Brew House Yield:   0.70 %
             Start Volume:       7.0
             Final Volume:       5.0
 

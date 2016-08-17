@@ -134,7 +134,7 @@ class TestRecipeSIUnits(unittest.TestCase):
             Pale Ale
             ===================================
 
-            Brew House Yield:   0.70
+            Brew House Yield:   0.70 %
             Start Volume:       26.5
             Final Volume:       18.9
 
