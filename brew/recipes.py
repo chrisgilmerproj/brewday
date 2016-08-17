@@ -322,14 +322,14 @@ class Recipe(object):
 
         return {
             'srm': {
-                'morey': srm_morey,
-                'daniels': srm_daniels,
-                'mosher': srm_mosher,
+                'morey': round(srm_morey, 1),
+                'daniels': round(srm_daniels, 1),
+                'mosher': round(srm_mosher, 1),
             },
             'ebc': {
-                'morey': srm_to_ebc(srm_morey),
-                'daniels': srm_to_ebc(srm_daniels),
-                'mosher': srm_to_ebc(srm_mosher),
+                'morey': round(srm_to_ebc(srm_morey), 1),
+                'daniels': round(srm_to_ebc(srm_daniels), 1),
+                'mosher': round(srm_to_ebc(srm_mosher), 1),
             },
         }
 
@@ -341,20 +341,20 @@ class Recipe(object):
         abv_alternative = alcohol_by_volume_alternative(og, fg)
         recipe_dict = {
             'name': string.capwords(self.name),
-            'start_volume': self.start_volume,
-            'final_volume': self.final_volume,
+            'start_volume': round(self.start_volume, 2),
+            'final_volume': round(self.final_volume, 2),
             'data': {
-                'percent_brew_house_yield': self.percent_brew_house_yield,
-                'original_gravity': og,
-                'boil_gravity': bg,
-                'final_gravity': fg,
-                'abv_standard': abv_standard,
-                'abv_alternative': abv_alternative,
-                'abw_standard': alcohol_by_weight(abv_standard),
-                'abw_alternative': alcohol_by_weight(abv_alternative),
+                'percent_brew_house_yield': round(self.percent_brew_house_yield, 2),  # nopep8
+                'original_gravity': round(og, 3),
+                'boil_gravity': round(bg, 3),
+                'final_gravity': round(fg, 3),
+                'abv_standard': round(abv_standard, 2),
+                'abv_alternative': round(abv_alternative, 2),
+                'abw_standard': round(alcohol_by_weight(abv_standard), 2),
+                'abw_alternative': round(alcohol_by_weight(abv_alternative), 2),  # nopep8
                 'total_wort_color_map': self.get_total_wort_color_map(),
-                'total_ibu': self.get_total_ibu(),
-                'bu_to_gu': self.get_bu_to_gu(),
+                'total_ibu': round(self.get_total_ibu(), 1),
+                'bu_to_gu': round(self.get_bu_to_gu(), 1),
                 'units': self.units,
             },
             'grains': [],
@@ -365,11 +365,14 @@ class Recipe(object):
         for grain_add in self.grain_additions:
             grain = grain_add.to_dict()
             wort_color_srm = self.get_wort_color(grain_add)
+            wort_color_ebc = srm_to_ebc(wort_color_srm)
+            working_yield = round(grain_add.grain.get_working_yield(self.percent_brew_house_yield), 2)  # nopep8
+            percent_malt_bill = round(self.get_percent_malt_bill(grain_add), 2)
             grain['data'].update({
-                'working_yield': grain_add.grain.get_working_yield(self.percent_brew_house_yield),  # nopep8
-                'percent_malt_bill': self.get_percent_malt_bill(grain_add),
-                'wort_color_srm': wort_color_srm,
-                'wort_color_ebc': srm_to_ebc(wort_color_srm),
+                'working_yield': working_yield,
+                'percent_malt_bill': percent_malt_bill,
+                'wort_color_srm': round(wort_color_srm, 1),
+                'wort_color_ebc': round(wort_color_ebc, 1),
             })
             recipe_dict['grains'].append(grain)
 
@@ -385,8 +388,8 @@ class Recipe(object):
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
 
             hop['data'].update({
-                'ibus': ibus,
-                'utilization': utilization,
+                'ibus': round(ibus, 1),
+                'utilization': round(utilization, 2),
             })
             recipe_dict['hops'].append(hop)
 
@@ -434,12 +437,12 @@ class Recipe(object):
             ABV / ABW Standard: {data[abv_standard]:0.2f} % / {data[abw_standard]:0.2f} %
             ABV / ABW Alt:      {data[abv_alternative]:0.2f} % / {data[abw_alternative]:0.2f} %
 
-            IBU:                {data[total_ibu]:0.2f} ibu
-            BU/GU:              {data[bu_to_gu]:0.2f}
+            IBU:                {data[total_ibu]:0.1f} ibu
+            BU/GU:              {data[bu_to_gu]:0.1f}
 
-            Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]:0.2f} degL / {data[total_wort_color_map][ebc][morey]:0.2f}
-            Daneils (SRM/EBC):  {data[total_wort_color_map][srm][daniels]:0.2f} degL / {data[total_wort_color_map][ebc][daniels]:0.2f}
-            Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]:0.2f} degL / {data[total_wort_color_map][ebc][mosher]:0.2f}
+            Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]:0.1f} degL / {data[total_wort_color_map][ebc][morey]:0.1f}
+            Daneils (SRM/EBC):  {data[total_wort_color_map][srm][daniels]:0.1f} degL / {data[total_wort_color_map][ebc][daniels]:0.1f}
+            Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]:0.1f} degL / {data[total_wort_color_map][ebc][mosher]:0.1f}
 
             """.format(**kwargs))  # nopep8
 
@@ -464,8 +467,8 @@ class Recipe(object):
 
                     Percent Malt Bill: {data[percent_malt_bill]:0.2f} %
                     Working Yield:     {data[working_yield]:0.2f} %
-                    SRM:               {data[wort_color_srm]:0.2f} degL
-                    EBC:               {data[wort_color_ebc]:0.2f}
+                    SRM:               {data[wort_color_srm]:0.1f} degL
+                    EBC:               {data[wort_color_ebc]:0.1f}
 
                     """.format(**grain_kwargs))
 
@@ -489,7 +492,7 @@ class Recipe(object):
             msg += hop.format()
             msg += textwrap.dedent("""\
 
-                    IBUs:         {data[ibus]:0.2f}
+                    IBUs:         {data[ibus]:0.1f}
                     Utilization:  {data[utilization]:0.2f} %
                     Util Cls:     {utilization_cls}
 
