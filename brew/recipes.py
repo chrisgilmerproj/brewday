@@ -467,10 +467,9 @@ class Recipe(object):
 
                     Percent Malt Bill: {data[percent_malt_bill]:0.2f} %
                     Working Yield:     {data[working_yield]:0.2f} %
-                    SRM:               {data[wort_color_srm]:0.1f} degL
-                    EBC:               {data[wort_color_ebc]:0.1f}
+                    SRM/EBC:           {data[wort_color_srm]:0.1f} degL / {data[wort_color_ebc]:0.1f}
 
-                    """.format(**grain_kwargs))
+                    """.format(**grain_kwargs))  # nopep8
 
         msg += textwrap.dedent("""\
             Hops
