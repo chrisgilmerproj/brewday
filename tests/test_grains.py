@@ -1,6 +1,10 @@
 import textwrap
 import unittest
 
+from brew.constants import GRAIN_TYPE_CEREAL
+from brew.constants import GRAIN_TYPE_DME
+from brew.constants import GRAIN_TYPE_LME
+from brew.constants import GRAIN_TYPE_SPECIALTY
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.grains import Grain
@@ -80,6 +84,48 @@ class TestGrainAdditions(unittest.TestCase):
     def test_repr(self):
         out = repr(self.grain_add)
         self.assertEquals(out, "GrainAddition(Grain('pale 2-row', short_name='2-row', color=2.0, hwe=308.78), weight=13.96, grain_type='cereal')")  # nopep8
+
+    def test_get_weight_cereal(self):
+        grain_add = GrainAddition(pale, weight=13.96,
+                                  grain_type=GRAIN_TYPE_CEREAL)
+        self.assertEquals(grain_add.grain_type, GRAIN_TYPE_CEREAL)
+        out = grain_add.get_cereal_weight()
+        self.assertEqual(round(out, 2), 13.96)
+        out = grain_add.get_lme_weight()
+        self.assertEqual(round(out, 2), 10.47)
+        out = grain_add.get_dry_weight()
+        self.assertEqual(round(out, 2), 8.38)
+
+    def test_get_weight_lme(self):
+        grain_add = GrainAddition(pale, weight=10.47,
+                                  grain_type=GRAIN_TYPE_LME)
+        self.assertEquals(grain_add.grain_type, GRAIN_TYPE_LME)
+        out = grain_add.get_cereal_weight()
+        self.assertEqual(round(out, 2), 13.96)
+        out = grain_add.get_lme_weight()
+        self.assertEqual(round(out, 2), 10.47)
+        out = grain_add.get_dry_weight()
+        self.assertEqual(round(out, 2), 8.38)
+
+    def test_get_weight_dry(self):
+        grain_add = GrainAddition(pale, weight=8.38,
+                                  grain_type=GRAIN_TYPE_DME)
+        self.assertEquals(grain_add.grain_type, GRAIN_TYPE_DME)
+        out = grain_add.get_cereal_weight()
+        self.assertEqual(round(out, 2), 13.97)
+        out = grain_add.get_lme_weight()
+        self.assertEqual(round(out, 2), 10.48)
+        out = grain_add.get_dry_weight()
+        self.assertEqual(round(out, 2), 8.38)
+
+    def test_get_weight_map(self):
+        out = self.grain_add.get_weight_map()
+        expected = {
+            'grain_weight': 13.96,
+            'lme_weight': 10.47,
+            'dry_weight': 8.38,
+        }
+        self.assertEquals(out, expected)
 
     def test_to_dict(self):
         out = self.grain_add.to_dict()

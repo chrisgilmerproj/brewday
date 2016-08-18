@@ -144,6 +144,21 @@ class GrainAddition(object):
                              weight=weight,
                              units=units)
 
+    def __str__(self):
+        return "{grain}, weight {weight} {weight_large}".format(
+            grain=self.grain,
+            weight=self.weight,
+            **self.types)
+
+    def __repr__(self):
+        out = "{0}({1}".format(type(self).__name__, repr(self.grain))
+        if self.weight:
+            out = "{0}, weight={1}".format(out, self.weight)
+        if self.grain_type:
+            out = "{0}, grain_type='{1}'".format(out, self.grain_type)
+        out = "{0})".format(out)
+        return out
+
     def get_cereal_weight(self):
         """
         Get the weight of the addition in cereal weight
@@ -186,25 +201,10 @@ class GrainAddition(object):
 
     def get_weight_map(self):
         return {
-            'grain_weight': self.get_cereal_weight(),
-            'lme_weight': self.get_lme_weight(),
-            'dry_weight': self.get_dry_weight(),
+            'grain_weight': round(self.get_cereal_weight(), 2),
+            'lme_weight':   round(self.get_lme_weight(), 2),
+            'dry_weight':   round(self.get_dry_weight(), 2),
         }
-
-    def __str__(self):
-        return "{grain}, weight {weight} {weight_large}".format(
-            grain=self.grain,
-            weight=self.weight,
-            **self.types)
-
-    def __repr__(self):
-        out = "{0}({1}".format(type(self).__name__, repr(self.grain))
-        if self.weight:
-            out = "{0}, weight={1}".format(out, self.weight)
-        if self.grain_type:
-            out = "{0}, grain_type='{1}'".format(out, self.grain_type)
-        out = "{0})".format(out)
-        return out
 
     def to_dict(self):
         grain_data = self.grain.to_dict()
