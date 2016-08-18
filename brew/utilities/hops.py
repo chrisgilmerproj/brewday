@@ -46,7 +46,7 @@ class HopsUtilization(object):
         if self.units == SI_UNITS:
             hops_constant = HOPS_CONSTANT_SI
         utilization = self.get_percent_utilization(
-                sg, self.hop_addition.boil_time)
+            sg, self.hop_addition.boil_time)
         # Utilization is 10% higher for pellet vs whole/plug
         if self.hop_addition.hop_type == HOP_TYPE_PELLET:
             utilization *= HOP_UTILIZATION_SCALE_PELLET
@@ -71,7 +71,7 @@ class HopsUtilization(object):
         return table
 
     @classmethod
-    def print_utilization_table(cls):
+    def format_utilization_table(cls):
         """
         Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
 
@@ -89,7 +89,7 @@ class HopsUtilization(object):
         out.append(title.center(table_size))
         out.append(str('=' * len(title)).center(table_size))
         out.append('\n')
-        out.append(' '.join([' ' * 4] + ['{0:7.3f}'.format(l/1000.0)
+        out.append(' '.join([' ' * 4] + ['{0:7.3f}'.format(l / 1000.0)
                    for l in gravity_list]))
         out.append('-' * table_size)
         for index, line in enumerate(table):
@@ -97,7 +97,7 @@ class HopsUtilization(object):
             out.append('{0} {1}'.format(
                 str(boil_time).rjust(4),
                 ' '.join(['{0:7.3f}'.format(aau) for aau in line])))
-        print('\n'.join(out))
+        return '\n'.join([o.rstrip() for o in out if o != '\n'])
 
 
 class HopsUtilizationJackieRager(HopsUtilization):
@@ -120,7 +120,7 @@ class HopsUtilizationJackieRager(HopsUtilization):
         """
         cgravity = 1
         if sg > 1.050:
-            cgravity += (sg - 1.050)/0.2
+            cgravity += (sg - 1.050) / 0.2
         return cgravity
 
     @classmethod

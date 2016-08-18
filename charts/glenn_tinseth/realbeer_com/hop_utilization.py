@@ -10,7 +10,7 @@ http://realbeer.com/hops/research.html
 
 
 def main():
-    HopsUtilizationGlennTinseth.print_utilization_table()
+    print(HopsUtilizationGlennTinseth.format_utilization_table())
 
 
 if __name__ == "__main__":
