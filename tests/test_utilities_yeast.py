@@ -136,7 +136,7 @@ class TestWhiteYeastModel(unittest.TestCase):
                     'pitch_rate_as_is': 0.0,
                     'pitch_rate_cells': 355.0,
                     'cells_needed': 355.0,
-                    'required_growth_rate': 0,
+                    'required_growth_rate': 0.0,
                     'units': 'imperial',
                     }
         self.assertEquals(out, expected)
