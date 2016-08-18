@@ -111,7 +111,7 @@ def sg_from_dry_basis(dbcg,
                       moisture_correction=MOISTURE_CORRECTION,
                       brew_house_efficiency=0.90):
     """
-    dbcg is Dry Basis Coars Grain in decimal form
+    dbcg is Dry Basis Coarse Grain in decimal form
     moisture_content is a percentage of moisture content in finished malt
       in decimal form
     moisture_correction is a percentage correction in decimal form
