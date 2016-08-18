@@ -2,6 +2,11 @@
 
 ## Version 0.0.3
 
+- Add tests for validators
+- Add test for yeast pitch rate with no viable cells
+- Change print_utilization_table() to format_utilization_table() and add a test
+- Add tests for grain addition weights
+- Update coarse grind potential extract charts to return correct values
 - Clean up Recipe.format() to be more succinct
 - Round all calculations in to_dict() and format()
 - Improve test coverage for Recipe to_json() and to_dict()
