@@ -202,8 +202,8 @@ class GrainAddition(object):
     def get_weight_map(self):
         return {
             'grain_weight': round(self.get_cereal_weight(), 2),
-            'lme_weight':   round(self.get_lme_weight(), 2),
-            'dry_weight':   round(self.get_dry_weight(), 2),
+            'lme_weight': round(self.get_lme_weight(), 2),
+            'dry_weight': round(self.get_dry_weight(), 2),
         }
 
     def to_dict(self):

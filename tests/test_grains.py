@@ -118,6 +118,17 @@ class TestGrainAdditions(unittest.TestCase):
         out = grain_add.get_dry_weight()
         self.assertEqual(round(out, 2), 8.38)
 
+    def test_get_weight_specialty(self):
+        grain_add = GrainAddition(pale, weight=13.96,
+                                  grain_type=GRAIN_TYPE_SPECIALTY)
+        self.assertEquals(grain_add.grain_type, GRAIN_TYPE_SPECIALTY)
+        out = grain_add.get_cereal_weight()
+        self.assertEqual(round(out, 2), 13.96)
+        out = grain_add.get_lme_weight()
+        self.assertEqual(round(out, 2), 12.42)
+        out = grain_add.get_dry_weight()
+        self.assertEqual(round(out, 2), 9.94)
+
     def test_get_weight_map(self):
         out = self.grain_add.get_weight_map()
         expected = {
