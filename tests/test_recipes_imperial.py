@@ -1,13 +1,18 @@
 import textwrap
 import unittest
 
+from brew.constants import GRAIN_TYPE_DME
+from brew.constants import GRAIN_TYPE_LME
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.constants import SUCROSE_PLATO
+from brew.grains import GrainAddition
 from brew.recipes import Recipe
 from fixtures import grain_additions
 from fixtures import hop_additions
+from fixtures import pale
 from fixtures import recipe
+from fixtures import yeast
 
 
 class TestRecipeImperialUnits(unittest.TestCase):
@@ -18,6 +23,9 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
         # Define Hops
         self.hop_additions = hop_additions
+
+        # Define Yeast
+        self.yeast = yeast
 
         # Define Recipes
         self.recipe = recipe
@@ -31,6 +39,38 @@ class TestRecipeImperialUnits(unittest.TestCase):
         recipe = self.recipe.change_units()
         self.assertEquals(recipe.units, SI_UNITS)
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
+
+    def test_get_total_points(self):
+        out = self.recipe.get_total_points()
+        self.assertEquals(round(out, 2), 380.67)
+
+    def test_get_total_points_lme(self):
+        pale_lme = GrainAddition(pale,
+                                 weight=10.47,
+                                 grain_type=GRAIN_TYPE_LME,
+                                 units=IMPERIAL_UNITS)
+        recipe = Recipe('lme',
+                        grain_additions=[pale_lme],
+                        hop_additions=self.hop_additions,
+                        yeast=self.yeast,
+                        units=IMPERIAL_UNITS)
+
+        out = recipe.get_total_points()
+        self.assertEquals(round(out, 2), 387.39)
+
+    def test_get_total_points_dme(self):
+        pale_dme = GrainAddition(pale,
+                                 weight=8.38,
+                                 grain_type=GRAIN_TYPE_DME,
+                                 units=IMPERIAL_UNITS)
+        recipe = Recipe('dme',
+                        grain_additions=[pale_dme],
+                        hop_additions=self.hop_additions,
+                        yeast=self.yeast,
+                        units=IMPERIAL_UNITS)
+
+        out = recipe.get_total_points()
+        self.assertEquals(round(out, 2), 310.06)
 
     def test_get_original_gravity_units(self):
         out = self.recipe.get_original_gravity_units()
