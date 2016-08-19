@@ -155,6 +155,34 @@ class TestRecipeImperialUnits(unittest.TestCase):
         out = self.recipe.get_grain_add_cereal_weight(self.grain_additions[1])
         self.assertEquals(round(out, 2), 0.78)
 
+    def test_get_grain_add_cereal_weight_lme(self):
+        pale_lme = GrainAddition(pale,
+                                 weight=10.47,
+                                 grain_type=GRAIN_TYPE_LME,
+                                 units=IMPERIAL_UNITS)
+        recipe = Recipe('lme',
+                        grain_additions=[pale_lme],
+                        hop_additions=self.hop_additions,
+                        yeast=self.yeast,
+                        units=IMPERIAL_UNITS)
+
+        out = recipe.get_grain_add_cereal_weight(pale_lme)
+        self.assertEquals(round(out, 2), 19.94)
+
+    def test_get_grain_add_cereal_weight_dme(self):
+        pale_dme = GrainAddition(pale,
+                                 weight=8.38,
+                                 grain_type=GRAIN_TYPE_DME,
+                                 units=IMPERIAL_UNITS)
+        recipe = Recipe('dme',
+                        grain_additions=[pale_dme],
+                        hop_additions=self.hop_additions,
+                        yeast=self.yeast,
+                        units=IMPERIAL_UNITS)
+
+        out = recipe.get_grain_add_cereal_weight(pale_dme)
+        self.assertEquals(round(out, 2), 19.95)
+
     def test_get_total_grain_weight(self):
         total_grain_weight = self.recipe.get_total_grain_weight()
         self.assertEquals(round(total_grain_weight, 2), 14.74)
