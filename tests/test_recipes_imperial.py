@@ -105,6 +105,56 @@ class TestRecipeImperialUnits(unittest.TestCase):
         extract_weight = self.recipe.get_extract_weight()
         self.assertEquals(round(extract_weight, 2), 5.89)
 
+    def test_get_percent_malt_bill(self):
+        out = self.recipe.get_percent_malt_bill(self.grain_additions[0])
+        self.assertEquals(round(out, 2), 0.95)
+        out = self.recipe.get_percent_malt_bill(self.grain_additions[1])
+        self.assertEquals(round(out, 2), 0.05)
+
+    def test_get_grain_add_dry_weight(self):
+        out = self.recipe.get_grain_add_dry_weight(self.grain_additions[0])
+        self.assertEquals(round(out, 2), 5.86)
+        out = self.recipe.get_grain_add_dry_weight(self.grain_additions[1])
+        self.assertEquals(round(out, 2), 0.33)
+
+    def test_get_grain_add_dry_weight_lme(self):
+        pale_lme = GrainAddition(pale,
+                                 weight=10.47,
+                                 grain_type=GRAIN_TYPE_LME,
+                                 units=IMPERIAL_UNITS)
+        recipe = Recipe('lme',
+                        grain_additions=[pale_lme],
+                        hop_additions=self.hop_additions,
+                        yeast=self.yeast,
+                        units=IMPERIAL_UNITS)
+
+        out = recipe.get_grain_add_dry_weight(pale_lme)
+        self.assertEquals(round(out, 2), 8.38)
+
+    def test_get_grain_add_dry_weight_dme(self):
+        pale_dme = GrainAddition(pale,
+                                 weight=8.38,
+                                 grain_type=GRAIN_TYPE_DME,
+                                 units=IMPERIAL_UNITS)
+        recipe = Recipe('dme',
+                        grain_additions=[pale_dme],
+                        hop_additions=self.hop_additions,
+                        yeast=self.yeast,
+                        units=IMPERIAL_UNITS)
+
+        out = recipe.get_grain_add_dry_weight(pale_dme)
+        self.assertEquals(round(out, 2), 8.38)
+
+    def test_get_total_dry_weight(self):
+        out = self.recipe.get_total_dry_weight()
+        self.assertEquals(round(out, 2), 6.19)
+
+    def test_get_grain_add_cereal_weight(self):
+        out = self.recipe.get_grain_add_cereal_weight(self.grain_additions[0])
+        self.assertEquals(round(out, 2), 13.96)
+        out = self.recipe.get_grain_add_cereal_weight(self.grain_additions[1])
+        self.assertEquals(round(out, 2), 0.78)
+
     def test_get_total_grain_weight(self):
         total_grain_weight = self.recipe.get_total_grain_weight()
         self.assertEquals(round(total_grain_weight, 2), 14.74)
