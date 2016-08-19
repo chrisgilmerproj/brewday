@@ -1,4 +1,4 @@
-[![PyPI](https://img.shields.io/pypi/v/brewday.svg)](https://pypi.python.org/pypi/brewday/0.0.2)
+[![PyPI](https://img.shields.io/pypi/v/brewday.svg)](https://pypi.python.org/pypi/brewday/0.0.3)
 [![Versions](https://img.shields.io/pypi/pyversions/brewday.svg)](https://img.shields.io/pypi/pyversions/brewday.svg)
 [![Build Status](https://travis-ci.org/chrisgilmerproj/brewday.svg?branch=master)](https://travis-ci.org/chrisgilmerproj/brewday) 
 [![License](https://img.shields.io/pypi/l/brewday.svg)](https://opensource.org/licenses/MIT)
