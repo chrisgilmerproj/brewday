@@ -11,71 +11,9 @@ This replicates other calculators found here:
 import argparse
 import sys
 
+from brew.cli.abv import get_abv
 from brew.constants import HYDROMETER_ADJUSTMENT_TEMP
 from brew.constants import IMPERIAL_UNITS
-from brew.constants import SI_UNITS
-from brew.utilities.abv import alcohol_by_volume_alternative
-from brew.utilities.abv import alcohol_by_volume_standard
-from brew.utilities.sugar import hydrometer_adjustment
-from brew.utilities.sugar import refractometer_adjustment
-from brew.utilities.temperature import fahrenheit_to_celsius
-
-
-def get_abv(og, fg,
-            og_temp=HYDROMETER_ADJUSTMENT_TEMP,
-            fg_temp=HYDROMETER_ADJUSTMENT_TEMP,
-            alternative=False,
-            refractometer=False,
-            units=IMPERIAL_UNITS,
-            verbose=False):
-    # Gravity is required for calculation
-    if not og:
-        raise Exception("Original gravity required")
-    if not fg:
-        raise Exception("Final gravity required")
-
-    # Ensure the gravity units are not mixed up
-    if og < fg:
-        raise Exception("Original Gravity must be higher than Final Gravity")
-
-    if units not in [IMPERIAL_UNITS, SI_UNITS]:
-        raise Exception("Units must be in either {} or {}".format(IMPERIAL_UNITS,  # nopep8
-                                                                  SI_UNITS))
-
-    # Assume that if the units are metric and the adjustment temperature is 59
-    # that its 59F (15C) and not 59C (132F).  It is unlikely that readings are
-    # taken at high temperatures.
-    if units == SI_UNITS:
-        if og_temp == HYDROMETER_ADJUSTMENT_TEMP:
-            og_temp = fahrenheit_to_celsius(HYDROMETER_ADJUSTMENT_TEMP)
-        if fg_temp == HYDROMETER_ADJUSTMENT_TEMP:
-            fg_temp = fahrenheit_to_celsius(HYDROMETER_ADJUSTMENT_TEMP)
-
-    # Adjust the gravity based on temperature
-    og = hydrometer_adjustment(og, og_temp, units=units)
-    fg = hydrometer_adjustment(fg, fg_temp, units=units)
-
-    # Adjust the final gravity if using a refractometer
-    if refractometer:
-        fg = refractometer_adjustment(og, fg)
-
-    # Calculate the ABV
-    if alternative:
-        out = alcohol_by_volume_alternative(og, fg)
-    else:
-        out = alcohol_by_volume_standard(og, fg)
-
-    if verbose:
-        t_unit = 'F' if units == IMPERIAL_UNITS else 'C'
-        print("OG     : {:0.3f}".format(og))
-        print("OG Adj : {:0.3f}".format(og))
-        print("OG Temp: {:0.2f} {}".format(og_temp, t_unit))
-        print("FG     : {:0.3f}".format(fg))
-        print("FG Adj : {:0.3f}".format(fg))
-        print("FG Temp: {:0.2f} {}".format(fg_temp, t_unit))
-        print("ABV    : {:0.2f} %".format(out))
-    else:
-        print("{:0.2f} %".format(out))
 
 
 if __name__ == "__main__":
@@ -106,13 +44,17 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     try:
-        get_abv(args.og, args.fg,
-                og_temp=args.og_temp,
-                fg_temp=args.fg_temp,
-                alternative=args.alternative,
-                refractometer=args.refractometer,
-                units=args.units,
-                verbose=args.verbose)
+        out = get_abv(args.og, args.fg,
+                      og_temp=args.og_temp,
+                      fg_temp=args.fg_temp,
+                      alternative=args.alternative,
+                      refractometer=args.refractometer,
+                      units=args.units,
+                      verbose=args.verbose)
+        if args.verbose:
+            print(out)
+        else:
+            print("{:0.2f} %".format(out))
     except Exception as e:
         print(e)
         sys.exit(1)
