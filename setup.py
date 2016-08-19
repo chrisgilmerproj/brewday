@@ -31,6 +31,7 @@ setup(
         'py==1.4.31',
         'tox==2.3.1',
     ],
+    keywords='brew brewing beer grain hops yeast alcohol',
     classifiers=(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
