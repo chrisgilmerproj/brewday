@@ -10,6 +10,9 @@ __all__ = ['Yeast']
 
 
 class Yeast(object):
+    """
+    A representation of a type of Yeast as added to a Recipe.
+    """
 
     def __init__(self, name,
                  percent_attenuation=0.75):
