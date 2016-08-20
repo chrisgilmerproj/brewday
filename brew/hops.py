@@ -18,6 +18,9 @@ from .validators import validate_required_fields
 from .validators import validate_units
 
 
+__all__ = ['Hop', 'HopAddition']
+
+
 class Hop(object):
 
     def __init__(self, name,

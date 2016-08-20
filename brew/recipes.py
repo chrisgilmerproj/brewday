@@ -33,6 +33,9 @@ from .validators import validate_required_fields
 from .validators import validate_units
 
 
+__all__ = ['Recipe']
+
+
 class Recipe(object):
     """
     Recipe Calculations

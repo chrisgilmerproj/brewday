@@ -13,6 +13,15 @@ from .sugar import sg_to_gu
 from .sugar import sg_to_plato
 
 
+__all__ = [
+    'PITCH_RATE_MAP',
+    'pitch_rate_conversion',
+    'YeastModel',
+    'KaiserYeastModel',
+    'WhiteYeastModel',
+]
+
+
 """
 1 billion cells growth per gram of extract (B/g) =
     13.3 Million cells / (ml * P)
@@ -240,7 +249,7 @@ class WhiteYeastModel(YeastModel):
 
     def get_inoculation_rate(self, growth_rate):
         a, b, c = self.INOCULATION_CONST
-        return 10 ** (math.log10(b / (growth_rate - a))/-c)
+        return 10 ** (math.log10(b / (growth_rate - a)) / -c)
 
     def get_growth_rate(self, inoculation_rate):
         """
