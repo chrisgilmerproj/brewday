@@ -28,6 +28,9 @@ class Hop(object):
 
     def __init__(self, name,
                  percent_alpha_acids=None):
+        """
+        Percent Alpha Acids - The percent alpha acids in the hop.
+        """
         self.name = name
         self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
 
@@ -72,6 +75,15 @@ class HopAddition(object):
                  utilization_cls=HopsUtilizationGlennTinseth,
                  utilization_cls_kwargs=None,
                  units=IMPERIAL_UNITS):
+        """
+        Weight - The weight of the hop to add
+        Boil Time - The time the hop should be boiled for measured backwards
+            from the end of the boil.
+        Hop Type - The type of hop being used
+        Utilization Class - The utilization calculation class to use
+        Utilization Class Kwargs - The keyword arguments to initialize the
+            Utilization Class with
+        """
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time

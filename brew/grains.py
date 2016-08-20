@@ -34,16 +34,6 @@ __all__ = ['Grain', 'GrainAddition']
 class Grain(object):
     """
     A representation of a type of grain.
-
-    Color - The color of the grain in SRM
-
-    PPG - The potential points points per gallon.
-
-    Hot Water Extract - The international unit for the total soluble extract
-    of a malt, based on specific gravity. HWE is measured as liter*degrees per
-    kilogram, and is equivalent to points/pound/gallon (PPG) when you apply
-    metric conversion factors for volume and weight. The combined conversion
-    factor is 8.3454 X PPG = HWE.
     """
 
     def __init__(self, name,
@@ -51,6 +41,16 @@ class Grain(object):
                  color=None,
                  ppg=None,
                  hwe=None):
+        """
+        Color - The color of the grain in SRM
+        PPG - The potential points points per gallon.
+        Hot Water Extract - The international unit for the total soluble
+            extract of a malt, based on specific gravity. HWE is measured as
+            liter*degrees per kilogram, and is equivalent to
+            points/pound/gallon (PPG) when you apply metric conversion factors
+            for volume and weight. The combined conversion factor is
+            8.3454 X PPG = HWE.
+        """
         self.name = name
         self.short_name = short_name or name
         self.color = float(color)
@@ -122,6 +122,10 @@ class GrainAddition(object):
                  weight=None,
                  grain_type=GRAIN_TYPE_CEREAL,
                  units=IMPERIAL_UNITS):
+        """
+        Weight - The weight of the grain to add
+        Grain Type - The type of grain being used
+        """
         self.grain = grain
         self.weight = weight
         self.grain_type = grain_type
