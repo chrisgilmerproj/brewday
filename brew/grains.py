@@ -28,6 +28,9 @@ from .validators import validate_required_fields
 from .validators import validate_units
 
 
+__all__ = ['Grain', 'GrainAddition']
+
+
 class Grain(object):
     """
     Grain

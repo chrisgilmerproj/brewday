@@ -6,6 +6,9 @@ from .validators import validate_percentage
 from .validators import validate_required_fields
 
 
+__all__ = ['Yeast']
+
+
 class Yeast(object):
 
     def __init__(self, name,

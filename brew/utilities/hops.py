@@ -11,6 +11,13 @@ from ..constants import SI_UNITS
 from ..validators import validate_units
 
 
+__all__ = [
+    'HopsUtilization',
+    'HopsUtilizationJackieRager',
+    'HopsUtilizationGlennTinseth',
+]
+
+
 class HopsUtilization(object):
     """
     http://www.boondocks-brewing.com/hops
