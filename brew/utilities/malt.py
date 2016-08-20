@@ -34,6 +34,8 @@ __all__ = [
 
 def dry_to_liquid_malt_weight(malt):
     """
+    DME to LME Weight
+
     Source: http://www.weekendbrewer.com/brewingformulas.htm
     """
     return malt * 1.25
@@ -41,6 +43,8 @@ def dry_to_liquid_malt_weight(malt):
 
 def liquid_to_dry_malt_weight(malt):
     """
+    LME to DME Weight
+
     Source: http://www.weekendbrewer.com/brewingformulas.htm
     """
     return malt / 1.25
@@ -48,37 +52,53 @@ def liquid_to_dry_malt_weight(malt):
 
 def grain_to_liquid_malt_weight(grain):
     """
+    Grain to LME Weight
+
     Source: http://www.weekendbrewer.com/brewingformulas.htm
     """
     return grain * 0.75
 
 
 def liquid_malt_to_grain_weight(malt):
+    """
+    LME to Grain Weight
+    """
     return malt / 0.75
 
 
 def dry_malt_to_grain_weight(malt):
+    """
+    DME to Grain Weight
+    """
     return malt * 5.0 / 3.0
 
 
 def grain_to_dry_malt_weight(malt):
+    """
+    Grain to DME Weight
+    """
     return malt * 3.0 / 5.0
 
 
 def specialty_grain_to_liquid_malt_weight(grain):
     """
+    Specialty Grain to LME Weight
+
     Source: http://www.weekendbrewer.com/brewingformulas.htm
     """
     return grain * 0.89
 
 
 def liquid_malt_to_specialty_grain_weight(malt):
+    """
+    LME to Specialty Grain Weight
+    """
     return malt / 0.89
 
 
 def fine_grind_to_coarse_grind(fine_grind, fc_diff=FC_DIFF_TWO_ROW):
     """
-    Fine Grind to Coarse Grind
+    Fine Grind to Coarse Grind Percentage
 
     fine_grind is a percentage from the malt bill
     fc_diff is the F/C difference percentage from the malt bill
@@ -90,7 +110,7 @@ def fine_grind_to_coarse_grind(fine_grind, fc_diff=FC_DIFF_TWO_ROW):
 
 def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
     """
-    Coarse Grind to Fine Grind
+    Coarse Grind to Fine Grind Percentage
 
     coarse_grind is a percentage from the malt bill
     fc_diff is the F/C difference percentage from the malt bill
@@ -103,7 +123,7 @@ def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
 def dry_basis_to_as_is_basis(dry_basis,
                              moisture_content=MOISTURE_FINISHED_MALT):
     """
-    Dry Basis to As-Is Basis
+    Dry Basis to As-Is Basis Percentage
 
     dry_basis is a percentage from the malt bill in decimal form
     moisture_content is a percentage of moisture content in finished malt
@@ -117,7 +137,7 @@ def dry_basis_to_as_is_basis(dry_basis,
 def as_is_basis_to_dry_basis(as_is,
                              moisture_content=MOISTURE_FINISHED_MALT):
     """
-    As-Is Basis to Dry Basis
+    As-Is Basis to Dry Basis Percentage
 
     asi_is is a percentage from the malt bill in decimal form
     moisture_content is a percentage of moisture content in finished malt
@@ -133,6 +153,8 @@ def sg_from_dry_basis(dbcg,
                       moisture_correction=MOISTURE_CORRECTION,
                       brew_house_efficiency=0.90):
     """
+    Specific Gravity from Dry Basis Percentage
+
     dbcg is Dry Basis Coarse Grain in decimal form
     moisture_content is a percentage of moisture content in finished malt
       in decimal form
@@ -155,6 +177,8 @@ def plato_from_dry_basis(dbcg,
                          moisture_correction=MOISTURE_CORRECTION,
                          brew_house_efficiency=0.90):
     """
+    Degrees Plato from Dry Basis Percentage
+
     dbcg is Dry Basis Coars Grain in decimal form
     moisture_content is a percentage of moisture content in finished malt
       in decimal form
@@ -173,6 +197,8 @@ def plato_from_dry_basis(dbcg,
 
 def basis_to_hwe(basis_percentage):
     """
+    Basis Percentage to Hot Water Extract
+
     basis_percentage in decimal form
 
     Return Hot Water Extract as Ldeg/kg, dry basis
@@ -188,12 +214,21 @@ def basis_to_hwe(basis_percentage):
 
 
 def hwe_to_basis(hwe):
+    """
+    Hot Water Extract to Basis Percentage
+    """
     return hwe / LITERS_OF_WORT_AT_SG
 
 
 def ppg_to_hwe(ppg):
+    """
+    Points Per Gallon to Hot Water Extract
+    """
     return ppg * PPG_TO_HWE_CONVERSION
 
 
 def hwe_to_ppg(hwe):
+    """
+    Hot Water Extract to Points Per Gallon
+    """
     return hwe / PPG_TO_HWE_CONVERSION

@@ -10,6 +10,8 @@ __all__ = [
 
 def alcohol_by_volume_standard(og, fg):
     """
+    Alcohol by Volume Standard Calculation
+
     Most brewing sites use this basic formula:
 
     ABV = (og - fg) * 131.25
@@ -30,6 +32,8 @@ def alcohol_by_volume_standard(og, fg):
 
 def alcohol_by_volume_alternative(og, fg):
     """
+    Alcohol by Volume Alternative Calculation
+
     Alternate Formula:
 
     A more complex equation which attempts to provide greater accuracy at higher gravities is:
@@ -53,4 +57,7 @@ def alcohol_by_volume_alternative(og, fg):
 
 
 def alcohol_by_weight(abv):
+    """
+    Alcohol by Weight from ABV
+    """
     return abv * ALCOHOL_SPECIFIC_GRAVITY
