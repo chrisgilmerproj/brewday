@@ -21,15 +21,23 @@ __all__ = [
 
 
 def sg_to_gu(sg):
+    """
+    Specific Gravity to Gravity Units
+    """
     return (sg - 1) * 1000.0
 
 
 def gu_to_sg(gu):
+    """
+    Gravity Units to Specific Gravity
+    """
     return 1 + (gu / 1000.0)
 
 
 def plato_to_sg(deg_plato):
     """
+    Degrees Plato to Specific Gravity
+
     Specific Gravity (S.G.)
     S.G. is the density of a liquid or solid compared to that of water.
     The simple formula for S.G. is:
@@ -48,7 +56,8 @@ def plato_to_sg(deg_plato):
 
 def sg_to_plato(sg):
     """
-    Plato
+    Specific Gravity to Degrees Plato
+
     Degrees Plato is the weight of the extract in a 100gram solution at
     64 degrees Fahrenheit.
 
@@ -62,13 +71,14 @@ def sg_to_plato(sg):
     http://www.brewersfriend.com/2012/10/31/on-the-relationship-between-plato-and-specific-gravity/
     """
     # return (sg - 1.0) * 1000 / 4
-    return ((135.997*sg - 630.272)*sg + 1111.14)*sg - 616.868
+    return ((135.997 * sg - 630.272) * sg + 1111.14) * sg - 616.868
 
 
 def brix_to_sg(brix):
     """
+    Degrees Brix to Specific Gravity
+
     Source:
-    Brew Your Own Magazine
     http://www.brewersfriend.com/brix-converter/
     """
     return (brix / (258.6 - ((brix / 258.2) * 227.1))) + 1
@@ -76,6 +86,8 @@ def brix_to_sg(brix):
 
 def sg_to_brix(sg):
     """
+    Specific Gravity to Degrees Brix
+
     Source:
     http://en.wikipedia.org/wiki/Brix
     http://www.brewersfriend.com/brix-converter/
@@ -87,6 +99,8 @@ def sg_to_brix(sg):
 
 def brix_to_plato(brix):
     """
+    Degrees Brix to Degrees Plato
+
     The difference between the degBx and degP as calculated from the respective
     polynomials is:
 
@@ -101,12 +115,15 @@ def brix_to_plato(brix):
 
 
 def plato_to_brix(plato):
+    """
+    Degrees Plato to Degrees Brix
+    """
     return sg_to_brix(plato_to_sg(plato))
 
 
 def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     """
-    Adjust for the temperature if it deviates from 59degF.
+    Adjust the Hydrometer if the temperature deviates from 59degF.
 
     http://hbd.org/brewery/library/HydromCorr0992.html
     Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
@@ -138,7 +155,7 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
 
 def refractometer_adjustment(og, fg):
     """
-    Adjust for the presence of alcohol in the refractometer reading
+    Adjust the Refractometer for the presence of alcohol.
 
     NOTE: This calculation assumes using Brix or Plato, so the input will be
     converted from SG to Plato and then converted back.

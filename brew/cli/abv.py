@@ -15,6 +15,9 @@ def get_abv(og, fg,
             refractometer=False,
             units=IMPERIAL_UNITS,
             verbose=False):
+    """
+    Get Alcohol by Volume for CLI Utility
+    """
     # Gravity is required for calculation
     if not og:
         raise Exception("Original gravity required")

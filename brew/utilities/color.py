@@ -41,7 +41,7 @@ def ebc_to_srm(ebc):
 def calculate_mcu(grain_weight, beer_color, final_volume,
                   units=IMPERIAL_UNITS):
     """
-    Return MCU
+    Calculate MCU from Grain
 
     grain_weight - in lbs or kg
     beer_color - in deg Lovibond
@@ -60,7 +60,7 @@ def calculate_mcu(grain_weight, beer_color, final_volume,
 
 def calculate_srm_mosher(mcu):
     """
-    Mosher Equation
+    Mosher Equation for SRM
 
     grain_weight - in lbs or kg
     beer_color - in deg Lovibond
@@ -74,7 +74,7 @@ def calculate_srm_mosher(mcu):
 
 def calculate_srm_daniels(mcu):
     """
-    Daniels Equation
+    Daniels Equation for SRM
 
     grain_weight - in lbs or kg
     beer_color - in deg Lovibond
@@ -88,7 +88,7 @@ def calculate_srm_daniels(mcu):
 
 def calculate_srm_daniels_power(mcu):
     """
-    Daniels Power Equation based on work by Druey
+    Daniels Power Equation for SRM based on work by Druey
 
     grain_weight - in lbs or kg
     beer_color - in deg Lovibond
@@ -102,7 +102,7 @@ def calculate_srm_daniels_power(mcu):
 
 def calculate_srm_noonan_power(mcu):
     """
-    Noonan Power Equation based on work by Druey
+    Noonan Power Equation for SRM based on work by Druey
 
     grain_weight - in lbs or kg
     beer_color - in deg Lovibond
@@ -116,7 +116,9 @@ def calculate_srm_noonan_power(mcu):
 
 def calculate_srm_morey_hybrid(mcu):
     """
-    A hybrid approach used by Morey.  Assumptions:
+    A hybrid approach used by Morey for SRM.
+
+    Assumptions:
 
     1. SRM is approximately equal to MCU for values from 0 to 10.
     2. Homebrew is generally darker than commercial beer.
@@ -143,7 +145,8 @@ def calculate_srm_morey_hybrid(mcu):
 
 def calculate_srm_morey(mcu):
     """
-    Morey Equation
+    Morey Equation for SRM
+
     http://www.morebeer.com/brewingtechniques/beerslaw/morey.html
 
     grain_weight - in lbs or kg
