@@ -2,10 +2,6 @@
 
 """
 Alcohol By Volume Calculator
-
-This replicates other calculators found here:
-    - 
-
 """  # nopep8
 
 import argparse
