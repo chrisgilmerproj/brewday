@@ -33,17 +33,17 @@ __all__ = ['Grain', 'GrainAddition']
 
 class Grain(object):
     """
-    Grain
+    A representation of a type of grain.
 
     Color - The color of the grain in SRM
+
+    PPG - The potential points points per gallon.
 
     Hot Water Extract - The international unit for the total soluble extract
     of a malt, based on specific gravity. HWE is measured as liter*degrees per
     kilogram, and is equivalent to points/pound/gallon (PPG) when you apply
     metric conversion factors for volume and weight. The combined conversion
     factor is 8.3454 X PPG = HWE.
-
-    Percent Extract - The percentage this grain contributes to the beer recipe.
     """
 
     def __init__(self, name,
@@ -114,6 +114,9 @@ class Grain(object):
 
 
 class GrainAddition(object):
+    """
+    A representation of the grain as added to a Recipe.
+    """
 
     def __init__(self, grain,
                  weight=None,

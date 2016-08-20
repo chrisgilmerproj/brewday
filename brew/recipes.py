@@ -38,10 +38,7 @@ __all__ = ['Recipe']
 
 class Recipe(object):
     """
-    Recipe Calculations
-
-    Many equations came from these sources:
-    - http://www.learntobrew.com/beer-calculations/
+    A representation of a Recipe that can be brewed to make beer.
     """
     grain_lookup = {}
     hop_lookup = {}

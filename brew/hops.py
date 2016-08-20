@@ -22,6 +22,9 @@ __all__ = ['Hop', 'HopAddition']
 
 
 class Hop(object):
+    """
+    A representation of a type of Hop.
+    """
 
     def __init__(self, name,
                  percent_alpha_acids=None):
@@ -58,6 +61,9 @@ class Hop(object):
 
 
 class HopAddition(object):
+    """
+    A representation of the Hop as added to a Recipe.
+    """
 
     def __init__(self, hop,
                  weight=None,
