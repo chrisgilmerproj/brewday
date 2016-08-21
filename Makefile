@@ -46,7 +46,7 @@ lint: venv ## Run linting tests
 test:  ## Run unit tests
 	tox
 
-package:  ## Create the python package
+package: clean ## Create the python package
 	python setup.py build
 
 install:  ## Install the python package
