@@ -7,6 +7,7 @@ from brew.constants import SI_UNITS
 
 
 class TestCliAbv(unittest.TestCase):
+
     def setUp(self):
         self.og = 1.057
         self.fg = 1.013
