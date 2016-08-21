@@ -1,3 +1,6 @@
+
+import argparse
+import sys
 import textwrap
 
 from brew.utilities.sugar import brix_to_plato
@@ -46,3 +49,22 @@ def get_sugar_conversion(brix_in, plato_in, sg_in, sugar_out):
         SG\tPlato\tBrix
         {:0.3f}\t{:0.1f}\t{:0.1f}""".format(sg, plato, brix))
         return out
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Sugar Conversion')
+    parser.add_argument('-b', '--brix', metavar='B', type=float,
+                        help='Degrees Brix')
+    parser.add_argument('-p', '--plato', metavar='P', type=float,
+                        help='Degrees Plato')
+    parser.add_argument('-s', '--sg', metavar='S', type=float,
+                        help='Specific Gravity')
+    parser.add_argument('-o', '--out', metavar='O', type=str,
+                        help='Desired Output (b, p, s accepted)')
+
+    args = parser.parse_args()
+
+    if sum(bool(arg) for arg in [args.brix, args.plato, args.sg]) != 1:
+        print("Must provide only one of Brix, Plato or Specific Gravity")
+        sys.exit(1)
+    print(get_sugar_conversion(args.brix, args.plato, args.sg, args.out))

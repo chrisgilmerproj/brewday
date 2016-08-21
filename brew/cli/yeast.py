@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 
 """
 Yeast Pitch Calculator
@@ -19,7 +18,7 @@ from brew.utilities.yeast import KaiserYeastModel
 from brew.utilities.yeast import WhiteYeastModel
 
 
-def main(args):
+def get_yeast_pitch_calculation(args):
     if args.units not in [IMPERIAL_UNITS, SI_UNITS]:
         print("Units must be in either {} or {}".format(IMPERIAL_UNITS,
                                                         SI_UNITS))
@@ -112,8 +111,7 @@ def main(args):
     print(msg)
 
 
-if __name__ == "__main__":
-
+def main():
     parser = argparse.ArgumentParser(description='Yeast Pitch Calculator')
     parser.add_argument('--og', metavar='O', type=float,
                         default=1.05,
@@ -153,4 +151,4 @@ if __name__ == "__main__":
                         help='Units to use (default: %(default)s)')
 
     args = parser.parse_args()
-    main(args)
+    get_yeast_pitch_calculation(args)

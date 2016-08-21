@@ -1,4 +1,7 @@
 
+import argparse
+import sys
+
 from brew.constants import HYDROMETER_ADJUSTMENT_TEMP
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
@@ -68,3 +71,48 @@ def get_abv(og, fg,
         return '\n'.join(out)
     else:
         return abv
+
+
+def main():
+    parser = argparse.ArgumentParser(description='ABV Calculator')
+    parser.add_argument('-o', '--og', metavar='O', type=float,
+                        required=True,
+                        help='Original Gravity')
+    parser.add_argument('-f', '--fg', metavar='F', type=float,
+                        required=True,
+                        help='Final Gravity')
+    parser.add_argument('--og-temp', metavar='T', type=float,
+                        default=HYDROMETER_ADJUSTMENT_TEMP,
+                        help='Original Gravity Temperature (default: %(default)s)')  # nopep8
+    parser.add_argument('--fg-temp', metavar='T', type=float,
+                        default=HYDROMETER_ADJUSTMENT_TEMP,
+                        help='Final Gravity Temperature (default: %(default)s)')  # nopep8
+    parser.add_argument('-a', '--alternative', action='store_true',
+                        default=False,
+                        help='Use alternative ABV equation')
+    parser.add_argument('-r', '--refractometer', action='store_true',
+                        default=False,
+                        help='Adjust the Final Gravity if using a Refractometer reading')  # nopep8
+    parser.add_argument('--units', metavar="U", type=str,
+                        default=IMPERIAL_UNITS,
+                        help='Units to use (default: %(default)s)')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        default=False,
+                        help='Verbose Output')
+
+    args = parser.parse_args()
+    try:
+        out = get_abv(args.og, args.fg,
+                      og_temp=args.og_temp,
+                      fg_temp=args.fg_temp,
+                      alternative=args.alternative,
+                      refractometer=args.refractometer,
+                      units=args.units,
+                      verbose=args.verbose)
+        if args.verbose:
+            print(out)
+        else:
+            print("{:0.2f} %".format(out))
+    except Exception as e:
+        print(e)
+        sys.exit(1)
