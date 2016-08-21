@@ -4,6 +4,9 @@ from brew.utilities.temperature import celsius_to_fahrenheit
 
 
 def get_temp_conversion(fahrenheit, celsius):
+    """
+    Convert temperature between fahrenheit and celsius
+    """
     if fahrenheit:
         out = fahrenheit_to_celsius(fahrenheit)
     elif celsius:
