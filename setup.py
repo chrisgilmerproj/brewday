@@ -19,10 +19,14 @@ setup(
                                     "*.tests.*",
                                     "tests.*",
                                     "tests"]),
-    scripts=['bin/abv',
-             'bin/sugar',
-             'bin/temp',
-             'bin/yeast'],
+    entry_points={
+        'console_scripts': [
+            'abv = brew.cli.abv:main',
+            'sugar = brew.cli.sugar:main',
+            'temp = brew.cli.temp:main',
+            'yeast = brew.cli.yeast:main',
+        ],
+    },
     include_package_data=True,
     zip_safe=True,
     tests_require=[
