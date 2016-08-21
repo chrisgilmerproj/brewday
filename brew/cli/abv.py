@@ -73,7 +73,7 @@ def get_abv(og, fg,
         return abv
 
 
-def main():
+def get_parser():
     parser = argparse.ArgumentParser(description='ABV Calculator')
     parser.add_argument('-o', '--og', metavar='O', type=float,
                         required=True,
@@ -99,7 +99,11 @@ def main():
     parser.add_argument('-v', '--verbose', action='store_true',
                         default=False,
                         help='Verbose Output')
+    return parser
 
+
+def main():
+    parser = get_parser()
     args = parser.parse_args()
     try:
         out = get_abv(args.og, args.fg,
