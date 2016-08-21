@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Version 0.0.4
+
+- Add tests for cli utilities
+- Use console_scripts instead of scripts in setup.py.
+- Add docstrings to all classes and methods
+- Add __all__ to all modules
+- Fix classifiers
+- Add README.rst version of readme for PyPI and a conversion package
+
 ## Version 0.0.3
 
 - Add tests for validators
