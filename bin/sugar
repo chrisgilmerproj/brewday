@@ -10,48 +10,10 @@ This replicates a common calculator seen online:
 import argparse
 import sys
 
-from brew.utilities.sugar import brix_to_plato
-from brew.utilities.sugar import brix_to_sg
-from brew.utilities.sugar import plato_to_brix
-from brew.utilities.sugar import plato_to_sg
-from brew.utilities.sugar import sg_to_brix
-from brew.utilities.sugar import sg_to_plato
+from brew.cli.sugar import get_sugar_conversion
 
 
-def main(args):
-    if sum(bool(arg) for arg in [args.brix, args.plato, args.sg]) != 1:
-        print("Must provide only one of Brix, Plato or Specific Gravity")
-        sys.exit(1)
-    brix, plato, sg = 0.0, 0.0, 0.0
-    if args.brix:
-        brix = args.brix
-        plato = brix_to_plato(args.brix)
-        sg = brix_to_sg(args.brix)
-    elif args.plato:
-        brix = plato_to_brix(args.plato)
-        plato = args.plato
-        sg = plato_to_sg(args.plato)
-    elif args.sg:
-        brix = sg_to_brix(args.sg)
-        plato = sg_to_plato(args.sg)
-        sg = args.sg
-
-    brix = round(brix, 3)
-    plato = round(plato, 3)
-    sg = round(sg, 3)
-    if args.out and args.out in ['b', 'p', 's']:
-        if args.out == 'b':
-            print(brix)
-        elif args.out == 'p':
-            print(plato)
-        elif args.out == 's':
-            print(sg)
-    else:
-        print("SG\tPlato\tBrix")
-        print("{:0.3f}\t{:0.3f}\t{:0.3f}".format(sg, plato, brix))
-
-
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description='Sugar Conversion')
     parser.add_argument('-b', '--brix', metavar='B', type=float,
                         help='Degrees Brix')
@@ -63,4 +25,12 @@ if __name__ == "__main__":
                         help='Desired Output (b, p, s accepted)')
 
     args = parser.parse_args()
-    main(args)
+
+    if sum(bool(arg) for arg in [args.brix, args.plato, args.sg]) != 1:
+        print("Must provide only one of Brix, Plato or Specific Gravity")
+        sys.exit(1)
+    print(get_sugar_conversion(args.brix, args.plato, args.sg, args.out))
+
+
+if __name__ == "__main__":
+    main()
