@@ -9,6 +9,14 @@ from brew.utilities.sugar import sg_to_plato
 
 
 def get_sugar_conversion(brix_in, plato_in, sg_in, sugar_out):
+    """
+    Convert one sugar unit to another or print all.
+
+    brix_in - Degrees Brix Input
+    plato_in - Degrees Plato Input
+    sg_in - Specific Gravity Input
+    sugar_out - Type of conversion ('b', 'p', 's', or None)
+    """
     brix, plato, sg = 0.0, 0.0, 0.0
     if brix_in:
         brix = brix_in
@@ -23,8 +31,8 @@ def get_sugar_conversion(brix_in, plato_in, sg_in, sugar_out):
         plato = sg_to_plato(sg_in)
         sg = sg_in
 
-    brix = round(brix, 3)
-    plato = round(plato, 3)
+    brix = round(brix, 1)
+    plato = round(plato, 1)
     sg = round(sg, 3)
     if sugar_out and sugar_out in ['b', 'p', 's']:
         if sugar_out == 'b':
@@ -36,5 +44,5 @@ def get_sugar_conversion(brix_in, plato_in, sg_in, sugar_out):
     else:
         out = textwrap.dedent("""\
         SG\tPlato\tBrix
-        {:0.3f}\t{:0.3f}\t{:0.3f}""".format(sg, plato, brix))
+        {:0.3f}\t{:0.1f}\t{:0.1f}""".format(sg, plato, brix))
         return out

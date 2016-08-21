@@ -17,6 +17,15 @@ def get_abv(og, fg,
             verbose=False):
     """
     Get Alcohol by Volume for CLI Utility
+
+    og - Original Specific Gravity
+    fg - Final Specific Gravity
+    og_temp - Temperature of reading for og
+    fg_temp - Temperature of reading for fg
+    alternative - Use alternative ABV calculation
+    refractometer - Adjust for using a refractometer for readings
+    units - Type of units to use in calculations
+    verbose - Return verbose information about calculations
     """
     # Gravity is required for calculation
     if not og:
