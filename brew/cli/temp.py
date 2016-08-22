@@ -25,8 +25,12 @@ def get_parser():
     return parser
 
 
-def main():
-    parser = get_parser()
+def main(parser_fn=get_parser, parser_kwargs=None):
+    parser = None
+    if not parser_kwargs:
+        parser = parser_fn()
+    else:
+        parser = parser_fn(**parser_kwargs)
     args = parser.parse_args()
     if args.fahrenheit and args.celsius:
         print("Must provide only one of Fahrenheit or Celsius")
