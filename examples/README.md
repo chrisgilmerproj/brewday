@@ -37,6 +37,13 @@ Authors: Jamil Zainasheff and John J. Palmer
 Used by permission of Brewers Publications (2007). All rights reserved.
 You can purchase the book here: [Brewing Classig Styles](http://www.brewerspublications.com/books/brewing-classic-styles-80-winning-recipes-anyone-can-brew/).
 
-- [Biere de l'Inde (English IPA)](./biere_de_linde_dict.py) (Extract Version)
-- [Munich Madness](./munich_madness_dict.py) (All Grain Version)
-- [Raison de Saison](./raison_de_saison_dict.py) (Extract Version)
+- [Biere de l'Inde (English IPA)](./brewing_classic_styles/biere_de_linde_dict.py) (Extract Version)
+- [Munich Madness](./brewing_classic_styles/munich_madness_dict.py) (All Grain Version)
+- [Raison de Saison](./brewing_classic_styles/raison_de_saison_dict.py) (Extract Version)
+
+## Oak Barrel Winecraft
+
+Used by permission of Oak Barrel Winecraft. All rights reserved.
+You can purchase kits at their store: [Oak Barrel Winecraft](http://oakbarrel.com/).
+
+- [Kolsch Ale](./oak_barrel_winecraft/kolsch_ale_dict.py) (Extract Version, small boil)
