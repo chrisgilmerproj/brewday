@@ -7,7 +7,7 @@
 - Add docstrings to all classes and methods
 - Add __all__ to all modules
 - Fix classifiers
-- Add README.rst version of readme for PyPI and a conversion package
+- Add README.rst version of readme for PyPI and a conversion utility
 
 ## Version 0.0.3
 
