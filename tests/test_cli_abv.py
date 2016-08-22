@@ -66,7 +66,7 @@ class TestCliAbv(unittest.TestCase):
         self.assertEquals(out, expected)
 
 
-class TestCliArgparser(unittest.TestCase):
+class TestCliArgparserAbv(unittest.TestCase):
 
     def setUp(self):
         self.parser = get_parser()
