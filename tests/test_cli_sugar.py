@@ -1,5 +1,6 @@
 import unittest
 
+from brew.cli.sugar import get_parser
 from brew.cli.sugar import get_sugar_conversion
 
 
@@ -60,3 +61,53 @@ class TestCliSugar(unittest.TestCase):
         out = get_sugar_conversion(None, None, self.sg, None)
         expected = 'SG\tPlato\tBrix\n1.092\t22.0\t22.0'
         self.assertEquals(out, expected)
+
+
+class TestCliArgparserSugar(unittest.TestCase):
+
+    def setUp(self):
+        self.parser = get_parser()
+
+    def test_get_parser_brix_in_none_out(self):
+        args = ['-b', '22.0']
+        out = self.parser.parse_args(args)
+        expected = {
+            'brix': 22.0,
+            'plato': None,
+            'sg': None,
+            'out': None,
+        }
+        self.assertEquals(out.__dict__, expected)
+
+    def test_get_parser_plato_in_none_out(self):
+        args = ['-p', '22.0']
+        out = self.parser.parse_args(args)
+        expected = {
+            'brix': None,
+            'plato': 22.0,
+            'sg': None,
+            'out': None,
+        }
+        self.assertEquals(out.__dict__, expected)
+
+    def test_get_parser_sg_in_none_out(self):
+        args = ['-s', '1.060']
+        out = self.parser.parse_args(args)
+        expected = {
+            'brix': None,
+            'plato': None,
+            'sg': 1.060,
+            'out': None,
+        }
+        self.assertEquals(out.__dict__, expected)
+
+    def test_get_parser_sg_in_brix_out(self):
+        args = ['-s', '1.060', '-o', 'b']
+        out = self.parser.parse_args(args)
+        expected = {
+            'brix': None,
+            'plato': None,
+            'sg': 1.060,
+            'out': 'b',
+        }
+        self.assertEquals(out.__dict__, expected)
