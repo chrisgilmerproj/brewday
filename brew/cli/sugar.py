@@ -51,7 +51,7 @@ def get_sugar_conversion(brix_in, plato_in, sg_in, sugar_out):
         return out
 
 
-def main():
+def get_parser():
     parser = argparse.ArgumentParser(description='Sugar Conversion')
     parser.add_argument('-b', '--brix', metavar='B', type=float,
                         help='Degrees Brix')
@@ -61,7 +61,11 @@ def main():
                         help='Specific Gravity')
     parser.add_argument('-o', '--out', metavar='O', type=str,
                         help='Desired Output (b, p, s accepted)')
+    return parser
 
+
+def main():
+    parser = get_parser()
     args = parser.parse_args()
 
     if sum(bool(arg) for arg in [args.brix, args.plato, args.sg]) != 1:

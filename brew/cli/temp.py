@@ -16,13 +16,17 @@ def get_temp_conversion(fahrenheit, celsius):
         return round(celsius_to_fahrenheit(celsius), 1)
 
 
-def main():
+def get_parser():
     parser = argparse.ArgumentParser(description='Temperature Conversion')
     parser.add_argument('-c', '--celsius', metavar='C', type=float,
                         help='Temperature in Celsius')
     parser.add_argument('-f', '--fahrenheit', metavar='F', type=float,
                         help='Temperature in Fahrenheit')
+    return parser
 
+
+def main():
+    parser = get_parser()
     args = parser.parse_args()
     if args.fahrenheit and args.celsius:
         print("Must provide only one of Fahrenheit or Celsius")
