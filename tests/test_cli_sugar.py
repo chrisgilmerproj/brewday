@@ -2,6 +2,7 @@ import unittest
 
 from brew.cli.sugar import get_parser
 from brew.cli.sugar import get_sugar_conversion
+from brew.cli.sugar import main
 
 
 class TestCliSugar(unittest.TestCase):
@@ -111,3 +112,55 @@ class TestCliArgparserSugar(unittest.TestCase):
             'out': 'b',
         }
         self.assertEquals(out.__dict__, expected)
+
+
+class TestCliMainSugar(unittest.TestCase):
+
+    def setUp(self):
+        class Parser(object):
+            def __init__(self, output):
+                self.output = output
+
+            def parse_args(self):
+                class Args(object):
+                    pass
+                args = Args()
+                if self.output:
+                    for k, v in self.output.items():
+                        setattr(args, k, v)
+                return args
+
+        def g_parser(output=None):
+            return Parser(output)
+        self.parser_fn = g_parser
+        self.main = main
+
+    def test_main_no_args(self):
+        args = {'output': {'brix': None,
+                           'plato': None,
+                           'sg': None,
+                           'out': None}}
+        with self.assertRaises(SystemExit):
+            self.main(parser_fn=self.parser_fn,
+                      parser_kwargs=args)
+
+    def test_main_no_kwargs(self):
+        with self.assertRaises(AttributeError):
+            self.main(parser_fn=self.parser_fn)
+
+    def test_main_two_args(self):
+        args = {'output': {'brix': 22.0,
+                           'plato': 22.0,
+                           'sg': None,
+                           'out': None}}
+        with self.assertRaises(SystemExit):
+            self.main(parser_fn=self.parser_fn,
+                      parser_kwargs=args)
+
+    def test_main_one_arg(self):
+        args = {'output': {'brix': 22.0,
+                           'plato': None,
+                           'sg': None,
+                           'out': None}}
+        self.main(parser_fn=self.parser_fn,
+                  parser_kwargs=args)
