@@ -111,7 +111,7 @@ def get_yeast_pitch_calculation(args):
     print(msg)
 
 
-def main():
+def get_parser():
     parser = argparse.ArgumentParser(description='Yeast Pitch Calculator')
     parser.add_argument('--og', metavar='O', type=float,
                         default=1.05,
@@ -149,6 +149,10 @@ def main():
     parser.add_argument('--units', metavar="U", type=str,
                         default=IMPERIAL_UNITS,
                         help='Units to use (default: %(default)s)')
+    return parser
 
+
+def main():
+    parser = get_parser()
     args = parser.parse_args()
     get_yeast_pitch_calculation(args)
