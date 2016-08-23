@@ -3,6 +3,7 @@ import unittest
 
 from brew.cli.abv import get_abv
 from brew.cli.abv import get_parser
+from brew.cli.abv import main
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 
@@ -174,3 +175,53 @@ class TestCliArgparserAbv(unittest.TestCase):
             'verbose': True,
         }
         self.assertEquals(out.__dict__, expected)
+
+
+class TestCliMainAbv(unittest.TestCase):
+
+    def setUp(self):
+        class Parser(object):
+            def __init__(self, output):
+                self.output = output
+
+            def parse_args(self):
+                class Args(object):
+                    pass
+                args = Args()
+                if self.output:
+                    for k, v in self.output.items():
+                        setattr(args, k, v)
+                return args
+
+        def g_parser(output=None):
+            return Parser(output)
+        self.parser_fn = g_parser
+        self.main = main
+
+    def test_main_no_kwargs(self):
+        with self.assertRaises(SystemExit):
+            self.main(parser_fn=self.parser_fn)
+
+    def test_main_with_args(self):
+        args = {'output': {'og': 1.060,
+                           'fg': 1.010,
+                           'og_temp': 59.0,
+                           'fg_temp': 59.0,
+                           'alternative': False,
+                           'refractometer': False,
+                           'units': 'imperial',
+                           'verbose': False}}
+        self.main(parser_fn=self.parser_fn,
+                  parser_kwargs=args)
+
+    def test_main_verbose(self):
+        args = {'output': {'og': 1.060,
+                           'fg': 1.010,
+                           'og_temp': 59.0,
+                           'fg_temp': 59.0,
+                           'alternative': False,
+                           'refractometer': False,
+                           'units': 'imperial',
+                           'verbose': True}}
+        self.main(parser_fn=self.parser_fn,
+                  parser_kwargs=args)
