@@ -76,3 +76,7 @@ def main(parser_fn=get_parser, parser_kwargs=None):
         print("Must provide only one of Brix, Plato or Specific Gravity")
         sys.exit(1)
     print(get_sugar_conversion(args.brix, args.plato, args.sg, args.out))
+
+
+if __name__ == "__main__":
+    main()
