@@ -40,3 +40,7 @@ def main(parser_fn=get_parser, parser_kwargs=None):
         sys.exit(1)
     out = get_temp_conversion(args.fahrenheit, args.celsius)
     print(out)
+
+
+if __name__ == "__main__":
+    main()
