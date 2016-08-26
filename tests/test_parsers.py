@@ -2,22 +2,23 @@ import unittest
 
 from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
+from brew.parsers import parse_cereals
 
 
 class TestDataLoader(unittest.TestCase):
 
     def setUp(self):
-        self.parser = DataLoader('./')
+        self.loader = DataLoader('./')
 
     def test_read_data_raises(self):
         with self.assertRaises(NotImplementedError):
-            self.parser.read_data('filename')
+            self.loader.read_data('filename')
 
 
 class TestJSONDataLoader(unittest.TestCase):
 
     def setUp(self):
-        self.parser = JSONDataLoader('./')
+        self.loader = JSONDataLoader('./')
 
     def test_format_name(self):
         name_list = [('pale malt 2-row us', 'pale_malt_2_row_us'),
@@ -27,5 +28,5 @@ class TestJSONDataLoader(unittest.TestCase):
                      ('Wyeast 1056', 'wyeast_1056'),
                      ]
         for name, expected in name_list:
-            out = self.parser.format_name(name)
+            out = self.loader.format_name(name)
             self.assertEquals(out, expected)
