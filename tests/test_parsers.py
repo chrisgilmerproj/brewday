@@ -1,6 +1,17 @@
 import unittest
 
+from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
+
+
+class TestDataLoader(unittest.TestCase):
+
+    def setUp(self):
+        self.parser = DataLoader('./')
+
+    def test_read_data_raises(self):
+        with self.assertRaises(NotImplementedError):
+            self.parser.read_data('filename')
 
 
 class TestJSONDataLoader(unittest.TestCase):
