@@ -17,6 +17,7 @@ class CerealsItem(scrapy.Item):
     supplier = scrapy.Field()
     cereal_type = scrapy.Field()
     potential = scrapy.Field()
+    ppg = scrapy.Field()
     dry_yield = scrapy.Field()
     coarse_fine_diff = scrapy.Field()
     moisture = scrapy.Field()

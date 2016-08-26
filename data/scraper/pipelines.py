@@ -33,6 +33,8 @@ class CerealsPipeline(object):
         filename = filename.replace("_-", "_")
         filename = "{}.json".format(filename)
         filepath = os.path.join(os.path.abspath(CEREALS_DIR), filename)
+        item['color'] = float(item['color'][:-4])
+        item['ppg'] = round((float(item['potential'][:-3]) - 1.0) * 1000, 1)
         with open(filepath, 'wb') as f:
             line = json.dumps(dict(item))
             f.write(line)
