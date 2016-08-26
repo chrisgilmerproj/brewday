@@ -103,10 +103,10 @@ def parse_cereals(cereal, loader):
         ppg = cereal['data'].get('ppg', None)
 
     if not color:
-        color = float(cereal_data['color'][:-4])
+        color = float(cereal_data['color'])
 
     if not ppg:
-        ppg = sg_to_gu(float(cereal_data['potential'][:-3]))
+        ppg = float(cereal_data['ppg'])
 
     grain_obj = Grain(name, color=color, ppg=ppg)
 

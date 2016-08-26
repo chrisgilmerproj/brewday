@@ -78,6 +78,16 @@ class Grain(object):
         out = "{0})".format(out)
         return out
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        # Short name does not need to match
+        if (self.name == other.name) and \
+           (self.ppg == other.ppg) and \
+           (self.color == other.color):
+            return True
+        return False
+
     def to_dict(self):
         return {'name': self.name,
                 'short_name': self.short_name,
@@ -168,6 +178,16 @@ class GrainAddition(object):
             out = "{0}, grain_type='{1}'".format(out, self.grain_type)
         out = "{0})".format(out)
         return out
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if (self.weight == other.weight) and \
+           (self.grain_type == other.grain_type) and \
+           (self.units == other.units) and \
+           (self.grain == other.grain):
+            return True
+        return False
 
     def get_cereal_weight(self):
         """
