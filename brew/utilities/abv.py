@@ -26,8 +26,14 @@ def alcohol_by_volume_standard(og, fg):
 
     Source:
     - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
+    - http://www.brewmorebeer.com/calculate-percent-alcohol-in-beer/
+
+      46.07 g/mol C2H6O       1.0
+     ------------------- x -------- * 100 * (og - fg)
+      44.0095 g/mol CO2     0.7936
     """  # nopep8
-    return (og - fg) * 131.25
+    ABV_CONST = 131.25
+    return (og - fg) * ABV_CONST
 
 
 def alcohol_by_volume_alternative(og, fg):
