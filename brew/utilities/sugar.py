@@ -126,13 +126,17 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     Adjust the Hydrometer if the temperature deviates from 59degF.
 
     http://hbd.org/brewery/library/HydromCorr0992.html
+
+    The correction formula is from Lyons (1992), who used the following formula
+    to fit data from the Handbook of Chemistry and Physics (CRC):
+
     Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
         where T is in degrees F.
 
     Sources:
-    http://www.brewersfriend.com/hydrometer-temp/
     http://www.topdownbrew.com/SGCorrection.html
     http://hbd.org/brewery/library/HydromCorr0992.html
+    http://www.brewersfriend.com/hydrometer-temp/
     http://www.primetab.com/formulas.html
     """  # nopep8
     validate_units(units)
