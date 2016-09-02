@@ -1,11 +1,29 @@
 from ..constants import ALCOHOL_SPECIFIC_GRAVITY
+from .sugar import apparent_extract_to_real_extract
 
 
 __all__ = [
+    'apparent_attenuation',
+    'real_attenuation',
+    'real_attenuation_from_apparent_extract',
     'alcohol_by_volume_standard',
     'alcohol_by_volume_alternative',
     'alcohol_by_weight',
 ]
+
+
+def apparent_attenuation(original_extract, apparent_extract):
+    return (original_extract - apparent_extract) / original_extract
+
+
+def real_attenuation(original_extract, real_extract):
+    return (original_extract - real_extract) / original_extract
+
+
+def real_attenuation_from_apparent_extract(original_extract, apparent_extract):
+    real_extract = apparent_extract_to_real_extract(original_extract,
+                                                    apparent_extract)
+    return real_attenuation(original_extract, real_extract)
 
 
 def alcohol_by_volume_standard(og, fg):
