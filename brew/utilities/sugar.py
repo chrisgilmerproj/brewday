@@ -121,6 +121,18 @@ def plato_to_brix(plato):
     return sg_to_brix(plato_to_sg(plato))
 
 
+def apparent_extract_to_real_extract(original_extract, apparent_extract):
+    """
+    Apparent Extract to Real Extract in degrees Plato
+
+    Formula from Balling
+    De Clerck, Jean, A Textbook Of Brewing, Chapman & Hall Ltd., 1958
+    """
+    attenuation_coeff = 0.22 + 0.001 * original_extract
+    real_extract = (attenuation_coeff * original_extract + apparent_extract) / (1 + attenuation_coeff)  # nopep8
+    return real_extract
+
+
 def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     """
     Adjust the Hydrometer if the temperature deviates from 59degF.

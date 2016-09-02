@@ -1,6 +1,7 @@
 import unittest
 
 from brew.constants import SI_UNITS
+from brew.utilities.sugar import apparent_extract_to_real_extract
 from brew.utilities.sugar import brix_to_plato
 from brew.utilities.sugar import brix_to_sg
 from brew.utilities.sugar import gu_to_sg
@@ -44,12 +45,18 @@ class TestSugarUtilities(unittest.TestCase):
             sg_to_brix(1.18)
 
     def test_sg_to_plato(self):
-        plato = sg_to_plato(1.0570)
+        plato = sg_to_plato(1.057)
         self.assertEquals(round(plato, 2), 14.04)
 
     def test_sg_to_gu(self):
         gu = sg_to_gu(1.057)
         self.assertEquals(round(gu, 2), 57.0)
+
+    def test_apparent_extract_to_real_extract(self):
+        oe = sg_to_plato(1.060)
+        ae = sg_to_plato(1.010)
+        out = apparent_extract_to_real_extract(oe, ae)
+        self.assertEquals(round(out, 2), 4.88)
 
     def test_hydrometer_adjustment(self):
         sg = hydrometer_adjustment(1.050, 70.0)
