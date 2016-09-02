@@ -15,6 +15,7 @@ __all__ = [
     'sg_to_brix',
     'brix_to_plato',
     'plato_to_brix',
+    'apparent_extract_to_real_extract',
     'hydrometer_adjustment',
     'refractometer_adjustment',
 ]
