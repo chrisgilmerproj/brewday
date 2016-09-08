@@ -35,8 +35,8 @@ class Hop(object):
         self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
 
     def __str__(self):
-        return "{0}, alpha {1}%".format(self.name.capitalize(),
-                                        self.percent_alpha_acids)
+        return "{0}, alpha {1:0.1%}".format(self.name.capitalize(),
+                                             self.percent_alpha_acids)
 
     def __repr__(self):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
@@ -58,7 +58,7 @@ class Hop(object):
         msg = textwrap.dedent("""\
                 {name} Hops
                 -----------------------------------
-                Alpha Acids:  {percent_alpha_acids} %""".format(
+                Alpha Acids:  {percent_alpha_acids:0.1%}""".format(
             **self.to_dict()))
         return msg
 
@@ -178,7 +178,7 @@ class HopAddition(object):
                 {name} Addition
                 -----------------------------------
                 Hop Type:     {hop_type}
-                AA %:         {data[percent_alpha_acids]:0.2f} %
+                AA %:         {data[percent_alpha_acids]:0.1%}
                 Weight:       {weight:0.2f} {weight_small}
                 Boil Time:    {boil_time:0.1f} min""".format(
             **kwargs))

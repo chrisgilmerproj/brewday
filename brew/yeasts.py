@@ -24,8 +24,8 @@ class Yeast(object):
         self.percent_attenuation = validate_percentage(percent_attenuation)
 
     def __str__(self):
-        return "{0}, attenuation {1}%".format(self.name.capitalize(),
-                                              self.percent_attenuation)
+        return "{0}, attenuation {1:0.1%}".format(self.name.capitalize(),
+                                                  self.percent_attenuation)
 
     def __repr__(self):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
@@ -58,6 +58,6 @@ class Yeast(object):
         msg = textwrap.dedent("""\
                 {name} Yeast
                 -----------------------------------
-                Attenuation:  {data[percent_attenuation]} %""".format(
+                Attenuation:  {data[percent_attenuation]:0.1%}""".format(
             **self.to_dict()))
         return msg

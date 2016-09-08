@@ -426,7 +426,7 @@ class Recipe(object):
             {name}
             ===================================
 
-            Brew House Yield:   {data[percent_brew_house_yield]:0.2f} %
+            Brew House Yield:   {data[percent_brew_house_yield]:0.1%}
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
 
@@ -434,8 +434,8 @@ class Recipe(object):
             Boil Gravity:       {data[boil_gravity]:0.3f}
             Final Gravity:      {data[final_gravity]:0.3f}
 
-            ABV / ABW Standard: {data[abv_standard]:0.2f} % / {data[abw_standard]:0.2f} %
-            ABV / ABW Alt:      {data[abv_alternative]:0.2f} % / {data[abw_alternative]:0.2f} %
+            ABV / ABW Standard: {data[abv_standard]:0.2f}% / {data[abw_standard]:0.2f}%
+            ABV / ABW Alt:      {data[abv_alternative]:0.2f}% / {data[abw_alternative]:0.2f}%
 
             IBU:                {data[total_ibu]:0.1f} ibu
             BU/GU:              {data[bu_to_gu]:0.1f}
@@ -465,8 +465,8 @@ class Recipe(object):
             msg += grain_add.format()
             msg += textwrap.dedent("""\
 
-                    Percent Malt Bill: {data[percent_malt_bill]:0.2f} %
-                    Working Yield:     {data[working_yield]:0.2f} %
+                    Percent Malt Bill: {data[percent_malt_bill]:0.1%}
+                    Working Yield:     {data[working_yield]:0.1%}
                     SRM/EBC:           {data[wort_color_srm]:0.1f} degL / {data[wort_color_ebc]:0.1f}
 
                     """.format(**grain_kwargs))  # nopep8
@@ -492,7 +492,7 @@ class Recipe(object):
             msg += textwrap.dedent("""\
 
                     IBUs:         {data[ibus]:0.1f}
-                    Utilization:  {data[utilization]:0.2f} %
+                    Utilization:  {data[utilization]:0.1%}
 
                     """.format(**hop_kwargs))
 

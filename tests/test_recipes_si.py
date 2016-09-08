@@ -252,7 +252,7 @@ class TestRecipeSIUnits(unittest.TestCase):
             Pale Ale
             ===================================
 
-            Brew House Yield:   0.70 %
+            Brew House Yield:   70.0%
             Start Volume:       26.5
             Final Volume:       18.9
 
@@ -260,8 +260,8 @@ class TestRecipeSIUnits(unittest.TestCase):
             Boil Gravity:       1.054
             Final Gravity:      1.019
 
-            ABV / ABW Standard: 7.49 % / 5.95 %
-            ABV / ABW Alt:      7.98 % / 6.33 %
+            ABV / ABW Standard: 7.49% / 5.95%
+            ABV / ABW Alt:      7.98% / 6.33%
 
             IBU:                33.0 ibu
             BU/GU:              0.6
@@ -277,16 +277,16 @@ class TestRecipeSIUnits(unittest.TestCase):
             -----------------------------------
             Grain Type:        cereal
             Weight:            6.33 kg
-            Percent Malt Bill: 0.95 %
-            Working Yield:     0.56 %
+            Percent Malt Bill: 95.0%
+            Working Yield:     56.0%
             SRM/EBC:           4.9 degL / 9.6
 
             crystal C20 Addition
             -----------------------------------
             Grain Type:        cereal
             Weight:            0.35 kg
-            Percent Malt Bill: 0.05 %
-            Working Yield:     0.53 %
+            Percent Malt Bill: 5.0%
+            Working Yield:     53.0%
             SRM/EBC:           3.3 degL / 6.4
 
             Hops
@@ -295,27 +295,27 @@ class TestRecipeSIUnits(unittest.TestCase):
             centennial Addition
             -----------------------------------
             Hop Type:     pellet
-            AA %:         0.14 %
+            AA %:         14.0%
             Weight:       16159.21 mg
             Boil Time:    60.0 min
             IBUs:         29.2
-            Utilization:  0.24 %
+            Utilization:  24.0%
 
             cascade Addition
             -----------------------------------
             Hop Type:     pellet
-            AA %:         0.07 %
+            AA %:         7.0%
             Weight:       21545.62 mg
             Boil Time:    5.0 min
             IBUs:         3.9
-            Utilization:  0.05 %
+            Utilization:  5.0%
 
             Yeast
             ===================================
 
             Wyeast 1056 Yeast
             -----------------------------------
-            Attenuation:  0.75 %""")
+            Attenuation:  75.0%""")
         self.assertEquals(out, expected)
 
     def test_validate(self):
