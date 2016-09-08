@@ -19,7 +19,7 @@ class TestHops(unittest.TestCase):
 
     def test_str(self):
         out = str(self.hop)
-        self.assertEquals(out, 'Centennial, alpha 0.14%')
+        self.assertEquals(out, 'Centennial, alpha 14.0%')
 
     def test_repr(self):
         out = repr(self.hop)
@@ -42,7 +42,7 @@ class TestHops(unittest.TestCase):
         msg = textwrap.dedent("""\
                 centennial Hops
                 -----------------------------------
-                Alpha Acids:  0.14 %""")
+                Alpha Acids:  14.0%""")
         self.assertEquals(out, msg)
 
 
@@ -88,7 +88,7 @@ class TestHopAdditions(unittest.TestCase):
     def test_str(self):
         out = str(self.hop_addition1)
         self.assertEquals(
-            out, 'Centennial, alpha 0.14%, 0.57 oz, 60.0 min, pellet')
+            out, 'Centennial, alpha 14.0%, 0.57 oz, 60.0 min, pellet')
 
     def test_repr(self):
         out = repr(self.hop_addition1)
@@ -123,7 +123,7 @@ class TestHopAdditions(unittest.TestCase):
                 centennial Addition
                 -----------------------------------
                 Hop Type:     pellet
-                AA %:         0.14 %
+                AA %:         14.0%
                 Weight:       0.57 oz
                 Boil Time:    60.0 min""")
         self.assertEquals(out, msg)

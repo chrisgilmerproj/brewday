@@ -15,7 +15,7 @@ class TestYeasts(unittest.TestCase):
 
     def test_str(self):
         out = str(self.yeast)
-        self.assertEquals(out, 'Wyeast 1056, attenuation 0.75%')
+        self.assertEquals(out, 'Wyeast 1056, attenuation 75.0%')
 
     def test_repr(self):
         out = repr(self.yeast)
@@ -44,5 +44,5 @@ class TestYeasts(unittest.TestCase):
         msg = textwrap.dedent("""\
                 Wyeast 1056 Yeast
                 -----------------------------------
-                Attenuation:  0.75 %""")
+                Attenuation:  75.0%""")
         self.assertEquals(out, msg)
