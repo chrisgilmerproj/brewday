@@ -79,6 +79,9 @@ number 0.0 and 1.0.
 There still remain some methods that return percentages not in decimal
 form, notably the ABV utilities.
 
+Percentages will be displayed in percentage format as opposed to decimal
+format to avoid confusion and for ease of reading.
+
 .. |PyPI| image:: https://img.shields.io/pypi/v/brewday.svg
    :target: https://pypi.python.org/pypi/brewday/0.0.4
 .. |Versions| image:: https://img.shields.io/pypi/pyversions/brewday.svg
