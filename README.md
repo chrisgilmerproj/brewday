@@ -70,3 +70,6 @@ and 1.0.
 
 There still remain some methods that return percentages not in decimal form,
 notably the ABV utilities.
+
+Percentages will be displayed in percentage format as opposed to decimal
+format to avoid confusion and for ease of reading.
