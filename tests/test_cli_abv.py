@@ -16,7 +16,7 @@ class TestCliAbv(unittest.TestCase):
 
     def test_get_abv(self):
         abv = get_abv(self.og, self.fg)
-        self.assertEquals(round(abv, 2), 5.78)
+        self.assertEquals(round(abv * 100, 2), 5.78)
 
     def test_get_abv_no_og_raises(self):
         with self.assertRaises(Exception):
@@ -36,23 +36,23 @@ class TestCliAbv(unittest.TestCase):
 
     def test_get_abv_units_imperial(self):
         abv = get_abv(self.og, self.fg, units=IMPERIAL_UNITS)
-        self.assertEquals(round(abv, 2), 5.78)
+        self.assertEquals(round(abv * 100, 2), 5.78)
 
     def test_get_abv_units_si(self):
         abv = get_abv(self.og, self.fg, units=SI_UNITS)
-        self.assertEquals(round(abv, 2), 5.78)
+        self.assertEquals(round(abv * 100, 2), 5.78)
 
     def test_get_abv_alternative(self):
         abv = get_abv(self.og, self.fg, alternative=True)
-        self.assertEquals(round(abv, 2), 5.95)
+        self.assertEquals(round(abv * 100, 2), 5.95)
 
     def test_get_abv_refractometer(self):
         abv = get_abv(self.og, self.fg, refractometer=True)
-        self.assertEquals(round(abv, 2), 6.97)
+        self.assertEquals(round(abv * 100, 2), 6.97)
 
     def test_get_abv_alternative_refractometer(self):
         abv = get_abv(self.og, self.fg, alternative=True, refractometer=True)
-        self.assertEquals(round(abv, 2), 7.12)
+        self.assertEquals(round(abv * 100, 2), 7.12)
 
     def test_get_abv_verbose(self):
         out = get_abv(self.og, self.fg, verbose=True)
@@ -63,7 +63,7 @@ class TestCliAbv(unittest.TestCase):
             FG     : 1.013
             FG Adj : 1.013
             FG Temp: 59.00 F
-            ABV    : 5.78 %""")
+            ABV    : 5.78%""")
         self.assertEquals(out, expected)
 
 

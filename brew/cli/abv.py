@@ -67,7 +67,7 @@ def get_abv(og, fg,
         out.append("FG     : {:0.3f}".format(fg))
         out.append("FG Adj : {:0.3f}".format(fg))
         out.append("FG Temp: {:0.2f} {}".format(fg_temp, t_unit))
-        out.append("ABV    : {:0.2f} %".format(abv))
+        out.append("ABV    : {:0.2%}".format(abv))
         return '\n'.join(out)
     else:
         return abv
@@ -120,7 +120,7 @@ def main(parser_fn=get_parser, parser_kwargs=None):
         if args.verbose:
             print(out)
         else:
-            print("{:0.2f} %".format(out))
+            print("{:0.2%}".format(out))
     except Exception as e:
         print(e)
         sys.exit(1)

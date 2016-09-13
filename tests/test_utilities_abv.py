@@ -33,12 +33,12 @@ class TestABVUtilities(unittest.TestCase):
 
     def test_alcohol_by_volume_alternative(self):
         abv = alcohol_by_volume_alternative(1.057, 1.013)
-        self.assertEquals(round(abv, 2), 5.95)
+        self.assertEquals(round(abv * 100.0, 2), 5.95)
 
     def test_alcohol_by_volume_standard(self):
         abv = alcohol_by_volume_standard(1.057, 1.013)
-        self.assertEquals(round(abv, 2), 5.78)
+        self.assertEquals(round(abv * 100.0, 2), 5.78)
 
     def test_alcohol_by_weight(self):
-        abw = alcohol_by_weight(5.78)
-        self.assertEquals(round(abw, 2), 4.59)
+        abw = alcohol_by_weight(5.78 / 100.0)
+        self.assertEquals(round(abw * 100.0, 2), 4.59)

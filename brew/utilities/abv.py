@@ -51,7 +51,7 @@ def alcohol_by_volume_standard(og, fg):
       44.0095 g/mol CO2     0.7936
     """  # nopep8
     ABV_CONST = 131.25
-    return (og - fg) * ABV_CONST
+    return (og - fg) * ABV_CONST / 100.0
 
 
 def alcohol_by_volume_alternative(og, fg):
@@ -77,7 +77,7 @@ def alcohol_by_volume_alternative(og, fg):
     Source:
     - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
     """  # nopep8
-    return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
+    return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794) / 100.0
 
 
 def alcohol_by_weight(abv):

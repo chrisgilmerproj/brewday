@@ -348,10 +348,10 @@ class Recipe(object):
                 'original_gravity': round(og, 3),
                 'boil_gravity': round(bg, 3),
                 'final_gravity': round(fg, 3),
-                'abv_standard': round(abv_standard, 2),
-                'abv_alternative': round(abv_alternative, 2),
-                'abw_standard': round(alcohol_by_weight(abv_standard), 2),
-                'abw_alternative': round(alcohol_by_weight(abv_alternative), 2),  # nopep8
+                'abv_standard': round(abv_standard, 4),
+                'abv_alternative': round(abv_alternative, 4),
+                'abw_standard': round(alcohol_by_weight(abv_standard), 4),
+                'abw_alternative': round(alcohol_by_weight(abv_alternative), 4),  # nopep8
                 'total_wort_color_map': self.get_total_wort_color_map(),
                 'total_ibu': round(self.get_total_ibu(), 1),
                 'bu_to_gu': round(self.get_bu_to_gu(), 1),
@@ -434,8 +434,8 @@ class Recipe(object):
             Boil Gravity:       {data[boil_gravity]:0.3f}
             Final Gravity:      {data[final_gravity]:0.3f}
 
-            ABV / ABW Standard: {data[abv_standard]:0.2f}% / {data[abw_standard]:0.2f}%
-            ABV / ABW Alt:      {data[abv_alternative]:0.2f}% / {data[abw_alternative]:0.2f}%
+            ABV / ABW Standard: {data[abv_standard]:0.2%} / {data[abw_standard]:0.2%}
+            ABV / ABW Alt:      {data[abv_alternative]:0.2%} / {data[abw_alternative]:0.2%}
 
             IBU:                {data[total_ibu]:0.1f} ibu
             BU/GU:              {data[bu_to_gu]:0.1f}
