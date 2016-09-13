@@ -59,8 +59,7 @@ with the parsers in this library.
 
 The standard for this repository at the moment is to use Imperial Units.  This
 is because most of the equations used as reference use Imperial Units.  As
-tests are updated units may change to SI Units (metric).  Not all methods
-work with SI Units yet.
+tests are updated units may change to SI Units (metric).
 
 # Percentages
 
