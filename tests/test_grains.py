@@ -113,12 +113,7 @@ class TestGrains(unittest.TestCase):
         self.assertTrue(grain1 != grain2)
 
     def test_ne_grain_add_class(self):
-        grain1 = Grain('pale 2-row',
-                       short_name='2-row',
-                       color=2.0,
-                       ppg=37.0)
-        grain_add = GrainAddition(grain1, weight=13.96)
-        self.assertTrue(grain1 != grain_add)
+        self.assertTrue(pale != pale_add)
 
     def test_to_dict(self):
         out = self.grain.to_dict()
@@ -230,8 +225,7 @@ class TestGrainAdditions(unittest.TestCase):
         self.assertTrue(grain_add1 != grain_add2)
 
     def test_ne_grain_class(self):
-        grain_add = GrainAddition(pale, weight=13.96)
-        self.assertTrue(grain_add != pale)
+        self.assertTrue(pale_add != pale)
 
     def test_to_dict(self):
         out = self.grain_add.to_dict()
