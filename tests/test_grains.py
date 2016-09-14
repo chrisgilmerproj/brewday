@@ -56,6 +56,69 @@ class TestGrains(unittest.TestCase):
                   ppg=37.0,
                   hwe=308.0)
 
+    def test_eq(self):
+        grain1 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        grain2 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        self.assertEquals(grain1, grain2)
+
+    def test_eq_diff_short_name(self):
+        grain1 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        grain2 = Grain('pale 2-row',
+                       short_name='2row',
+                       color=2.0,
+                       ppg=37.0)
+        self.assertEquals(grain1, grain2)
+
+    def test_neq_name(self):
+        grain1 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        grain2 = Grain('pale row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        self.assertTrue(grain1 != grain2)
+
+    def test_neq_color(self):
+        grain1 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        grain2 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=4.0,
+                       ppg=37.0)
+        self.assertTrue(grain1 != grain2)
+
+    def test_neq_ppg(self):
+        grain1 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        grain2 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=35.0)
+        self.assertTrue(grain1 != grain2)
+
+    def test_neq_grain_add(self):
+        grain1 = Grain('pale 2-row',
+                       short_name='2-row',
+                       color=2.0,
+                       ppg=37.0)
+        grain_add = GrainAddition(grain1, weight=13.96)
+        self.assertTrue(grain1 != grain_add)
+
     def test_to_dict(self):
         out = self.grain.to_dict()
         expected = {'name': 'pale 2-row',
