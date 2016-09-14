@@ -4,9 +4,11 @@ import unittest
 from brew.constants import LITER_PER_GAL
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.utilities.sugar import plato_to_sg
 from fixtures import cascade
+from fixtures import cascade_add
 from fixtures import centennial
 
 
@@ -24,6 +26,30 @@ class TestHops(unittest.TestCase):
     def test_repr(self):
         out = repr(self.hop)
         self.assertEquals(out, "Hop('centennial', percent_alpha_acids=0.14)")
+
+    def test_eq(self):
+        hop1 = Hop('cascade',
+                   percent_alpha_acids=0.07)
+        hop2 = Hop('cascade',
+                   percent_alpha_acids=0.07)
+        self.assertEquals(hop1, hop2)
+
+    def test_ne_name(self):
+        hop1 = Hop('cascade',
+                   percent_alpha_acids=0.07)
+        hop2 = Hop('centennial',
+                   percent_alpha_acids=0.07)
+        self.assertTrue(hop1 != hop2)
+
+    def test_ne_percent_alpha_acids(self):
+        hop1 = Hop('cascade',
+                   percent_alpha_acids=0.07)
+        hop2 = Hop('cascade',
+                   percent_alpha_acids=0.14)
+        self.assertTrue(hop1 != hop2)
+
+    def test_ne_hop_add_class(self):
+        self.assertTrue(cascade != cascade_add)
 
     def test_to_dict(self):
         out = self.hop.to_dict()
