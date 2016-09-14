@@ -158,9 +158,8 @@ class HopAddition(object):
             return False
         if (self.hop == other.hop) and \
            (self.boil_time == other.boil_time) and \
+           (self.weight == other.weight) and \
            (self.hop_type == other.hop_type) and \
-           (self.utilization_cls == other.utilization_cls) and \
-           (self.utilization_cls_kwargs == other.utilization_cls_kwargs) and \
            (self.units == other.units):
             return True
         return False
