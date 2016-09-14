@@ -36,7 +36,7 @@ class Hop(object):
 
     def __str__(self):
         return "{0}, alpha {1:0.1%}".format(self.name.capitalize(),
-                                             self.percent_alpha_acids)
+                                            self.percent_alpha_acids)
 
     def __repr__(self):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
@@ -45,6 +45,17 @@ class Hop(object):
                 out, self.percent_alpha_acids)
         out = "{0})".format(out)
         return out
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if (self.name == other.name) and \
+           (self.percent_alpha_acids == other.percent_alpha_acids):
+            return True
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def to_dict(self):
         return {'name': self.name,
@@ -141,6 +152,21 @@ class HopAddition(object):
             out = "{0}, units='{1}'".format(out, self.units)
         out = "{0})".format(out)
         return out
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if (self.hop == other.hop) and \
+           (self.boil_time == other.boil_time) and \
+           (self.hop_type == other.hop_type) and \
+           (self.utilization_cls == other.utilization_cls) and \
+           (self.utilization_cls_kwargs == other.utilization_cls_kwargs) and \
+           (self.units == other.units):
+            return True
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def to_dict(self):
         hop_data = self.hop.to_dict()
