@@ -9,6 +9,7 @@ from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.grains import Grain
 from brew.grains import GrainAddition
+from fixtures import crystal
 from fixtures import pale
 from fixtures import pale_add
 
@@ -78,7 +79,7 @@ class TestGrains(unittest.TestCase):
                        ppg=37.0)
         self.assertEquals(grain1, grain2)
 
-    def test_neq_name(self):
+    def test_ne_name(self):
         grain1 = Grain('pale 2-row',
                        short_name='2-row',
                        color=2.0,
@@ -89,7 +90,7 @@ class TestGrains(unittest.TestCase):
                        ppg=37.0)
         self.assertTrue(grain1 != grain2)
 
-    def test_neq_color(self):
+    def test_ne_color(self):
         grain1 = Grain('pale 2-row',
                        short_name='2-row',
                        color=2.0,
@@ -100,7 +101,7 @@ class TestGrains(unittest.TestCase):
                        ppg=37.0)
         self.assertTrue(grain1 != grain2)
 
-    def test_neq_ppg(self):
+    def test_ne_ppg(self):
         grain1 = Grain('pale 2-row',
                        short_name='2-row',
                        color=2.0,
@@ -111,7 +112,7 @@ class TestGrains(unittest.TestCase):
                        ppg=35.0)
         self.assertTrue(grain1 != grain2)
 
-    def test_neq_grain_add(self):
+    def test_ne_grain_add_class(self):
         grain1 = Grain('pale 2-row',
                        short_name='2-row',
                        color=2.0,
@@ -200,6 +201,37 @@ class TestGrainAdditions(unittest.TestCase):
             'dry_weight': 8.38,
         }
         self.assertEquals(out, expected)
+
+    def test_eq(self):
+        grain_add1 = GrainAddition(pale, weight=13.96)
+        grain_add2 = GrainAddition(pale, weight=13.96)
+        self.assertTrue(grain_add1 == grain_add2)
+
+    def test_ne_grain(self):
+        grain_add1 = GrainAddition(pale, weight=13.96)
+        grain_add2 = GrainAddition(crystal, weight=13.96)
+        self.assertTrue(grain_add1 != grain_add2)
+
+    def test_ne_weight(self):
+        grain_add1 = GrainAddition(pale, weight=13.96)
+        grain_add2 = GrainAddition(pale, weight=3.96)
+        self.assertTrue(grain_add1 != grain_add2)
+
+    def test_ne_grain_type(self):
+        grain_add1 = GrainAddition(pale, weight=13.96)
+        grain_add2 = GrainAddition(pale, weight=13.96,
+                                   grain_type=GRAIN_TYPE_DME)
+        self.assertTrue(grain_add1 != grain_add2)
+
+    def test_ne_units(self):
+        grain_add1 = GrainAddition(pale, weight=13.96)
+        grain_add2 = GrainAddition(pale, weight=13.96,
+                                   units=SI_UNITS)
+        self.assertTrue(grain_add1 != grain_add2)
+
+    def test_ne_grain_class(self):
+        grain_add = GrainAddition(pale, weight=13.96)
+        self.assertTrue(grain_add != pale)
 
     def test_to_dict(self):
         out = self.grain_add.to_dict()
