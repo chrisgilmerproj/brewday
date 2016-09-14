@@ -88,6 +88,9 @@ class Grain(object):
             return True
         return False
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def to_dict(self):
         return {'name': self.name,
                 'short_name': self.short_name,
