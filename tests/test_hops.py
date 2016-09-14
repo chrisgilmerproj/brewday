@@ -2,6 +2,7 @@ import textwrap
 import unittest
 
 from brew.constants import LITER_PER_GAL
+from brew.constants import HOP_TYPE_WHOLE
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.hops import Hop
@@ -120,6 +121,36 @@ class TestHopAdditions(unittest.TestCase):
         out = repr(self.hop_addition1)
         self.assertEquals(
                 out, "HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, utilization_cls_kwargs={'units': 'imperial'}, units='imperial')")  # nopep8
+
+    def test_eq(self):
+        hop_add1 = HopAddition(cascade, boil_time=5.0, weight=0.76)
+        hop_add2 = HopAddition(cascade, boil_time=5.0, weight=0.76)
+        self.assertTrue(hop_add1 == hop_add2)
+
+    def test_ne_boil_time(self):
+        hop_add1 = HopAddition(cascade, boil_time=5.0, weight=0.76)
+        hop_add2 = HopAddition(cascade, boil_time=15.0, weight=0.76)
+        self.assertTrue(hop_add1 != hop_add2)
+
+    def test_ne_weight(self):
+        hop_add1 = HopAddition(cascade, boil_time=5.0, weight=0.76)
+        hop_add2 = HopAddition(cascade, boil_time=5.0, weight=1.76)
+        self.assertTrue(hop_add1 != hop_add2)
+
+    def test_ne_hop_type(self):
+        hop_add1 = HopAddition(cascade, boil_time=5.0, weight=0.76)
+        hop_add2 = HopAddition(cascade, boil_time=5.0, weight=0.76,
+                               hop_type=HOP_TYPE_WHOLE)
+        self.assertTrue(hop_add1 != hop_add2)
+
+    def test_ne_units(self):
+        hop_add1 = HopAddition(cascade, boil_time=5.0, weight=0.76)
+        hop_add2 = HopAddition(cascade, boil_time=5.0, weight=0.76,
+                               units=SI_UNITS)
+        self.assertTrue(hop_add1 != hop_add2)
+
+    def test_ne_hop_class(self):
+        self.assertTrue(cascade_add != cascade)
 
     def test_to_dict(self):
         out = self.hop_addition1.to_dict()
