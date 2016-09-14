@@ -192,6 +192,9 @@ class GrainAddition(object):
             return True
         return False
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def get_cereal_weight(self):
         """
         Get the weight of the addition in cereal weight
