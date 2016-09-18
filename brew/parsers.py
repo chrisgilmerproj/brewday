@@ -7,7 +7,6 @@ from brew.grains import GrainAddition
 from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.recipes import Recipe
-from brew.utilities.sugar import sg_to_gu
 from brew.yeasts import Yeast
 
 
@@ -149,7 +148,7 @@ def parse_hops(hop, loader):
         alpha_acids = hop['data'].get('percent_alpha_acids', None)
 
     if not alpha_acids:
-        alpha_acids = float(hop_data['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
+        alpha_acids = float(hop_data['percent_alpha_acids'])
 
     hop_obj = Hop(name, percent_alpha_acids=alpha_acids)
     hop_add_kwargs = {
