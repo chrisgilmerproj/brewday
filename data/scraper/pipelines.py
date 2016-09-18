@@ -54,7 +54,7 @@ class HopsPipeline(object):
         filename = "{}.json".format(filename)
         filepath = os.path.join(os.path.abspath(HOPS_DIR), filename)
         if item[u'alpha_acid_composition']:
-            item[u'percent_alpha_acids'] = float(item['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
+            item[u'percent_alpha_acids'] = round(float(item['alpha_acid_composition'].split('-')[0].split('%')[0]) / 100., 3)  # nopep8
         with open(filepath, 'wb') as f:
             line = json.dumps(dict(item))
             f.write(line)

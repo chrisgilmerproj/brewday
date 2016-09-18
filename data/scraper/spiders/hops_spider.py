@@ -38,5 +38,7 @@ class HopslistSpider(scrapy.Spider):
                     cat_safe = u'co_humulone_composition'
                 if cat_safe == u'east_of_harvest':
                     cat_safe = u'ease_of_harvest'
+                if cat_safe == u'alpha_acid\xa0composition':
+                    cat_safe = u'alpha_acid_composition'
                 item[cat_safe] = data_safe
         yield item
