@@ -33,8 +33,8 @@ class CerealsPipeline(object):
         filename = filename.replace("_-", "_")
         filename = "{}.json".format(filename)
         filepath = os.path.join(os.path.abspath(CEREALS_DIR), filename)
-        item['color'] = float(item['color'][:-4])
-        item['ppg'] = round((float(item['potential'][:-3]) - 1.0) * 1000, 1)
+        item[u'color'] = float(item['color'][:-4])
+        item[u'ppg'] = round((float(item['potential'][:-3]) - 1.0) * 1000, 1)
         with open(filepath, 'wb') as f:
             line = json.dumps(dict(item))
             f.write(line)
@@ -46,13 +46,15 @@ class HopsPipeline(object):
     def process_item(self, item, spider):
         if not isinstance(item, HopsItem):
             return item
-        filename = item['name'].lower().replace(" ", "_")
+        filename = item['source_id'].lower().replace(" ", "_")
         filename = filename.replace("(", "")
         filename = filename.replace(")", "")
         filename = filename.replace("'", "")
         filename = filename.replace("-", "_")
         filename = "{}.json".format(filename)
         filepath = os.path.join(os.path.abspath(HOPS_DIR), filename)
+        if item[u'alpha_acid_composition']:
+            item[u'percent_alpha_acids'] = float(item['alpha_acid_composition'].split('%')[0]) / 100.  # nopep8
         with open(filepath, 'wb') as f:
             line = json.dumps(dict(item))
             f.write(line)
@@ -80,7 +82,7 @@ class YeastPipeline(object):
         item[u'attenuation'] = item[u'attenuation'].replace(">", "")
         item[u'attenuation'] = item[u'attenuation'].replace("%", "")
         item[u'attenuation'] = item[u'attenuation'].split('-')
-        item[u'attenuation'] = [float(att) / 100. for att in item[u'attenuation']]
+        item[u'attenuation'] = [float(att) / 100. for att in item[u'attenuation']]  # nopep8
 
         item[u'name'] = item[u'name'].replace('\u2013', '-')
 

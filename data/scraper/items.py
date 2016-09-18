@@ -40,6 +40,7 @@ class HopsItem(scrapy.Item):
     characteristics = scrapy.Field()
     purpose = scrapy.Field()
     alpha_acid_composition = scrapy.Field()
+    percent_alpha_acids = scrapy.Field()
     beta_acid_composition = scrapy.Field()
     co_humulone_composition = scrapy.Field()
     country = scrapy.Field()
@@ -59,6 +60,7 @@ class HopsItem(scrapy.Item):
     farnesene_oil = scrapy.Field()
     substitutes = scrapy.Field()
     style_guide = scrapy.Field()
+    do_you_sell_this_hop = scrapy.Field()
 
 
 class YeastItem(scrapy.Item):
