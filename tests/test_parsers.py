@@ -3,7 +3,9 @@ import unittest
 from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_cereals
+from brew.parsers import parse_hops
 
+from fixtures import cascade_add
 from fixtures import pale_add
 
 
@@ -63,3 +65,27 @@ class TestCerealParser(unittest.TestCase):
         grain_add.update(grain_add.pop('data'))
         out = parse_cereals(grain_add, self.loader)
         self.assertEquals(out, pale_add)
+
+
+class TestHopsParser(unittest.TestCase):
+
+    def setUp(self):
+
+        class HopsLoader(DataLoader):
+            def get_item(self, dir_suffix, item_name):
+                hop_add = cascade_add.to_dict()
+                hop_add.update(hop_add.pop('data'))
+                return hop_add
+        self.hop_add = cascade_add.to_dict()
+        self.loader = HopsLoader('./')
+
+    def test_parse_hops(self):
+        out = parse_hops(self.hop_add, self.loader)
+        self.assertEquals(out, cascade_add)
+
+    def test_parse_hops_no_percent_alpha_acids(self):
+        hop_add = cascade_add.to_dict()
+        hop_add['data'].pop('percent_alpha_acids')
+        hop_add.update(hop_add.pop('data'))
+        out = parse_hops(hop_add, self.loader)
+        self.assertEquals(out, cascade_add)
