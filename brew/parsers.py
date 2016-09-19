@@ -180,7 +180,7 @@ def parse_yeast(yeast, loader):
     try:
         yeast_data = loader.get_item('yeast/', yeast['name'])  # nopep8
     except Exception:
-        return Yeast(yeast['name'])
+        pass
 
     name = yeast_data.get('name', yeast['name'])
     attenuation = None
@@ -189,7 +189,7 @@ def parse_yeast(yeast, loader):
         attenuation = yeast['data'].get('percent_attenuation', None)
 
     if not attenuation:
-        attenuation = yeast_data['attenuation'][0]
+        attenuation = yeast_data['percent_attenuation']
 
     return Yeast(name, percent_attenuation=attenuation)
 
