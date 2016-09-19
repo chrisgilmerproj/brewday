@@ -11,6 +11,27 @@ from fixtures import pale_add
 from fixtures import yeast
 
 
+class CerealLoader(DataLoader):
+    def get_item(self, dir_suffix, item_name):
+        grain_add = pale_add.to_dict()
+        grain_add.update(grain_add.pop('data'))
+        return grain_add
+
+
+class HopsLoader(DataLoader):
+    def get_item(self, dir_suffix, item_name):
+        hop_add = cascade_add.to_dict()
+        hop_add.update(hop_add.pop('data'))
+        return hop_add
+
+
+class YeastLoader(DataLoader):
+    def get_item(self, dir_suffix, item_name):
+        yst = yeast.to_dict()
+        yst.update(yst.pop('data'))
+        return yst
+
+
 class TestDataLoader(unittest.TestCase):
 
     def setUp(self):
@@ -41,12 +62,6 @@ class TestJSONDataLoader(unittest.TestCase):
 class TestCerealParser(unittest.TestCase):
 
     def setUp(self):
-
-        class CerealLoader(DataLoader):
-            def get_item(self, dir_suffix, item_name):
-                grain_add = pale_add.to_dict()
-                grain_add.update(grain_add.pop('data'))
-                return grain_add
         self.grain_add = pale_add.to_dict()
         self.loader = CerealLoader('./')
 
@@ -79,12 +94,6 @@ class TestCerealParser(unittest.TestCase):
 class TestHopsParser(unittest.TestCase):
 
     def setUp(self):
-
-        class HopsLoader(DataLoader):
-            def get_item(self, dir_suffix, item_name):
-                hop_add = cascade_add.to_dict()
-                hop_add.update(hop_add.pop('data'))
-                return hop_add
         self.hop_add = cascade_add.to_dict()
         self.loader = HopsLoader('./')
 
@@ -110,12 +119,6 @@ class TestHopsParser(unittest.TestCase):
 class TestYeastParser(unittest.TestCase):
 
     def setUp(self):
-
-        class YeastLoader(DataLoader):
-            def get_item(self, dir_suffix, item_name):
-                yst = yeast.to_dict()
-                yst.update(yst.pop('data'))
-                return yst
         self.yeast = yeast.to_dict()
         self.loader = YeastLoader('./')
 
