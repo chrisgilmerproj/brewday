@@ -4,14 +4,16 @@ from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_cereals
 from brew.parsers import parse_hops
+from brew.parsers import parse_recipe
 from brew.parsers import parse_yeast
 
 from fixtures import cascade_add
 from fixtures import pale_add
+from fixtures import recipe
 from fixtures import yeast
 
 
-class CerealLoader(DataLoader):
+class CerealsLoader(DataLoader):
     def get_item(self, dir_suffix, item_name):
         grain_add = pale_add.to_dict()
         grain_add.update(grain_add.pop('data'))
@@ -63,7 +65,7 @@ class TestCerealParser(unittest.TestCase):
 
     def setUp(self):
         self.grain_add = pale_add.to_dict()
-        self.loader = CerealLoader('./')
+        self.loader = CerealsLoader('./')
 
     def test_parse_cereals(self):
         out = parse_cereals(self.grain_add, self.loader)
@@ -139,3 +141,19 @@ class TestYeastParser(unittest.TestCase):
         yst.update(yst.pop('data'))
         out = parse_yeast(yst, self.loader)
         self.assertEquals(out, yeast)
+
+
+class TestRecipeParser(unittest.TestCase):
+
+    def setUp(self):
+        self.recipe = recipe.to_dict()
+        self.cereals_loader = CerealsLoader('./')
+        self.hops_loader = HopsLoader('./')
+        self.yeast_loader = YeastLoader('./')
+
+    def test_parse_recipe(self):
+        out = parse_recipe(self.recipe, None,
+                           cereals_loader=self.cereals_loader,
+                           hops_loader=self.hops_loader,
+                           yeast_loader=self.yeast_loader)
+        # self.assertEquals(out, recipe)

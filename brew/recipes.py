@@ -82,6 +82,43 @@ class Recipe(object):
     def __str__(self):
         return self.name
 
+    def __repr__(self):
+        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        if self.grain_additions:
+            out = "{0}, grain_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_additions]))  # nopep8
+        if self.hop_additions:
+            out = "{0}, hop_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_additions]))  # nopep8
+        if self.yeast:
+            out = "{0}, yeast={1}".format(out, repr(self.yeast))
+        if self.percent_brew_house_yield:
+            out = "{0}, percent_brew_house_yield='{1}'".format(out, self.percent_brew_house_yield)  # nopep8
+        if self.start_volume:
+            out = "{0}, start_volume={1}".format(out, self.start_volume)
+        if self.final_volume:
+            out = "{0}, final_volume={1}".format(out, self.final_volume)
+        if self.units:
+            out = "{0}, units={1}".format(out, self.units)
+        out = "{0})".format(out)
+        return out
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if (self.name == other.name) and \
+           (self.grain_additions == other.grain_additions) and \
+           (self.hop_additions == other.hop_additions) and \
+           (self.yeast == other.yeast) and \
+           (self.percent_brew_house_yield ==
+               other.percent_brew_house_yield) and \
+           (self.start_volume == other.start_volume) and \
+           (self.final_volume == other.final_volume) and \
+           (self.units == other.units):
+            return True
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def set_units(self, units):
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
