@@ -100,11 +100,18 @@ class TestYeastParser(unittest.TestCase):
         class YeastLoader(DataLoader):
             def get_item(self, dir_suffix, item_name):
                 yst = yeast.to_dict()
-                yst.update(yeast.pop('data'))
+                yst.update(yst.pop('data'))
                 return yst
         self.yeast = yeast.to_dict()
         self.loader = YeastLoader('./')
 
     def test_parse_yeast(self):
         out = parse_yeast(self.yeast, self.loader)
+        self.assertEquals(out, yeast)
+
+    def test_parse_yeast_no_percent_attenuation(self):
+        yst = yeast.to_dict()
+        yst['data'].pop('percent_attenuation')
+        yst.update(yst.pop('data'))
+        out = parse_yeast(yst, self.loader)
         self.assertEquals(out, yeast)
