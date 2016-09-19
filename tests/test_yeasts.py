@@ -3,6 +3,7 @@ import unittest
 
 from brew.yeasts import Yeast
 
+from fixtures import cascade_add
 from fixtures import yeast
 
 
@@ -19,7 +20,31 @@ class TestYeasts(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.yeast)
-        self.assertEquals(out, "Yeast('Wyeast 1056', percent_attenuation=0.75)")
+        self.assertEquals(out, "Yeast('Wyeast 1056', percent_attenuation=0.75)")  # nopep8
+
+    def test_eq(self):
+        yeast1 = Yeast('Wyeast 1056',
+                       percent_attenuation=0.75)
+        yeast2 = Yeast('Wyeast 1056',
+                       percent_attenuation=0.75)
+        self.assertEquals(yeast1, yeast2)
+
+    def test_ne_name(self):
+        yeast1 = Yeast('Wyeast 1056',
+                       percent_attenuation=0.75)
+        yeast2 = Yeast('Wyeast 1057',
+                       percent_attenuation=0.75)
+        self.assertTrue(yeast1 != yeast2)
+
+    def test_ne_percent_attenuation(self):
+        yeast1 = Yeast('Wyeast 1056',
+                       percent_attenuation=0.75)
+        yeast2 = Yeast('Wyeast 1056',
+                       percent_attenuation=0.70)
+        self.assertTrue(yeast1 != yeast2)
+
+    def test_ne_yeast_add_class(self):
+        self.assertTrue(yeast != cascade_add)
 
     def test_to_dict(self):
         out = self.yeast.to_dict()
