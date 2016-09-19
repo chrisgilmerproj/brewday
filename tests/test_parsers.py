@@ -4,9 +4,11 @@ from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_cereals
 from brew.parsers import parse_hops
+from brew.parsers import parse_yeast
 
 from fixtures import cascade_add
 from fixtures import pale_add
+from fixtures import yeast
 
 
 class TestDataLoader(unittest.TestCase):
@@ -89,3 +91,20 @@ class TestHopsParser(unittest.TestCase):
         hop_add.update(hop_add.pop('data'))
         out = parse_hops(hop_add, self.loader)
         self.assertEquals(out, cascade_add)
+
+
+class TestYeastParser(unittest.TestCase):
+
+    def setUp(self):
+
+        class YeastLoader(DataLoader):
+            def get_item(self, dir_suffix, item_name):
+                yst = yeast.to_dict()
+                yst.update(yeast.pop('data'))
+                return yst
+        self.yeast = yeast.to_dict()
+        self.loader = YeastLoader('./')
+
+    def test_parse_yeast(self):
+        out = parse_yeast(self.yeast, self.loader)
+        self.assertEquals(out, yeast)

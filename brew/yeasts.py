@@ -35,6 +35,17 @@ class Yeast(object):
         out = "{0})".format(out)
         return out
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if (self.name == other.name) and \
+           (self.percent_attenuation == other.percent_attenuation):
+            return True
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def to_dict(self):
         return {'name': self.name,
                 'data': {
