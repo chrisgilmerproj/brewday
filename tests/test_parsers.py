@@ -54,6 +54,13 @@ class TestCerealParser(unittest.TestCase):
         out = parse_cereals(self.grain_add, self.loader)
         self.assertEquals(out, pale_add)
 
+    def test_parse_cereals_loader_raises(self):
+        def get_item(self, dir_suffix, item_name):
+            raise Exception
+        self.loader.get_item = get_item
+        out = parse_cereals(self.grain_add, self.loader)
+        self.assertEquals(out, pale_add)
+
     def test_parse_cereals_no_color(self):
         grain_add = pale_add.to_dict()
         grain_add['data'].pop('color')
@@ -85,6 +92,13 @@ class TestHopsParser(unittest.TestCase):
         out = parse_hops(self.hop_add, self.loader)
         self.assertEquals(out, cascade_add)
 
+    def test_parse_hops_loader_raises(self):
+        def get_item(self, dir_suffix, item_name):
+            raise Exception
+        self.loader.get_item = get_item
+        out = parse_hops(self.hop_add, self.loader)
+        self.assertEquals(out, cascade_add)
+
     def test_parse_hops_no_percent_alpha_acids(self):
         hop_add = cascade_add.to_dict()
         hop_add['data'].pop('percent_alpha_acids')
@@ -106,6 +120,13 @@ class TestYeastParser(unittest.TestCase):
         self.loader = YeastLoader('./')
 
     def test_parse_yeast(self):
+        out = parse_yeast(self.yeast, self.loader)
+        self.assertEquals(out, yeast)
+
+    def test_parse_yeast_loader_raises(self):
+        def get_item(self, dir_suffix, item_name):
+            raise Exception
+        self.loader.get_item = get_item
         out = parse_yeast(self.yeast, self.loader)
         self.assertEquals(out, yeast)
 
