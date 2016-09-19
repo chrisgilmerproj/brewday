@@ -194,7 +194,10 @@ def parse_yeast(yeast, loader):
     return Yeast(name, percent_attenuation=attenuation)
 
 
-def parse_recipe(recipe, loader):
+def parse_recipe(recipe, loader,
+                 cereals_loader=None,
+                 hops_loader=None,
+                 yeast_loader=None):
     """
     Parse a recipe from a python Dict
 
@@ -220,17 +223,24 @@ def parse_recipe(recipe, loader):
     the key 'name' and the remaining attributes will be looked up in the data
     directory if they are not provided.
     """
+    if not cereals_loader:
+        cereals_loader = loader
+    if not hops_loader:
+        hops_loader = loader
+    if not yeast_loader:
+        yeast_loader = loader
+
     Recipe.validate(recipe)
 
     grain_additions = []
     for grain in recipe['grains']:
-        grain_additions.append(parse_cereals(grain, loader))
+        grain_additions.append(parse_cereals(grain, cereals_loader))
 
     hop_additions = []
     for hop in recipe['hops']:
-        hop_additions.append(parse_hops(hop, loader))
+        hop_additions.append(parse_hops(hop, hops_loader))
 
-    yeast = parse_yeast(recipe['yeast'], loader)
+    yeast = parse_yeast(recipe['yeast'], yeast_loader)
 
     recipe_kwargs = {
         'grain_additions': grain_additions,
