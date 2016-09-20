@@ -377,7 +377,7 @@ class Recipe(object):
         abv_standard = alcohol_by_volume_standard(og, fg)
         abv_alternative = alcohol_by_volume_alternative(og, fg)
         recipe_dict = {
-            'name': string.capwords(self.name),
+            'name': self.name,
             'start_volume': round(self.start_volume, 2),
             'final_volume': round(self.final_volume, 2),
             'data': {

@@ -6,10 +6,10 @@ from brew.parsers import parse_cereals
 from brew.parsers import parse_hops
 from brew.parsers import parse_recipe
 from brew.parsers import parse_yeast
+from brew.recipes import Recipe
 
 from fixtures import cascade_add
 from fixtures import pale_add
-from fixtures import recipe
 from fixtures import yeast
 
 
@@ -146,14 +146,24 @@ class TestYeastParser(unittest.TestCase):
 class TestRecipeParser(unittest.TestCase):
 
     def setUp(self):
-        self.recipe = recipe.to_dict()
+        # A special recipe is needed since the loaders only return
+        # pre-chosen additions
+        self.recipe = Recipe(name='pale ale',
+                             grain_additions=[pale_add, pale_add],
+                             hop_additions=[cascade_add, cascade_add],
+                             yeast=yeast,
+                             percent_brew_house_yield=0.70,  # %
+                             start_volume=7.0,  # G
+                             final_volume=5.0,  # G
+                             )
+        self.recipe_data = self.recipe.to_dict()
         self.cereals_loader = CerealsLoader('./')
         self.hops_loader = HopsLoader('./')
         self.yeast_loader = YeastLoader('./')
 
     def test_parse_recipe(self):
-        out = parse_recipe(self.recipe, None,
+        out = parse_recipe(self.recipe_data, None,
                            cereals_loader=self.cereals_loader,
                            hops_loader=self.hops_loader,
                            yeast_loader=self.yeast_loader)
-        # self.assertEquals(out, recipe)
+        self.assertEquals(out, self.recipe)
