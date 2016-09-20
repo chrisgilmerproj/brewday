@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## Version 0.0.5
+
+- Add __repr__, __eq__ and __ne__ to all classes
+- Allow using multiple loaders in recipe parsing
+- Remove short_name from grain since it doesn't give us any extra functionality
+- Add tests for recipe parsers
+- Update hops scraper to work with new website and parse alpha acids
+- Update hops data
+- Update readme since all methods work with SI units
+- Make abv and abw methods return decimal percentage numbers
+- All percentages now print in percentage, not decimal, format
+- Add attenuation equations and a test for abw
+- Add utility to calculate apparent extract to real extract
+- Start to clarify the abv constant
+- Add statements to all cli's so they can be run directly
+- Add tests for cli's abv, sugar, and temp
+
 ## Version 0.0.4
 
 - Add tests for cli utilities
