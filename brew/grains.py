@@ -37,7 +37,6 @@ class Grain(object):
     """
 
     def __init__(self, name,
-                 short_name=None,
                  color=None,
                  ppg=None,
                  hwe=None):
@@ -52,7 +51,6 @@ class Grain(object):
             8.3454 X PPG = HWE.
         """
         self.name = name
-        self.short_name = short_name or name
         self.color = float(color)
         if ppg and hwe:
             raise Exception("Cannot provide both ppg and hwe")
@@ -68,8 +66,6 @@ class Grain(object):
 
     def __repr__(self):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
-        if self.short_name:
-            out = "{0}, short_name='{1}'".format(out, self.short_name)
         if self.color:
             out = "{0}, color={1}".format(out, self.color)
         if self.hwe:
@@ -93,7 +89,6 @@ class Grain(object):
 
     def to_dict(self):
         return {'name': self.name,
-                'short_name': self.short_name,
                 'color': round(self.color, 1),
                 'ppg': round(self.ppg, 2),
                 'hwe': round(self.hwe, 2),

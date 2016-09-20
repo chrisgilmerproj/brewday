@@ -7,11 +7,9 @@ from brew.yeasts import Yeast
 
 # Define Grains
 pale = Grain('pale 2-row',
-             short_name='2-row',
              color=2.0,
              ppg=37.0)
 crystal = Grain('crystal C20',
-                short_name='C20',
                 color=20.0,
                 ppg=35.0)
 grain_list = [pale, crystal]
