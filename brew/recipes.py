@@ -1,7 +1,6 @@
 #! /usr/bin/python
 
 import json
-import string
 import textwrap
 
 from .constants import GRAIN_TYPE_DME
@@ -52,7 +51,11 @@ class Recipe(object):
                  final_volume=5.0,
                  units=IMPERIAL_UNITS):
         self.name = name
+        if grain_additions is None:
+            grain_additions = []
         self.grain_additions = grain_additions
+        if hop_additions is None:
+            hop_additions = []
         self.hop_additions = hop_additions
         self.yeast = yeast
 
