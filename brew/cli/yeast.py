@@ -18,33 +18,29 @@ from brew.utilities.yeast import KaiserYeastModel
 from brew.utilities.yeast import WhiteYeastModel
 
 
-def get_yeast_pitch_calculation(args):
-    if args.units not in [IMPERIAL_UNITS, SI_UNITS]:
-        print("Units must be in either {} or {}".format(IMPERIAL_UNITS,
-                                                        SI_UNITS))
-        sys.exit(1)
+def get_yeast_pitch_calculation(
+        model_cls=WhiteYeastModel,
+        method='stir plate',
+        og=1.05,
+        fv=5.0,
+        sg=1.036,
+        sv=0.53,
+        target_pitch_rate=1.42,
+        yeast_type='liquid',
+        cells=100,
+        num=1,
+        days=0,
+        units=IMPERIAL_UNITS):
+    msg_list = []
 
-    model_cls = None
-    if args.model == 'white':
-        model_cls = WhiteYeastModel
-    elif args.model == 'kaiser':
-        model_cls = KaiserYeastModel
-    else:
-        print("Unknown Yeast Growth Model '{}', must be 'white' or 'kaiser'".format(args.model))  # nopep8
-        sys.exit(1)
-
-    try:
-        model = model_cls(args.method, units=args.units)
-    except Exception as e:
-        print(e)
-        sys.exit(1)
-    data = model.get_yeast_pitch_rate(original_gravity=args.og,
-                                      final_volume=args.fv,
-                                      target_pitch_rate=args.target_pitch_rate,
-                                      yeast_type=args.type,
-                                      cells_per_pack=args.cells,
-                                      num_packs=args.num,
-                                      days_since_manufacture=args.days)
+    model = model_cls(method, units=units)
+    data = model.get_yeast_pitch_rate(original_gravity=og,
+                                      final_volume=fv,
+                                      target_pitch_rate=target_pitch_rate,
+                                      yeast_type=yeast_type,
+                                      cells_per_pack=cells,
+                                      num_packs=num,
+                                      days_since_manufacture=days)
     cells_needed = data['cells_needed']
     data.update(model.types)
     msg = textwrap.dedent("""\
@@ -60,15 +56,15 @@ def get_yeast_pitch_calculation(args):
             Cells Needed          {cells_needed} B
             Required Growth Rate  {required_growth_rate}
             Units                 {units}""".format(**data))
-    print(msg)
+    msg_list.append(msg)
 
     if data['cells'] <= 0:
-        print("\nNo cells available for further calculation")
-        sys.exit(1)
+        msg_list.append("\nNo cells available for further calculation")
+        return '\n'.join(msg_list)
 
     data = model.get_starter_volume(available_cells=data['cells'],
-                                    starter_volume=args.sv,
-                                    original_gravity=args.sg)
+                                    starter_volume=sv,
+                                    original_gravity=sg)
     end_cell_count = data['end_cell_count']
     data.update(model.types)
     msg = textwrap.dedent("""\
@@ -83,17 +79,17 @@ def get_yeast_pitch_calculation(args):
             Growth Rate           {growth_rate}
             End Cell Count        {end_cell_count} B
             Units                 {units}""".format(**data))
-    print(msg)
+    msg_list.append(msg)
 
     if cells_needed < end_cell_count:
-        print("\nStarter has enough cells")
+        msg_list.append("\nStarter has enough cells")
     else:
-        print("\nStarter DOES NOT HAVE enough cells")
+        msg_list.append("\nStarter DOES NOT HAVE enough cells")
 
     resulting_pitch_rate = model.get_resulting_pitch_rate(
         starter_cell_count=end_cell_count,
-        original_gravity=args.sg,
-        final_volume=args.fv)
+        original_gravity=sg,
+        final_volume=fv)
     data.update(model.types)
     msg = textwrap.dedent("""\
 
@@ -104,11 +100,12 @@ def get_yeast_pitch_calculation(args):
             Final Volume          {final_volume} {volume}
             Pitch Rate            {resulting_pitch_rate}""".format(
         starter_cell_count=end_cell_count,
-        original_gravity=args.sg,
-        final_volume=args.fv,
+        original_gravity=sg,
+        final_volume=fv,
         resulting_pitch_rate=resulting_pitch_rate,
         **model.types))
-    print(msg)
+    msg_list.append(msg)
+    return('\n'.join(msg_list))
 
 
 def get_parser():
@@ -159,7 +156,40 @@ def main(parser_fn=get_parser, parser_kwargs=None):
     else:
         parser = parser_fn(**parser_kwargs)
     args = parser.parse_args()
-    get_yeast_pitch_calculation(args)
+
+    # Check on output
+    if args.units not in [IMPERIAL_UNITS, SI_UNITS]:
+        print("Units must be in either {} or {}".format(IMPERIAL_UNITS,
+                                                        SI_UNITS))
+        sys.exit(1)
+
+    model_cls = None
+    if args.model == 'white':
+        model_cls = WhiteYeastModel
+    elif args.model == 'kaiser':
+        model_cls = KaiserYeastModel
+    else:
+        print("Unknown Yeast Growth Model '{}', must be 'white' or 'kaiser'".format(args.model))  # nopep8
+        sys.exit(1)
+
+    try:
+        out = get_yeast_pitch_calculation(
+            model_cls=model_cls,
+            method=args.method,
+            og=args.og,
+            fv=args.fv,
+            sg=args.sg,
+            sv=args.sv,
+            target_pitch_rate=args.target_pitch_rate,
+            yeast_type=args.type,
+            cells=args.cells,
+            num=args.num,
+            days=args.days,
+            units=args.units)
+        print(out)
+    except Exception as e:
+        print(e)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
