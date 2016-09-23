@@ -190,3 +190,7 @@ class TestRecipeParser(unittest.TestCase):
                            hops_loader=self.hops_loader,
                            yeast_loader=self.yeast_loader)
         self.assertEquals(out, self.recipe)
+
+    def test_parse_recipe_default_loader(self):
+        out = parse_recipe(self.recipe_data, None)
+        self.assertEquals(out, self.recipe)
