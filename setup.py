@@ -30,6 +30,7 @@ setup(
     include_package_data=True,
     zip_safe=True,
     tests_require=[
+        'mock==2.0.0',
         'nose==1.3.1',
         'pluggy==0.3.1',
         'py==1.4.31',
