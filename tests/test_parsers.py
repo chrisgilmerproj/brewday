@@ -1,5 +1,7 @@
 import unittest
 
+import mock
+
 from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_cereals
@@ -38,10 +40,31 @@ class TestDataLoader(unittest.TestCase):
 
     def setUp(self):
         self.loader = DataLoader('./')
+        self.loader.DATA = {}
+        self.loader.EXT = 'json'
 
     def test_read_data_raises(self):
         with self.assertRaises(NotImplementedError):
             self.loader.read_data('filename')
+
+    @mock.patch('glob.glob')
+    def test_get_item(self, mock_glob):
+        def read_data(item_filename):
+            return 'data'
+        self.loader.read_data = read_data
+        mock_glob.return_value = ['cereals/crystal_20.json']
+        out = self.loader.get_item('cereals/', 'crystal 20')
+        expected = 'data'
+        self.assertEquals(out, expected)
+
+    @mock.patch('glob.glob')
+    def test_get_item_raises(self, mock_glob):
+        def read_data(item_filename):
+            return 'data'
+        self.loader.read_data = read_data
+        mock_glob.return_value = ['cereals/crystal_40.json']
+        with self.assertRaises(Exception):
+            self.loader.get_item('cereals/', 'crystal 20')
 
 
 class TestJSONDataLoader(unittest.TestCase):
