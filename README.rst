@@ -1,4 +1,4 @@
-|PyPI| |Versions| |Build Status| |License|
+|PyPI| |Versions| |Build Status| |Documentation Status| |License|
 
 Brew Day
 ========
@@ -78,11 +78,39 @@ number 0.0 and 1.0.
 Percentages will be displayed in percentage format as opposed to decimal
 format to avoid confusion and for ease of reading.
 
+Documentation
+=============
+
+Change to the ``docs`` directory. Then do the following:
+
+.. code:: sh
+
+    $ cd docs/
+    $ virtualenv .venv
+    $ source .venv/bin/activate
+    (.venv) $ pip install -r requirements.txt
+    (.venv) $ pip install -r requirements-local.txt --upgrade
+    (.venv) $ make html
+    (.venv) $ open build/index.html
+
+It's important that the current version of the library be installed in
+order to generate the API docs. To insure this insure to install from
+``requirements-local.txt`` with the ``--upgrade`` flag every time.
+Example:
+
+.. code:: sh
+
+    $ source .venv/bin/activate
+    (.venv) $ pip install -r requirements-local.txt --upgrade
+    (.venv) $ make html
+
 .. |PyPI| image:: https://img.shields.io/pypi/v/brewday.svg
    :target: https://pypi.python.org/pypi/brewday/0.0.4
 .. |Versions| image:: https://img.shields.io/pypi/pyversions/brewday.svg
    :target: https://img.shields.io/pypi/pyversions/brewday.svg
 .. |Build Status| image:: https://travis-ci.org/chrisgilmerproj/brewday.svg?branch=master
    :target: https://travis-ci.org/chrisgilmerproj/brewday
+.. |Documentation Status| image:: https://readthedocs.org/projects/brewday/badge/?version=latest
+   :target: http://brewday.readthedocs.org/en/latest/?badge=latest
 .. |License| image:: https://img.shields.io/pypi/l/brewday.svg
    :target: https://opensource.org/licenses/MIT
