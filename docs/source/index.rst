@@ -25,6 +25,7 @@ API Docs
    api/hops.rst
    api/yeasts.rst
    api/recipes.rst
+   api/parsers.rst
    api/validators.rst
 
 Indices and tables
