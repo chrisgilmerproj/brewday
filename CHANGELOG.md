@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## Version 0.0.6
+
 ## Version 0.0.5
 
 - Add __repr__, __eq__ and __ne__ to all classes
