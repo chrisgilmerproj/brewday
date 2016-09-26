@@ -1,5 +1,5 @@
 brew.utilities.malt
-==================
+===================
 
 .. automethod:: brew.utilities.malt.dry_to_liquid_malt_weight
 

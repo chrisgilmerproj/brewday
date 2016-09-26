@@ -1,5 +1,5 @@
 brew.utilities.temperature
-==================
+==========================
 
 .. automethod:: brew.utilities.temperature.fahrenheit_to_celsius
 
