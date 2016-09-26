@@ -1,5 +1,5 @@
 brew.utilities.sugar
-==================
+====================
 
 .. automethod:: brew.utilities.sugar.sg_to_gu
 

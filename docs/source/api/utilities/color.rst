@@ -1,5 +1,5 @@
 brew.utilities.color
-==================
+====================
 
 .. automethod:: brew.utilities.color.srm_to_ebc
 
