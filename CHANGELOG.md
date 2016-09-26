@@ -16,6 +16,7 @@
 - Start to clarify the abv constant
 - Add statements to all cli's so they can be run directly
 - Add tests for cli's abv, sugar, and temp
+- Add docs to project
 
 ## Version 0.0.4
 
