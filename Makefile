@@ -9,7 +9,7 @@ WITH_VENV=. $(VENV_ACTIVATE);
 TEST_OUTPUT?=nosetests.xml
 COVERAGE_OUTPUT?=coverage.xml
 
-.PHONY: help venv setup clean teardown lint test package
+.PHONY: help venv setup clean teardown lint test package upload install
 
 help:  ## Print the help documentation
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -48,6 +48,9 @@ test:  ## Run unit tests
 
 package: clean ## Create the python package
 	python setup.py build
+
+upload: clean ## Upload the python package
+	python setup.py build sdist check upload -r pypi
 
 install:  ## Install the python package
 	$(WITH_VENV) python setup.py install
