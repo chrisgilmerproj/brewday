@@ -1,5 +1,5 @@
 brew.yeasts
-=============
+===========
 
 .. autoclass:: brew.yeasts.Yeast
    :members:

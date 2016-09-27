@@ -201,7 +201,8 @@ class KaiserYeastModel(YeastModel):
     Only works for Stir Plage Growth
 
     Sources:
-    - http://braukaiser.com/blog/blog/2012/11/03/estimating-yeast-growth/
+
+    * http://braukaiser.com/blog/blog/2012/11/03/estimating-yeast-growth/
     """
     METHOD_TO_GROWTH_ADJ = {
         'stir plate': 0.0,
@@ -231,10 +232,10 @@ class KaiserYeastModel(YeastModel):
 class WhiteYeastModel(YeastModel):
     """
     Sources:
-    - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
-    - White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer
-      Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
-    """
+
+    * http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
+    * White, Chris, and Jamil Zainasheff. Yeast: The Practical Guide to Beer Fermentation. Boulder, CO: Brewers Publications, 2010. 139-44. Print.
+    """  # nopep8
 
     # Linear Regression Least Squares
     INOCULATION_CONST = [-0.999499, 12.547938, -0.459486]

@@ -1,5 +1,5 @@
 brew.validators
-=============
+===============
 
 .. automethod:: brew.validators.validate_grain_type
 

@@ -1,5 +1,5 @@
 brew.grains
-=============
+===========
 
 .. autoclass:: brew.grains.Grain
    :members:

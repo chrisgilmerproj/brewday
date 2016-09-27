@@ -1,5 +1,5 @@
 brew.hops
-=============
+=========
 
 .. autoclass:: brew.hops.Hop
    :members:

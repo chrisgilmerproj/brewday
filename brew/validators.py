@@ -45,11 +45,13 @@ def validate_required_fields(data, required_fields):
     """
     Validate fields which are required as part of the data.
 
-    data: a python dict
-    required_fields: a list of tuples where the first element is a string with
-                     a value that should be a key found in the data dict and
-                     where the second element is a python type or list/tuple of
-                     python types to check the field against.
+    data
+        a python dict
+    required_fields
+        a list of tuples where the first element is a string with
+        a value that should be a key found in the data dict and
+        where the second element is a python type or list/tuple of
+        python types to check the field against.
     """
     for field, field_type in required_fields:
         if field not in data:
@@ -64,11 +66,13 @@ def validate_optional_fields(data, optional_fields, data_field='data'):
     """
     Validate fields which are optional as part of the data.
 
-    data: a python dict
-    optional_fields: a list of tuples where the first element is a string with
-                     a value that should be a key found in the data dict and
-                     where the second element is a python type or list/tuple of
-                     python types to check the field against.
+    data
+        a python dict
+    optional_fields
+        a list of tuples where the first element is a string with
+        a value that should be a key found in the data dict and
+        where the second element is a python type or list/tuple of
+        python types to check the field against.
     """
     # If no optional data field present then return
     if data_field not in data:
