@@ -1,5 +1,5 @@
 brew.parsers
-=============
+============
 
 .. autoclass:: brew.parsers.DataLoader
    :members:

@@ -43,12 +43,11 @@ def alcohol_by_volume_standard(og, fg):
     The resulting difference is pretty minor.
 
     Source:
-    - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
-    - http://www.brewmorebeer.com/calculate-percent-alcohol-in-beer/
 
-      46.07 g/mol C2H6O       1.0
-     ------------------- x -------- * 100 * (og - fg)
-      44.0095 g/mol CO2     0.7936
+    * http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
+    * http://www.brewmorebeer.com/calculate-percent-alcohol-in-beer/
+
+    :math:`\\text{ABV} = \\frac{46.07 \\text{g/mol C2H6O}}{44.0095 \\text{g/mol CO2}} \\times \\frac{1.0}{0.7936} \\times 100 \\times (og - fg)`
     """  # nopep8
     ABV_CONST = 131.25
     return (og - fg) * ABV_CONST / 100.0

@@ -1,5 +1,5 @@
 brew.recipes
-=============
+============
 
 .. autoclass:: brew.recipes.Recipe
    :members:

@@ -100,8 +100,10 @@ def fine_grind_to_coarse_grind(fine_grind, fc_diff=FC_DIFF_TWO_ROW):
     """
     Fine Grind to Coarse Grind Percentage
 
-    fine_grind is a percentage from the malt bill
-    fc_diff is the F/C difference percentage from the malt bill
+    fine_grind
+        A percentage from the malt bill
+    fc_diff
+        The F/C difference percentage from the malt bill
     """
     validate_percentage(fine_grind)
     validate_percentage(fc_diff)
@@ -112,8 +114,10 @@ def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
     """
     Coarse Grind to Fine Grind Percentage
 
-    coarse_grind is a percentage from the malt bill
-    fc_diff is the F/C difference percentage from the malt bill
+    coarse_grind
+        A percentage from the malt bill
+    fc_diff
+        The F/C difference percentage from the malt bill
     """
     validate_percentage(coarse_grind)
     validate_percentage(fc_diff)
@@ -125,9 +129,10 @@ def dry_basis_to_as_is_basis(dry_basis,
     """
     Dry Basis to As-Is Basis Percentage
 
-    dry_basis is a percentage from the malt bill in decimal form
-    moisture_content is a percentage of moisture content in finished malt
-      in decimal form
+    dry_basis
+        A percentage from the malt bill in decimal form
+    moisture_content
+        Apercentage of moisture content in finished malt in decimal form
     """
     validate_percentage(dry_basis)
     validate_percentage(moisture_content)
@@ -139,9 +144,10 @@ def as_is_basis_to_dry_basis(as_is,
     """
     As-Is Basis to Dry Basis Percentage
 
-    asi_is is a percentage from the malt bill in decimal form
-    moisture_content is a percentage of moisture content in finished malt
-      in decimal form
+    asi_is
+        A percentage from the malt bill in decimal form
+    moisture_content
+        Apercentage of moisture content in finished malt in decimal form
     """
     validate_percentage(as_is)
     validate_percentage(moisture_content)
@@ -155,11 +161,14 @@ def sg_from_dry_basis(dbcg,
     """
     Specific Gravity from Dry Basis Percentage
 
-    dbcg is Dry Basis Coarse Grain in decimal form
-    moisture_content is a percentage of moisture content in finished malt
-      in decimal form
-    moisture_correction is a percentage correction in decimal form
-    brew_house_efficiency is the efficiency in decimal form
+    dbcg
+        Dry Basis Coarse Grain in decimal form
+    moisture_content
+        Apercentage of moisture content in finished malt in decimal form
+    moisture_correction
+        A percentage correction in decimal form
+    brew_house_efficiency
+        The efficiency in decimal form
 
     Returns: Specific Gravity available from Malt
     """
@@ -179,11 +188,14 @@ def plato_from_dry_basis(dbcg,
     """
     Degrees Plato from Dry Basis Percentage
 
-    dbcg is Dry Basis Coars Grain in decimal form
-    moisture_content is a percentage of moisture content in finished malt
-      in decimal form
-    moisture_correction is a percentage correction in decimal form
-    brew_house_efficiency is the efficiency in decimal form
+    dbcg
+        Dry Basis Coars Grain in decimal form
+    moisture_content
+        A percentage of moisture content in finished malt in decimal form
+    moisture_correction
+        A percentage correction in decimal form
+    brew_house_efficiency
+        The efficiency in decimal form
 
     Returns: Degrees Plato available from Malt
     """
@@ -199,7 +211,8 @@ def basis_to_hwe(basis_percentage):
     """
     Basis Percentage to Hot Water Extract
 
-    basis_percentage in decimal form
+    basis_percentage
+        decimal form
 
     Return Hot Water Extract as Ldeg/kg, dry basis
 

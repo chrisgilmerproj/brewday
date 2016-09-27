@@ -91,6 +91,5 @@ to generate the API docs.  To insure this insure to install from
 
 ```sh
 $ source .venv/bin/activate
-(.venv) $ pip install -r requirements-local.txt --upgrade
-(.venv) $ make html
+(.venv) $ pip install -r requirements-local.txt --upgrade && make clean html
 ```

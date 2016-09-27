@@ -41,14 +41,20 @@ class Grain(object):
                  ppg=None,
                  hwe=None):
         """
-        Color - The color of the grain in SRM
-        PPG - The potential points points per gallon.
-        Hot Water Extract - The international unit for the total soluble
+        Name
+            The name of the grain
+        Color
+            The color of the grain in SRM
+        PPG
+            The potential points points per gallon.
+        Hot Water Extract
+            The international unit for the total soluble
             extract of a malt, based on specific gravity. HWE is measured as
             liter*degrees per kilogram, and is equivalent to
             points/pound/gallon (PPG) when you apply metric conversion factors
-            for volume and weight. The combined conversion factor is
-            8.3454 X PPG = HWE.
+            for volume and weight. The combined conversion factor is:
+
+            :math:`\\text{HWE} = 8.3454 \\times \\text{PPG}`
         """
         self.name = name
         self.color = float(color)
@@ -110,11 +116,12 @@ class Grain(object):
     def get_working_yield(self, percent_brew_house_yield):
         """
         Working Yield
+
         Working Yield is the product of the Hot Water Extract multiplied by the
         Brew House Yield.  This product will provide the percent of extract
         collected from the malt.
 
-        WY =    (HWE as-is)(BHY)
+        :math:`WY = \\text{HWE as-is} \\times \\text{BHY}`
         """
         validate_percentage(percent_brew_house_yield)
         return (hwe_to_basis(self.hwe) *
@@ -131,8 +138,10 @@ class GrainAddition(object):
                  grain_type=GRAIN_TYPE_CEREAL,
                  units=IMPERIAL_UNITS):
         """
-        Weight - The weight of the grain to add
-        Grain Type - The type of grain being used
+        Weight
+            The weight of the grain to add
+        Grain Type
+            The type of grain being used
         """
         self.grain = grain
         self.weight = weight

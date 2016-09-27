@@ -1,3 +1,4 @@
 # For local compilation of docs you want to install the master
 
--e git+git@github.com:chrisgilmerproj/brewday.git@master#egg=brewday
+#-e git+git@github.com:chrisgilmerproj/brewday.git@master#egg=brewday
+-e ../
