@@ -7,12 +7,13 @@ Model API
 .. toctree::
    :maxdepth: 2
 
+   api/constants.rst
    api/grains.rst
    api/hops.rst
-   api/yeasts.rst
-   api/recipes.rst
    api/parsers.rst
+   api/recipes.rst
    api/validators.rst
+   api/yeasts.rst
 
 
 Utilities API Docs
