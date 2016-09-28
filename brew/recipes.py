@@ -123,6 +123,11 @@ class Recipe(object):
         return not self.__eq__(other)
 
     def set_units(self, units):
+        """
+        Set the units and unit types
+
+        :param str units: The units
+        """
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
             self.types = IMPERIAL_TYPES
@@ -131,7 +136,10 @@ class Recipe(object):
 
     def change_units(self):
         """
-        Change units from one type to the other return new instance
+        Change units of the class from one type to the other
+
+        :return: Recipe in new unit type
+        :rtype: Recipe
         """
         if self.units == IMPERIAL_UNITS:
             start_volume = self.start_volume * LITER_PER_GAL

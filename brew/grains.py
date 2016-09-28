@@ -41,20 +41,11 @@ class Grain(object):
                  ppg=None,
                  hwe=None):
         """
-        Name
-            The name of the grain
-        Color
-            The color of the grain in SRM
-        PPG
-            The potential points points per gallon.
-        Hot Water Extract
-            The international unit for the total soluble
-            extract of a malt, based on specific gravity. HWE is measured as
-            liter*degrees per kilogram, and is equivalent to
-            points/pound/gallon (PPG) when you apply metric conversion factors
-            for volume and weight. The combined conversion factor is:
-
-            :math:`\\text{HWE} = 8.3454 \\times \\text{PPG}`
+        :param str name: The name of the grain
+        :param float color: The color of the grain in SRM
+        :param float ppg: The potential points per gallon
+        :param float hwe: The hot water extract value
+        :raises Exception: If both ppg and hwe are provided
         """
         self.name = name
         self.color = float(color)
@@ -115,13 +106,11 @@ class Grain(object):
 
     def get_working_yield(self, percent_brew_house_yield):
         """
-        Working Yield
+        Get Working Yield
 
-        Working Yield is the product of the Hot Water Extract multiplied by the
-        Brew House Yield.  This product will provide the percent of extract
-        collected from the malt.
-
-        :math:`WY = \\text{HWE as-is} \\times \\text{BHY}`
+        :param float percent_brew_house_yield: The Percent Brew House Yield
+        :return: The working yield
+        :rtype: float
         """
         validate_percentage(percent_brew_house_yield)
         return (hwe_to_basis(self.hwe) *
@@ -138,10 +127,10 @@ class GrainAddition(object):
                  grain_type=GRAIN_TYPE_CEREAL,
                  units=IMPERIAL_UNITS):
         """
-        Weight
-            The weight of the grain to add
-        Grain Type
-            The type of grain being used
+        :param Grain grain: The Grain object
+        :param float weight: The weight of the grain
+        :param str grain_type: The type of the grain being used
+        :param str units: The units
         """
         self.grain = grain
         self.weight = weight
@@ -151,6 +140,11 @@ class GrainAddition(object):
         self.set_units(units)
 
     def set_units(self, units):
+        """
+        Set the units and unit types
+
+        :param str units: The units
+        """
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
             self.types = IMPERIAL_TYPES
@@ -159,7 +153,10 @@ class GrainAddition(object):
 
     def change_units(self):
         """
-        Change units from one type to the other return new instance
+        Change units of the class from one type to the other
+
+        :return: Grain Addition in new unit type
+        :rtype: GrainAddition
         """
         if self.units == IMPERIAL_UNITS:
             weight = self.weight * KG_PER_POUND
@@ -202,6 +199,9 @@ class GrainAddition(object):
     def get_cereal_weight(self):
         """
         Get the weight of the addition in cereal weight
+
+        :return: Cereal weight
+        :rtype: float
         """
         if self.grain_type == GRAIN_TYPE_CEREAL:
             return self.weight
@@ -215,6 +215,9 @@ class GrainAddition(object):
     def get_lme_weight(self):
         """
         Get the weight of the addition in Liquid Malt Extract weight
+
+        :return: LME weight
+        :rtype: float
         """
         if self.grain_type == GRAIN_TYPE_CEREAL:
             return grain_to_liquid_malt_weight(self.weight)
@@ -228,6 +231,9 @@ class GrainAddition(object):
     def get_dry_weight(self):
         """
         Get the weight of the addition in Dry Malt Extract weight
+
+        :return: Dry weight
+        :rtype: float
         """
         if self.grain_type == GRAIN_TYPE_CEREAL:
             return grain_to_dry_malt_weight(self.weight)
@@ -240,6 +246,12 @@ class GrainAddition(object):
             return liquid_to_dry_malt_weight(lme)
 
     def get_weight_map(self):
+        """
+        Get map of grain weights by type
+
+        :return: Grain weights
+        :rtype: dict
+        """
         return {
             'grain_weight': round(self.get_cereal_weight(), 2),
             'lme_weight': round(self.get_lme_weight(), 2),

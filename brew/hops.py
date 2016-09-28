@@ -29,10 +29,8 @@ class Hop(object):
     def __init__(self, name,
                  percent_alpha_acids=None):
         """
-        Name
-            The name of the hop
-        Percent Alpha Acids
-            The percent alpha acids in the hop.
+        :param str name: The name of the hop
+        :param float percent_alpha_acids: The percent alpha acids in the hop
         """
         self.name = name
         self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
@@ -90,21 +88,14 @@ class HopAddition(object):
                  utilization_cls_kwargs=None,
                  units=IMPERIAL_UNITS):
         """
-        Hop
-            A hop object
-        Weight
-            The weight of the hop to add
-        Boil Time
-            The time the hop should be boiled for measured backwards
-            from the end of the boil.
-        Hop Type
-            The type of hop being used
-        Utilization Class
-            The utilization calculation class to use
-        Utilization Class Kwargs
-            The keyword arguments to initialize the
-            Utilization Class with
-        """
+        :param Hop hop: The Hop object
+        :param float weight: The weight of the hop addition
+        :param float boil_time: The amount of time the hop is boiled
+        :param float hop_type: The type of the hop being used
+        :param HopsUtilization utilization_cls: The utilization class used for calculation
+        :param dict utilization_cls_kwargs: The kwargs to initialize the utilization_cls object
+        :param str units: The units
+        """  # nopep8
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time
@@ -116,6 +107,11 @@ class HopAddition(object):
         self.set_units(units)
 
     def set_units(self, units):
+        """
+        Set the units and unit types
+
+        :param str units: The units
+        """
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
             self.types = IMPERIAL_TYPES
@@ -124,7 +120,10 @@ class HopAddition(object):
 
     def change_units(self):
         """
-        Change units from one type to the other return new instance
+        Change units of the class from one type to the other
+
+        :return: Hop Addition in new unit type
+        :rtype: HopAddition
         """
         if self.units == IMPERIAL_UNITS:
             weight = self.weight * MG_PER_OZ
@@ -220,13 +219,22 @@ class HopAddition(object):
         return msg
 
     def get_ibus(self, sg, final_volume):
+        """
+        Get the IBUs
+
+        :param float sg: The specific gravity of the wort
+        :param float final_volume: The final volume of the wort
+        :return: The IBUs of the wort
+        :rtype: float
+        """
         return self.utilization_cls.get_ibus(sg, final_volume)
 
     def get_alpha_acid_units(self):
         """
-        Alpha Acid Units
+        Get Alpha Acid Units
 
-        Defined as ounces of hops * alpha acids
+        :return: alpha acid units
+        :rtype: float
         """
         alpha_acids = self.hop.percent_alpha_acids * 100
         if self.units == IMPERIAL_UNITS:
@@ -237,35 +245,14 @@ class HopAddition(object):
     def get_hops_weight(self, sg, target_ibu, final_volume,
                         percent_contribution):
         """
-        Weight of Hops
-        IBUs or International Bittering Units measures a bitterness unit for hops.
-        IBUs are the measurement in parts per million (ppm) of iso-alpha acids
-        in the beer.   For example, an IPA with 75 IBUs has 75 milligrams of
-        isomerized alpha acids per liter. The equation used to calculate the
-        weight of hops for the boil is as follows.
+        Get the Weight of Hops
 
-        Ounces hops = (IBU Target)(galbeer)(IBU%) / (%a-acid)(%Utilization)(7489)
-
-        The IBU target equals the total bitterness for the beer.  (e.g. an IPA
-        may have an IBU target of 75 IBUs)  The percent IBU is equal to the
-        percent of IBUs from each hop addition.  You may wish for your first hop
-        addition to contribute 95% of the total IBUs.  This would make your
-        IBU% 95%.  The %a-acid is the amount of alpha acid in the hops and can
-        be found on the hop packaging.  The % Utilization is a measurement of
-        the percentage of alpha acid units that will isomerize in the boil.
-        The following chart outlines the typical utilizations and hop boil times.
-
-        60 min = 30% utilization
-        30 min = 15%
-        5   min = 2.5%
-
-        The 7489 is a conversion factor and used to cancel the units in the
-        equation, converting oz/gallon to mg/l. For the hops equation, the
-        units for the % must be expressed in decimal form.  (e.g. 10%= .10)
-
-        Source:
-        - http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
-        # nopep8
+        :param float sg: The specific gravity of the wort
+        :param float target_ibu: The target IBU
+        :param float final_volume: The final volume of the wort
+        :param float percent_contribution: The percent contribution of the hops to the total bitterness
+        :return: The weight of hops
+        :rtype: float
         """
         validate_percentage(percent_contribution)
 
