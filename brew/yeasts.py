@@ -17,9 +17,8 @@ class Yeast(object):
     def __init__(self, name,
                  percent_attenuation=0.75):
         """
-        Percent Attenuation - The percentage the yeast is expected to
-            attenuate the sugar in the beer to create alcohol.
-        """
+        :param float percent_attenuation: The percentage the yeast is expected to attenuate the sugar in the yeast to create alcohol
+        """  # nopep8
         self.name = name
         self.percent_attenuation = validate_percentage(percent_attenuation)
 
