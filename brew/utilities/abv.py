@@ -61,20 +61,21 @@ def alcohol_by_volume_alternative(og, fg):
 
     A more complex equation which attempts to provide greater accuracy at higher gravities is:
 
-    ABV =(76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794)
+    :math:`\\text{ABV} = \\frac{76.08 \\times \\big( \\text{og} - \\text{fg} \\big)}{1.775 - \\text{og}} \\times \\frac{\\text{fg}}{0.794}`
 
     The alternate equation reports a higher ABV for higher gravity beers.
     This equation is just a different take on it. Scientists rarely agree
     when it comes to equations. There will probably be another equation for
     ABV down the road.
 
-    The complex formula, and variations on it come from
-    Ritchie Products Ltd, (Zymurgy, Summer 1995, vol. 18, no. 2)
-    -Michael L. Hall's article Brew by the Numbers: Add Up What's in Your
-    Beer, and Designing Great Beers by Daniels.
+    The complex formula, and variations on it come from:
+
+    * Ritchie Products Ltd, (Zymurgy, Summer 1995, vol. 18, no. 2)
+    * Michael L. Hall's article Brew by the Numbers: Add Up What's in Your Beer, and Designing Great Beers by Daniels.
 
     Source:
-    - http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
+
+    * http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
     """  # nopep8
     return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794) / 100.0
 
