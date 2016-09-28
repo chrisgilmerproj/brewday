@@ -14,7 +14,6 @@ Tutorial
 
    tutorial/features.rst
 
-
 API Docs
 ========
 
@@ -42,6 +41,14 @@ Utilities API Docs
    api/utilities/sugar.rst
    api/utilities/temperature.rst
    api/utilities/yeast.rst
+
+Appendix
+========
+
+.. toctree::
+   :maxdepth: 2
+
+   glossary.rst
 
 Indices and tables
 ==================
