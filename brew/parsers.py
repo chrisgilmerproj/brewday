@@ -23,10 +23,15 @@ class DataLoader(object):
     """
     Base class for loading data from data files inside the data_dir.
     """
+    #: A local cache of loaded data
     DATA = {}
+    #: The expected file extension (json, xml, csv)
     EXT = ''
 
     def __init__(self, data_dir):
+        """
+        :param str data_dir: The directory where the data resides
+        """
         self.data_dir = data_dir
 
     @classmethod
@@ -38,9 +43,19 @@ class DataLoader(object):
 
     @classmethod
     def read_data(cls, filename):
+        """
+        :param str filename: The filename of the file to read
+        :raises NotImplementedError: Must be supplied in inherited class
+        """
         raise NotImplementedError
 
     def get_item(self, dir_suffix, item_name):
+        """
+        :param str dir_suffix: The directory name suffix
+        :param str item_name: The name of the item to load
+        :return: The item as a python dict
+        :raises Exception: If item not found in the directory
+        """
         item_dir = os.path.join(self.data_dir, dir_suffix)
 
         # Cache the directory
@@ -70,10 +85,15 @@ class JSONDataLoader(DataLoader):
     """
     Load data from JSON files inside the data_dir.
     """
+    #: The JSON file extension
     EXT = 'json'
 
     @classmethod
     def read_data(cls, filename):
+        """
+        :param str filename: The filename of the file to read
+        :return: The data loaded from a JSON file
+        """
         data = None
         with open(filename, 'r') as data_file:
             data = json.loads(data_file.read())
@@ -84,15 +104,20 @@ def parse_cereals(cereal, loader):
     """
     Parse grains data from a recipe
 
+    :param dict cereal: A representation of a cereal
+    :param DataLoader loader: A class to load additional information
+
     Grain must have the following top level attributes:
-    - name   (str)
-    - weight (float)
-    - data   (dict) (optional)
+
+    * name   (str)
+    * weight (float)
+    * data   (dict) (optional)
 
     Additionally grains may contain override data in the 'data'
     attribute with the following keys:
-    - color (float)
-    - ppg   (int)
+
+    * color (float)
+    * ppg   (int)
     """
     GrainAddition.validate(cereal)
 
@@ -132,15 +157,20 @@ def parse_hops(hop, loader):
     """
     Parse hops data from a recipe
 
+    :param dict hops: A representation of a hop
+    :param DataLoader loader: A class to load additional information
+
     Hops must have the following top level attributes:
-    - name      (str)
-    - weight    (float)
-    - boil_time (float)
-    - data      (dict) (optional)
+
+    * name      (str)
+    * weight    (float)
+    * boil_time (float)
+    * data      (dict) (optional)
 
     Additionally hops may contain override data in the 'data' attribute
     with the following keys:
-    - percent_alpha_acids (float)
+
+    * percent_alpha_acids (float)
     """
     HopAddition.validate(hop)
 
@@ -175,13 +205,18 @@ def parse_yeast(yeast, loader):
     """
     Parse yeast data from a recipe
 
+    :param dict hops: A representation of a yeast
+    :param DataLoader loader: A class to load additional information
+
     Yeast must have the following top level attributes:
-    - name (str)
-    - data (dict) (optional)
+
+    * name (str)
+    * data (dict) (optional)
 
     Additionally yeast may contain override data in the 'data' attribute
     with the following keys:
-    - percent_attenuation (float)
+
+    * percent_attenuation (float)
     """
     Yeast.validate(yeast)
 
@@ -210,28 +245,33 @@ def parse_recipe(recipe, loader,
     """
     Parse a recipe from a python Dict
 
-    recipe: a python dict describing the recipe
-    loader: a data loader class that loads data from data files
+    :param dict recipe: A representation of a recipe
+    :param DataLoader loader: A class to load additional information
+    :param DataLoader cereal_loader: A class to load additional information specific to cereals
+    :param DataLoader hops_loader: A class to load additional information specific to hops
+    :param DataLoader yeast_loader: A class to load additional information specific to yeast
 
     A recipe must have the following top level attributes:
-    - name         (str)
-    - start_volume (float)
-    - final_volume (float)
-    - grains       (list(dict))
-    - hops         (list(dict))
-    - yeast        (dict)
+
+    * name         (str)
+    * start_volume (float)
+    * final_volume (float)
+    * grains       (list(dict))
+    * hops         (list(dict))
+    * yeast        (dict)
 
     Additionally the recipe may contain override data in the 'data'
     attribute with the following keys:
-    - percent_brew_house_yield (float)
-    - units                    (str)
+
+    * percent_brew_house_yield (float)
+    * units                    (str)
 
     All other fields will be ignored and may be used for other metadata.
 
     The dict objects in the grains, hops, and yeast values are required to have
     the key 'name' and the remaining attributes will be looked up in the data
     directory if they are not provided.
-    """
+    """  # nopep8
     if not cereals_loader:
         cereals_loader = loader
     if not hops_loader:
