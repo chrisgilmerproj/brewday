@@ -1,8 +1,6 @@
 brew.utilities.yeast
 ====================
 
-.. automethod:: brew.utilities.yeast.pitch_rate_conversion
-
 .. autoclass:: brew.utilities.yeast.YeastModel
    :members:
    :undoc-members:
@@ -17,3 +15,5 @@ brew.utilities.yeast
    :members:
    :undoc-members:
    :inherited-members:
+
+.. automethod:: brew.utilities.yeast.pitch_rate_conversion
