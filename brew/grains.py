@@ -128,7 +128,7 @@ class GrainAddition(object):
                  units=IMPERIAL_UNITS):
         """
         :param Grain grain: The Grain object
-        :param float weight: The weight of the grain
+        :param float weight: The weight of the grain addition
         :param str grain_type: The type of the grain being used
         :param str units: The units
         """
