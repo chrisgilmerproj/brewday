@@ -50,6 +50,19 @@ class Recipe(object):
                  start_volume=7.0,
                  final_volume=5.0,
                  units=IMPERIAL_UNITS):
+        """
+        :param str name: The name of the recipe
+        :param grain_additions: A list of Grain Additions
+        :type grain_additions: list of GrainAddition objects
+        :param hop_additions: A list of Hop Additions
+        :type hop_additions: list of HopAddition objects
+        :param float percent_brew_house_yield: The brew house yield
+        :param float start_volume: The starting volume of the wort
+        :param float final_volume: The final volume of the wort
+        :param str units: The units
+        :raises Exception: If the units of any GrainAddition is not the same as the units of the Recipe
+        :raises Exception: If the units of any HopAddition is not the same as the units of the Recipe
+        """  # nopep8
         self.name = name
         if grain_additions is None:
             grain_additions = []
@@ -161,6 +174,12 @@ class Recipe(object):
                       units=units)
 
     def get_total_points(self):
+        """
+        Get the total points of the recipe
+
+        :return: PPG or HWE depending on the units of the Recipe
+        :rtype: float
+        """
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
             attr = 'ppg'
@@ -178,34 +197,76 @@ class Recipe(object):
         return total_points
 
     def get_original_gravity_units(self):
+        """
+        Get the original gravity units
+
+        :return: The original gravity units
+        :rtype: float
+        """
         return self.get_total_points() / self.final_volume
 
     def get_original_gravity(self):
+        """
+        Get the original specific gravity
+
+        :return: The original specific gravity
+        :rtype: float
+        """
         return gu_to_sg(self.get_original_gravity_units())
 
     def get_boil_gravity_units(self):
+        """
+        Get the boil gravity units
+
+        :return: The boil gravity units
+        :rtype: float
+        """
         return self.get_total_points() / self.start_volume
 
     def get_boil_gravity(self):
+        """
+        Get the boil specific gravity
+
+        :return: The boil specific gravity
+        :rtype: float
+        """
         return gu_to_sg(self.get_boil_gravity_units())
 
     def get_final_gravity_units(self):
+        """
+        Get the final gravity units
+
+        :return: The final gravity units
+        :rtype: float
+        """
         return self.get_original_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # nopep8
 
     def get_final_gravity(self):
+        """
+        Get the final specific gravity
+
+        :return: The final specific gravity
+        :rtype: float
+        """
         return gu_to_sg(self.get_final_gravity_units())
 
     def get_degrees_plato(self):
+        """
+        Get the degrees plato
+
+        :return: The degrees plato of the wort
+        :rtype: float
+        """
         return sg_to_plato(self.get_boil_gravity())
 
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
-        Brew House Yield (BHY)
-        Brew house yield is a measurement that tells the efficiency of the
-        brewing.  The actual degrees Plato from the brew and the actual gallons
-        collected out of the kettle are needed to calculate the BHY.
+        Get the Brew House Yield
 
-        BHY  =  [(Pactual)(galactual)(BHYtarget)] / [(Ptarget)(galtarget)]
+        :param float plato_actual: The actual degrees Plato
+        :param float vol_actual: The actual volume collected from the kettle
+        :return: Brew House Yield
+        :rtyle: float
         """
         num = plato_actual * vol_actual * self.percent_brew_house_yield
         den = self.get_degrees_plato() * self.final_volume
@@ -213,21 +274,10 @@ class Recipe(object):
 
     def get_extract_weight(self):
         """
-        Weight of Extract
-        The weight of extract is the amount of malt extract present in the
-        wort.
+        Get the weight of the extract
 
-        Lbs extract = (density of water) * (gal of wort) * (SG) * (P/100)
-
-        The weight of one gallon of water in the above formula is 8.32 lbs/gal
-
-        To find the weight of a gallon of wort, multiply the specific gravity
-        of the wort by the density of water.
-
-        Plato is a percentage of sugars by weight.  So 10 Plato means solution
-        is 10% sugars.  In this equation we convert the degrees plato to a
-        decimal number between 0.0 and 1.0 by dividing it by 100.  This is
-        multiplied by the  weight of a gallon of wort.
+        :return: The weight of extract
+        :rtype: float
         """
         water_density = WATER_WEIGHT_IMPERIAL
         if self.units == SI_UNITS:
@@ -237,14 +287,25 @@ class Recipe(object):
 
     def get_percent_malt_bill(self, grain_add):
         """
-        Percent malt bill is how much extract each grain addition adds to the
-        recipe. To ensure different additions are measured equally each is
+        Get Percent Malt Bill
+
+        :param GrainAddition grain_add: The Grain Addition
+        :return: The percent extract the addition adds to the bill
+        :rtype: float
+
+        To ensure different additions are measured equally each is
         converted to dry weight.
         """
         return self.get_grain_add_dry_weight(grain_add) / self.get_total_dry_weight()  # nopep8
 
     def get_grain_add_dry_weight(self, grain_add):
         """
+        Get Grain Addition as DME
+
+        :param GrainAddition grain_add: The Grain Addition
+        :return: The weight of the grain as DME
+        :rtype: float
+
         When converting Grain to DME its important to remember
         that you can't get 100% efficiency from grains.  Multiplying by
         the brew house yield will decrease the size of the DME
@@ -256,6 +317,12 @@ class Recipe(object):
             return grain_add.get_dry_weight() * self.percent_brew_house_yield  # nopep8
 
     def get_total_dry_weight(self):
+        """
+        Get total DME weight
+
+        :return: The total weight of the DME
+        :rtype: float
+        """
         weights = []
         for grain_add in self.grain_additions:
             weights.append(self.get_grain_add_dry_weight(grain_add))
@@ -263,6 +330,12 @@ class Recipe(object):
 
     def get_grain_add_cereal_weight(self, grain_add):
         """
+        Get Grain Addition as Cereal
+
+        :param GrainAddition grain_add: The Grain Addition
+        :return: The weight of the grain as Cereal
+        :rtype: float
+
         When converting DME or LME to grain its important to remember
         that you can't get 100% efficiency from grains.  Dividing by
         the brew house yield will increase the size of the grain
@@ -274,6 +347,12 @@ class Recipe(object):
             return grain_add.get_cereal_weight()
 
     def get_total_grain_weight(self):
+        """
+        Get total Cereal weight
+
+        :return: The total weight of the Cereal
+        :rtype: float
+        """
         weights = []
         for grain_add in self.grain_additions:
             weights.append(self.get_grain_add_cereal_weight(grain_add))
@@ -282,6 +361,10 @@ class Recipe(object):
     def get_percent_ibus(self, hop_add):
         """
         Get the percentage the hops contributes to total ibus
+
+        :param HopAddition hop_add: The Hop Addition
+        :return: The percent the hops contributes to total ibus
+        :rtype: float
         """
         bg = self.get_boil_gravity()
         fv = self.final_volume
@@ -290,6 +373,9 @@ class Recipe(object):
     def get_total_ibu(self):
         """
         Convenience method to get total IBU for the recipe
+
+        :return: The total IBU for the Recipe
+        :rtype: float
         """
         bg = self.get_boil_gravity()
         fv = self.final_volume
@@ -298,33 +384,34 @@ class Recipe(object):
 
     def get_bu_to_gu(self):
         """
-        Returns ratio of Bitterness Units to Original Gravity Units
+        Get BU to GU Ratio
+
+        :return: Ratio of Bitterness Units to Original Gravity Units
+        :rtype: float
         """
         return self.get_total_ibu() / self.get_boil_gravity_units()
 
     @classmethod
     def get_strike_temp(cls, mash_temp, malt_temp, liquor_to_grist_ratio):
         """
-        Strike Water Temp
-        As you know when you are mashing, your strike water has to be warmer
-        than the target mash temperature because the cool malt will cool the
-        temperature of the water.  To correctly calculate the temperature of
-        the strike water, use the following formula.
+        Get Strike Water Temperature
 
-        Strike Temp =  [((0.4)(T mash-T malt)) / L:G] +  T mash
+        :param float mash_temp: Mash Temperature
+        :param float malt_temp: Malt Temperature
+        :param float liquor_to_grist_ratio: The Liquor to Grist Ratio
+        :return: The strike water temperature
+        :rtype: float
         """
         return (((0.4 * (mash_temp - malt_temp)) /
                 liquor_to_grist_ratio) + mash_temp)
 
     def get_mash_water_volume(self, liquor_to_grist_ratio):
         """
-        Mash Water Volume
-        To calculate the mash water volume you will need to know your liquor to
-        grist ratio.  The term liquor refers to the mash water and grist refers
-        to the milled malt.  We need to calculate the appropriate amount of
-        water to allow for enzyme action and starch conversion take place.
+        Get the Mash Water Volume
 
-        gallons H2O =  (Lbs malt)(L:G)(1gallon H2O) / 8.32 pounds water
+        :param float liquor_to_grist_ratio: The Liquor to Grist Ratio
+        :return: The mash water volume
+        :rtype: float
         """
         water_weight = WATER_WEIGHT_IMPERIAL
         if self.units == SI_UNITS:
@@ -334,13 +421,11 @@ class Recipe(object):
 
     def get_wort_color_mcu(self, grain_add):
         """
-        Calculation of Wort and Beer Color
+        Get the Wort Color in Malt Color Units
 
-        Color of Wort = S [(% extract)(L of malt)(P wort / 8P reference)]
-
-        Source:
-        http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
-        http://brewwiki.com/index.php/Estimating_Color
+        :param GrainAddition grain_add: The Grain Addition to calculate
+        :return: The MCU of the Grain Addition
+        :rtype: float
         """  # nopep8
         weight = self.get_grain_add_cereal_weight(grain_add)
         return calculate_mcu(weight,
@@ -349,20 +434,33 @@ class Recipe(object):
                              units=self.units)
 
     def get_wort_color(self, grain_add):
+        """
+        Get the Wort Color in SRM
+
+        :param GrainAddition grain_add: The Grain Addition to calculate
+        :return: The SRM of the Grain Addition
+        :rtype: float
+        """
         mcu = self.get_wort_color_mcu(grain_add)
         return calculate_srm(mcu)
 
     def get_total_wort_color(self):
         """
-        Convenience method to get total wort color
+        Get the Total Color of the Wort in SRM
+
+        :return: The total color of the wort in SRM
+        :rtype: float
         """
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
         return calculate_srm(mcu)
 
     def get_total_wort_color_map(self):
         """
-        Convenience method to get total wort color
-        """
+        Get a map of wort color by method
+
+        :return: A map of wort color in SRM and EBC by method (Morey, Daniels, and Mosher)
+        :rtype: dict
+        """  # nopep8
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
         srm_morey = calculate_srm_morey(mcu)
         srm_daniels = calculate_srm_daniels(mcu)
