@@ -13,14 +13,44 @@ __all__ = [
 
 
 def apparent_attenuation(original_extract, apparent_extract):
+    """
+    Apparent Attenuation
+
+    :param float original_extract: Original degrees Plato
+    :param float apparent_extract: Apparent degrees Plato of finished beer
+    :return: The percent of apparent attenuation
+    :rtype: float
+
+    Source:
+
+    * Formula from Balling: De Clerck, Jean, A Textbook Of Brewing, Chapman & Hall Ltd., 1958
+    * http://beersmith.com/blog/2010/09/07/apparent-and-real-attenuation-for-beer-brewers-part-1/
+    * http://beersmith.com/blog/2010/09/14/apparent-and-real-attenuation-for-beer-brewers-part-2/
+    """  # nopep8
     return (original_extract - apparent_extract) / original_extract
 
 
 def real_attenuation(original_extract, real_extract):
+    """
+    Real Attenuation
+
+    :param float original_extract: Original degrees Plato
+    :param float real_extract: Real degrees Plato of finished beer
+    :return: The percent of real attenuation
+    :rtype: float
+    """
     return (original_extract - real_extract) / original_extract
 
 
 def real_attenuation_from_apparent_extract(original_extract, apparent_extract):
+    """
+    Real Attenuation from Apparent Extract
+
+    :param float original_extract: Original degrees Plato
+    :param float apparent_extract: Apparent degrees Plato of finished beer
+    :return: The percent of real attenuation
+    :rtype: float
+    """
     real_extract = apparent_extract_to_real_extract(original_extract,
                                                     apparent_extract)
     return real_attenuation(original_extract, real_extract)
@@ -30,9 +60,14 @@ def alcohol_by_volume_standard(og, fg):
     """
     Alcohol by Volume Standard Calculation
 
+    :param float og: Original Gravity
+    :param float fg: Final Gravity
+    :return: Alcohol by Volume decimal percentage
+    :rtype: float
+
     Most brewing sites use this basic formula:
 
-    ABV = (og - fg) * 131.25
+    :math:`\\text{ABV} = \\big(\\text{og} - \\text{fg}\\big) \\times 131.25`
 
     This equation was created before the computer age.  It is easy to do by
     hand, and over time became the accepted formula for home brewers!
@@ -56,6 +91,11 @@ def alcohol_by_volume_standard(og, fg):
 def alcohol_by_volume_alternative(og, fg):
     """
     Alcohol by Volume Alternative Calculation
+
+    :param float og: Original Gravity
+    :param float fg: Final Gravity
+    :return: Alcohol by Volume decimal percentage
+    :rtype: float
 
     Alternate Formula:
 
@@ -83,5 +123,9 @@ def alcohol_by_volume_alternative(og, fg):
 def alcohol_by_weight(abv):
     """
     Alcohol by Weight from ABV
+
+    :param float abv: Alcohol by Volume
+    :return: Alcohol by Weight
+    :rtype: float
     """
     return abv * ALCOHOL_SPECIFIC_GRAVITY
