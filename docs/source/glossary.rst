@@ -98,6 +98,11 @@ Glossary
     Start Volume
         The volume of the wort at the beginning of the process.
 
+    Plato
+    Degrees Plato
+        Degrees Plato is the weight of the extract in a 100gram solution at
+        64 degrees Fahrenheit.
+
     Real Extract
         The real extract content of the finished beer.
 
