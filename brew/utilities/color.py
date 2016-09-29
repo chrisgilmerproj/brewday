@@ -27,6 +27,10 @@ __all__ = [
 def srm_to_ebc(srm):
     """
     Convert SRM to EBC Color
+
+    :param float srm: SRM Color
+    :return: EBC Color
+    :rtype: float
     """
     return srm * 1.97
 
@@ -34,6 +38,10 @@ def srm_to_ebc(srm):
 def ebc_to_srm(ebc):
     """
     Convert EBC to SRM Color
+
+    :param float ebc: EBC Color
+    :return: SRM Color
+    :rtype: float
     """
     return ebc / 1.97
 
@@ -43,11 +51,14 @@ def calculate_mcu(grain_weight, beer_color, final_volume,
     """
     Calculate MCU from Grain
 
-    grain_weight - in lbs or kg
-    beer_color - in deg Lovibond
-    final_volume - in gal or liters
+    :param float grain_weight: Grain weight in lbs or kg
+    :param float beer_color: Beer color in deg Lovibond
+    :param float final_volume: Final Volume in gal or liters
+    :param str units: The units
 
-    http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
+    Source:
+
+    * http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
     """  # nopep8
     validate_units(units)
     if units == SI_UNITS:
@@ -62,9 +73,10 @@ def calculate_srm_mosher(mcu):
     """
     Mosher Equation for SRM
 
-    grain_weight - in lbs or kg
-    beer_color - in deg Lovibond
-    final_volume - in gal or liters
+    :param float mcu: The Malt Color Units
+    :return: SRM Color
+    :rtype: float
+    :raises Exception: If the MCU is < 7.0
     """  # nopep8
     if mcu < 7.0:
         raise Exception("Mosher equation does not work for MCU < 7.0")
@@ -76,9 +88,10 @@ def calculate_srm_daniels(mcu):
     """
     Daniels Equation for SRM
 
-    grain_weight - in lbs or kg
-    beer_color - in deg Lovibond
-    final_volume - in gal or liters
+    :param float mcu: The Malt Color Units
+    :return: SRM Color
+    :rtype: float
+    :raises Exception: If the MCU is < 11.0
     """  # nopep8
     if mcu < 11.0:
         raise Exception("Daniels equation does not work for MCU < 11.0")
@@ -90,13 +103,14 @@ def calculate_srm_daniels_power(mcu):
     """
     Daniels Power Equation for SRM based on work by Druey
 
-    grain_weight - in lbs or kg
-    beer_color - in deg Lovibond
-    final_volume - in gal or liters
+    :param float mcu: The Malt Color Units
+    :return: SRM Color
+    :rtype: float
+    :raises Exception: If the SRM is > 50.0
     """  # nopep8
     srm = 1.73 * (mcu ** 0.64) - 0.27
     if srm > 50.0:
-        raise Exception("Daniels Power equation does not work above SRM 50")
+        raise Exception("Daniels Power equation does not work above SRM 50.0")
     return srm
 
 
@@ -104,19 +118,26 @@ def calculate_srm_noonan_power(mcu):
     """
     Noonan Power Equation for SRM based on work by Druey
 
-    grain_weight - in lbs or kg
-    beer_color - in deg Lovibond
-    final_volume - in gal or liters
+    :param float mcu: The Malt Color Units
+    :return: SRM Color
+    :rtype: float
+    :raises Exception: If the SRM is > 50.0
     """  # nopep8
     srm = 15.03 * (mcu ** 0.27) - 15.53
     if srm > 50.0:
-        raise Exception("Noonan Power equation does not work above SRM 50")
+        raise Exception("Noonan Power equation does not work above SRM 50.0")
     return srm
 
 
 def calculate_srm_morey_hybrid(mcu):
     """
     A hybrid approach used by Morey for SRM.
+
+    :param float mcu: The Malt Color Units
+    :return: SRM Color
+    :rtype: float
+    :raises Exception: If the MCU is > 50.0
+    :raises Exception: If the SRM is > 50.0
 
     Assumptions:
 
@@ -131,39 +152,53 @@ def calculate_srm_morey_hybrid(mcu):
        impossible to detect visually; therefore, I limited the analysis to SRM
        of 50 and less.
 
-    http://babblehomebrewers.com/attachments/article/61/beercolor.pdf
+    Source:
+
+    * http://babblehomebrewers.com/attachments/article/61/beercolor.pdf
     """
+    srm = 0
     if 0 < mcu < 10:
-        return mcu
+        srm = mcu
     elif 10 <= mcu < 37:
-        return calculate_srm_daniels(mcu)
+        srm = calculate_srm_daniels(mcu)
     elif 37 <= mcu < 50:
-        return calculate_srm_mosher(mcu)
+        srm = calculate_srm_mosher(mcu)
     else:
-        raise Exception("Morey Hybrid does not work above SRM 50")
+        raise Exception("Morey Hybrid does not work above MCU 50.0")
+
+    if srm > 50.0:
+        raise Exception("Morey Hybrid does not work above SRM 50.0")
+    return srm
 
 
 def calculate_srm_morey(mcu):
     """
     Morey Equation for SRM
 
-    http://www.morebeer.com/brewingtechniques/beerslaw/morey.html
+    :param float mcu: The Malt Color Units
+    :return: SRM Color
+    :rtype: float
+    :raises Exception: If the SRM is > 50.0
 
-    grain_weight - in lbs or kg
-    beer_color - in deg Lovibond
-    final_volume - in gal or liters
+    Source:
 
-    http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
+    * http://www.morebeer.com/brewingtechniques/beerslaw/morey.html
+    * http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
     """  # nopep8
     srm = 1.4922 * (mcu ** 0.6859)
     if srm > 50.0:
-        raise Exception("Morey equation does not work above SRM 50")
+        raise Exception("Morey equation does not work above SRM 50.0")
     return srm
 
 
 def calculate_srm(mcu):
     """
-    General srm calculation uses the Morey Power Equation
+    General SRM calculation uses the Morey Power Equation
+
+    :param float mcu: The Malt Color Units
+    :return: SRM Color
+    :rtype: float
+    :raises Exception: If the SRM is > 50.0
     """
     return calculate_srm_morey(mcu)
 
@@ -171,7 +206,14 @@ def calculate_srm(mcu):
 def lovibond_to_srm(lovibond):
     """
     Convert deg Lovibond to SRM
-    https://en.wikipedia.org/wiki/Standard_Reference_Method
+
+    :param float lovibond: The degrees Lovibond
+    :return: SRM Color
+    :rtype: float
+
+    Source:
+
+    * https://en.wikipedia.org/wiki/Standard_Reference_Method
     """
     return 1.3546 * lovibond - 0.76
 
@@ -179,7 +221,14 @@ def lovibond_to_srm(lovibond):
 def srm_to_lovibond(srm):
     """
     Convert SRM to deg Lovibond
-    https://en.wikipedia.org/wiki/Standard_Reference_Method
+
+    :param float srm: SRM Color
+    :return: The degrees Lovibond
+    :rtype: float
+
+    Source:
+
+    * https://en.wikipedia.org/wiki/Standard_Reference_Method
     """
     return (srm + 0.76) / 1.3546
 
@@ -187,14 +236,30 @@ def srm_to_lovibond(srm):
 def srm_to_a430(srm, dilution=1.0):
     """
     Get attenuation at A430 from SRM and dilution
-    https://en.wikipedia.org/wiki/Standard_Reference_Method
-    """
+
+    :param float srm: SRM Color
+    :param float dilution: The dilution factor (D=1 for undiluted, D=2 for 1:1 dilution, etc)
+    :return: The attenuiation at 430nm
+    :rtype: float
+
+    Source:
+
+    * https://en.wikipedia.org/wiki/Standard_Reference_Method
+    """  # nopep8
     return srm / (12.7 * dilution)
 
 
 def ebc_to_a430(ebc, dilution=1.0):
     """
     Get attenuation at A430 from EBC and dilution
-    https://en.wikipedia.org/wiki/Standard_Reference_Method
-    """
-    return ebc / (25 * dilution)
+
+    :param float ebc: EBC Color
+    :param float dilution: The dilution factor (D=1 for undiluted, D=2 for 1:1 dilution, etc)
+    :return: The attenuiation at 430nm
+    :rtype: float
+
+    Source:
+
+    * https://en.wikipedia.org/wiki/Standard_Reference_Method
+    """  # nopep8
+    return srm_to_a430(ebc_to_srm(ebc), dilution=dilution)
