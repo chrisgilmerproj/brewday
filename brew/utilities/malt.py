@@ -36,7 +36,13 @@ def dry_to_liquid_malt_weight(malt):
     """
     DME to LME Weight
 
-    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    :param float malt: Weight of DME
+    :return: LME Weight
+    :rtype: float
+
+    Source:
+
+    * http://www.weekendbrewer.com/brewingformulas.htm
     """
     return malt * 1.25
 
@@ -45,7 +51,9 @@ def liquid_to_dry_malt_weight(malt):
     """
     LME to DME Weight
 
-    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    :param float malt: Weight of LME
+    :return: DME Weight
+    :rtype: float
     """
     return malt / 1.25
 
@@ -54,7 +62,9 @@ def grain_to_liquid_malt_weight(grain):
     """
     Grain to LME Weight
 
-    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    :param float grain: Weight of Grain
+    :return: LME Weight
+    :rtype: float
     """
     return grain * 0.75
 
@@ -62,6 +72,10 @@ def grain_to_liquid_malt_weight(grain):
 def liquid_malt_to_grain_weight(malt):
     """
     LME to Grain Weight
+
+    :param float malt: Weight of LME
+    :return: Grain Weight
+    :rtype: float
     """
     return malt / 0.75
 
@@ -69,6 +83,10 @@ def liquid_malt_to_grain_weight(malt):
 def dry_malt_to_grain_weight(malt):
     """
     DME to Grain Weight
+
+    :param float malt: Weight of DME
+    :return: Grain Weight
+    :rtype: float
     """
     return malt * 5.0 / 3.0
 
@@ -76,6 +94,10 @@ def dry_malt_to_grain_weight(malt):
 def grain_to_dry_malt_weight(malt):
     """
     Grain to DME Weight
+
+    :param float grain: Weight of Grain
+    :return: DME Weight
+    :rtype: float
     """
     return malt * 3.0 / 5.0
 
@@ -84,7 +106,9 @@ def specialty_grain_to_liquid_malt_weight(grain):
     """
     Specialty Grain to LME Weight
 
-    Source: http://www.weekendbrewer.com/brewingformulas.htm
+    :param float grain: Weight of Specialty Grain
+    :return: LME Weight
+    :rtype: float
     """
     return grain * 0.89
 
@@ -92,6 +116,10 @@ def specialty_grain_to_liquid_malt_weight(grain):
 def liquid_malt_to_specialty_grain_weight(malt):
     """
     LME to Specialty Grain Weight
+
+    :param float grain: Weight of LME
+    :return: Specialty Grain Weight
+    :rtype: float
     """
     return malt / 0.89
 
@@ -100,10 +128,10 @@ def fine_grind_to_coarse_grind(fine_grind, fc_diff=FC_DIFF_TWO_ROW):
     """
     Fine Grind to Coarse Grind Percentage
 
-    fine_grind
-        A percentage from the malt bill
-    fc_diff
-        The F/C difference percentage from the malt bill
+    :param float fine_grind: A percentage from the malt bill
+    :param float fc_diff: The F/C difference percentage from the malt bill
+    :return: Coarse Grind Percentage
+    :rtype: float
     """
     validate_percentage(fine_grind)
     validate_percentage(fc_diff)
@@ -114,10 +142,10 @@ def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
     """
     Coarse Grind to Fine Grind Percentage
 
-    coarse_grind
-        A percentage from the malt bill
-    fc_diff
-        The F/C difference percentage from the malt bill
+    :param float coarse_grind: A percentage from the malt bill
+    :param float fc_diff: The F/C difference percentage from the malt bill
+    :return: Fine Grind Percentage
+    :rtype: float
     """
     validate_percentage(coarse_grind)
     validate_percentage(fc_diff)
@@ -129,11 +157,11 @@ def dry_basis_to_as_is_basis(dry_basis,
     """
     Dry Basis to As-Is Basis Percentage
 
-    dry_basis
-        A percentage from the malt bill in decimal form
-    moisture_content
-        Apercentage of moisture content in finished malt in decimal form
-    """
+    :param float dry_basis: A percentage from the malt bill in decimal form
+    :param float moisture_content: A percentage of moisture content in finished malt in decimal form
+    :return: As-Is Basis
+    :rtype: float
+    """  # nopep8
     validate_percentage(dry_basis)
     validate_percentage(moisture_content)
     return dry_basis * (1.0 - moisture_content)
@@ -144,11 +172,11 @@ def as_is_basis_to_dry_basis(as_is,
     """
     As-Is Basis to Dry Basis Percentage
 
-    asi_is
-        A percentage from the malt bill in decimal form
-    moisture_content
-        Apercentage of moisture content in finished malt in decimal form
-    """
+    :param float as_is: A percentage from the malt bill in decimal form
+    :param float moisture_content: A percentage of moisture content in finished malt in decimal form
+    :return: Dry Basis
+    :rtype: float
+    """  # nopep8
     validate_percentage(as_is)
     validate_percentage(moisture_content)
     return as_is / (1.0 - moisture_content)
@@ -161,17 +189,13 @@ def sg_from_dry_basis(dbcg,
     """
     Specific Gravity from Dry Basis Percentage
 
-    dbcg
-        Dry Basis Coarse Grain in decimal form
-    moisture_content
-        Apercentage of moisture content in finished malt in decimal form
-    moisture_correction
-        A percentage correction in decimal form
-    brew_house_efficiency
-        The efficiency in decimal form
-
-    Returns: Specific Gravity available from Malt
-    """
+    :param float dbcg: Dry Basis Coarse Grain in decimal form
+    :param float moisture_content: A percentage of moisture content in finished malt in decimal form
+    :param float moisture_correction: A percentage correction in decimal form
+    :param float brew_house_efficiency: The efficiency in decimal form
+    :return: Specific Gravity available from Malt
+    :rtype: float
+    """  # nopep8
     validate_percentage(dbcg)
     validate_percentage(moisture_content)
     validate_percentage(moisture_correction)
@@ -188,17 +212,13 @@ def plato_from_dry_basis(dbcg,
     """
     Degrees Plato from Dry Basis Percentage
 
-    dbcg
-        Dry Basis Coars Grain in decimal form
-    moisture_content
-        A percentage of moisture content in finished malt in decimal form
-    moisture_correction
-        A percentage correction in decimal form
-    brew_house_efficiency
-        The efficiency in decimal form
-
-    Returns: Degrees Plato available from Malt
-    """
+    :param float dbcg: Dry Basis Coarse Grain in decimal form
+    :param float moisture_content: A percentage of moisture content in finished malt in decimal form
+    :param float moisture_correction: A percentage correction in decimal form
+    :param float brew_house_efficiency: The efficiency in decimal form
+    :return: Specific Gravity available from Malt
+    :rtype: float
+    """  # nopep8
     validate_percentage(dbcg)
     validate_percentage(moisture_content)
     validate_percentage(moisture_correction)
@@ -211,10 +231,9 @@ def basis_to_hwe(basis_percentage):
     """
     Basis Percentage to Hot Water Extract
 
-    basis_percentage
-        decimal form
-
-    Return Hot Water Extract as Ldeg/kg, dry basis
+    :param float basis_percentage: Basis as percentage
+    :return: Hot Water Extract as Ldeg/kg, dry basis
+    :rtype: float
 
     Ldeg/kg means how many litres of wort with a specific gravity of 1.001 you
     could produce from a kilogram of the fermentable
@@ -229,6 +248,10 @@ def basis_to_hwe(basis_percentage):
 def hwe_to_basis(hwe):
     """
     Hot Water Extract to Basis Percentage
+
+    :param float hwe: Hot Water Extract as Ldeg/kg, dry basis
+    :return: Basis as percentage
+    :rtype: float
     """
     return hwe / LITERS_OF_WORT_AT_SG
 
@@ -236,6 +259,10 @@ def hwe_to_basis(hwe):
 def ppg_to_hwe(ppg):
     """
     Points Per Gallon to Hot Water Extract
+
+    :param float ppg: Points Per Gallon
+    :return: Hot Water Extract
+    :rtype: float
     """
     return ppg * PPG_TO_HWE_CONVERSION
 
@@ -243,5 +270,9 @@ def ppg_to_hwe(ppg):
 def hwe_to_ppg(hwe):
     """
     Hot Water Extract to Points Per Gallon
+
+    :param float hwe: Hot Water Extract
+    :return: Points Per Gallon
+    :rtype: float
     """
     return hwe / PPG_TO_HWE_CONVERSION
