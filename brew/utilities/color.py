@@ -80,8 +80,8 @@ def calculate_srm_daniels(mcu):
     beer_color - in deg Lovibond
     final_volume - in gal or liters
     """  # nopep8
-    # if mcu < 11.0:
-    #     raise Exception("Daniels equation does not work for MCU < 11.0")
+    if mcu < 11.0:
+        raise Exception("Daniels equation does not work for MCU < 11.0")
     srm = (mcu * 0.2) + 8.4
     return srm
 
