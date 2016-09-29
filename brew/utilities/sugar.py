@@ -53,16 +53,16 @@ def plato_to_sg(deg_plato):
 
     The simple formula for S.G. is:
 
-    S.G. = 1 + 0.004 x Plato
+    :math:`\\text{SG} = 1 + 0.004 \\times \\text{Plato}`
 
-    The more precise calculation of S.G. is:
+    The more precise calculation of SG is:
 
-    S.G. = [(Plato) / (258.6 - (Plato/258.2 x 227.1))] + 1
+    :math:`\\text{SG} = \\frac{Plato}{258.6 - \\big(\\frac{Plato}{258.2} \\times 227.1\\big)} + 1`
 
     Source:
 
     * http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
-    """
+    """  # nopep8
     return (deg_plato / (258.6 - ((deg_plato / 258.2) * 227.1))) + 1.0
 
 
@@ -74,16 +74,16 @@ def sg_to_plato(sg):
     :return: Degrees Plato
     :rtype: float
 
-    Plato = [(S.G. - 1) x 1000] / 4
+    :math:`\\text{Plato} = \\frac{\\big(\\text{SG} - 1\\big) \\times 1000}{4}`
 
     The more precise calculation of Plato is:
 
-    Plato = -616.868 + 1111.14 * sg - 630.272 * sg ** 2 + 135.997 * sg ** 3
+    :math:`\\text{Plato} = -616.868 + 1111.14 \\times sg - 630.272 \\times sg^2 + 135.997 \\times sg^3`
 
     Source:
 
     * http://www.brewersfriend.com/2012/10/31/on-the-relationship-between-plato-and-specific-gravity/
-    """
+    """  # nopep8
     # return (sg - 1.0) * 1000 / 4
     return ((135.997 * sg - 630.272) * sg + 1111.14) * sg - 616.868
 
@@ -132,12 +132,14 @@ def brix_to_plato(brix):
     The difference between the degBx and degP as calculated from the respective
     polynomials is:
 
-    degP - degBx = (((-2.81615*sg + 8.79724)*sg - 9.1626)*sg + 3.18213)
+    :math:`\\text{degP} - \\text{degBx} = \\big(\\big(\\big(-2.81615*sg + 8.79724\\big) \\times sg - 9.1626\\big) \\times sg + 3.18213\\big)`
 
     The difference is generally less than +/-0.0005 degBx or degP with the
     exception being for weak solutions.
 
-    https://en.wikipedia.org/wiki/Brix
+    Source:
+
+    * https://en.wikipedia.org/wiki/Brix
     """
     return sg_to_plato(brix_to_sg(brix))
 
@@ -185,7 +187,7 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     The correction formula is from Lyons (1992), who used the following formula
     to fit data from the Handbook of Chemistry and Physics (CRC):
 
-    Correction(@59F) = 1.313454 - 0.132674*T + 2.057793e-3*T**2 - 2.627634e-6*T**3
+    :math:`\\text{Correction(@59F)} = 1.313454 - 0.132674 \\times T + 2.057793e^{-3} \\times T^2 - 2.627634e^{-6} \\times T^3`
 
     where T is in degrees F.
 
