@@ -25,12 +25,21 @@ class HopsUtilization(object):
 
     def __init__(self, hop_addition,
                  units=IMPERIAL_UNITS):
+        """
+        :param HopAddition hop_addition: A hop addition
+        :param str units: The units
+        """
         self.hop_addition = hop_addition
 
         # Manage units
         self.set_units(units)
 
     def set_units(self, units):
+        """
+        Set the units and unit types
+
+        :param str units: The units
+        """
         self.units = validate_units(units)
         if self.units == IMPERIAL_UNITS:
             self.types = IMPERIAL_TYPES
@@ -39,7 +48,10 @@ class HopsUtilization(object):
 
     def change_units(self):
         """
-        Change units from one type to the other return new instance
+        Change units of the class from one type to the other
+
+        :return: Hop Addition in new unit type
+        :rtype: HopAddition
         """
         if self.units == IMPERIAL_UNITS:
             units = SI_UNITS
@@ -49,6 +61,14 @@ class HopsUtilization(object):
                                units=units)
 
     def get_ibus(self, sg, final_volume):
+        """
+        Get the IBUs
+
+        :param float sg: Specific Gravity
+        :param float final_volume: The Final Volume of the wort
+        :return: The IBUs of the wort
+        :rtype: float
+        """
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
             hops_constant = HOPS_CONSTANT_SI
@@ -64,10 +84,26 @@ class HopsUtilization(object):
 
     @classmethod
     def get_percent_utilization(cls, sg, boil_time):
+        """
+        Get the percent utilization
+
+        :param float sg: Specific Gravity
+        :param float boil_time: The Boil Time in minutes
+        :raise NotImplementedError: This must be overridden
+        """
         raise NotImplementedError
 
     @classmethod
     def get_utilization_table(cls, gravity_list, boil_time_list, sig=3):
+        """
+        Get the utilization table for the class
+
+        :param list gravity_list: A list of specific gravities
+        :param list boil_time_list: A list of boil times in minutes
+        :param int sig: Significant figures to round
+        :return: A table of utilization for specific gravity vs boil time
+        :rtype: list
+        """
         table = []
         for boil_time in boil_time_list:
             line = []
@@ -82,7 +118,12 @@ class HopsUtilization(object):
         """
         Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
 
-        Source: http://www.realbeer.com/hops/research.html
+        :return: The formatted utilization table
+        :rtype: str
+
+        Source:
+
+        * http://www.realbeer.com/hops/research.html
         """
         gravity_list = list(range(1030, 1140, 10))
         boil_time_list = list(range(0, 60, 3)) + list(range(60, 130, 10))
@@ -109,11 +150,9 @@ class HopsUtilization(object):
 
 class HopsUtilizationJackieRager(HopsUtilization):
     """
-    Jackie Rager
+    Jackie Rager Hops Utilization Method
 
     Best for extract and partial mash brewing.
-
-    Source: http://www.rooftopbrew.net/ibu.php
     """
 
     def __str__(self):
@@ -122,6 +161,12 @@ class HopsUtilizationJackieRager(HopsUtilization):
     @classmethod
     def get_c_gravity(cls, sg):
         """
+        Get Cgravity
+
+        :param float sg: Specific Gravity
+        :return: Cgravity
+        :rtype: float
+
         Cgravity is a constant to adjust the boil size when dealing with
         specific gravity greater than 1.050 in the calculation of IBUs.
         """
@@ -132,18 +177,27 @@ class HopsUtilizationJackieRager(HopsUtilization):
 
     @classmethod
     def get_percent_utilization(cls, sg, boil_time):
+        """
+        Get the percent utilization
+
+        :param float sg: Specific Gravity
+        :param float boil_time: The Boil Time in minutes
+        :return: The percent utilization
+        :rtype: float
+
+        Source:
+
+        * http://www.rooftopbrew.net/ibu.php
+        """
         num = (18.11 + 13.86 * math.tanh((boil_time - 31.32) / 18.27)) / 100.0
         return num / cls.get_c_gravity(sg)
 
 
 class HopsUtilizationGlennTinseth(HopsUtilization):
     """
-    Glenn Tinseth
+    Glenn Tinseth Hops Utilization Method
 
     Best for all grain brewing.
-
-    Source: http://www.realbeer.com/hops/research.html
-    Source: http://www.rooftopbrew.net/ibu.php
     """
 
     def __str__(self):
@@ -151,27 +205,51 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
 
     @classmethod
     def get_bigness_factor(cls, sg):
+        """
+        Get Bigness Factor
+
+        :param float sg: Specific Gravity
+        :return: Bigness Factor
+        :rtype: float
+
+        The Bigness factor accounts for reduced utilization due to higher wort
+        gravities. Use an average gravity value for the entire boil to account
+        for changes in the wort volume.
+
+        :math:`\\text{Bigness factor} = 1.65 \\times 0.000125^{\\text{wort gravity} - 1}`
+        """  # nopep8
         return 1.65 * 0.000125 ** (sg - 1)
 
     @classmethod
     def get_boil_time_factor(cls, boil_time):
+        """
+        Get Boil Time Factor
+
+        :param float boil_time: Boil Time in minutes
+        :return: Boil Time Factor
+        :rtype: float
+
+        The Boil Time factor accounts for the change in utilization due to
+        boil time:
+
+        :math:`\\text{Boil Time factor} = \\frac{1 - e^{-0.04 \\times \\text{time in mins}}}{4.15}`
+        """  # nopep8
         return (1 - math.exp(-0.04 * boil_time)) / 4.15
 
     @classmethod
     def get_percent_utilization(cls, sg, boil_time):
         """
-        The Bigness factor accounts for reduced utilization due to higher wort
-        gravities. Use an average gravity value for the entire boil to account
-        for changes in the wort volume.
+        Get the percent utilization
 
-        Bigness factor = 1.65 * 0.000125^(wort gravity - 1)
+        :param float sg: Specific Gravity
+        :param float boil_time: The Boil Time in minutes
+        :return: The percent utilization
+        :rtype: float
 
-        The Boil Time factor accounts for the change in utilization due to
-        boil time:
+        Source:
 
-        Boil Time factor = (1 - e^(-0.04 * time in mins)) / 4.15
-
-        Source: http://www.realbeer.com/hops/research.html
+        * http://www.realbeer.com/hops/research.html
+        * http://www.rooftopbrew.net/ibu.php
         """
         bigness_factor = cls.get_bigness_factor(sg)
         boil_time_factor = cls.get_boil_time_factor(boil_time)
