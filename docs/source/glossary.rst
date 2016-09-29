@@ -4,7 +4,10 @@ Glossary
 .. glossary::
 
     Alpha Acid Units (AAU)
-        Defined as ounces of hops * alpha acids
+        Defined as ounces of hops * alpha acids.
+
+    Apparent Extract (AE)
+        The measured hydrometer reading for the finished beer.
 
     Boil Volume
         The volume of the wort during the boil.
@@ -94,6 +97,9 @@ Glossary
     Original Volume
     Start Volume
         The volume of the wort at the beginning of the process.
+
+    Real Extract
+        The real extract content of the finished beer.
 
     Specific Gravity
         The ratio of the density of the wort against the density of water.
