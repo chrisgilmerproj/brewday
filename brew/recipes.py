@@ -462,20 +462,46 @@ class Recipe(object):
         :rtype: dict
         """  # nopep8
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
-        srm_morey = calculate_srm_morey(mcu)
-        srm_daniels = calculate_srm_daniels(mcu)
-        srm_mosher = calculate_srm_mosher(mcu)
+
+        srm_morey = 'N/A'
+        srm_daniels = 'N/A'
+        srm_mosher = 'N/A'
+
+        ebc_morey = 'N/A'
+        ebc_daniels = 'N/A'
+        ebc_mosher = 'N/A'
+
+        try:
+            srm_morey = calculate_srm_morey(mcu)
+            ebc_morey = round(srm_to_ebc(srm_morey), 1)
+            srm_morey = round(srm_morey, 1)
+        except Exception:
+            pass
+
+        try:
+            srm_daniels = calculate_srm_daniels(mcu)
+            ebc_daniels = round(srm_to_ebc(srm_daniels), 1)
+            srm_daniels = round(srm_daniels, 1)
+        except Exception:
+            pass
+
+        try:
+            srm_mosher = calculate_srm_mosher(mcu)
+            ebc_mosher = round(srm_to_ebc(srm_mosher), 1)
+            srm_mosher = round(srm_mosher, 1)
+        except Exception:
+            pass
 
         return {
             'srm': {
-                'morey': round(srm_morey, 1),
-                'daniels': round(srm_daniels, 1),
-                'mosher': round(srm_mosher, 1),
+                'morey': srm_morey,
+                'daniels': srm_daniels,
+                'mosher': srm_mosher,
             },
             'ebc': {
-                'morey': round(srm_to_ebc(srm_morey), 1),
-                'daniels': round(srm_to_ebc(srm_daniels), 1),
-                'mosher': round(srm_to_ebc(srm_mosher), 1),
+                'morey': ebc_morey,
+                'daniels': ebc_daniels,
+                'mosher': ebc_mosher,
             },
         }
 
@@ -586,9 +612,9 @@ class Recipe(object):
             IBU:                {data[total_ibu]:0.1f} ibu
             BU/GU:              {data[bu_to_gu]:0.1f}
 
-            Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]:0.1f} degL / {data[total_wort_color_map][ebc][morey]:0.1f}
-            Daneils (SRM/EBC):  {data[total_wort_color_map][srm][daniels]:0.1f} degL / {data[total_wort_color_map][ebc][daniels]:0.1f}
-            Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]:0.1f} degL / {data[total_wort_color_map][ebc][mosher]:0.1f}
+            Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]} degL / {data[total_wort_color_map][ebc][morey]}
+            Daniels (SRM/EBC):  {data[total_wort_color_map][srm][daniels]} degL / {data[total_wort_color_map][ebc][daniels]}
+            Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]} degL / {data[total_wort_color_map][ebc][mosher]}
 
             """.format(**kwargs))  # nopep8
 

@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## Version 0.0.6
+- Correctly capture exceptions for color equations
+- Use same format for all documentation
 
 ## Version 0.0.5
 
