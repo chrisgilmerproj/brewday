@@ -4,7 +4,7 @@ Glossary
 .. glossary::
 
     Alpha Acid Units (AAU)
-        Defined as ounces of hops * alpha acids.
+        Defined as :math:`\text{AAU} = \text{weight of hops} \times \text{alpha acids}`.
 
     Apparent Extract (AE)
         The measured hydrometer reading for the finished beer.
@@ -17,7 +17,7 @@ Glossary
         brewing.  The actual degrees Plato from the brew and the actual gallons
         collected out of the kettle are needed to calculate the BHY.
 
-        :math:`\text{BHY} = \frac{\text{Pactual} \times \text{galactual} \times \text{BHYtarget}}{\text{Ptarget} \times \text{galtarget}}`
+        :math:`\text{BHY} = \frac{P_{actual} \times \text{vol}_{actual} \times \text{BHY}_{target}}{P_{target} \times \text{vol}_{target}}`
 
     Cereal
         A type of whole grain used for brewing.
@@ -118,7 +118,7 @@ Glossary
         temperature of the water.  To correctly calculate the temperature of
         the strike water, use the following formula.
 
-        :math:`\text{Strike Temp} = \frac{0.4 \times \big(\text{T mash} - \text{T malt}\big)}{L:G} + \text{T mash}`
+        :math:`\text{Strike Temp} = \frac{0.4 \times \big(\text{T}_{mash} - \text{T}_{malt}\big)}{L:G} + \text{T}_{mash}`
 
     Weight of Extract
         The weight of extract is the amount of malt extract present in the
