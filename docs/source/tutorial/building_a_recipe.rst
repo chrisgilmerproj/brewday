@@ -82,7 +82,8 @@ equations.
 Yeast
 -----
 
-Yeast describes how much alcohol is expected to be produced by the recipe.
+Yeast describes how much alcohol is expected to be produced by the recipe. This
+is done with a :py:class:`brew.yeasts.Yeast` object.
 
 .. code-block:: python
 
