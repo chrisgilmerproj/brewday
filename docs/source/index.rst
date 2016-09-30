@@ -13,6 +13,7 @@ Tutorial
    :caption: Getting started with BrewDay
 
    tutorial/features.rst
+   tutorial/building_a_recipe.rst
 
 Appendix
 ========

@@ -11,19 +11,17 @@ from brew.yeasts import Yeast
 def main():
     # Define Grains
     pale = Grain('Pale Malt (2 Row) US',
-                 short_name='2-row',
                  color=1.8,
                  ppg=37)
     pale_add = GrainAddition(pale,
                              weight=13.96)
     crystal = Grain('Caramel/Crystal Malt - 20L',
-                    short_name='C20',
                     color=20.0,
                     ppg=35)
     # OG 32.74
     crystal_add = GrainAddition(crystal,
                                 weight=0.78)
-    grain_list = [pale, crystal]
+    grain_list = [pale, crystal]  # nopep8
     grain_additions = [pale_add, crystal_add]
 
     # Define Hops
@@ -37,7 +35,7 @@ def main():
     cascade_add = HopAddition(cascade,
                               weight=0.76,
                               boil_time=5.0)
-    hop_list = [centennial, cascade]
+    hop_list = [centennial, cascade]  # nopep8
     hop_additions = [centennial_add, cascade_add]
 
     # Define Yeast
