@@ -10,27 +10,32 @@ Picking Original Gravity
 
 If we build a Pale Ale we might first want to pick an original gravity.  This
 would be the driven primarily by the style of the beer and for a Pale Ale we
-will pick 1.053.  This is the gravity you desire after you have steeped your
+will pick 1.054.  This is the gravity you desire after you have steeped your
 grains and added your malt extract.  This is largely driven by your Brew House
-Efficiency and the types of grain you use (cereals, malt extracts, etc).
+Efficiency, the start and final volume, and the types of grain you use
+(cereals, malt extracts, etc).
 
-Let's use a Brew House Efficiency of 70% for our example.  That means that we
-expect to only extract 70% of the total points from the grain bill's potential
-points.  So let's look at what the total points are:
+In this example the start volume is 7.0 Gallons and the target OG in Gravity
+Units (GU) is 54 GU.
 
-:math:`\text{OG} = \text{BHE} * \text{Total Points}`
+:math:`\text{OG} = \frac{\text{Total Points}}{\text{Start Volume}}`
 
 More clearly this would be:
 
-:math:`53 \text{GU} = 0.70 * \text{Total Points}`
+:math:`54 \text{GU} = \frac{\text{Total Points}}{7.0 \text{Gallons}}`
 
-Solving for this equation means we expect to get 76 GU.  But this is not the
-total points of the extract.  To get that you must multiply by the final volume
-of the recipe, in this case 5 Gallons.
+Solving for this equation means we expect the total points to be 378 GU.
+We're going to aim to get this many points from the recipe, but that is
+highly dependent on the Brew House Efficiency.
 
-:math:`76 \text{GU} \times 5 \text{Gallons} = 380 Points`
+Let's use a Brew House Efficiency of 70% for our example.  That means that we
+expect to only extract 70% of the total points from the grain bill's potential
+points.  So let's look at what the total points are if we could fully extract
+all the sugars from the malts:
 
-This 380 Points is what we're going to aim for in building our grain bill.
+:math:`378 \text{GU} \div 70\% \text{BHE} = 540 \text{GU}`
+
+This 540 Points is what we're going to aim for in building our grain bill.
 
 Picking the Amount
 ------------------
@@ -45,11 +50,17 @@ of the grain in Points Per Gallon (PPG).  The pale malt is listed as having a
 potential of 37 PPG.  Let's determine what that means in terms of pounds of
 malt.
 
-:math:`380 \text{Points} * 95% = 365.75 \text{Points}`
+:math:`540 \text{GU} \times 95\% = 513 \text{GU}`
 
 Now divide the points by the potential to get the weight:
 
+:math:`513 \text{GU} \div 37 \text{PPG} = 13.86 \text{Pounds}`
 
+Repeating this math for the crystal 20L malt we get:
+
+:math:`27 \text{GU} \div 35 \text{PPG} = 0.73 \text{Pounds}`
+
+Now we know exactly how much of each grain will go into the beer.
 
 ----
 
