@@ -176,12 +176,12 @@ Produces the output::
 	Start Volume:       7.0
 	Final Volume:       5.0
 
-	Original Gravity:   1.076
 	Boil Gravity:       1.054
-	Final Gravity:      1.014
+	Original Gravity:   1.076
+	Final Gravity:      1.019
 
-	ABV / ABW Standard: 8.21% / 6.51%
-	ABV / ABW Alt:      8.69% / 6.90%
+	ABV / ABW Standard: 7.49% / 5.95%
+	ABV / ABW Alt:      7.98% / 6.33%
 
 	IBU:                33.0 ibu
 	BU/GU:              0.6
