@@ -101,11 +101,11 @@ class TestRecipeSIUnits(unittest.TestCase):
 
     def test_get_final_gravity_units(self):
         out = self.recipe.get_final_gravity_units()
-        self.assertEquals(round(out, 2), 19.03)
+        self.assertEquals(round(out, 2), 13.6)
 
     def test_get_final_gravity(self):
         out = self.recipe.get_final_gravity()
-        self.assertEquals(round(out, 3), 1.019)
+        self.assertEquals(round(out, 3), 1.014)
 
     def test_brew_house_yield(self):
         vol_actual = 5.5 * LITER_PER_GAL
@@ -242,7 +242,7 @@ class TestRecipeSIUnits(unittest.TestCase):
     def test_to_json(self):
         self.assertEquals(self.recipe.units, SI_UNITS)
         out = self.recipe.to_json()
-        expected = '{"data": {"abv_alternative": 0.0798, "abv_standard": 0.0749, "abw_alternative": 0.0633, "abw_standard": 0.0595, "boil_gravity": 1.054, "bu_to_gu": 0.6, "final_gravity": 1.019, "original_gravity": 1.076, "percent_brew_house_yield": 0.7, "total_ibu": 33.0, "total_wort_color_map": {"ebc": {"daniels": "N/A", "morey": 13.0, "mosher": 14.4}, "srm": {"daniels": "N/A", "morey": 6.6, "mosher": 7.3}}, "units": "metric"}, "final_volume": 18.93, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.95, "ppg": 37.0, "working_yield": 0.56, "wort_color_ebc": 9.6, "wort_color_srm": 4.9}, "grain_type": "cereal", "name": "pale 2-row", "units": "metric", "weight": 6.33}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.05, "ppg": 35.0, "working_yield": 0.53, "wort_color_ebc": 6.4, "wort_color_srm": 3.3}, "grain_type": "cereal", "name": "crystal C20", "units": "metric", "weight": 0.35}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.2, "percent_alpha_acids": 0.14, "utilization": 0.24}, "hop_type": "pellet", "name": "centennial", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 16159.21}, {"boil_time": 5.0, "data": {"ibus": 3.9, "percent_alpha_acids": 0.07, "utilization": 0.05}, "hop_type": "pellet", "name": "cascade", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 21545.62}], "name": "pale ale", "start_volume": 26.5, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # nopep8
+        expected = '{"data": {"abv_alternative": 0.0869, "abv_standard": 0.0821, "abw_alternative": 0.069, "abw_standard": 0.0651, "boil_gravity": 1.054, "bu_to_gu": 0.6, "final_gravity": 1.014, "original_gravity": 1.076, "percent_brew_house_yield": 0.7, "total_ibu": 33.0, "total_wort_color_map": {"ebc": {"daniels": "N/A", "morey": 13.0, "mosher": 14.4}, "srm": {"daniels": "N/A", "morey": 6.6, "mosher": 7.3}}, "units": "metric"}, "final_volume": 18.93, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.95, "ppg": 37.0, "working_yield": 0.56, "wort_color_ebc": 9.6, "wort_color_srm": 4.9}, "grain_type": "cereal", "name": "pale 2-row", "units": "metric", "weight": 6.33}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.05, "ppg": 35.0, "working_yield": 0.53, "wort_color_ebc": 6.4, "wort_color_srm": 3.3}, "grain_type": "cereal", "name": "crystal C20", "units": "metric", "weight": 0.35}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.2, "percent_alpha_acids": 0.14, "utilization": 0.24}, "hop_type": "pellet", "name": "centennial", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 16159.21}, {"boil_time": 5.0, "data": {"ibus": 3.9, "percent_alpha_acids": 0.07, "utilization": 0.05}, "hop_type": "pellet", "name": "cascade", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 21545.62}], "name": "pale ale", "start_volume": 26.5, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # nopep8
         self.assertEquals(out, expected)
 
     def test_format(self):
@@ -258,10 +258,10 @@ class TestRecipeSIUnits(unittest.TestCase):
 
             Original Gravity:   1.076
             Boil Gravity:       1.054
-            Final Gravity:      1.019
+            Final Gravity:      1.014
 
-            ABV / ABW Standard: 7.49% / 5.95%
-            ABV / ABW Alt:      7.98% / 6.33%
+            ABV / ABW Standard: 8.21% / 6.51%
+            ABV / ABW Alt:      8.69% / 6.90%
 
             IBU:                33.0 ibu
             BU/GU:              0.6
