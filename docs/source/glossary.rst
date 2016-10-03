@@ -9,6 +9,13 @@ Glossary
     Apparent Extract (AE)
         The measured hydrometer reading for the finished beer.
 
+    Boil Gravity
+        The specific gravity of the wort before it has been boiled and cooled.
+        For a recipe where the boil volume is greater than the fermenting volume
+        this can mean a gravity that is much lower than the Original Gravity.
+        If the boil volume is less than the fermenting volume (ie water is
+        'topped up') then the gravity can be much higher than the OG.
+
     Boil Volume
         The volume of the wort during the boil.
 
@@ -24,6 +31,12 @@ Glossary
 
     DME
         Dry Malt Extract
+
+    Final Gravity
+        The specific gravity of the beer after it has been fermented. The final
+        gravity measures the density of a sugar, alcohol, and water mixture which
+        is different than the original gravity which only measures sugar and water.
+        This is why refractometers must be adjusted when used to measure FG.
 
     Final Volume
         The volume of the wort at the finish of the boil.
@@ -93,6 +106,10 @@ Glossary
         water to allow for enzyme action and starch conversion take place.
 
         :math:`\text{gallons H2O} = \frac{\text{Lbs malt} \times \text{L:G} \times \text{1 gallon H2O}}{\text{8.32 pounds water}}`
+
+    Original Gravity
+        The specific gravity of the wort after it has been cooled and put into
+        the fermenter.
 
     Original Volume
     Start Volume

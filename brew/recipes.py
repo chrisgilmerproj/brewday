@@ -239,7 +239,7 @@ class Recipe(object):
         :return: The final gravity units
         :rtype: float
         """
-        return self.get_boil_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # nopep8
+        return self.get_original_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # nopep8
 
     def get_final_gravity(self):
         """
@@ -602,8 +602,8 @@ class Recipe(object):
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
 
-            Original Gravity:   {data[original_gravity]:0.3f}
             Boil Gravity:       {data[boil_gravity]:0.3f}
+            Original Gravity:   {data[original_gravity]:0.3f}
             Final Gravity:      {data[final_gravity]:0.3f}
 
             ABV / ABW Standard: {data[abv_standard]:0.2%} / {data[abw_standard]:0.2%}
