@@ -239,7 +239,7 @@ class Recipe(object):
         :return: The final gravity units
         :rtype: float
         """
-        return self.get_original_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # nopep8
+        return self.get_boil_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # nopep8
 
     def get_final_gravity(self):
         """
