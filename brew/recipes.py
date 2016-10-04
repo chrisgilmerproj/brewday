@@ -15,6 +15,7 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
+from .grains import GrainAddition
 from .utilities.abv import alcohol_by_volume_alternative
 from .utilities.abv import alcohol_by_volume_standard
 from .utilities.abv import alcohol_by_weight
@@ -25,6 +26,7 @@ from .utilities.color import calculate_srm_morey
 from .utilities.color import calculate_srm_mosher
 from .utilities.color import srm_to_ebc
 from .utilities.sugar import gu_to_sg
+from .utilities.sugar import sg_to_gu
 from .utilities.sugar import sg_to_plato
 from .validators import validate_optional_fields
 from .validators import validate_percentage
@@ -32,7 +34,7 @@ from .validators import validate_required_fields
 from .validators import validate_units
 
 
-__all__ = ['Recipe']
+__all__ = ['Recipe', 'RecipeBuilder']
 
 
 class Recipe(object):
@@ -72,9 +74,9 @@ class Recipe(object):
         self.hop_additions = hop_additions
         self.yeast = yeast
 
-        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8 %
-        self.start_volume = start_volume  # G
-        self.final_volume = final_volume  # G
+        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8
+        self.start_volume = start_volume
+        self.final_volume = final_volume
 
         # Manage units
         self.set_units(units)
@@ -107,7 +109,7 @@ class Recipe(object):
         if self.yeast:
             out = "{0}, yeast={1}".format(out, repr(self.yeast))
         if self.percent_brew_house_yield:
-            out = "{0}, percent_brew_house_yield='{1}'".format(out, self.percent_brew_house_yield)  # nopep8
+            out = "{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # nopep8
         if self.start_volume:
             out = "{0}, start_volume={1}".format(out, self.start_volume)
         if self.final_volume:
@@ -676,3 +678,152 @@ class Recipe(object):
 
         msg += self.yeast.format()
         return msg
+
+
+class RecipeBuilder(object):
+    """
+    A class for building recipes
+    """
+    grain_lookup = {}
+
+    def __init__(self, name,
+                 grain_list=None,
+                 original_gravity=1.050,
+                 percent_brew_house_yield=0.70,
+                 start_volume=7.0,
+                 final_volume=5.0,
+                 units=IMPERIAL_UNITS):
+        """
+        :param str name: The name of the recipe
+        :param grain_list: A list of Grains
+        :type grain_list: list of Grain objects
+        :param float original_gravity: The Original Gravity Target
+        :param float percent_brew_house_yield: The brew house yield
+        :param float start_volume: The starting volume of the wort
+        :param float final_volume: The final volume of the wort
+        :param str units: The units
+        """  # nopep8
+        self.name = name
+        if grain_list is None:
+            grain_list = []
+        self.grain_list = grain_list
+
+        self.original_gravity = original_gravity
+        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8
+        self.start_volume = start_volume
+        self.final_volume = final_volume
+
+        # Manage units
+        self.set_units(units)
+
+        # For each grain and hop:
+        # Add to lookup
+        for grain in self.grain_list:
+            self.grain_lookup[grain.name] = grain
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        if self.grain_list:
+            out = "{0}, grain_list=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_list]))  # nopep8
+        if self.original_gravity:
+            out = "{0}, original_gravity={1}".format(out, self.original_gravity)  # nopep8
+        if self.percent_brew_house_yield:
+            out = "{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # nopep8
+        if self.start_volume:
+            out = "{0}, start_volume={1}".format(out, self.start_volume)
+        if self.final_volume:
+            out = "{0}, final_volume={1}".format(out, self.final_volume)
+        if self.units:
+            out = "{0}, units={1}".format(out, self.units)
+        out = "{0})".format(out)
+        return out
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if (self.name == other.name) and \
+           (self.grain_list == other.grain_list) and \
+           (self.original_gravity == other.original_gravity) and \
+           (self.percent_brew_house_yield ==
+               other.percent_brew_house_yield) and \
+           (self.start_volume == other.start_volume) and \
+           (self.final_volume == other.final_volume) and \
+           (self.units == other.units):
+            return True
+        return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def set_units(self, units):
+        """
+        Set the units and unit types
+
+        :param str units: The units
+        """
+        self.units = validate_units(units)
+        if self.units == IMPERIAL_UNITS:
+            self.types = IMPERIAL_TYPES
+        elif self.units == SI_UNITS:
+            self.types = SI_TYPES
+
+    def change_units(self):
+        """
+        Change units of the class from one type to the other
+
+        :return: RecipeBuilder in new unit type
+        :rtype: RecipeBuilder
+        """
+        if self.units == IMPERIAL_UNITS:
+            start_volume = self.start_volume * LITER_PER_GAL
+            final_volume = self.final_volume * LITER_PER_GAL
+            units = SI_UNITS
+        elif self.units == SI_UNITS:
+            start_volume = self.start_volume * GAL_PER_LITER
+            final_volume = self.final_volume * GAL_PER_LITER
+            units = IMPERIAL_UNITS
+        return RecipeBuilder(
+            self.name,
+            grain_list=self.grain_list,
+            original_gravity=self.original_gravity,
+            percent_brew_house_yield=self.percent_brew_house_yield,
+            start_volume=start_volume,
+            final_volume=final_volume,
+            units=units)
+
+    def get_grain_additions(self, percent_list):
+        """
+        Calculate GrainAdditions from list of percentages
+
+        :param list percent_list: A list of percentages mapped to each Grain
+        :raises Exception: If sum of percentages does not equal 1.0
+        :raises Exception: If length of percent_list does not match length of self.grain_list
+        """  # nopep8
+        for percent in percent_list:
+            validate_percentage(percent)
+
+        if sum(percent_list) != 1.0:
+            raise Exception("Percentages must sum to 1.0")
+
+        if len(percent_list) != len(self.grain_list):
+            raise Exception("The length of percent_list must equal length of self.grain_list")  # nopep8
+
+        # Pick the attribute based on units
+        if self.units == IMPERIAL_UNITS:
+            attr = 'ppg'
+        if self.units == SI_UNITS:
+            attr = 'hwe'
+
+        gu = sg_to_gu(self.original_gravity)
+        total_points = gu * self.final_volume
+
+        grain_additions = []
+        for index, grain in enumerate(self.grain_list):
+            efficiency = self.percent_brew_house_yield
+            weight = (percent_list[index] * total_points) / (getattr(grain, attr) * efficiency)  # nopep8
+            grain_add = GrainAddition(grain, weight=round(weight, 2))
+            grain_additions.append(grain_add)
+        return grain_additions
