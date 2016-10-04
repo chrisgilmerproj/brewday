@@ -166,7 +166,7 @@ class HopAddition(object):
             return False
         if (self.hop == other.hop) and \
            (self.boil_time == other.boil_time) and \
-           (self.weight == other.weight) and \
+           (round(self.weight, 2) == round(other.weight, 2)) and \
            (self.hop_type == other.hop_type) and \
            (self.units == other.units):
             return True

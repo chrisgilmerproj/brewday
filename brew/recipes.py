@@ -28,6 +28,7 @@ from .utilities.color import calculate_srm_daniels
 from .utilities.color import calculate_srm_morey
 from .utilities.color import calculate_srm_mosher
 from .utilities.color import srm_to_ebc
+from .utilities.hops import HopsUtilizationGlennTinseth
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_gu
 from .utilities.sugar import sg_to_plato
@@ -688,9 +689,12 @@ class RecipeBuilder(object):
     A class for building recipes
     """
     grain_lookup = {}
+    hop_lookup = {}
 
     def __init__(self, name,
                  grain_list=None,
+                 hop_list=None,
+                 target_ibu=33.0,
                  original_gravity=1.050,
                  percent_brew_house_yield=0.70,
                  start_volume=7.0,
@@ -700,6 +704,9 @@ class RecipeBuilder(object):
         :param str name: The name of the recipe
         :param grain_list: A list of Grains
         :type grain_list: list of Grain objects
+        :param hop_list: A list of Hops
+        :type hop_list: list of Hop objects
+        :param float target_ibu: The IBU Target
         :param float original_gravity: The Original Gravity Target
         :param float percent_brew_house_yield: The brew house yield
         :param float start_volume: The starting volume of the wort
@@ -710,7 +717,11 @@ class RecipeBuilder(object):
         if grain_list is None:
             grain_list = []
         self.grain_list = grain_list
+        if hop_list is None:
+            hop_list = []
+        self.hop_list = hop_list
 
+        self.target_ibu = target_ibu
         self.original_gravity = original_gravity
         self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8
         self.start_volume = start_volume
@@ -723,6 +734,8 @@ class RecipeBuilder(object):
         # Add to lookup
         for grain in self.grain_list:
             self.grain_lookup[grain.name] = grain
+        for hop in self.hop_list:
+            self.hop_lookup[hop.name] = hop
 
     def __str__(self):
         return self.name
@@ -731,6 +744,8 @@ class RecipeBuilder(object):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
         if self.grain_list:
             out = "{0}, grain_list=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_list]))  # nopep8
+        if self.hop_list:
+            out = "{0}, hop_list=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_list]))  # nopep8
         if self.original_gravity:
             out = "{0}, original_gravity={1}".format(out, self.original_gravity)  # nopep8
         if self.percent_brew_house_yield:
@@ -749,6 +764,7 @@ class RecipeBuilder(object):
             return False
         if (self.name == other.name) and \
            (self.grain_list == other.grain_list) and \
+           (self.hop_list == other.hop_list) and \
            (self.original_gravity == other.original_gravity) and \
            (self.percent_brew_house_yield ==
                other.percent_brew_house_yield) and \
@@ -791,6 +807,7 @@ class RecipeBuilder(object):
         return RecipeBuilder(
             self.name,
             grain_list=self.grain_list,
+            hop_list=self.hop_list,
             original_gravity=self.original_gravity,
             percent_brew_house_yield=self.percent_brew_house_yield,
             start_volume=start_volume,
@@ -833,7 +850,8 @@ class RecipeBuilder(object):
             grain_additions.append(grain_add)
         return grain_additions
 
-    def get_hop_additions(self, boil_time_list, utilization_cls):
+    def get_hop_additions(self, boil_time_list,
+                          utilization_cls=HopsUtilizationGlennTinseth):
         """
         Calculate HopAdditions from list of boil times
 
@@ -841,17 +859,21 @@ class RecipeBuilder(object):
         :param HopsUtilization utilization_cls: The utilization class used for calculation
         :return: A list of Hop Additions
         :rtype: list(HopAddition)
+        :raises Exception: If length of boil_time_list does not match length of self.hop_list
         """  # nopep8
+
+        if len(boil_time_list) != len(self.hop_list):
+            raise Exception("The length of boil_time_list must equal length of self.hop_list")  # nopep8
 
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
             hops_constant = HOPS_CONSTANT_SI
 
         hop_additions = []
-        for index, hop in enumerate(self.hops_list):
+        for index, hop in enumerate(self.hop_list):
             boil_time = boil_time_list[index]
-            utilization = utilization_cls.get_percent_utilization(
-                self.original_gravity, boil_time)
+            bg = gu_to_sg(sg_to_gu(self.original_gravity) * self.final_volume / self.start_volume)  # nopep8
+            utilization = utilization_cls.get_percent_utilization(bg, boil_time)  # nopep8
 
             num = (self.target_ibu * self.final_volume)
             den = (utilization * hop.percent_alpha_acids * hops_constant)

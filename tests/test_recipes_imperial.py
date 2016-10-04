@@ -345,3 +345,14 @@ class TestRecipeBuilderImperialUnits(unittest.TestCase):
         percent_list = [0.90, 0.05, 0.05]
         with self.assertRaises(Exception):
             self.builder.get_grain_additions(percent_list)
+
+    def test_get_hop_additions(self):
+        boil_time_list = [60.0, 5.0]
+        out = self.builder.get_hop_additions(boil_time_list)
+        expected = hop_additions
+        # self.assertEquals(out, expected)
+
+    def test_get_hop_additions_raises_length_mismatch(self):
+        boil_time_list = [60.0, 5.0, 5.0]
+        with self.assertRaises(Exception):
+            self.builder.get_hop_additions(boil_time_list)
