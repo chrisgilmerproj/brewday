@@ -8,6 +8,8 @@ from .constants import GRAIN_TYPE_LME
 from .constants import GAL_PER_LITER
 from .constants import HOP_TYPE_PELLET
 from .constants import HOP_UTILIZATION_SCALE_PELLET
+from .constants import HOPS_CONSTANT_IMPERIAL
+from .constants import HOPS_CONSTANT_SI
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import LITER_PER_GAL
@@ -16,6 +18,7 @@ from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
 from .grains import GrainAddition
+from .hops import HopAddition
 from .utilities.abv import alcohol_by_volume_alternative
 from .utilities.abv import alcohol_by_volume_standard
 from .utilities.abv import alcohol_by_weight
@@ -799,6 +802,8 @@ class RecipeBuilder(object):
         Calculate GrainAdditions from list of percentages
 
         :param list percent_list: A list of percentages mapped to each Grain
+        :return: A list of Grain Additions
+        :rtype: list(GrainAddition)
         :raises Exception: If sum of percentages does not equal 1.0
         :raises Exception: If length of percent_list does not match length of self.grain_list
         """  # nopep8
@@ -827,3 +832,34 @@ class RecipeBuilder(object):
             grain_add = GrainAddition(grain, weight=weight, units=self.units)
             grain_additions.append(grain_add)
         return grain_additions
+
+    def get_hop_additions(self, boil_time_list, utilization_cls):
+        """
+        Calculate HopAdditions from list of boil times
+
+        :param list boil_time_list: A list of boil times mapped to each Hop
+        :param HopsUtilization utilization_cls: The utilization class used for calculation
+        :return: A list of Hop Additions
+        :rtype: list(HopAddition)
+        """  # nopep8
+
+        hops_constant = HOPS_CONSTANT_IMPERIAL
+        if self.units == SI_UNITS:
+            hops_constant = HOPS_CONSTANT_SI
+
+        hop_additions = []
+        for index, hop in enumerate(self.hops_list):
+            boil_time = boil_time_list[index]
+            utilization = utilization_cls.get_percent_utilization(
+                self.original_gravity, boil_time)
+
+            num = (self.target_ibu * self.final_volume)
+            den = (utilization * hop.percent_alpha_acids * hops_constant)
+            weight = num / den
+            hop_add = HopAddition(hop,
+                                  weight=weight,
+                                  boil_time=boil_time,
+                                  utilization_cls=utilization_cls,
+                                  units=self.units)
+            hop_additions.append(hop_add)
+        return hop_additions
