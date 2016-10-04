@@ -9,7 +9,9 @@ from brew.constants import SI_UNITS
 from brew.constants import SUCROSE_PLATO
 from brew.grains import GrainAddition
 from brew.recipes import Recipe
+from fixtures import builder
 from fixtures import grain_additions
+from fixtures import grain_list
 from fixtures import hop_additions
 from fixtures import pale
 from fixtures import recipe
@@ -321,3 +323,36 @@ class TestRecipeSIUnits(unittest.TestCase):
     def test_validate(self):
         data = self.recipe.to_dict()
         Recipe.validate(data)
+
+
+class TestRecipeBuilderSIUnits(unittest.TestCase):
+
+    def setUp(self):
+        # Define Grains
+        self.grain_list = grain_list
+
+        # Define Recipes
+        self.builder = builder.change_units()
+        self.assertEquals(self.builder.units, SI_UNITS)
+
+    def test_change_units(self):
+        self.assertEquals(self.builder.units, SI_UNITS)
+        builder = self.builder.change_units()
+        self.assertEquals(builder.units, IMPERIAL_UNITS)
+        self.assertEquals(self.builder.units, SI_UNITS)
+
+    def test_get_grain_additions(self):
+        percent_list = [0.95, 0.05]
+        out = self.builder.get_grain_additions(percent_list)
+        expected = [ga.change_units() for ga in grain_additions]
+        self.assertEquals(out[0], expected[0])
+
+    def test_get_grain_additions_raises_sum_invalid(self):
+        percent_list = [0.90, 0.05]
+        with self.assertRaises(Exception):
+            self.builder.get_grain_additions(percent_list)
+
+    def test_get_grain_additions_raises_length_mismatch(self):
+        percent_list = [0.90, 0.05, 0.05]
+        with self.assertRaises(Exception):
+            self.builder.get_grain_additions(percent_list)
