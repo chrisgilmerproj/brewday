@@ -120,7 +120,7 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.grain_add)
-        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', color=2.0, hwe=308.78), weight=13.96, grain_type='cereal')")  # nopep8
+        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', color=2.0, hwe=308.78), weight=13.96, grain_type='cereal', units='imperial')")  # nopep8
 
     def test_get_weight_cereal(self):
         grain_add = GrainAddition(pale, weight=13.96,

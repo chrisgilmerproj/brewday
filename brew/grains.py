@@ -180,13 +180,14 @@ class GrainAddition(object):
             out = "{0}, weight={1}".format(out, self.weight)
         if self.grain_type:
             out = "{0}, grain_type='{1}'".format(out, self.grain_type)
+        out = "{0}, units='{1}'".format(out, self.units)
         out = "{0})".format(out)
         return out
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if (self.weight == other.weight) and \
+        if (round(self.weight, 2) == round(other.weight, 2)) and \
            (self.grain_type == other.grain_type) and \
            (self.units == other.units) and \
            (self.grain == other.grain):

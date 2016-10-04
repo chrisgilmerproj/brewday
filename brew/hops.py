@@ -157,8 +157,7 @@ class HopAddition(object):
             out = "{0}, utilization_cls={1}".format(out, type(self.utilization_cls).__name__)  # nopep8
         if self.utilization_cls_kwargs:
             out = "{0}, utilization_cls_kwargs={1}".format(out, self.utilization_cls_kwargs)  # nopep8
-        if self.units:
-            out = "{0}, units='{1}'".format(out, self.units)
+        out = "{0}, units='{1}'".format(out, self.units)
         out = "{0})".format(out)
         return out
 
@@ -253,7 +252,7 @@ class HopAddition(object):
         :param float percent_contribution: The percent contribution of the hops to the total bitterness
         :return: The weight of hops
         :rtype: float
-        """
+        """  # nopep8
         validate_percentage(percent_contribution)
 
         hops_constant = HOPS_CONSTANT_IMPERIAL

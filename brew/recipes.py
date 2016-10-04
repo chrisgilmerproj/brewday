@@ -824,6 +824,6 @@ class RecipeBuilder(object):
         for index, grain in enumerate(self.grain_list):
             efficiency = self.percent_brew_house_yield
             weight = (percent_list[index] * total_points) / (getattr(grain, attr) * efficiency)  # nopep8
-            grain_add = GrainAddition(grain, weight=round(weight, 2))
+            grain_add = GrainAddition(grain, weight=weight, units=self.units)
             grain_additions.append(grain_add)
         return grain_additions
