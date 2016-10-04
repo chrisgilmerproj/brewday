@@ -53,6 +53,8 @@ recipe = Recipe(name='pale ale',
 # Define Recipe Builder
 builder = RecipeBuilder(name='pale ale',
                         grain_list=grain_list,
+                        hop_list=hop_list,
+                        target_ibu=33.0,
                         original_gravity=1.0761348,
                         percent_brew_house_yield=0.70,
                         start_volume=7.0,
