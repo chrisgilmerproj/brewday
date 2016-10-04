@@ -3,6 +3,7 @@ from brew.grains import GrainAddition
 from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.recipes import Recipe
+from brew.recipes import RecipeBuilder
 from brew.yeasts import Yeast
 
 # Define Grains
@@ -44,7 +45,16 @@ recipe = Recipe(name='pale ale',
                 grain_additions=grain_additions,
                 hop_additions=hop_additions,
                 yeast=yeast,
-                percent_brew_house_yield=0.70,  # %
-                start_volume=7.0,  # G
-                final_volume=5.0,  # G
+                percent_brew_house_yield=0.70,
+                start_volume=7.0,
+                final_volume=5.0,
                 )
+
+# Define Recipe Builder
+builder = RecipeBuilder(name='pale ale',
+                        grain_list=grain_list,
+                        original_gravity=1.0761348,
+                        percent_brew_house_yield=0.70,
+                        start_volume=7.0,
+                        final_volume=5.0,
+                        )
