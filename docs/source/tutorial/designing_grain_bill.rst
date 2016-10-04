@@ -5,62 +5,64 @@ This tutorial is going to show you how to design a grain bill for your beer.
 Once the style is known you will want to decide how much of each grain to add
 to get the Original Gravity you desire.  This can be done in a few easy steps.
 
-Picking Original Gravity
-------------------------
-
 If we build a Pale Ale we might first want to pick an original gravity.  This
 would be the driven primarily by the style of the beer and for a Pale Ale we
-will pick 1.054.  This is the gravity you desire after you have steeped your
+will pick 1.076.  This is the gravity you desire after you have steeped your
 grains and added your malt extract.  This is largely driven by your Brew House
-Efficiency, the start and final volume, and the types of grain you use
+Efficiency, the final volume, and the types of grain you use
 (cereals, malt extracts, etc).
 
-In this example the start volume is 7.0 Gallons and the target OG in Gravity
-Units (GU) is 54 GU.
+In this example the final volume is 5.0 Gallons and the target OG in Gravity
+Units (GU) is 76 GU. Let's use a Brew House Efficiency of 70% for our example.
+That means that we expect to only extract 70% of the total points from the grain
+bill's potential points.  So let's look at what the total points are if we could
+fully extract all the sugars from the malts:
 
-:math:`\text{OG} = \frac{\text{Total Points}}{\text{Start Volume}}`
+.. code-block:: python
 
-More clearly this would be:
+    from brew.grains import Grain
+    from brew.recipes import RecipeBuilder
+    pale = Grain('pale 2-row',
+                 color=2.0,
+                 ppg=37.0)
+    crystal = Grain('crystal C20',
+                    color=20.0,
+                    ppg=35.0)
+    grain_list = [pale, crystal]
+    builder = RecipeBuilder(name='pale ale',
+                            grain_list=grain_list,
+                            original_gravity=1.0761348,
+                            percent_brew_house_yield=0.70,
+                            start_volume=7.0,
+                            final_volume=5.0,
+                            )
 
-:math:`54 \text{GU} = \frac{\text{Total Points}}{7.0 \text{Gallons}}`
+Now that we have an object to help us build a recipe we want to determine the
+grain additions that we'll be using.  This is done by providing an estimate of
+the percentages each grain will contribute to the final beer.  In this case the
+pale 2-row will contribute 95% and the crystal 20L will contribute 5%.
 
-Solving for this equation means we expect the total points to be 378 GU.
-We're going to aim to get this many points from the recipe, but that is
-highly dependent on the Brew House Efficiency.
+.. code-block:: python
 
-Let's use a Brew House Efficiency of 70% for our example.  That means that we
-expect to only extract 70% of the total points from the grain bill's potential
-points.  So let's look at what the total points are if we could fully extract
-all the sugars from the malts:
+    percent_list = [0.95, 0.05]
+    grain_additions = builder.get_grain_additions(percent_list)
+    for grain_add in grain_additions:
+        print(grain_add.format())
+        print('')
 
-:math:`378 \text{GU} \div 70\% \text{BHE} = 540 \text{GU}`
+Produces the output::
 
-This 540 Points is what we're going to aim for in building our grain bill.
+	Pale Malt (2 Row) US Addition
+	-----------------------------------
+	Grain Type:        cereal
+	Weight:            13.96 lbs
 
-Picking the Amount
-------------------
+	Caramel/Crystal Malt - 20L Addition
+	-----------------------------------
+	Grain Type:        cereal
+	Weight:            0.78 lbs
 
-In our Pale Ale example we are going to use two grains, a 2-row pale malt as
-the primary grain and a crystal 20L malt for flavor. The pale malt is going
-to make up 95% of our total grain bill and the crystal 20L is going to make up
-the remaining 5%.
-
-To determine the amount of the primary grain we must know the potential extract
-of the grain in Points Per Gallon (PPG).  The pale malt is listed as having a
-potential of 37 PPG.  Let's determine what that means in terms of pounds of
-malt.
-
-:math:`540 \text{GU} \times 95\% = 513 \text{GU}`
-
-Now divide the points by the potential to get the weight:
-
-:math:`513 \text{GU} \div 37 \text{PPG} = 13.86 \text{Pounds}`
-
-Repeating this math for the crystal 20L malt we get:
-
-:math:`27 \text{GU} \div 35 \text{PPG} = 0.73 \text{Pounds}`
-
-Now we know exactly how much of each grain will go into the beer.
+Now you have designed the grain bill for your recipe.
 
 ----
 
