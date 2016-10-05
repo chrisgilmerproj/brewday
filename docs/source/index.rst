@@ -14,7 +14,7 @@ Tutorial
 
    tutorial/features.rst
    tutorial/building_a_recipe.rst
-   tutorial/designing_grain_bill.rst
+   tutorial/designing_a_recipe.rst
 
 Appendix
 ========
