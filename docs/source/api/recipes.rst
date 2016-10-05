@@ -5,3 +5,8 @@ brew.recipes
    :members:
    :undoc-members:
    :inherited-members:
+
+.. autoclass:: brew.recipes.RecipeBuilder
+   :members:
+   :undoc-members:
+   :inherited-members:
