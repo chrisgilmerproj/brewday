@@ -12,6 +12,7 @@ from .constants import KG_PER_POUND
 from .constants import POUND_PER_KG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
+from .constants import WEIGHT_TOLERANCE
 from .utilities.malt import dry_to_liquid_malt_weight
 from .utilities.malt import dry_malt_to_grain_weight
 from .utilities.malt import grain_to_dry_malt_weight
@@ -187,7 +188,7 @@ class GrainAddition(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if (round(self.weight, 2) == round(other.weight, 2)) and \
+        if (abs(1.0 - self.weight / other.weight) < WEIGHT_TOLERANCE) and \
            (self.grain_type == other.grain_type) and \
            (self.units == other.units) and \
            (self.grain == other.grain):
