@@ -2,8 +2,6 @@ import json
 import textwrap
 
 from .constants import HOP_TYPE_PELLET
-from .constants import HOPS_CONSTANT_IMPERIAL
-from .constants import HOPS_CONSTANT_SI
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import MG_PER_OZ
@@ -241,28 +239,3 @@ class HopAddition(object):
             return self.weight * alpha_acids
         elif self.units == SI_UNITS:
             return self.weight * OZ_PER_MG * alpha_acids
-
-    def get_hops_weight(self, sg, target_ibu, final_volume,
-                        percent_contribution):
-        """
-        Get the Weight of Hops
-
-        :param float sg: The specific gravity of the wort
-        :param float target_ibu: The target IBU
-        :param float final_volume: The final volume of the wort
-        :param float percent_contribution: The percent contribution of the hops to the total bitterness
-        :return: The weight of hops
-        :rtype: float
-        """  # nopep8
-        validate_percentage(percent_contribution)
-
-        hops_constant = HOPS_CONSTANT_IMPERIAL
-        if self.units == SI_UNITS:
-            hops_constant = HOPS_CONSTANT_SI
-
-        utilization = self.utilization_cls.get_percent_utilization(
-            sg, self.boil_time)
-
-        num = (target_ibu * final_volume)
-        den = (utilization * self.hop.percent_alpha_acids * hops_constant)
-        return num / den * percent_contribution
