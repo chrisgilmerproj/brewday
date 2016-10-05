@@ -3,6 +3,7 @@
 import json
 import textwrap
 
+from .constants import BOIL_EVAPORATION
 from .constants import GRAIN_TYPE_DME
 from .constants import GRAIN_TYPE_LME
 from .constants import GAL_PER_LITER
@@ -220,23 +221,25 @@ class Recipe(object):
         """
         return gu_to_sg(self.get_original_gravity_units())
 
-    def get_boil_gravity_units(self):
+    def get_boil_gravity_units(self, evaporation=BOIL_EVAPORATION):  # nopep8
         """
         Get the boil gravity units
 
+        :param float evaporation: Percent water evaporation during boil
         :return: The boil gravity units
         :rtype: float
         """
-        return self.get_total_points() / self.start_volume
+        return self.get_total_points() / ((1.0 - evaporation) * self.start_volume)  # nopep8
 
-    def get_boil_gravity(self):
+    def get_boil_gravity(self, evaporation=BOIL_EVAPORATION):  # nopep8
         """
         Get the boil specific gravity
 
+        :param float evaporation: Percent water evaporation during boil
         :return: The boil specific gravity
         :rtype: float
         """
-        return gu_to_sg(self.get_boil_gravity_units())
+        return gu_to_sg(self.get_boil_gravity_units(evaporation=evaporation))
 
     def get_final_gravity_units(self):
         """
