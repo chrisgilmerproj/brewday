@@ -16,7 +16,7 @@ grain and two types of hops.  Let's build those first:
 .. code-block:: python
 
     from brew.grains import Grain
-    from brew.grains import Hop
+    from brew.hops import Hop
     pale = Grain('pale 2-row',
                  color=2.0,
                  ppg=37.0)

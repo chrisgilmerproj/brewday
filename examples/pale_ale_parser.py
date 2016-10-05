@@ -5,6 +5,10 @@ import os
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_recipe
 
+"""
+Build a recipe using data parsers.
+"""
+
 
 def main():
 

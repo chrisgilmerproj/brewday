@@ -27,8 +27,9 @@ work.
 
 ## Standard Example
 
-- [Pale Ale](./pale_ale_dict.py) (Dictionary Version)
-- [Pale Ale](./pale_ale_object.py) (Python Object Version)
+- [Pale Ale from Recipe](./pale_ale_recipe.py) (Python Object Version)
+- [Pale Ale from Parser](./pale_ale_parser.py) (Dictionary Version)
+- [Pale Ale from Builder](./pale_ale_builder.py) (Python Object Version)
 
 ## Brewing Classic Styles: 80 Winning Recipes Anyone Can Brew
 
