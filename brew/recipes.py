@@ -850,7 +850,8 @@ class RecipeBuilder(object):
             grain_additions.append(grain_add)
         return grain_additions
 
-    def get_hop_additions(self, boil_time_list,
+    def get_hop_additions(self, percent_list, boil_time_list,
+                          hop_type=HOP_TYPE_PELLET,
                           utilization_cls=HopsUtilizationGlennTinseth):
         """
         Calculate HopAdditions from list of boil times
@@ -859,8 +860,18 @@ class RecipeBuilder(object):
         :param HopsUtilization utilization_cls: The utilization class used for calculation
         :return: A list of Hop Additions
         :rtype: list(HopAddition)
+        :raises Exception: If sum of percentages does not equal 1.0
+        :raises Exception: If length of percent_list does not match length of self.grain_list
         :raises Exception: If length of boil_time_list does not match length of self.hop_list
         """  # nopep8
+        for percent in percent_list:
+            validate_percentage(percent)
+
+        if sum(percent_list) != 1.0:
+            raise Exception("Percentages must sum to 1.0")
+
+        if len(percent_list) != len(self.grain_list):
+            raise Exception("The length of percent_list must equal length of self.grain_list")  # nopep8
 
         if len(boil_time_list) != len(self.hop_list):
             raise Exception("The length of boil_time_list must equal length of self.hop_list")  # nopep8
@@ -871,16 +882,22 @@ class RecipeBuilder(object):
 
         hop_additions = []
         for index, hop in enumerate(self.hop_list):
+            percent = percent_list[index]
             boil_time = boil_time_list[index]
+
+            # Calculate utilization from boil gravity
             bg = gu_to_sg(sg_to_gu(self.original_gravity) * self.final_volume / self.start_volume)  # nopep8
             utilization = utilization_cls.get_percent_utilization(bg, boil_time)  # nopep8
+            if hop_type == HOP_TYPE_PELLET:
+                utilization *= HOP_UTILIZATION_SCALE_PELLET
 
-            num = (self.target_ibu * self.final_volume)
+            num = (self.target_ibu * percent * self.final_volume)
             den = (utilization * hop.percent_alpha_acids * hops_constant)
             weight = num / den
             hop_add = HopAddition(hop,
                                   weight=weight,
                                   boil_time=boil_time,
+                                  hop_type=hop_type,
                                   utilization_cls=utilization_cls,
                                   units=self.units)
             hop_additions.append(hop_add)

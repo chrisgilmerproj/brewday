@@ -10,6 +10,7 @@ from .constants import MG_PER_OZ
 from .constants import OZ_PER_MG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
+from .constants import WEIGHT_TOLERANCE
 from .utilities.hops import HopsUtilizationGlennTinseth
 from .validators import validate_hop_type
 from .validators import validate_optional_fields
@@ -166,7 +167,7 @@ class HopAddition(object):
             return False
         if (self.hop == other.hop) and \
            (self.boil_time == other.boil_time) and \
-           (round(self.weight, 2) == round(other.weight, 2)) and \
+           (abs(1.0 - self.weight / other.weight) < WEIGHT_TOLERANCE) and \
            (self.hop_type == other.hop_type) and \
            (self.units == other.units):
             return True
