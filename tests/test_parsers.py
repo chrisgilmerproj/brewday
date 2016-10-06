@@ -1,7 +1,6 @@
 import unittest
 
 import mock
-
 from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_cereals
@@ -9,7 +8,6 @@ from brew.parsers import parse_hops
 from brew.parsers import parse_recipe
 from brew.parsers import parse_yeast
 from brew.recipes import Recipe
-
 from fixtures import cascade_add
 from fixtures import pale_add
 from fixtures import yeast

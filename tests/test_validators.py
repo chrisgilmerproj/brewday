@@ -4,10 +4,10 @@ from brew.constants import GRAIN_TYPE_CEREAL
 from brew.constants import HOP_TYPE_PELLET
 from brew.validators import validate_grain_type
 from brew.validators import validate_hop_type
-from brew.validators import validate_percentage
-from brew.validators import validate_units
-from brew.validators import validate_required_fields
 from brew.validators import validate_optional_fields
+from brew.validators import validate_percentage
+from brew.validators import validate_required_fields
+from brew.validators import validate_units
 
 
 class TestValidators(unittest.TestCase):

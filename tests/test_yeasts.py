@@ -2,7 +2,6 @@ import textwrap
 import unittest
 
 from brew.yeasts import Yeast
-
 from fixtures import cascade_add
 from fixtures import yeast
 

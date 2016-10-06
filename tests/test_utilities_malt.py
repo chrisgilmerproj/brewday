@@ -4,8 +4,8 @@ from brew.utilities.malt import as_is_basis_to_dry_basis
 from brew.utilities.malt import basis_to_hwe
 from brew.utilities.malt import coarse_grind_to_fine_grind
 from brew.utilities.malt import dry_basis_to_as_is_basis
-from brew.utilities.malt import dry_to_liquid_malt_weight
 from brew.utilities.malt import dry_malt_to_grain_weight
+from brew.utilities.malt import dry_to_liquid_malt_weight
 from brew.utilities.malt import fine_grind_to_coarse_grind
 from brew.utilities.malt import grain_to_dry_malt_weight
 from brew.utilities.malt import grain_to_liquid_malt_weight
