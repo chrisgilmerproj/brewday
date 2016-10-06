@@ -145,7 +145,7 @@ RATIO_C2H6O_TO_CO2 = MASS_C2H6O / MASS_CO2
 #: Density of Ethanol at 20C
 DENSITY_ETHANOL = 0.78945  # g/ml  @ 20C
 #: Alcohol by Volume Constant
-ABV_CONST = RATIO_C2H6O_TO_CO2 / ALCOHOL_SPECIFIC_GRAVITY * 100.0
+ABV_CONST = 131.25  # RATIO_C2H6O_TO_CO2 / ALCOHOL_SPECIFIC_GRAVITY * 100.0
 
 #: Weight Tolerance, considered equal within this range
 WEIGHT_TOLERANCE = 0.005

@@ -370,3 +370,8 @@ class TestRecipeBuilderImperialUnits(unittest.TestCase):
         boil_time_list = [60.0, 5.0, 5.0]
         with self.assertRaises(Exception):
             self.builder.get_hop_additions(percent_list, boil_time_list)
+
+    def test_get_yeast_attenuation(self):
+        abv = 0.0749
+        attenuation = self.builder.get_yeast_attenuation(abv)
+        self.assertEquals(round(attenuation, 2), 0.75)

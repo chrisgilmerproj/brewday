@@ -1,4 +1,5 @@
 from ..constants import ALCOHOL_SPECIFIC_GRAVITY
+from ..constants import ABV_CONST
 from .sugar import apparent_extract_to_real_extract
 
 
@@ -7,6 +8,7 @@ __all__ = [
     'real_attenuation',
     'real_attenuation_from_apparent_extract',
     'alcohol_by_volume_standard',
+    'final_gravity_from_abv_standard',
     'alcohol_by_volume_alternative',
     'alcohol_by_weight',
 ]
@@ -84,8 +86,19 @@ def alcohol_by_volume_standard(og, fg):
 
     :math:`\\text{ABV} = \\frac{46.07 \\text{g/mol C2H6O}}{44.0095 \\text{g/mol CO2}} \\times \\frac{1.0}{0.7936} \\times 100 \\times (og - fg)`
     """  # nopep8
-    ABV_CONST = 131.25
     return (og - fg) * ABV_CONST / 100.0
+
+
+def final_gravity_from_abv_standard(og, abv):
+    """
+    Final Gravity from ABV Standard
+
+    :param float og: Original Gravity
+    :param float abv: Alcohol by Volume decimal percentage
+    :return: Final Gravity
+    :rtype: float
+    """
+    return og - (abv * 100.0) / ABV_CONST
 
 
 def alcohol_by_volume_alternative(og, fg):
