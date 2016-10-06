@@ -13,21 +13,20 @@ from .constants import POUND_PER_KG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WEIGHT_TOLERANCE
-from .utilities.malt import dry_to_liquid_malt_weight
 from .utilities.malt import dry_malt_to_grain_weight
+from .utilities.malt import dry_to_liquid_malt_weight
 from .utilities.malt import grain_to_dry_malt_weight
 from .utilities.malt import grain_to_liquid_malt_weight
 from .utilities.malt import hwe_to_basis
 from .utilities.malt import hwe_to_ppg
 from .utilities.malt import liquid_malt_to_grain_weight
 from .utilities.malt import liquid_to_dry_malt_weight
-from .utilities.malt import specialty_grain_to_liquid_malt_weight
 from .utilities.malt import ppg_to_hwe
+from .utilities.malt import specialty_grain_to_liquid_malt_weight
 from .validators import validate_optional_fields
 from .validators import validate_percentage
 from .validators import validate_required_fields
 from .validators import validate_units
-
 
 __all__ = ['Grain', 'GrainAddition']
 

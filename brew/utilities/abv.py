@@ -1,7 +1,6 @@
-from ..constants import ALCOHOL_SPECIFIC_GRAVITY
 from ..constants import ABV_CONST
+from ..constants import ALCOHOL_SPECIFIC_GRAVITY
 from .sugar import apparent_extract_to_real_extract
-
 
 __all__ = [
     'apparent_attenuation',

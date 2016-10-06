@@ -3,7 +3,6 @@ from .constants import HOP_TYPE_LIST
 from .constants import IMPERIAL_UNITS
 from .constants import SI_UNITS
 
-
 __all__ = [
     'validate_grain_type',
     'validate_hop_type',

@@ -10,7 +10,6 @@ from ..constants import SI_TYPES
 from ..constants import SI_UNITS
 from ..validators import validate_units
 
-
 __all__ = [
     'HopsUtilization',
     'HopsUtilizationJackieRager',

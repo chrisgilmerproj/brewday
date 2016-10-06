@@ -12,7 +12,6 @@ from .sugar import plato_to_sg
 from .sugar import sg_to_gu
 from .sugar import sg_to_plato
 
-
 __all__ = [
     'PITCH_RATE_MAP',
     'pitch_rate_conversion',

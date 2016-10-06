@@ -5,7 +5,6 @@ from .validators import validate_optional_fields
 from .validators import validate_percentage
 from .validators import validate_required_fields
 
-
 __all__ = ['Yeast']
 
 

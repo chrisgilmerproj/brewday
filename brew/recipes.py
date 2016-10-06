@@ -4,9 +4,9 @@ import json
 import textwrap
 
 from .constants import BOIL_EVAPORATION
+from .constants import GAL_PER_LITER
 from .constants import GRAIN_TYPE_DME
 from .constants import GRAIN_TYPE_LME
-from .constants import GAL_PER_LITER
 from .constants import HOP_TYPE_PELLET
 from .constants import HOP_UTILIZATION_SCALE_PELLET
 from .constants import HOPS_CONSTANT_IMPERIAL
@@ -38,7 +38,6 @@ from .validators import validate_optional_fields
 from .validators import validate_percentage
 from .validators import validate_required_fields
 from .validators import validate_units
-
 
 __all__ = ['Recipe', 'RecipeBuilder']
 

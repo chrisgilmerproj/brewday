@@ -5,7 +5,6 @@ from ..constants import POUND_PER_KG
 from ..constants import SI_UNITS
 from ..validators import validate_units
 
-
 __all__ = [
     'srm_to_ebc',
     'ebc_to_srm',

@@ -5,7 +5,6 @@ from ..constants import SI_UNITS
 from ..validators import validate_units
 from .temperature import celsius_to_fahrenheit
 
-
 __all__ = [
     'sg_to_gu',
     'gu_to_sg',
