@@ -1,9 +1,9 @@
 Features
 ========
 
-  * Work with recipes, grains, hops and yeast
-  * Develop recipes
-  * Understand bitterness and color
+  * Build a Recipe to know what to expect from your brew
+  * Develop Recipes to help you pick ingredients to match a style
+  * Explore concepts like Bitterness, Color, and Alcohol Content
 
 ----
 
