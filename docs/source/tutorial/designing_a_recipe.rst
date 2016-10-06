@@ -141,9 +141,22 @@ Since attenuation is a property of the yeast the best you can do is set a target
 ABV and use that to determine what range of attenuation you will need from your
 yeast.
 
-TBD code example to determine attenuation from ABV.
+Let's assume that your target ABV is 7.49%.  Then you can find the needed
+attenuation with the following code:
 
+.. code-block:: python
 
+    abv = 0.0749
+    attenuation = builder.get_yeast_attenuation(abv)
+    print("Attenuation = {:0.1%}".format(attenuation))
+
+Yields::
+
+    Attenuation = 75.0%
+
+Using this number you can pick a yeast in your style that has the 75% expected
+attenuation number.  Since there are so many factors surrounding yeast this
+should only be used as an estimate.
 
 ----
 

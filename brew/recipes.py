@@ -23,6 +23,7 @@ from .hops import HopAddition
 from .utilities.abv import alcohol_by_volume_alternative
 from .utilities.abv import alcohol_by_volume_standard
 from .utilities.abv import alcohol_by_weight
+from .utilities.abv import final_gravity_from_abv_standard
 from .utilities.color import calculate_mcu
 from .utilities.color import calculate_srm
 from .utilities.color import calculate_srm_daniels
@@ -905,3 +906,18 @@ class RecipeBuilder(object):
                                   units=self.units)
             hop_additions.append(hop_add)
         return hop_additions
+
+    def get_yeast_attenuation(self, abv):
+        """
+        Estimate yeast attenuation given a target abv
+
+        :param float abv: Alcohol by Volume
+        :return: Yeast Attenuation Percentage
+        :rtype: float
+
+        This uses the ABV Standard Equation
+        """
+        validate_percentage(abv)
+        fg = final_gravity_from_abv_standard(self.original_gravity, abv)
+        attenuation = 1.0 - sg_to_gu(fg) / sg_to_gu(self.original_gravity)
+        return attenuation
