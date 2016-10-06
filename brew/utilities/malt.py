@@ -9,7 +9,6 @@ from ..constants import SUCROSE_PPG
 from ..validators import validate_percentage
 from .sugar import gu_to_sg
 
-
 __all__ = [
     'dry_to_liquid_malt_weight',
     'liquid_to_dry_malt_weight',

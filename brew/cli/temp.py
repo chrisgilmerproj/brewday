@@ -2,8 +2,8 @@
 import argparse
 import sys
 
-from brew.utilities.temperature import fahrenheit_to_celsius
 from brew.utilities.temperature import celsius_to_fahrenheit
+from brew.utilities.temperature import fahrenheit_to_celsius
 
 
 def get_temp_conversion(fahrenheit, celsius):

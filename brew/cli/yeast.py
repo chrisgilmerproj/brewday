@@ -8,8 +8,8 @@ This replicates other calculators found here:
 """  # nopep8
 
 import argparse
-import textwrap
 import sys
+import textwrap
 
 from brew.constants import GAL_PER_LITER
 from brew.constants import IMPERIAL_UNITS

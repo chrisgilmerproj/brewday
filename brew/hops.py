@@ -16,7 +16,6 @@ from .validators import validate_percentage
 from .validators import validate_required_fields
 from .validators import validate_units
 
-
 __all__ = ['Hop', 'HopAddition']
 
 
