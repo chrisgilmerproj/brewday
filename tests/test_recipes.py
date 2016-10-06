@@ -4,7 +4,6 @@ from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.recipes import Recipe
 from brew.recipes import RecipeBuilder
-
 from fixtures import builder
 from fixtures import grain_additions
 from fixtures import grain_list

@@ -3,9 +3,9 @@ import unittest
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.utilities.yeast import KaiserYeastModel
+from brew.utilities.yeast import pitch_rate_conversion
 from brew.utilities.yeast import WhiteYeastModel
 from brew.utilities.yeast import YeastModel
-from brew.utilities.yeast import pitch_rate_conversion
 
 
 class TestYeastUtilities(unittest.TestCase):
