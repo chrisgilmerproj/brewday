@@ -8,6 +8,11 @@ import string
 Parse the BJCP 2015 Styles CSV file
 """
 
+# TODO:
+# - numbers as floats not strings
+# - abv as decimal percent
+# - category without subcategory
+
 
 def main():
     styles = {}

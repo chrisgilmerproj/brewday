@@ -4,6 +4,7 @@ from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.recipes import Recipe
 from brew.recipes import RecipeBuilder
+from brew.styles import Style
 from brew.yeasts import Yeast
 
 # Define Grains
@@ -60,3 +61,22 @@ builder = RecipeBuilder(name='pale ale',
                         start_volume=7.0,
                         final_volume=5.0,
                         )
+
+# Define a Style
+american_pale_ale_style = Style('American Pale Ale',
+                                category='18',
+                                subcategory='B',
+                                og=[1.045, 1.06],
+                                fg=[1.010, 1.015],
+                                abv=[0.045, 0.062],
+                                ibu=[30, 50],
+                                color=[5, 10])
+
+english_pale_ale_style = Style('Ordinary Bitter',
+                               category='11',
+                               subcategory='A',
+                               og=[1.030, 1.039],
+                               fg=[1.007, 1.011],
+                               abv=[0.032, 0.038],
+                               ibu=[25, 35],
+                               color=[8, 14])
