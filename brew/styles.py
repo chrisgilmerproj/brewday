@@ -38,7 +38,8 @@ class Style(object):
         self.ibu = self._validate_input_list(ibu, (int, float), "IBU")
         self.color = self._validate_input_list(color, (int, float), "Color")
 
-    def _validate_input_list(self, value_list, value_type, name):
+    @classmethod
+    def _validate_input_list(cls, value_list, value_type, name):
         """
         Private class to validate inputs for class parameters
 
