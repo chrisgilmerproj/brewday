@@ -1,9 +1,15 @@
 import textwrap
 import unittest
 
+from brew.grains import GrainAddition
+from brew.recipes import Recipe
 from brew.styles import Style
 from fixtures import american_pale_ale_style
+from fixtures import crystal
+from fixtures import hop_additions
+from fixtures import pale
 from fixtures import recipe
+from fixtures import yeast
 
 
 class TestStyle(unittest.TestCase):
@@ -115,6 +121,29 @@ class TestStyle(unittest.TestCase):
 
     def test_ne_style_class(self):
         self.assertTrue(self.style != recipe)
+
+    def test_recipe_matches(self):
+        pale_add = GrainAddition(pale,
+                                 weight=8.69)
+        crystal_add = GrainAddition(crystal,
+                                    weight=1.02)
+        pale_ale = Recipe(name='pale ale',
+                          grain_additions=[
+                               pale_add,
+                               crystal_add,
+                          ],
+                          hop_additions=hop_additions,
+                          yeast=yeast,
+                          percent_brew_house_yield=0.70,
+                          start_volume=7.0,
+                          final_volume=5.0,
+                          )
+        out = self.style.recipe_matches(pale_ale)
+        self.assertTrue(out)
+
+    def test_recipe_matches_false(self):
+        out = self.style.recipe_matches(recipe)
+        self.assertFalse(out)
 
     def test_to_json(self):
         out = self.style.to_json()

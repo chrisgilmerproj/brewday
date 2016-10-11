@@ -455,7 +455,7 @@ class Recipe(object):
 
     def get_total_wort_color(self):
         """
-        Get the Total Color of the Wort in SRM
+        Get the Total Color of the Wort in SRM using Morey Power Equation
 
         :return: The total color of the wort in SRM
         :rtype: float

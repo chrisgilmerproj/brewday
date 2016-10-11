@@ -1,6 +1,7 @@
 import json
 import textwrap
 
+from .utilities.abv import alcohol_by_volume_standard
 from .validators import validate_required_fields
 
 
@@ -52,9 +53,9 @@ class Style(object):
             raise Exception("{} must contain two value_lists".format(name))
         for v in value_list:
             if not isinstance(v, value_type):
-                raise Exception("{} must be type '{}'".format(name, value_type))
+                raise Exception("{} must be type '{}'".format(name, value_type))  # nopep8
         if value_list[0] > value_list[1]:
-            raise Exception("{} values must be lowest value first".format(name))
+            raise Exception("{} values must be lowest value first".format(name))  # nopep8
         return value_list
 
     def __str__(self):
@@ -88,6 +89,27 @@ class Style(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def recipe_matches(self, recipe):
+        """
+        Determine if a recipe matches the style
+
+        :param Recipe recipe: A Recipe object
+        :return: True if recipe matches style, otherwise False
+        :rtype: bool
+        """
+        recipe_og = recipe.get_original_gravity()
+        recipe_fg = recipe.get_final_gravity()
+        recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
+        recipe_ibu = recipe.get_total_ibu()
+        recipe_color = recipe.get_total_wort_color()
+        if (self.og[0] <= recipe_og <= self.og[1]) and \
+           (self.fg[0] <= recipe_fg <= self.fg[1]) and \
+           (self.abv[0] <= recipe_abv <= self.abv[1]) and \
+           (self.ibu[0] <= recipe_ibu <= self.ibu[1]) and \
+           (self.color[0] <= recipe_color <= self.color[1]):
+            return True
+        return False
 
     def to_dict(self):
         style_dict = {
