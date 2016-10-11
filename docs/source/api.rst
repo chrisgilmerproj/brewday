@@ -12,6 +12,7 @@ Model API
    api/hops.rst
    api/parsers.rst
    api/recipes.rst
+   api/styles.rst
    api/validators.rst
    api/yeasts.rst
 
