@@ -18,6 +18,30 @@ class TestStyle(unittest.TestCase):
         # Define Style
         self.style = american_pale_ale_style
 
+    def test_validate_input_list_empty(self):
+        with self.assertRaises(Exception):
+            Style._validate_input_list(None, (int, float), 'OG')
+
+    def test_validate_input_list_type(self):
+        with self.assertRaises(Exception):
+            Style._validate_input_list({'a': 'b'}, (int, float), 'OG')
+
+    def test_validate_input_list_length_short(self):
+        with self.assertRaises(Exception):
+            Style._validate_input_list([1], (int, float), 'OG')
+
+    def test_validate_input_list_length_long(self):
+        with self.assertRaises(Exception):
+            Style._validate_input_list([1, 2, 3], (int, float), 'OG')
+
+    def test_validate_input_list_wrong_type(self):
+        with self.assertRaises(Exception):
+            Style._validate_input_list([1, '2'], (int, float), 'OG')
+
+    def test_validate_input_list_bad_order(self):
+        with self.assertRaises(Exception):
+            Style._validate_input_list([2, 1], (int, float), 'OG')
+
     def test_str(self):
         out = str(self.style)
         self.assertEquals(out, '18B American Pale Ale')
