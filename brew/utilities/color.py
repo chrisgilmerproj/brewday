@@ -136,7 +136,6 @@ def calculate_srm_morey_hybrid(mcu):
     :return: SRM Color
     :rtype: float
     :raises Exception: If the MCU is > 50.0
-    :raises Exception: If the SRM is > 50.0
 
     Assumptions:
 
@@ -165,8 +164,7 @@ def calculate_srm_morey_hybrid(mcu):
     else:
         raise Exception("Morey Hybrid does not work above MCU 50.0")
 
-    if srm > 50.0:
-        raise Exception("Morey Hybrid does not work above SRM 50.0")
+    # SRM never gets above 50 so no exception is needed here
     return srm
 
 
