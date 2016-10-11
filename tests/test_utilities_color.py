@@ -106,14 +106,6 @@ class TestColorUtilities(unittest.TestCase):
         with self.assertRaises(Exception):
             calculate_srm_mosher(mcu)
 
-    # def test_calculate_srm_daniels_raises(self):
-    #     weight = 1.0  # lbs
-    #     color = 30.0  # degL
-    #     vol = 5.5  # gal
-    #     mcu = calculate_mcu(weight, color, vol)
-    #     with self.assertRaises(Exception):
-    #         calculate_srm_daniels(mcu)
-
     def test_calculate_srm_daniels_power_raises(self):
         weight = 100.0  # lbs
         color = 30.0  # degL
