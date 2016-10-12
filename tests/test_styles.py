@@ -146,6 +146,26 @@ class TestStyle(unittest.TestCase):
     def test_ne_style_class(self):
         self.assertTrue(self.style != recipe)
 
+    def test_og_matches(self):
+        out = self.style.og_matches(1.050)
+        self.assertTrue(out)
+
+    def test_fg_matches(self):
+        out = self.style.fg_matches(1.012)
+        self.assertTrue(out)
+
+    def test_abv_matches(self):
+        out = self.style.abv_matches(0.050)
+        self.assertTrue(out)
+
+    def test_ibu_matches(self):
+        out = self.style.ibu_matches(33.0)
+        self.assertTrue(out)
+
+    def test_color_matches(self):
+        out = self.style.color_matches(7.5)
+        self.assertTrue(out)
+
     def test_recipe_matches(self):
         pale_add = GrainAddition(pale,
                                  weight=8.69)

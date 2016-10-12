@@ -91,6 +91,56 @@ class Style(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def og_matches(self, og):
+        """
+        Determine if og matches the style
+
+        :param float og: Original Gravity
+        :return: True if matches style, otherwise False
+        :rtyle: bool
+        """
+        return (self.og[0] <= og <= self.og[1])
+
+    def fg_matches(self, fg):
+        """
+        Determine if fg matches the style
+
+        :param float fg: Final Gravity
+        :return: True if matches style, otherwise False
+        :rtyle: bool
+        """
+        return (self.fg[0] <= fg <= self.fg[1])
+
+    def abv_matches(self, abv):
+        """
+        Determine if abv matches the style
+
+        :param float abv: Alcohol by Volume
+        :return: True if matches style, otherwise False
+        :rtyle: bool
+        """
+        return (self.abv[0] <= abv <= self.abv[1])
+
+    def ibu_matches(self, ibu):
+        """
+        Determine if ibu matches the style
+
+        :param float ibu: IBU
+        :return: True if matches style, otherwise False
+        :rtyle: bool
+        """
+        return (self.ibu[0] <= ibu <= self.ibu[1])
+
+    def color_matches(self, color):
+        """
+        Determine if color matches the style
+
+        :param float color: Color in SRM
+        :return: True if matches style, otherwise False
+        :rtyle: bool
+        """
+        return (self.color[0] <= color <= self.color[1])
+
     def recipe_matches(self, recipe):
         """
         Determine if a recipe matches the style
@@ -104,11 +154,11 @@ class Style(object):
         recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
         recipe_ibu = recipe.get_total_ibu()
         recipe_color = recipe.get_total_wort_color()
-        if (self.og[0] <= recipe_og <= self.og[1]) and \
-           (self.fg[0] <= recipe_fg <= self.fg[1]) and \
-           (self.abv[0] <= recipe_abv <= self.abv[1]) and \
-           (self.ibu[0] <= recipe_ibu <= self.ibu[1]) and \
-           (self.color[0] <= recipe_color <= self.color[1]):
+        if self.og_matches(recipe_og) and \
+           self.fg_matches(recipe_fg) and \
+           self.abv_matches(recipe_abv) and \
+           self.ibu_matches(recipe_ibu) and \
+           self.color_matches(recipe_color):
             return True
         return False
 
