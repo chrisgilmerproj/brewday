@@ -15,6 +15,7 @@ Tutorial
    tutorial/features.rst
    tutorial/building_a_recipe.rst
    tutorial/designing_a_recipe.rst
+   tutorial/matching_styles.rst
 
 Appendix
 ========
