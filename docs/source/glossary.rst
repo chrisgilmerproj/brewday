@@ -9,6 +9,9 @@ Glossary
     Apparent Extract (AE)
         The measured hydrometer reading for the finished beer.
 
+    BJCP
+        Beer Judge Certification Program. Publishes style guidelines for beer.
+
     Boil Gravity
         The specific gravity of the wort before it has been boiled and cooled.
         For a recipe where the boil volume is greater than the fermenting volume
