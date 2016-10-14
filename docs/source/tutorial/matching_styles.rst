@@ -66,12 +66,21 @@ In order to match the recipe we use a method on the class:
     True
     >>> recipe_color = recipe.get_total_wort_color()
     >>> style.color_matches(recipe_color)
-    False
+    True
 
 Interestingly the recipe used in the examples does not match the BJCP style!
 The only feature that matches the style is the IBUs, but the remaining values
 for og, fg, abv, and color are all too high.  That means its time to correct
 our recipe.
+
+As a short hand you can also get this information in a more friendly way:
+
+.. code-block:: python
+
+    >>> style.recipe_matches(recipe)
+    ['OG is above style', 'FG is above style', 'ABV is above style']
+
+This will help you quickly discover the problems with your recipe.
 
 Correcting a Recipe
 -------------------
@@ -136,7 +145,7 @@ crystal 20L has come down from 0.78 lbs to 0.51 lbs.  Let's try this again.
     False
 
 It turns out the recipe still doesn't match.  Why? It appears that our color
-is off.
+is now off after our adjustments.
 
 Correcting for Color
 --------------------
