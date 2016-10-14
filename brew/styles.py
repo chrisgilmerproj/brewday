@@ -101,6 +101,21 @@ class Style(object):
         """
         return (self.og[0] <= og <= self.og[1])
 
+    def og_errors(self, og):
+        """
+        Return list of errors if og doesn't match the style
+
+        :param float og: Original Gravity
+        :return: List
+        :rtyle: list
+        """
+        errors = []
+        if og < self.og[0]:
+            errors.append('OG is below style')
+        if og > self.og[1]:
+            errors.append('OG is above style')
+        return errors
+
     def fg_matches(self, fg):
         """
         Determine if fg matches the style
@@ -110,6 +125,21 @@ class Style(object):
         :rtyle: bool
         """
         return (self.fg[0] <= fg <= self.fg[1])
+
+    def fg_errors(self, fg):
+        """
+        Return list of errors if fg doesn't match the style
+
+        :param float fg: Final Gravity
+        :return: List
+        :rtyle: list
+        """
+        errors = []
+        if fg < self.fg[0]:
+            errors.append('FG is below style')
+        if fg > self.fg[1]:
+            errors.append('FG is above style')
+        return errors
 
     def abv_matches(self, abv):
         """
@@ -121,6 +151,21 @@ class Style(object):
         """
         return (self.abv[0] <= abv <= self.abv[1])
 
+    def abv_errors(self, abv):
+        """
+        Return list of errors if abv doesn't match the style
+
+        :param float abv: Alcohol by Volume
+        :return: List
+        :rtyle: list
+        """
+        errors = []
+        if abv < self.abv[0]:
+            errors.append('ABV is below style')
+        if abv > self.abv[1]:
+            errors.append('ABV is above style')
+        return errors
+
     def ibu_matches(self, ibu):
         """
         Determine if ibu matches the style
@@ -131,6 +176,21 @@ class Style(object):
         """
         return (self.ibu[0] <= ibu <= self.ibu[1])
 
+    def ibu_errors(self, ibu):
+        """
+        Return list of errors if ibu doesn't match the style
+
+        :param float ibu: IBU
+        :return: List
+        :rtyle: list
+        """
+        errors = []
+        if ibu < self.ibu[0]:
+            errors.append('IBU is below style')
+        if ibu > self.ibu[1]:
+            errors.append('IBU is above style')
+        return errors
+
     def color_matches(self, color):
         """
         Determine if color matches the style
@@ -140,6 +200,21 @@ class Style(object):
         :rtyle: bool
         """
         return (self.color[0] <= color <= self.color[1])
+
+    def color_errors(self, color):
+        """
+        Return list of errors if color doesn't match the style
+
+        :param float color: Color in SRM
+        :return: List
+        :rtyle: list
+        """
+        errors = []
+        if color < self.color[0]:
+            errors.append('Color is below style')
+        if color > self.color[1]:
+            errors.append('Color is above style')
+        return errors
 
     def recipe_matches(self, recipe):
         """
@@ -161,6 +236,28 @@ class Style(object):
            self.color_matches(recipe_color):
             return True
         return False
+
+    def recipe_errors(self, recipe):
+        """
+        Return list errors if the recipe doesn't match the style
+
+        :param Recipe recipe: A Recipe object
+        :return: Errors
+        :rtype: list
+        """
+        recipe_og = recipe.get_original_gravity()
+        recipe_fg = recipe.get_final_gravity()
+        recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
+        recipe_ibu = recipe.get_total_ibu()
+        recipe_color = recipe.get_total_wort_color()
+
+        errors = []
+        errors.extend(self.og_errors(recipe_og))
+        errors.extend(self.fg_errors(recipe_fg))
+        errors.extend(self.abv_errors(recipe_abv))
+        errors.extend(self.ibu_errors(recipe_ibu))
+        errors.extend(self.color_errors(recipe_color))
+        return errors
 
     def to_dict(self):
         style_dict = {
