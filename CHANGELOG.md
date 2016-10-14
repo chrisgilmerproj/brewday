@@ -1,8 +1,11 @@
 # CHANGELOG
 
 ## Version 0.0.6
+
 - Correctly capture exceptions for color equations
 - Use same format for all documentation
+- Give RecipeBuilder ability to determine needed yeast attenuation
+- Add Style object for checking recipes
 
 ## Version 0.0.5
 
