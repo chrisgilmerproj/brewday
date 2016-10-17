@@ -221,6 +221,10 @@ class Recipe(object):
         """
         return gu_to_sg(self.get_original_gravity_units())
 
+    @property
+    def og(self):
+        return self.get_original_gravity()
+
     def get_boil_gravity_units(self, evaporation=BOIL_EVAPORATION):  # nopep8
         """
         Get the boil gravity units
@@ -241,6 +245,10 @@ class Recipe(object):
         """
         return gu_to_sg(self.get_boil_gravity_units(evaporation=evaporation))
 
+    @property
+    def bg(self):
+        return self.get_boil_gravity()
+
     def get_final_gravity_units(self):
         """
         Get the final gravity units
@@ -259,6 +267,10 @@ class Recipe(object):
         """
         return gu_to_sg(self.get_final_gravity_units())
 
+    @property
+    def fg(self):
+        return self.get_final_gravity()
+
     def get_degrees_plato(self):
         """
         Get the degrees plato
@@ -267,6 +279,10 @@ class Recipe(object):
         :rtype: float
         """
         return sg_to_plato(self.get_boil_gravity())
+
+    @property
+    def plato(self):
+        return self.get_degrees_plato()
 
     def get_brew_house_yield(self, plato_actual, vol_actual):
         """
@@ -278,7 +294,7 @@ class Recipe(object):
         :rtyle: float
         """
         num = plato_actual * vol_actual * self.percent_brew_house_yield
-        den = self.get_degrees_plato() * self.final_volume
+        den = self.plato * self.final_volume
         return num / den
 
     def get_extract_weight(self):
@@ -292,7 +308,7 @@ class Recipe(object):
         if self.units == SI_UNITS:
             water_density = WATER_WEIGHT_SI
         return (water_density * self.final_volume * self.get_boil_gravity() *
-                (self.get_degrees_plato() / 100.0))
+                (self.plato / 100.0))
 
     def get_percent_malt_bill(self, grain_add):
         """
@@ -391,6 +407,10 @@ class Recipe(object):
         return sum([hop_add.get_ibus(bg, fv)
                    for hop_add in self.hop_additions])
 
+    @property
+    def ibu(self):
+        return self.get_total_ibu()
+
     def get_bu_to_gu(self):
         """
         Get BU to GU Ratio
@@ -428,6 +448,10 @@ class Recipe(object):
         return (self.get_total_dry_weight() * liquor_to_grist_ratio /
                 water_weight)
 
+    @property
+    def abv(self):
+        return alcohol_by_volume_standard(self.og, self.fg)
+
     def get_wort_color_mcu(self, grain_add):
         """
         Get the Wort Color in Malt Color Units
@@ -462,6 +486,10 @@ class Recipe(object):
         """
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
         return calculate_srm(mcu)
+
+    @property
+    def color(self):
+        return self.get_total_wort_color()
 
     def get_total_wort_color_map(self):
         """
@@ -515,10 +543,10 @@ class Recipe(object):
         }
 
     def to_dict(self):
-        og = self.get_original_gravity()
-        bg = self.get_boil_gravity()
-        fg = self.get_final_gravity()
-        abv_standard = alcohol_by_volume_standard(og, fg)
+        og = self.og
+        bg = self.bg
+        fg = self.fg
+        abv_standard = self.abv
         abv_alternative = alcohol_by_volume_alternative(og, fg)
         recipe_dict = {
             'name': self.name,
