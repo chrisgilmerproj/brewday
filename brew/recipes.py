@@ -726,7 +726,7 @@ class RecipeBuilder(object):
                  grain_list=None,
                  hop_list=None,
                  target_ibu=33.0,
-                 original_gravity=1.050,
+                 target_og=1.050,
                  percent_brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
@@ -738,7 +738,7 @@ class RecipeBuilder(object):
         :param hop_list: A list of Hops
         :type hop_list: list of Hop objects
         :param float target_ibu: The IBU Target
-        :param float original_gravity: The Original Gravity Target
+        :param float target_og: The Original Gravity Target
         :param float percent_brew_house_yield: The brew house yield
         :param float start_volume: The starting volume of the wort
         :param float final_volume: The final volume of the wort
@@ -753,7 +753,7 @@ class RecipeBuilder(object):
         self.hop_list = hop_list
 
         self.target_ibu = target_ibu
-        self.original_gravity = original_gravity
+        self.target_og = target_og
         self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8
         self.start_volume = start_volume
         self.final_volume = final_volume
@@ -777,8 +777,8 @@ class RecipeBuilder(object):
             out = "{0}, grain_list=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_list]))  # nopep8
         if self.hop_list:
             out = "{0}, hop_list=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_list]))  # nopep8
-        if self.original_gravity:
-            out = "{0}, original_gravity={1}".format(out, self.original_gravity)  # nopep8
+        if self.target_og:
+            out = "{0}, target_og={1}".format(out, self.target_og)  # nopep8
         if self.percent_brew_house_yield:
             out = "{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # nopep8
         if self.start_volume:
@@ -796,7 +796,7 @@ class RecipeBuilder(object):
         if (self.name == other.name) and \
            (self.grain_list == other.grain_list) and \
            (self.hop_list == other.hop_list) and \
-           (self.original_gravity == other.original_gravity) and \
+           (self.target_og == other.target_og) and \
            (self.percent_brew_house_yield ==
                other.percent_brew_house_yield) and \
            (self.start_volume == other.start_volume) and \
@@ -839,7 +839,7 @@ class RecipeBuilder(object):
             self.name,
             grain_list=self.grain_list,
             hop_list=self.hop_list,
-            original_gravity=self.original_gravity,
+            target_og=self.target_og,
             percent_brew_house_yield=self.percent_brew_house_yield,
             start_volume=start_volume,
             final_volume=final_volume,
@@ -870,7 +870,7 @@ class RecipeBuilder(object):
         if self.units == SI_UNITS:
             attr = 'hwe'
 
-        gu = sg_to_gu(self.original_gravity)
+        gu = sg_to_gu(self.target_og)
         total_points = gu * self.final_volume
 
         grain_additions = []
@@ -917,7 +917,7 @@ class RecipeBuilder(object):
             boil_time = boil_time_list[index]
 
             # Calculate utilization from boil gravity
-            bg = gu_to_sg(sg_to_gu(self.original_gravity) * self.final_volume / self.start_volume)  # nopep8
+            bg = gu_to_sg(sg_to_gu(self.target_og) * self.final_volume / self.start_volume)  # nopep8
             utilization = utilization_cls.get_percent_utilization(bg, boil_time)  # nopep8
             if hop_type == HOP_TYPE_PELLET:
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
@@ -945,6 +945,6 @@ class RecipeBuilder(object):
         This uses the ABV Standard Equation
         """
         validate_percentage(abv)
-        fg = final_gravity_from_abv_standard(self.original_gravity, abv)
-        attenuation = 1.0 - sg_to_gu(fg) / sg_to_gu(self.original_gravity)
+        fg = final_gravity_from_abv_standard(self.target_og, abv)
+        attenuation = 1.0 - sg_to_gu(fg) / sg_to_gu(self.target_og)
         return attenuation
