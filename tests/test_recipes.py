@@ -143,7 +143,7 @@ class TestRecipeBuilder(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.builder)
-        self.assertEquals(out, "RecipeBuilder('pale ale', grain_list=[Grain('pale 2-row', color=2.0, hwe=308.78), Grain('crystal C20', color=20.0, hwe=292.09)], hop_list=[Hop('centennial', percent_alpha_acids=0.14), Hop('cascade', percent_alpha_acids=0.07)], original_gravity=1.0761348, percent_brew_house_yield=0.7, start_volume=7.0, final_volume=5.0, units=imperial)")  # nopep8
+        self.assertEquals(out, "RecipeBuilder('pale ale', grain_list=[Grain('pale 2-row', color=2.0, hwe=308.78), Grain('crystal C20', color=20.0, hwe=292.09)], hop_list=[Hop('centennial', percent_alpha_acids=0.14), Hop('cascade', percent_alpha_acids=0.07)], target_og=1.0761348, percent_brew_house_yield=0.7, start_volume=7.0, final_volume=5.0, units=imperial)")  # nopep8
 
     def test_eq(self):
         builder1 = RecipeBuilder('pale ale')
