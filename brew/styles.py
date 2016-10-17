@@ -224,16 +224,11 @@ class Style(object):
         :return: True if recipe matches style, otherwise False
         :rtype: bool
         """
-        recipe_og = recipe.get_original_gravity()
-        recipe_fg = recipe.get_final_gravity()
-        recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
-        recipe_ibu = recipe.get_total_ibu()
-        recipe_color = recipe.get_total_wort_color()
-        if self.og_matches(recipe_og) and \
-           self.fg_matches(recipe_fg) and \
-           self.abv_matches(recipe_abv) and \
-           self.ibu_matches(recipe_ibu) and \
-           self.color_matches(recipe_color):
+        if self.og_matches(recipe.og) and \
+           self.fg_matches(recipe.fg) and \
+           self.abv_matches(recipe.abv) and \
+           self.ibu_matches(recipe.ibu) and \
+           self.color_matches(recipe.color):
             return True
         return False
 
@@ -245,18 +240,12 @@ class Style(object):
         :return: Errors
         :rtype: list
         """
-        recipe_og = recipe.get_original_gravity()
-        recipe_fg = recipe.get_final_gravity()
-        recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
-        recipe_ibu = recipe.get_total_ibu()
-        recipe_color = recipe.get_total_wort_color()
-
         errors = []
-        errors.extend(self.og_errors(recipe_og))
-        errors.extend(self.fg_errors(recipe_fg))
-        errors.extend(self.abv_errors(recipe_abv))
-        errors.extend(self.ibu_errors(recipe_ibu))
-        errors.extend(self.color_errors(recipe_color))
+        errors.extend(self.og_errors(recipe.og))
+        errors.extend(self.fg_errors(recipe.fg))
+        errors.extend(self.abv_errors(recipe.abv))
+        errors.extend(self.ibu_errors(recipe.ibu))
+        errors.extend(self.color_errors(recipe.color))
         return errors
 
     def to_dict(self):

@@ -93,12 +93,20 @@ class TestRecipeSIUnits(unittest.TestCase):
         out = self.recipe.get_original_gravity()
         self.assertEquals(round(out, 3), 1.076)
 
+    def test_og(self):
+        out = self.recipe.og
+        self.assertEquals(round(out, 3), 1.076)
+
     def test_get_boil_gravity_units(self):
         out = self.recipe.get_boil_gravity_units()
         self.assertEquals(round(out, 2), 54.38)
 
     def test_get_boil_gravity(self):
         out = self.recipe.get_boil_gravity()
+        self.assertEquals(round(out, 3), 1.054)
+
+    def test_bg(self):
+        out = self.recipe.bg
         self.assertEquals(round(out, 3), 1.054)
 
     def test_get_final_gravity_units(self):
@@ -108,6 +116,18 @@ class TestRecipeSIUnits(unittest.TestCase):
     def test_get_final_gravity(self):
         out = self.recipe.get_final_gravity()
         self.assertEquals(round(out, 3), 1.019)
+
+    def test_fg(self):
+        out = self.recipe.fg
+        self.assertEquals(round(out, 3), 1.019)
+
+    def test_get_degrees_plato(self):
+        plato = self.recipe.get_degrees_plato()
+        self.assertEquals(round(plato, 2), 13.42)
+
+    def test_plato(self):
+        plato = self.recipe.plato
+        self.assertEquals(round(plato, 2), 13.42)
 
     def test_brew_house_yield(self):
         vol_actual = 5.5 * LITER_PER_GAL
@@ -223,6 +243,10 @@ class TestRecipeSIUnits(unittest.TestCase):
         mash_water_vol = self.recipe.get_mash_water_volume(3.0 / 1.0)
         self.assertEquals(round(mash_water_vol, 2), 8.42)
 
+    def test_abv(self):
+        abv = self.recipe.abv
+        self.assertEqual(round(abv, 4), 0.0749)
+
     def test_get_wort_color(self):
         wort_color = self.recipe.get_wort_color(self.grain_additions[0])
         self.assertEquals(round(wort_color, 2), 4.85)
@@ -231,6 +255,10 @@ class TestRecipeSIUnits(unittest.TestCase):
 
     def test_get_total_wort_color(self):
         total_wort_color = self.recipe.get_total_wort_color()
+        self.assertEquals(round(total_wort_color, 2), 6.58)
+
+    def test_color(self):
+        total_wort_color = self.recipe.color
         self.assertEquals(round(total_wort_color, 2), 6.58)
 
     def test_get_total_wort_color_map(self):
