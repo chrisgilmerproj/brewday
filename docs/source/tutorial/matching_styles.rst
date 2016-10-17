@@ -52,20 +52,15 @@ In order to match the recipe we use a method on the class:
 
     >>> style.recipe_matches(recipe)
     False
-    >>> recipe_og = recipe.get_original_gravity()
-    >>> style.og_matches(recipe_og)
+    >>> style.og_matches(recipe.og)
     False
-    >>> recipe_fg = recipe.get_final_gravity()
-    >>> style._matches(recipe_fg)
+    >>> style.fg_matches(recipe.fg)
     False
-    >>> recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
-    >>> style.abv_matches(recipe_abv)
+    >>> style.abv_matches(recipe.abv)
     False
-    >>> recipe_ibu = recipe.get_total_ibu()
-    >>> style.ibu_matches(recipe_ibu)
+    >>> style.ibu_matches(recipe.ibu)
     True
-    >>> recipe_color = recipe.get_total_wort_color()
-    >>> style.color_matches(recipe_color)
+    >>> style.color_matches(recipe.color)
     True
 
 Interestingly the recipe used in the examples does not match the BJCP style!
@@ -96,7 +91,7 @@ time change the original gravity to 1.050  and keep everything else the same.
                             grain_list=grain_list,
                             hop_list=hop_list,
                             target_ibu=33.0,
-                            original_gravity=1.050,
+                            target_og=1.050,
                             percent_brew_house_yield=0.70,
                             start_volume=7.0,
                             final_volume=5.0,
@@ -128,20 +123,15 @@ crystal 20L has come down from 0.78 lbs to 0.51 lbs.  Let's try this again.
 
     >>> style.recipe_matches(recipe)
     False
-    >>> recipe_og = recipe.get_original_gravity()
-    >>> style.og_matches(recipe_og)
+    >>> style.og_matches(recipe.og)
     True
-    >>> recipe_fg = recipe.get_final_gravity()
-    >>> style._matches(recipe_fg)
+    >>> style.fg_matches(recipe.fg)
     True
-    >>> recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
-    >>> style.abv_matches(recipe_abv)
+    >>> style.abv_matches(recipe.abv)
     True
-    >>> recipe_ibu = recipe.get_total_ibu()
-    >>> style.ibu_matches(recipe_ibu)
+    >>> style.ibu_matches(recipe.ibu)
     True
-    >>> recipe_color = recipe.get_total_wort_color()
-    >>> style.color_matches(recipe_color)
+    >>> style.color_matches(recipe.color)
     False
 
 It turns out the recipe still doesn't match.  Why? It appears that our color
@@ -184,20 +174,15 @@ recipe and check the style:
 
     >>> style.recipe_matches(recipe)
     True
-    >>> recipe_og = recipe.get_original_gravity()
-    >>> style.og_matches(recipe_og)
+    >>> style.og_matches(recipe.og)
     True
-    >>> recipe_fg = recipe.get_final_gravity()
-    >>> style._matches(recipe_fg)
+    >>> style.fg_matches(recipe.fg)
     True
-    >>> recipe_abv = alcohol_by_volume_standard(recipe_og, recipe_fg)
-    >>> style.abv_matches(recipe_abv)
+    >>> style.abv_matches(recipe.abv)
     True
-    >>> recipe_ibu = recipe.get_total_ibu()
-    >>> style.ibu_matches(recipe_ibu)
+    >>> style.ibu_matches(recipe.ibu)
     True
-    >>> recipe_color = recipe.get_total_wort_color()
-    >>> style.color_matches(recipe_color)
+    >>> style.color_matches(recipe.color)
     True
 
 Nice job, now your have a beer recipe that matches the style of an American
