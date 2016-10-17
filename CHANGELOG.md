@@ -6,6 +6,7 @@
 - Use same format for all documentation
 - Give RecipeBuilder ability to determine needed yeast attenuation
 - Add Style object for checking recipes
+- Add properties to Recipe for common properties (og, bg, fg, plato, ibu, abv, color)
 
 ## Version 0.0.5
 
