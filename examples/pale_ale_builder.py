@@ -29,7 +29,7 @@ def main():
                             grain_list=grain_list,
                             hop_list=hop_list,
                             target_ibu=33.0,
-                            original_gravity=1.0761348,
+                            target_og=1.0761348,
                             percent_brew_house_yield=0.70,
                             start_volume=7.0,
                             final_volume=5.0,
