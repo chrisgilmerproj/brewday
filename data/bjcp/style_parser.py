@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import csv
-import pprint
+import json
 import string
 
 """
@@ -62,7 +62,7 @@ def main():
                         og[1] = str(1.0 + float(og[1]) / 1000.)
                         if float(fg[1]) > 1.015:
                             fg[1] = str(1.0 + float(fg[1]) / 1000.)
-                    styles[category][subcategory] = {
+                    info = {
                         'category': category,
                         'subcategory': subcategory.strip(),
                         'style': style.strip(),
@@ -72,8 +72,12 @@ def main():
                         'ibu': [float(i) for i in ibu],
                         'color': [float(c) for c in color],
                     }
-    pprint.pprint(categories)
-    pprint.pprint(styles)
+                    styles[category][subcategory] = info
+
+    with open('categories.json', 'w') as fileobj:
+        fileobj.write(json.dumps(categories))
+    with open('styles.json', 'w') as fileobj:
+        fileobj.write(json.dumps(styles))
 
 
 if __name__ == "__main__":
