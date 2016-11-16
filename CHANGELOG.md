@@ -1,12 +1,17 @@
 # CHANGELOG
 
+## Version 0.0.7
+
+- TBD
+
 ## Version 0.0.6
 
 - Correctly capture exceptions for color equations
-- Use same format for all documentation
+- Update and use same format for all documentation
 - Give RecipeBuilder ability to determine needed yeast attenuation
 - Add Style object for checking recipes
 - Add properties to Recipe for common properties (og, bg, fg, plato, ibu, abv, color)
+- Add utility to parse BJCP Styles
 
 ## Version 0.0.5
 
