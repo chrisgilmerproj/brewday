@@ -44,17 +44,15 @@ in the [BrewSci](https://github.com/chrisgilmerproj/brewsci) repo.
 
 # Data
 
-The `data/` directory holds data used by parsers in the repo to build recipes.
-The data was gathered using Scrapy to gather info from different brewing
-websites.  The scraping code exists there along with the following data dirs:
+To parse or build recipes you will need a directory that holds data for the
+following types:
 
-- `cereals/`
-- `hops/`
-- `water/`
-- `yeast/`
+- cereals
+- hops
+- water
+- yeast
 
-All the data is formatted in `*.json` files.  The files are guaranteed to work
-with the parsers in this library.
+To help with this you can use the [BrewData](https://github.com/chrisgilmerproj/brewdata) repo.
 
 # Units
 
