@@ -37,22 +37,22 @@ def get_sugar_conversion(brix_in, plato_in, sg_in, sugar_out):
     brix = round(brix, 1)
     plato = round(plato, 1)
     sg = round(sg, 3)
-    if sugar_out and sugar_out in ['b', 'p', 's']:
-        if sugar_out == 'b':
+    if sugar_out and sugar_out in [u'b', u'p', u's']:
+        if sugar_out == u'b':
             return brix
-        elif sugar_out == 'p':
+        elif sugar_out == u'p':
             return plato
-        elif sugar_out == 's':
+        elif sugar_out == u's':
             return sg
     else:
-        out = textwrap.dedent("""\
+        out = textwrap.dedent(u"""\
         SG\tPlato\tBrix
         {:0.3f}\t{:0.1f}\t{:0.1f}""".format(sg, plato, brix))
         return out
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='Sugar Conversion')
+    parser = argparse.ArgumentParser(description=u'Sugar Conversion')
     parser.add_argument('-b', '--brix', metavar='B', type=float,
                         help='Degrees Brix')
     parser.add_argument('-p', '--plato', metavar='P', type=float,
@@ -73,7 +73,7 @@ def main(parser_fn=get_parser, parser_kwargs=None):
     args = parser.parse_args()
 
     if sum(bool(arg) for arg in [args.brix, args.plato, args.sg]) != 1:
-        print("Must provide only one of Brix, Plato or Specific Gravity")
+        print(u"Must provide only one of Brix, Plato or Specific Gravity")
         sys.exit(1)
     print(get_sugar_conversion(args.brix, args.plato, args.sg, args.out))
 

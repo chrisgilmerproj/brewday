@@ -35,7 +35,7 @@ class TestRecipe(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.recipe)
-        self.assertEquals(out, "Recipe('pale ale', grain_additions=[GrainAddition(Grain('pale 2-row', color=2.0, hwe=308.78), weight=13.96, grain_type='cereal', units='imperial'), GrainAddition(Grain('crystal C20', color=20.0, hwe=292.09), weight=0.78, grain_type='cereal', units='imperial')], hop_additions=[HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, units='imperial'), HopAddition(Hop('cascade', percent_alpha_acids=0.07), weight=0.76, boil_time=5.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, units='imperial')], yeast=Yeast('Wyeast 1056', percent_attenuation=0.75), percent_brew_house_yield=0.7, start_volume=7.0, final_volume=5.0, units=imperial)")  # nopep8
+        self.assertEquals(out, "Recipe('pale ale', grain_additions=[GrainAddition(Grain('pale 2-row', color=2.0, hwe=308.78), weight=13.96, grain_type='cereal', units='imperial'), GrainAddition(Grain('crystal C20', color=20.0, hwe=292.09), weight=0.78, grain_type='cereal', units='imperial')], hop_additions=[HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, units='imperial'), HopAddition(Hop('cascade', percent_alpha_acids=0.07), weight=0.76, boil_time=5.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, units='imperial')], yeast=Yeast('Wyeast 1056', percent_attenuation=0.75), percent_brew_house_yield=0.7, start_volume=7.0, final_volume=5.0, units=imperial)")  # noqa
 
     def test_eq(self):
         recipe1 = Recipe('pale ale')
@@ -143,7 +143,7 @@ class TestRecipeBuilder(unittest.TestCase):
 
     def test_repr(self):
         out = repr(self.builder)
-        self.assertEquals(out, "RecipeBuilder('pale ale', grain_list=[Grain('pale 2-row', color=2.0, hwe=308.78), Grain('crystal C20', color=20.0, hwe=292.09)], hop_list=[Hop('centennial', percent_alpha_acids=0.14), Hop('cascade', percent_alpha_acids=0.07)], target_og=1.0761348, percent_brew_house_yield=0.7, start_volume=7.0, final_volume=5.0, units=imperial)")  # nopep8
+        self.assertEquals(out, "RecipeBuilder('pale ale', grain_list=[Grain('pale 2-row', color=2.0, hwe=308.78), Grain('crystal C20', color=20.0, hwe=292.09)], hop_list=[Hop('centennial', percent_alpha_acids=0.14), Hop('cascade', percent_alpha_acids=0.07)], target_og=1.0761348, percent_brew_house_yield=0.7, start_volume=7.0, final_volume=5.0, units=imperial)")  # noqa
 
     def test_eq(self):
         builder1 = RecipeBuilder('pale ale')

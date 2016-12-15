@@ -32,17 +32,17 @@ def get_abv(og, fg,
     """
     # Gravity is required for calculation
     if not og:
-        raise Exception("Original gravity required")
+        raise Exception(u"Original gravity required")
     if not fg:
-        raise Exception("Final gravity required")
+        raise Exception(u"Final gravity required")
 
     # Ensure the gravity units are not mixed up
     if og < fg:
-        raise Exception("Original Gravity must be higher than Final Gravity")
+        raise Exception(u"Original Gravity must be higher than Final Gravity")
 
     if units not in [IMPERIAL_UNITS, SI_UNITS]:
-        raise Exception("Units must be in either {} or {}".format(IMPERIAL_UNITS,  # nopep8
-                                                                  SI_UNITS))
+        raise Exception(u"Units must be in either {} or {}".format(IMPERIAL_UNITS,  # noqa
+                                                                   SI_UNITS))
 
     # Adjust the gravity based on temperature
     og = hydrometer_adjustment(og, og_temp, units=units)
@@ -60,21 +60,21 @@ def get_abv(og, fg,
 
     if verbose:
         out = []
-        t_unit = 'F' if units == IMPERIAL_UNITS else 'C'
-        out.append("OG     : {:0.3f}".format(og))
-        out.append("OG Adj : {:0.3f}".format(og))
-        out.append("OG Temp: {:0.2f} {}".format(og_temp, t_unit))
-        out.append("FG     : {:0.3f}".format(fg))
-        out.append("FG Adj : {:0.3f}".format(fg))
-        out.append("FG Temp: {:0.2f} {}".format(fg_temp, t_unit))
-        out.append("ABV    : {:0.2%}".format(abv))
+        t_unit = u'F' if units == IMPERIAL_UNITS else u'C'
+        out.append(u"OG     : {:0.3f}".format(og))
+        out.append(u"OG Adj : {:0.3f}".format(og))
+        out.append(u"OG Temp: {:0.2f} {}".format(og_temp, t_unit))
+        out.append(u"FG     : {:0.3f}".format(fg))
+        out.append(u"FG Adj : {:0.3f}".format(fg))
+        out.append(u"FG Temp: {:0.2f} {}".format(fg_temp, t_unit))
+        out.append(u"ABV    : {:0.2%}".format(abv))
         return '\n'.join(out)
     else:
         return abv
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='ABV Calculator')
+    parser = argparse.ArgumentParser(description=u'ABV Calculator')
     parser.add_argument('-o', '--og', metavar='O', type=float,
                         required=True,
                         help='Original Gravity')
@@ -83,16 +83,16 @@ def get_parser():
                         help='Final Gravity')
     parser.add_argument('--og-temp', metavar='T', type=float,
                         default=HYDROMETER_ADJUSTMENT_TEMP,
-                        help='Original Gravity Temperature (default: %(default)s)')  # nopep8
+                        help='Original Gravity Temperature (default: %(default)s)')  # noqa
     parser.add_argument('--fg-temp', metavar='T', type=float,
                         default=HYDROMETER_ADJUSTMENT_TEMP,
-                        help='Final Gravity Temperature (default: %(default)s)')  # nopep8
+                        help='Final Gravity Temperature (default: %(default)s)')  # noqa
     parser.add_argument('-a', '--alternative', action='store_true',
                         default=False,
                         help='Use alternative ABV equation')
     parser.add_argument('-r', '--refractometer', action='store_true',
                         default=False,
-                        help='Adjust the Final Gravity if using a Refractometer reading')  # nopep8
+                        help='Adjust the Final Gravity if using a Refractometer reading')  # noqa
     parser.add_argument('--units', metavar="U", type=str,
                         default=IMPERIAL_UNITS,
                         help='Units to use (default: %(default)s)')
@@ -120,7 +120,7 @@ def main(parser_fn=get_parser, parser_kwargs=None):
         if args.verbose:
             print(out)
         else:
-            print("{:0.2%}".format(out))
+            print(u"{:0.2%}".format(out))
     except Exception as e:
         print(e)
         sys.exit(1)

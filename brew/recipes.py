@@ -69,7 +69,7 @@ class Recipe(object):
         :param str units: The units
         :raises Exception: If the units of any GrainAddition is not the same as the units of the Recipe
         :raises Exception: If the units of any HopAddition is not the same as the units of the Recipe
-        """  # nopep8
+        """  # noqa
         self.name = name
         if grain_additions is None:
             grain_additions = []
@@ -79,7 +79,7 @@ class Recipe(object):
         self.hop_additions = hop_additions
         self.yeast = yeast
 
-        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8
+        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # noqa
         self.start_volume = start_volume
         self.final_volume = final_volume
 
@@ -92,36 +92,36 @@ class Recipe(object):
         for grain_add in self.grain_additions:
             self.grain_lookup[grain_add.grain.name] = grain_add
             if grain_add.units != self.units:
-                raise Exception("Grain addition units must be in '{}' not '{}'".format(  # nopep8
+                raise Exception(u"Grain addition units must be in '{}' not '{}'".format(  # noqa
                     self.units, grain_add.units))
         for hop_add in self.hop_additions:
             # The same hops may be used several times, so we must distinguish
-            hop_key = '{}_{}'.format(hop_add.hop.name, hop_add.boil_time)
+            hop_key = u'{}_{}'.format(hop_add.hop.name, hop_add.boil_time)
             self.hop_lookup[hop_key] = hop_add
             if hop_add.units != self.units:
-                raise Exception("Hop addition units must be in '{}' not '{}'".format(  # nopep8
+                raise Exception(u"Hop addition units must be in '{}' not '{}'".format(  # noqa
                     self.units, hop_add.units))
 
     def __str__(self):
         return self.name
 
     def __repr__(self):
-        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        out = u"{0}('{1}'".format(type(self).__name__, self.name)
         if self.grain_additions:
-            out = "{0}, grain_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_additions]))  # nopep8
+            out = u"{0}, grain_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_additions]))  # noqa
         if self.hop_additions:
-            out = "{0}, hop_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_additions]))  # nopep8
+            out = u"{0}, hop_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_additions]))  # noqa
         if self.yeast:
-            out = "{0}, yeast={1}".format(out, repr(self.yeast))
+            out = u"{0}, yeast={1}".format(out, repr(self.yeast))
         if self.percent_brew_house_yield:
-            out = "{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # nopep8
+            out = u"{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # noqa
         if self.start_volume:
-            out = "{0}, start_volume={1}".format(out, self.start_volume)
+            out = u"{0}, start_volume={1}".format(out, self.start_volume)
         if self.final_volume:
-            out = "{0}, final_volume={1}".format(out, self.final_volume)
+            out = u"{0}, final_volume={1}".format(out, self.final_volume)
         if self.units:
-            out = "{0}, units={1}".format(out, self.units)
-        out = "{0})".format(out)
+            out = u"{0}, units={1}".format(out, self.units)
+        out = u"{0})".format(out)
         return out
 
     def __eq__(self, other):
@@ -189,9 +189,9 @@ class Recipe(object):
         """
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
-            attr = 'ppg'
+            attr = u'ppg'
         if self.units == SI_UNITS:
-            attr = 'hwe'
+            attr = u'hwe'
 
         total_points = 0
         for grain_add in self.grain_additions:
@@ -200,7 +200,7 @@ class Recipe(object):
             efficiency = self.percent_brew_house_yield
             if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
                 efficiency = 1.0
-            total_points += getattr(grain_add.grain, attr) * grain_add.weight * efficiency  # nopep8
+            total_points += getattr(grain_add.grain, attr) * grain_add.weight * efficiency  # noqa
         return total_points
 
     def get_original_gravity_units(self):
@@ -225,7 +225,7 @@ class Recipe(object):
     def og(self):
         return self.get_original_gravity()
 
-    def get_boil_gravity_units(self, evaporation=BOIL_EVAPORATION):  # nopep8
+    def get_boil_gravity_units(self, evaporation=BOIL_EVAPORATION):  # noqa
         """
         Get the boil gravity units
 
@@ -233,9 +233,9 @@ class Recipe(object):
         :return: The boil gravity units
         :rtype: float
         """
-        return self.get_total_points() / ((1.0 - evaporation) * self.start_volume)  # nopep8
+        return self.get_total_points() / ((1.0 - evaporation) * self.start_volume)  # noqa
 
-    def get_boil_gravity(self, evaporation=BOIL_EVAPORATION):  # nopep8
+    def get_boil_gravity(self, evaporation=BOIL_EVAPORATION):  # noqa
         """
         Get the boil specific gravity
 
@@ -256,7 +256,7 @@ class Recipe(object):
         :return: The final gravity units
         :rtype: float
         """
-        return self.get_original_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # nopep8
+        return self.get_original_gravity_units() * (1.0 - self.yeast.percent_attenuation)  # noqa
 
     def get_final_gravity(self):
         """
@@ -321,7 +321,7 @@ class Recipe(object):
         To ensure different additions are measured equally each is
         converted to dry weight.
         """
-        return self.get_grain_add_dry_weight(grain_add) / self.get_total_dry_weight()  # nopep8
+        return self.get_grain_add_dry_weight(grain_add) / self.get_total_dry_weight()  # noqa
 
     def get_grain_add_dry_weight(self, grain_add):
         """
@@ -339,7 +339,7 @@ class Recipe(object):
         if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
             return grain_add.get_dry_weight()
         else:
-            return grain_add.get_dry_weight() * self.percent_brew_house_yield  # nopep8
+            return grain_add.get_dry_weight() * self.percent_brew_house_yield  # noqa
 
     def get_total_dry_weight(self):
         """
@@ -367,7 +367,7 @@ class Recipe(object):
         accordingly.
         """
         if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
-            return grain_add.get_cereal_weight() / self.percent_brew_house_yield  # nopep8
+            return grain_add.get_cereal_weight() / self.percent_brew_house_yield  # noqa
         else:
             return grain_add.get_cereal_weight()
 
@@ -459,7 +459,7 @@ class Recipe(object):
         :param GrainAddition grain_add: The Grain Addition to calculate
         :return: The MCU of the Grain Addition
         :rtype: float
-        """  # nopep8
+        """  # noqa
         weight = self.get_grain_add_cereal_weight(grain_add)
         return calculate_mcu(weight,
                              grain_add.grain.color,
@@ -497,16 +497,16 @@ class Recipe(object):
 
         :return: A map of wort color in SRM and EBC by method (Morey, Daniels, and Mosher)
         :rtype: dict
-        """  # nopep8
+        """  # noqa
         mcu = sum([self.get_wort_color_mcu(ga) for ga in self.grain_additions])
 
-        srm_morey = 'N/A'
-        srm_daniels = 'N/A'
-        srm_mosher = 'N/A'
+        srm_morey = u'N/A'
+        srm_daniels = u'N/A'
+        srm_mosher = u'N/A'
 
-        ebc_morey = 'N/A'
-        ebc_daniels = 'N/A'
-        ebc_mosher = 'N/A'
+        ebc_morey = u'N/A'
+        ebc_daniels = u'N/A'
+        ebc_mosher = u'N/A'
 
         try:
             srm_morey = calculate_srm_morey(mcu)
@@ -530,15 +530,15 @@ class Recipe(object):
             pass
 
         return {
-            'srm': {
-                'morey': srm_morey,
-                'daniels': srm_daniels,
-                'mosher': srm_mosher,
+            u'srm': {
+                u'morey': srm_morey,
+                u'daniels': srm_daniels,
+                u'mosher': srm_mosher,
             },
-            'ebc': {
-                'morey': ebc_morey,
-                'daniels': ebc_daniels,
-                'mosher': ebc_mosher,
+            u'ebc': {
+                u'morey': ebc_morey,
+                u'daniels': ebc_daniels,
+                u'mosher': ebc_mosher,
             },
         }
 
@@ -549,39 +549,39 @@ class Recipe(object):
         abv_standard = self.abv
         abv_alternative = alcohol_by_volume_alternative(og, fg)
         recipe_dict = {
-            'name': self.name,
-            'start_volume': round(self.start_volume, 2),
-            'final_volume': round(self.final_volume, 2),
-            'data': {
-                'percent_brew_house_yield': round(self.percent_brew_house_yield, 2),  # nopep8
-                'original_gravity': round(og, 3),
-                'boil_gravity': round(bg, 3),
-                'final_gravity': round(fg, 3),
-                'abv_standard': round(abv_standard, 4),
-                'abv_alternative': round(abv_alternative, 4),
-                'abw_standard': round(alcohol_by_weight(abv_standard), 4),
-                'abw_alternative': round(alcohol_by_weight(abv_alternative), 4),  # nopep8
-                'total_wort_color_map': self.get_total_wort_color_map(),
-                'total_ibu': round(self.get_total_ibu(), 1),
-                'bu_to_gu': round(self.get_bu_to_gu(), 1),
-                'units': self.units,
+            u'name': self.name,
+            u'start_volume': round(self.start_volume, 2),
+            u'final_volume': round(self.final_volume, 2),
+            u'data': {
+                u'percent_brew_house_yield': round(self.percent_brew_house_yield, 2),  # noqa
+                u'original_gravity': round(og, 3),
+                u'boil_gravity': round(bg, 3),
+                u'final_gravity': round(fg, 3),
+                u'abv_standard': round(abv_standard, 4),
+                u'abv_alternative': round(abv_alternative, 4),
+                u'abw_standard': round(alcohol_by_weight(abv_standard), 4),
+                u'abw_alternative': round(alcohol_by_weight(abv_alternative), 4),  # noqa
+                u'total_wort_color_map': self.get_total_wort_color_map(),
+                u'total_ibu': round(self.get_total_ibu(), 1),
+                u'bu_to_gu': round(self.get_bu_to_gu(), 1),
+                u'units': self.units,
             },
-            'grains': [],
-            'hops': [],
-            'yeast': {},
+            u'grains': [],
+            u'hops': [],
+            u'yeast': {},
         }
 
         for grain_add in self.grain_additions:
             grain = grain_add.to_dict()
             wort_color_srm = self.get_wort_color(grain_add)
             wort_color_ebc = srm_to_ebc(wort_color_srm)
-            working_yield = round(grain_add.grain.get_working_yield(self.percent_brew_house_yield), 2)  # nopep8
+            working_yield = round(grain_add.grain.get_working_yield(self.percent_brew_house_yield), 2)  # noqa
             percent_malt_bill = round(self.get_percent_malt_bill(grain_add), 2)
-            grain['data'].update({
-                'working_yield': working_yield,
-                'percent_malt_bill': percent_malt_bill,
-                'wort_color_srm': round(wort_color_srm, 1),
-                'wort_color_ebc': round(wort_color_ebc, 1),
+            grain[u'data'].update({
+                u'working_yield': working_yield,
+                u'percent_malt_bill': percent_malt_bill,
+                u'wort_color_srm': round(wort_color_srm, 1),
+                u'wort_color_ebc': round(wort_color_ebc, 1),
             })
             recipe_dict['grains'].append(grain)
 
@@ -596,13 +596,13 @@ class Recipe(object):
             if hop_add.hop_type == HOP_TYPE_PELLET:
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
 
-            hop['data'].update({
-                'ibus': round(ibus, 1),
-                'utilization': round(utilization, 2),
+            hop[u'data'].update({
+                u'ibus': round(ibus, 1),
+                u'utilization': round(utilization, 2),
             })
-            recipe_dict['hops'].append(hop)
+            recipe_dict[u'hops'].append(hop)
 
-        recipe_dict['yeast'] = self.yeast.to_dict()
+        recipe_dict[u'yeast'] = self.yeast.to_dict()
 
         return recipe_dict
 
@@ -611,15 +611,15 @@ class Recipe(object):
 
     @classmethod
     def validate(cls, recipe):
-        required_fields = [('name', str),
-                           ('start_volume', (int, float)),
-                           ('final_volume', (int, float)),
-                           ('grains', (list, tuple)),
-                           ('hops', (list, tuple)),
-                           ('yeast', dict),
+        required_fields = [(u'name', str),
+                           (u'start_volume', (int, float)),
+                           (u'final_volume', (int, float)),
+                           (u'grains', (list, tuple)),
+                           (u'hops', (list, tuple)),
+                           (u'yeast', dict),
                            ]
-        optional_fields = [('percent_brew_house_yield', float),
-                           ('units', str),
+        optional_fields = [(u'percent_brew_house_yield', float),
+                           (u'units', str),
                            ]
         validate_required_fields(recipe, required_fields)
         validate_optional_fields(recipe, optional_fields)
@@ -653,7 +653,7 @@ class Recipe(object):
             Daniels (SRM/EBC):  {data[total_wort_color_map][srm][daniels]} degL / {data[total_wort_color_map][ebc][daniels]}
             Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]} degL / {data[total_wort_color_map][ebc][mosher]}
 
-            """.format(**kwargs))  # nopep8
+            """.format(**kwargs))  # noqa
 
         msg += textwrap.dedent("""\
             Grains
@@ -678,7 +678,7 @@ class Recipe(object):
                     Working Yield:     {data[working_yield]:0.1%}
                     SRM/EBC:           {data[wort_color_srm]:0.1f} degL / {data[wort_color_ebc]:0.1f}
 
-                    """.format(**grain_kwargs))  # nopep8
+                    """.format(**grain_kwargs))  # noqa
 
         msg += textwrap.dedent("""\
             Hops
@@ -743,7 +743,7 @@ class RecipeBuilder(object):
         :param float start_volume: The starting volume of the wort
         :param float final_volume: The final volume of the wort
         :param str units: The units
-        """  # nopep8
+        """  # noqa
         self.name = name
         if grain_list is None:
             grain_list = []
@@ -754,7 +754,7 @@ class RecipeBuilder(object):
 
         self.target_ibu = target_ibu
         self.target_og = target_og
-        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # nopep8
+        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # noqa
         self.start_volume = start_volume
         self.final_volume = final_volume
 
@@ -774,13 +774,13 @@ class RecipeBuilder(object):
     def __repr__(self):
         out = "{0}('{1}'".format(type(self).__name__, self.name)
         if self.grain_list:
-            out = "{0}, grain_list=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_list]))  # nopep8
+            out = "{0}, grain_list=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_list]))  # noqa
         if self.hop_list:
-            out = "{0}, hop_list=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_list]))  # nopep8
+            out = "{0}, hop_list=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_list]))  # noqa
         if self.target_og:
-            out = "{0}, target_og={1}".format(out, self.target_og)  # nopep8
+            out = "{0}, target_og={1}".format(out, self.target_og)  # noqa
         if self.percent_brew_house_yield:
-            out = "{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # nopep8
+            out = "{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # noqa
         if self.start_volume:
             out = "{0}, start_volume={1}".format(out, self.start_volume)
         if self.final_volume:
@@ -854,7 +854,7 @@ class RecipeBuilder(object):
         :rtype: list(GrainAddition)
         :raises Exception: If sum of percentages does not equal 1.0
         :raises Exception: If length of percent_list does not match length of self.grain_list
-        """  # nopep8
+        """  # noqa
         for percent in percent_list:
             validate_percentage(percent)
 
@@ -862,7 +862,7 @@ class RecipeBuilder(object):
             raise Exception("Percentages must sum to 1.0")
 
         if len(percent_list) != len(self.grain_list):
-            raise Exception("The length of percent_list must equal length of self.grain_list")  # nopep8
+            raise Exception("The length of percent_list must equal length of self.grain_list")  # noqa
 
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
@@ -876,7 +876,7 @@ class RecipeBuilder(object):
         grain_additions = []
         for index, grain in enumerate(self.grain_list):
             efficiency = self.percent_brew_house_yield
-            weight = (percent_list[index] * total_points) / (getattr(grain, attr) * efficiency)  # nopep8
+            weight = (percent_list[index] * total_points) / (getattr(grain, attr) * efficiency)  # noqa
             grain_add = GrainAddition(grain, weight=weight, units=self.units)
             grain_additions.append(grain_add)
         return grain_additions
@@ -894,7 +894,7 @@ class RecipeBuilder(object):
         :raises Exception: If sum of percentages does not equal 1.0
         :raises Exception: If length of percent_list does not match length of self.grain_list
         :raises Exception: If length of boil_time_list does not match length of self.hop_list
-        """  # nopep8
+        """  # noqa
         for percent in percent_list:
             validate_percentage(percent)
 
@@ -902,10 +902,10 @@ class RecipeBuilder(object):
             raise Exception("Percentages must sum to 1.0")
 
         if len(percent_list) != len(self.grain_list):
-            raise Exception("The length of percent_list must equal length of self.grain_list")  # nopep8
+            raise Exception("The length of percent_list must equal length of self.grain_list")  # noqa
 
         if len(boil_time_list) != len(self.hop_list):
-            raise Exception("The length of boil_time_list must equal length of self.hop_list")  # nopep8
+            raise Exception("The length of boil_time_list must equal length of self.hop_list")  # noqa
 
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
@@ -917,8 +917,8 @@ class RecipeBuilder(object):
             boil_time = boil_time_list[index]
 
             # Calculate utilization from boil gravity
-            bg = gu_to_sg(sg_to_gu(self.target_og) * self.final_volume / self.start_volume)  # nopep8
-            utilization = utilization_cls.get_percent_utilization(bg, boil_time)  # nopep8
+            bg = gu_to_sg(sg_to_gu(self.target_og) * self.final_volume / self.start_volume)  # noqa
+            utilization = utilization_cls.get_percent_utilization(bg, boil_time)  # noqa
             if hop_type == HOP_TYPE_PELLET:
                 utilization *= HOP_UTILIZATION_SCALE_PELLET
 

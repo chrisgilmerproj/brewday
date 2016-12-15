@@ -37,11 +37,11 @@ def get_chart():
 
 def print_chart():
     chart = get_chart()
-    print("DBCG\tGU\t1 lb./gallon")
-    print("'As-Is'\t\tYields SG")
-    print("-------\t-----\t------------")
+    print(u"DBCG\tGU\t1 lb./gallon")
+    print(u"'As-Is'\t\tYields SG")
+    print(u"-------\t-----\t------------")
     for dbcg, gu, sg in chart:
-        print("{0:0.2f}\t{1:0.2f}\t{2:0.4f}".format(dbcg, gu, sg))
+        print(u"{0:0.2f}\t{1:0.2f}\t{2:0.4f}".format(dbcg, gu, sg))
 
 
 def main():

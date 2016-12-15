@@ -18,7 +18,7 @@ class TestValidators(unittest.TestCase):
 
     def test_validate_grain_type_raises(self):
         with self.assertRaises(Exception):
-            validate_grain_type('bad grain type')
+            validate_grain_type(u'bad grain type')
 
     def test_validate_hop_type(self):
         out = validate_hop_type(HOP_TYPE_PELLET)
@@ -26,7 +26,7 @@ class TestValidators(unittest.TestCase):
 
     def test_validate_hop_type_raises(self):
         with self.assertRaises(Exception):
-            validate_hop_type('bad hop type')
+            validate_hop_type(u'bad hop type')
 
     def test_validate_percentage_pass(self):
         out = validate_percentage(0.97)
@@ -40,47 +40,47 @@ class TestValidators(unittest.TestCase):
             validate_percentage(-0.01)
 
     def test_validate_units(self):
-        out = validate_units('metric')
-        self.assertEquals(out, 'metric')
+        out = validate_units(u'metric')
+        self.assertEquals(out, u'metric')
 
     def test_validate_units_raises(self):
         with self.assertRaises(Exception):
-            validate_units('bad')
+            validate_units(u'bad')
 
     def test_validate_required_fields(self):
-        data = {'required': 'data'}
-        required_fields = [('required', str)]
+        data = {u'required': u'data'}
+        required_fields = [(u'required', str)]
         validate_required_fields(data, required_fields)
 
     def test_validate_required_fields_missing_field_raises(self):
-        data = {'missing': 'data'}
-        required_fields = [('required', str)]
+        data = {u'missing': u'data'}
+        required_fields = [(u'required', str)]
         with self.assertRaises(Exception):
             validate_required_fields(data, required_fields)
 
     def test_validate_required_fields_wrong_field_type_raises(self):
-        data = {'required': 'data'}
-        required_fields = [('required', int)]
+        data = {u'required': u'data'}
+        required_fields = [(u'required', int)]
         with self.assertRaises(Exception):
             validate_required_fields(data, required_fields)
 
     def test_validate_optional_fields(self):
-        data = {'data': {'optional': 'data'}}
-        optional_fields = [('optional', str)]
+        data = {u'data': {u'optional': u'data'}}
+        optional_fields = [(u'optional', str)]
         validate_optional_fields(data, optional_fields)
 
     def test_validate_optional_fields_extra_data(self):
-        data = {'data': {'extra': 'data'}}
-        optional_fields = [('optional', str)]
+        data = {u'data': {u'extra': u'data'}}
+        optional_fields = [(u'optional', str)]
         validate_optional_fields(data, optional_fields)
 
     def test_validate_optional_fields_missing_data_field(self):
-        data = {'missing': {'optional': 'data'}}
-        optional_fields = [('optional', str)]
+        data = {u'missing': {u'optional': u'data'}}
+        optional_fields = [(u'optional', str)]
         validate_optional_fields(data, optional_fields)
 
     def test_validate_optional_fields_wrong_field_type_raises(self):
-        data = {'data': {'optional': 'data'}}
-        optional_fields = [('optional', int)]
+        data = {u'data': {u'optional': u'data'}}
+        optional_fields = [(u'optional', int)]
         with self.assertRaises(Exception):
             validate_optional_fields(data, optional_fields)

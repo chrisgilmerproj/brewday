@@ -14,12 +14,12 @@ Build a recipe from known ingredients.
 
 def main():
     # Define Grains
-    pale = Grain('Pale Malt (2 Row) US',
+    pale = Grain(u'Pale Malt (2 Row) US',
                  color=1.8,
                  ppg=37)
     pale_add = GrainAddition(pale,
                              weight=13.96)
-    crystal = Grain('Caramel/Crystal Malt - 20L',
+    crystal = Grain(u'Caramel/Crystal Malt - 20L',
                     color=20.0,
                     ppg=35)
     crystal_add = GrainAddition(crystal,
@@ -27,12 +27,12 @@ def main():
     grain_additions = [pale_add, crystal_add]
 
     # Define Hops
-    centennial = Hop('Centennial',
+    centennial = Hop(u'Centennial',
                      percent_alpha_acids=0.14)
     centennial_add = HopAddition(centennial,
                                  weight=0.57,
                                  boil_time=60.0)
-    cascade = Hop('Cascade (US)',
+    cascade = Hop(u'Cascade (US)',
                   percent_alpha_acids=0.07)
     cascade_add = HopAddition(cascade,
                               weight=0.76,
@@ -40,10 +40,10 @@ def main():
     hop_additions = [centennial_add, cascade_add]
 
     # Define Yeast
-    yeast = Yeast('Wyeast 1056')
+    yeast = Yeast(u'Wyeast 1056')
 
     # Define Recipe
-    beer = Recipe('pale ale',
+    beer = Recipe(u'pale ale',
                   grain_additions=grain_additions,
                   hop_additions=hop_additions,
                   yeast=yeast,

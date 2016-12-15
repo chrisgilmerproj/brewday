@@ -90,7 +90,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
         self.assertEquals(round(ibu, 2), 39.18)
 
     def test_get_percent_utilization(self):
-        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # nopep8
+        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # noqa
                 self.sg, self.boil_time)
         self.assertEquals(round(utilization * 100, 2), 29.80)
 
@@ -137,7 +137,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
   90   0.319   0.319   0.319   0.304   0.290   0.278   0.266   0.255   0.246   0.236   0.228
  100   0.320   0.320   0.320   0.304   0.290   0.278   0.266   0.256   0.246   0.237   0.228
  110   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228
- 120   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228""")  # nopep8
+ 120   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228""")  # noqa
         self.assertEquals(out, expected)
 
 
@@ -182,6 +182,6 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         self.assertEquals(round(bf, 2), 0.22)
 
     def test_get_percent_utilization(self):
-        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # nopep8
+        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # noqa
                 self.sg, self.boil_time)
         self.assertEquals(round(utilization * 100, 2), 21.69)

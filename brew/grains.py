@@ -28,7 +28,7 @@ from .validators import validate_percentage
 from .validators import validate_required_fields
 from .validators import validate_units
 
-__all__ = ['Grain', 'GrainAddition']
+__all__ = [u'Grain', u'GrainAddition']
 
 
 class Grain(object):
@@ -50,7 +50,7 @@ class Grain(object):
         self.name = name
         self.color = float(color)
         if ppg and hwe:
-            raise Exception("Cannot provide both ppg and hwe")
+            raise Exception(u"Cannot provide both ppg and hwe")
         if ppg:
             self.ppg = float(ppg)
             self.hwe = ppg_to_hwe(self.ppg)
@@ -62,13 +62,13 @@ class Grain(object):
         return string.capwords(self.name)
 
     def __repr__(self):
-        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        out = u"{0}('{1}'".format(type(self).__name__, self.name)
         if self.color:
-            out = "{0}, color={1}".format(out, self.color)
+            out = u"{0}, color={1}".format(out, self.color)
         if self.hwe:
-            out = "{0}, hwe={1}".format(out,
-                                                      round(self.hwe, 2))  # nopep8
-        out = "{0})".format(out)
+            out = u"{0}, hwe={1}".format(out,
+                                         round(self.hwe, 2))
+        out = u"{0})".format(out)
         return out
 
     def __eq__(self, other):
@@ -85,17 +85,17 @@ class Grain(object):
         return not self.__eq__(other)
 
     def to_dict(self):
-        return {'name': self.name,
-                'color': round(self.color, 1),
-                'ppg': round(self.ppg, 2),
-                'hwe': round(self.hwe, 2),
+        return {u'name': self.name,
+                u'color': round(self.color, 1),
+                u'ppg': round(self.ppg, 2),
+                u'hwe': round(self.hwe, 2),
                 }
 
     def to_json(self):
         return json.dumps(self.to_dict(), sort_keys=True)
 
     def format(self):
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
                 {name} Grain
                 -----------------------------------
                 Color:             {color} degL
@@ -169,19 +169,19 @@ class GrainAddition(object):
                              units=units)
 
     def __str__(self):
-        return "{grain}, weight {weight} {weight_large}".format(
+        return u"{grain}, weight {weight} {weight_large}".format(
             grain=self.grain,
             weight=self.weight,
             **self.types)
 
     def __repr__(self):
-        out = "{0}({1}".format(type(self).__name__, repr(self.grain))
+        out = u"{0}({1}".format(type(self).__name__, repr(self.grain))
         if self.weight:
-            out = "{0}, weight={1}".format(out, self.weight)
+            out = u"{0}, weight={1}".format(out, self.weight)
         if self.grain_type:
-            out = "{0}, grain_type='{1}'".format(out, self.grain_type)
-        out = "{0}, units='{1}'".format(out, self.units)
-        out = "{0})".format(out)
+            out = u"{0}, grain_type='{1}'".format(out, self.grain_type)
+        out = u"{0}, units='{1}'".format(out, self.units)
+        out = u"{0})".format(out)
         return out
 
     def __eq__(self, other):
@@ -254,18 +254,18 @@ class GrainAddition(object):
         :rtype: dict
         """
         return {
-            'grain_weight': round(self.get_cereal_weight(), 2),
-            'lme_weight': round(self.get_lme_weight(), 2),
-            'dry_weight': round(self.get_dry_weight(), 2),
+            u'grain_weight': round(self.get_cereal_weight(), 2),
+            u'lme_weight': round(self.get_lme_weight(), 2),
+            u'dry_weight': round(self.get_dry_weight(), 2),
         }
 
     def to_dict(self):
         grain_data = self.grain.to_dict()
-        return {'name': grain_data.pop('name'),
-                'data': grain_data,
-                'weight': round(self.weight, 2),
-                'grain_type': self.grain_type,
-                'units': self.units,
+        return {u'name': grain_data.pop('name'),
+                u'data': grain_data,
+                u'weight': round(self.weight, 2),
+                u'grain_type': self.grain_type,
+                u'units': self.units,
                 }
 
     def to_json(self):
@@ -273,14 +273,14 @@ class GrainAddition(object):
 
     @classmethod
     def validate(cls, grain_data):
-        required_fields = [('name', str),
-                           ('weight', float),
+        required_fields = [(u'name', str),
+                           (u'weight', float),
                            ]
-        optional_fields = [('color', (int, float)),
-                           ('ppg', (int, float)),
-                           ('hwe', (int, float)),
-                           ('grain_type', str),
-                           ('units', str),
+        optional_fields = [(u'color', (int, float)),
+                           (u'ppg', (int, float)),
+                           (u'hwe', (int, float)),
+                           (u'grain_type', str),
+                           (u'units', str),
                            ]
         validate_required_fields(grain_data, required_fields)
         validate_optional_fields(grain_data, optional_fields)
@@ -289,7 +289,7 @@ class GrainAddition(object):
         kwargs = {}
         kwargs.update(self.to_dict())
         kwargs.update(self.types)
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
                 {name} Addition
                 -----------------------------------
                 Grain Type:        {grain_type}

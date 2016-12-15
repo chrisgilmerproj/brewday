@@ -10,12 +10,12 @@ from brew.recipes import Recipe
 from brew.yeasts import Yeast
 
 __all__ = [
-    'DataLoader',
-    'JSONDataLoader',
-    'parse_cereals',
-    'parse_hops',
-    'parse_yeast',
-    'parse_recipe',
+    u'DataLoader',
+    u'JSONDataLoader',
+    u'parse_cereals',
+    u'parse_hops',
+    u'parse_yeast',
+    u'parse_recipe',
 ]
 
 
@@ -39,7 +39,7 @@ class DataLoader(object):
         """
         Reformat a given name to match the filename of a data file.
         """
-        return name.lower().replace(' ', '_').replace('-', '_')
+        return name.lower().replace(u' ', u'_').replace(u'-', u'_')
 
     @classmethod
     def read_data(cls, filename):
@@ -68,12 +68,12 @@ class DataLoader(object):
 
         name = self.format_name(item_name)
         if name not in self.DATA[dir_suffix]:
-            raise Exception('Item from {} dir not found: {}'.format(dir_suffix,
-                                                                    name))
+            raise Exception(u'Item from {} dir not found: {}'.format(dir_suffix,  # noqa
+                                                                     name))
 
         # Cache file data
         if not self.DATA[dir_suffix][name]:
-            item_filename = os.path.join(item_dir, '{}.{}'.format(name, self.EXT))  # nopep8
+            item_filename = os.path.join(item_dir, '{}.{}'.format(name, self.EXT))  # noqa
             data = self.read_data(item_filename)
             self.DATA[dir_suffix][name] = data
             return data
@@ -123,33 +123,33 @@ def parse_cereals(cereal, loader):
 
     cereal_data = {}
     try:
-        cereal_data = loader.get_item('cereals/', cereal['name'])
+        cereal_data = loader.get_item('cereals/', cereal[u'name'])
     except Exception:
         pass
 
-    name = cereal_data.get('name', cereal['name'])
+    name = cereal_data.get(u'name', cereal[u'name'])
     color = None
     ppg = None
 
-    if 'data' in cereal:
-        color = cereal['data'].get('color', None)
-        ppg = cereal['data'].get('ppg', None)
+    if u'data' in cereal:
+        color = cereal[u'data'].get(u'color', None)
+        ppg = cereal[u'data'].get(u'ppg', None)
 
     if not color:
-        color = float(cereal_data['color'])
+        color = float(cereal_data[u'color'])
 
     if not ppg:
-        ppg = float(cereal_data['ppg'])
+        ppg = float(cereal_data[u'ppg'])
 
     grain_obj = Grain(name, color=color, ppg=ppg)
 
     grain_add_kwargs = {
-        'weight': float(cereal['weight']),
+        u'weight': float(cereal[u'weight']),
     }
-    if 'grain_type' in cereal:
-        grain_add_kwargs['grain_type'] = cereal['grain_type']
-    if 'units' in cereal:
-        grain_add_kwargs['units'] = cereal['units']
+    if u'grain_type' in cereal:
+        grain_add_kwargs[u'grain_type'] = cereal[u'grain_type']
+    if u'units' in cereal:
+        grain_add_kwargs[u'units'] = cereal[u'units']
     return GrainAddition(grain_obj, **grain_add_kwargs)
 
 
@@ -176,28 +176,28 @@ def parse_hops(hop, loader):
 
     hop_data = {}
     try:
-        hop_data = loader.get_item('hops/', hop['name'])
+        hop_data = loader.get_item('hops/', hop[u'name'])
     except Exception:
         pass
 
-    name = hop_data.get('name', hop['name'])
+    name = hop_data.get(u'name', hop[u'name'])
     alpha_acids = None
 
-    if 'data' in hop:
-        alpha_acids = hop['data'].get('percent_alpha_acids', None)
+    if u'data' in hop:
+        alpha_acids = hop[u'data'].get(u'percent_alpha_acids', None)
 
     if not alpha_acids:
-        alpha_acids = float(hop_data['percent_alpha_acids'])
+        alpha_acids = float(hop_data[u'percent_alpha_acids'])
 
     hop_obj = Hop(name, percent_alpha_acids=alpha_acids)
     hop_add_kwargs = {
-        'weight': float(hop['weight']),
-        'boil_time': hop['boil_time'],
+        u'weight': float(hop[u'weight']),
+        u'boil_time': hop[u'boil_time'],
     }
-    if 'hop_type' in hop:
-        hop_add_kwargs['hop_type'] = hop['hop_type']
-    if 'units' in hop:
-        hop_add_kwargs['units'] = hop['units']
+    if u'hop_type' in hop:
+        hop_add_kwargs[u'hop_type'] = hop[u'hop_type']
+    if u'units' in hop:
+        hop_add_kwargs[u'units'] = hop[u'units']
     return HopAddition(hop_obj, **hop_add_kwargs)
 
 
@@ -222,18 +222,18 @@ def parse_yeast(yeast, loader):
 
     yeast_data = {}
     try:
-        yeast_data = loader.get_item('yeast/', yeast['name'])  # nopep8
+        yeast_data = loader.get_item('yeast/', yeast[u'name'])  # noqa
     except Exception:
         pass
 
-    name = yeast_data.get('name', yeast['name'])
+    name = yeast_data.get(u'name', yeast[u'name'])
     attenuation = None
 
-    if 'data' in yeast:
-        attenuation = yeast['data'].get('percent_attenuation', None)
+    if u'data' in yeast:
+        attenuation = yeast[u'data'].get(u'percent_attenuation', None)
 
     if not attenuation:
-        attenuation = yeast_data['percent_attenuation']
+        attenuation = yeast_data[u'percent_attenuation']
 
     return Yeast(name, percent_attenuation=attenuation)
 
@@ -271,7 +271,7 @@ def parse_recipe(recipe, loader,
     The dict objects in the grains, hops, and yeast values are required to have
     the key 'name' and the remaining attributes will be looked up in the data
     directory if they are not provided.
-    """  # nopep8
+    """  # noqa
     if not cereals_loader:
         cereals_loader = loader
     if not hops_loader:
@@ -282,29 +282,29 @@ def parse_recipe(recipe, loader,
     Recipe.validate(recipe)
 
     grain_additions = []
-    for grain in recipe['grains']:
+    for grain in recipe[u'grains']:
         grain_additions.append(parse_cereals(grain, cereals_loader))
 
     hop_additions = []
-    for hop in recipe['hops']:
+    for hop in recipe[u'hops']:
         hop_additions.append(parse_hops(hop, hops_loader))
 
-    yeast = parse_yeast(recipe['yeast'], yeast_loader)
+    yeast = parse_yeast(recipe[u'yeast'], yeast_loader)
 
     recipe_kwargs = {
-        'grain_additions': grain_additions,
-        'hop_additions': hop_additions,
-        'yeast': yeast,
-        'start_volume': recipe['start_volume'],
-        'final_volume': recipe['final_volume'],
+        u'grain_additions': grain_additions,
+        u'hop_additions': hop_additions,
+        u'yeast': yeast,
+        u'start_volume': recipe[u'start_volume'],
+        u'final_volume': recipe[u'final_volume'],
     }
-    if 'data' in recipe:
-        if 'percent_brew_house_yield' in recipe['data']:
-            recipe_kwargs['percent_brew_house_yield'] = \
-                recipe['data']['percent_brew_house_yield']
-        if 'units' in recipe['data']:
-            recipe_kwargs['units'] = recipe['data']['units']
+    if u'data' in recipe:
+        if u'percent_brew_house_yield' in recipe[u'data']:
+            recipe_kwargs[u'percent_brew_house_yield'] = \
+                recipe[u'data'][u'percent_brew_house_yield']
+        if u'units' in recipe[u'data']:
+            recipe_kwargs[u'units'] = recipe[u'data'][u'units']
 
-    beer = Recipe(recipe['name'],
+    beer = Recipe(recipe[u'name'],
                   **recipe_kwargs)
     return beer

@@ -1,7 +1,6 @@
 import json
 import textwrap
 
-from .utilities.abv import alcohol_by_volume_standard
 from .validators import validate_required_fields
 
 
@@ -12,8 +11,8 @@ class Style(object):
 
     def __init__(self,
                  style,
-                 category='',
-                 subcategory='',
+                 category=u'',
+                 subcategory=u'',
                  og=None,
                  fg=None,
                  abv=None,
@@ -32,11 +31,11 @@ class Style(object):
         self.category = category
         self.subcategory = subcategory
         self.style = style
-        self.og = self._validate_input_list(og, float, "Original Gravity")
-        self.fg = self._validate_input_list(fg, float, "Final Gravity")
-        self.abv = self._validate_input_list(abv, (int, float), "ABV")
-        self.ibu = self._validate_input_list(ibu, (int, float), "IBU")
-        self.color = self._validate_input_list(color, (int, float), "Color")
+        self.og = self._validate_input_list(og, float, u"Original Gravity")
+        self.fg = self._validate_input_list(fg, float, u"Final Gravity")
+        self.abv = self._validate_input_list(abv, (int, float), u"ABV")
+        self.ibu = self._validate_input_list(ibu, (int, float), u"IBU")
+        self.color = self._validate_input_list(color, (int, float), u"Color")
 
     @classmethod
     def _validate_input_list(cls, value_list, value_type, name):
@@ -47,31 +46,31 @@ class Style(object):
         :param str name: The name of the value_list being validated
         """
         if not value_list:
-            raise Exception("Must provide {}".format(name))
+            raise Exception(u"Must provide {}".format(name))
         if not isinstance(value_list, (list, tuple)):
-            raise Exception("{} must be a list".format(name))
+            raise Exception(u"{} must be a list".format(name))
         if len(value_list) != 2:
-            raise Exception("{} must contain two value_lists".format(name))
+            raise Exception(u"{} must contain two value_lists".format(name))
         for v in value_list:
             if not isinstance(v, value_type):
-                raise Exception("{} must be type '{}'".format(name, value_type))  # nopep8
+                raise Exception(u"{} must be type '{}'".format(name, value_type))  # noqa
         if value_list[0] > value_list[1]:
-            raise Exception("{} values must be lowest value first".format(name))  # nopep8
+            raise Exception(u"{} values must be lowest value first".format(name))  # noqa
         return value_list
 
     def __str__(self):
-        return "{}{} {}".format(self.category, self.subcategory, self.style)
+        return u"{}{} {}".format(self.category, self.subcategory, self.style)
 
     def __repr__(self):
-        out = "{0}('{1}'".format(type(self).__name__, self.style)
-        out = "{0}, category='{1}'".format(out, self.category)
-        out = "{0}, subcategory='{1}'".format(out, self.subcategory)
-        out = "{0}, og={1}".format(out, self.og)
-        out = "{0}, fg={1}".format(out, self.fg)
-        out = "{0}, abv={1}".format(out, self.abv)
-        out = "{0}, ibu={1}".format(out, self.ibu)
-        out = "{0}, color={1}".format(out, self.color)
-        out = "{0})".format(out)
+        out = u"{0}('{1}'".format(type(self).__name__, self.style)
+        out = u"{0}, category='{1}'".format(out, self.category)
+        out = u"{0}, subcategory='{1}'".format(out, self.subcategory)
+        out = u"{0}, og={1}".format(out, self.og)
+        out = u"{0}, fg={1}".format(out, self.fg)
+        out = u"{0}, abv={1}".format(out, self.abv)
+        out = u"{0}, ibu={1}".format(out, self.ibu)
+        out = u"{0}, color={1}".format(out, self.color)
+        out = u"{0})".format(out)
         return out
 
     def __eq__(self, other):
@@ -111,9 +110,9 @@ class Style(object):
         """
         errors = []
         if og < self.og[0]:
-            errors.append('OG is below style')
+            errors.append(u'OG is below style')
         if og > self.og[1]:
-            errors.append('OG is above style')
+            errors.append(u'OG is above style')
         return errors
 
     def fg_matches(self, fg):
@@ -136,9 +135,9 @@ class Style(object):
         """
         errors = []
         if fg < self.fg[0]:
-            errors.append('FG is below style')
+            errors.append(u'FG is below style')
         if fg > self.fg[1]:
-            errors.append('FG is above style')
+            errors.append(u'FG is above style')
         return errors
 
     def abv_matches(self, abv):
@@ -161,9 +160,9 @@ class Style(object):
         """
         errors = []
         if abv < self.abv[0]:
-            errors.append('ABV is below style')
+            errors.append(u'ABV is below style')
         if abv > self.abv[1]:
-            errors.append('ABV is above style')
+            errors.append(u'ABV is above style')
         return errors
 
     def ibu_matches(self, ibu):
@@ -186,9 +185,9 @@ class Style(object):
         """
         errors = []
         if ibu < self.ibu[0]:
-            errors.append('IBU is below style')
+            errors.append(u'IBU is below style')
         if ibu > self.ibu[1]:
-            errors.append('IBU is above style')
+            errors.append(u'IBU is above style')
         return errors
 
     def color_matches(self, color):
@@ -211,9 +210,9 @@ class Style(object):
         """
         errors = []
         if color < self.color[0]:
-            errors.append('Color is below style')
+            errors.append(u'Color is below style')
         if color > self.color[1]:
-            errors.append('Color is above style')
+            errors.append(u'Color is above style')
         return errors
 
     def recipe_matches(self, recipe):
@@ -266,14 +265,14 @@ class Style(object):
 
     @classmethod
     def validate(cls, recipe):
-        required_fields = [('style', str),
-                           ('category', str),
-                           ('subcategory', str),
-                           ('og', (list, tuple)),
-                           ('fg', (list, tuple)),
-                           ('abv', (list, tuple)),
-                           ('ibu', (list, tuple)),
-                           ('color', (list, tuple)),
+        required_fields = [(u'style', str),
+                           (u'category', str),
+                           (u'subcategory', str),
+                           (u'og', (list, tuple)),
+                           (u'fg', (list, tuple)),
+                           (u'abv', (list, tuple)),
+                           (u'ibu', (list, tuple)),
+                           (u'color', (list, tuple)),
                            ]
         validate_required_fields(recipe, required_fields)
 
@@ -282,8 +281,8 @@ class Style(object):
         kwargs = {}
         kwargs.update(style_data)
 
-        msg = ""
-        msg += textwrap.dedent("""\
+        msg = u""
+        msg += textwrap.dedent(u"""\
             {category}{subcategory} {style}
             ===================================
 
@@ -292,5 +291,5 @@ class Style(object):
             ABV:                {abv[0]:0.2%} - {abv[1]:0.2%}
             IBU:                {ibu[0]:0.1f} - {ibu[1]:0.1f}
             Color (SRM):        {color[0]:0.1f} - {color[1]:0.1f}
-            """.format(**kwargs))  # nopep8
+            """.format(**kwargs))  # noqa
         return msg

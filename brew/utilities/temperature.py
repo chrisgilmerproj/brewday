@@ -1,8 +1,8 @@
 
 
 __all__ = [
-    'fahrenheit_to_celsius',
-    'celsius_to_fahrenheit',
+    u'fahrenheit_to_celsius',
+    u'celsius_to_fahrenheit',
 ]
 
 

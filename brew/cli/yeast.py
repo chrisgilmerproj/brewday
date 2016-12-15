@@ -5,7 +5,7 @@ Yeast Pitch Calculator
 This replicates other calculators found here:
     - http://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/
 
-"""  # nopep8
+"""  # noqa
 
 import argparse
 import sys
@@ -20,13 +20,13 @@ from brew.utilities.yeast import WhiteYeastModel
 
 def get_yeast_pitch_calculation(
         model_cls=WhiteYeastModel,
-        method='stir plate',
+        method=u'stir plate',
         og=1.05,
         fv=5.0,
         sg=1.036,
         sv=0.53,
         target_pitch_rate=1.42,
-        yeast_type='liquid',
+        yeast_type=u'liquid',
         cells=100,
         num=1,
         days=0,
@@ -41,9 +41,9 @@ def get_yeast_pitch_calculation(
                                       cells_per_pack=cells,
                                       num_packs=num,
                                       days_since_manufacture=days)
-    cells_needed = data['cells_needed']
+    cells_needed = data[u'cells_needed']
     data.update(model.types)
-    msg = textwrap.dedent("""\
+    msg = textwrap.dedent(u"""\
             Yeast Pitch Calculator
             -----------------------------------
             Original Gravity      {original_gravity:0.3f}
@@ -58,16 +58,16 @@ def get_yeast_pitch_calculation(
             Units                 {units}""".format(**data))
     msg_list.append(msg)
 
-    if data['cells'] <= 0:
-        msg_list.append("\nNo cells available for further calculation")
-        return '\n'.join(msg_list)
+    if data[u'cells'] <= 0:
+        msg_list.append(u"\nNo cells available for further calculation")
+        return u'\n'.join(msg_list)
 
-    data = model.get_starter_volume(available_cells=data['cells'],
+    data = model.get_starter_volume(available_cells=data[u'cells'],
                                     starter_volume=sv,
                                     original_gravity=sg)
-    end_cell_count = data['end_cell_count']
+    end_cell_count = data[u'end_cell_count']
     data.update(model.types)
-    msg = textwrap.dedent("""\
+    msg = textwrap.dedent(u"""\
 
             Starter Volume
             -----------------------------------
@@ -82,16 +82,16 @@ def get_yeast_pitch_calculation(
     msg_list.append(msg)
 
     if cells_needed < end_cell_count:
-        msg_list.append("\nStarter has enough cells")
+        msg_list.append(u"\nStarter has enough cells")
     else:
-        msg_list.append("\nStarter DOES NOT HAVE enough cells")
+        msg_list.append(u"\nStarter DOES NOT HAVE enough cells")
 
     resulting_pitch_rate = model.get_resulting_pitch_rate(
         starter_cell_count=end_cell_count,
         original_gravity=sg,
         final_volume=fv)
     data.update(model.types)
-    msg = textwrap.dedent("""\
+    msg = textwrap.dedent(u"""\
 
             Resulting Pitch Rate
             -----------------------------------
@@ -105,11 +105,11 @@ def get_yeast_pitch_calculation(
         resulting_pitch_rate=resulting_pitch_rate,
         **model.types))
     msg_list.append(msg)
-    return('\n'.join(msg_list))
+    return(u'\n'.join(msg_list))
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='Yeast Pitch Calculator')
+    parser = argparse.ArgumentParser(description=u'Yeast Pitch Calculator')
     parser.add_argument('--og', metavar='O', type=float,
                         default=1.05,
                         help='Wort Original Gravity (default: %(default)s)')
@@ -136,13 +136,13 @@ def get_parser():
                         help='Number of containers (default: %(default)s)')
     parser.add_argument('-d', '--days', metavar='D', type=int,
                         default=0,
-                        help='Number of days since yeast manufacture (default: %(default)s)')  # nopep8
+                        help='Number of days since yeast manufacture (default: %(default)s)')  # noqa
     parser.add_argument('--model', metavar='M', type=str,
                         default='white',
-                        help='Model of yeast growth, white or kaiser (default: %(default)s)')  # nopep8
+                        help='Model of yeast growth, white or kaiser (default: %(default)s)')  # noqa
     parser.add_argument('--method', metavar='M', type=str,
                         default='stir plate',
-                        help='Method of growth (default: %(default)s)')  # nopep8
+                        help='Method of growth (default: %(default)s)')  # noqa
     parser.add_argument('--units', metavar="U", type=str,
                         default=IMPERIAL_UNITS,
                         help='Units to use (default: %(default)s)')
@@ -159,17 +159,17 @@ def main(parser_fn=get_parser, parser_kwargs=None):
 
     # Check on output
     if args.units not in [IMPERIAL_UNITS, SI_UNITS]:
-        print("Units must be in either {} or {}".format(IMPERIAL_UNITS,
-                                                        SI_UNITS))
+        print(u"Units must be in either {} or {}".format(IMPERIAL_UNITS,
+                                                         SI_UNITS))
         sys.exit(1)
 
     model_cls = None
-    if args.model == 'white':
+    if args.model == u'white':
         model_cls = WhiteYeastModel
-    elif args.model == 'kaiser':
+    elif args.model == u'kaiser':
         model_cls = KaiserYeastModel
     else:
-        print("Unknown Yeast Growth Model '{}', must be 'white' or 'kaiser'".format(args.model))  # nopep8
+        print(u"Unknown Yeast Growth Model '{}', must be 'white' or 'kaiser'".format(args.model))  # noqa
         sys.exit(1)
 
     try:

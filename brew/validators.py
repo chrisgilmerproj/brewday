@@ -4,12 +4,12 @@ from .constants import IMPERIAL_UNITS
 from .constants import SI_UNITS
 
 __all__ = [
-    'validate_grain_type',
-    'validate_hop_type',
-    'validate_percentage',
-    'validate_units',
-    'validate_required_fields',
-    'validate_optional_fields',
+    u'validate_grain_type',
+    u'validate_hop_type',
+    u'validate_percentage',
+    u'validate_units',
+    u'validate_required_fields',
+    u'validate_optional_fields',
 ]
 
 
@@ -24,8 +24,8 @@ def validate_grain_type(grain_type):
     """
     if grain_type in GRAIN_TYPE_LIST:
         return grain_type
-    raise Exception("Unkown grain type '{}', must use {}".format(
-        grain_type, ', '.join(GRAIN_TYPE_LIST)))
+    raise Exception(u"Unkown grain type '{}', must use {}".format(
+        grain_type, u', '.join(GRAIN_TYPE_LIST)))
 
 
 def validate_hop_type(hop_type):
@@ -39,8 +39,8 @@ def validate_hop_type(hop_type):
     """
     if hop_type in HOP_TYPE_LIST:
         return hop_type
-    raise Exception("Unkown hop type '{}', must use {}".format(
-        hop_type, ', '.join(HOP_TYPE_LIST)))
+    raise Exception(u"Unkown hop type '{}', must use {}".format(
+        hop_type, u', '.join(HOP_TYPE_LIST)))
 
 
 def validate_percentage(percent):
@@ -54,7 +54,7 @@ def validate_percentage(percent):
     """
     if 0.0 <= percent <= 1.0:
         return percent
-    raise Exception("Percentage values should be in decimal format")
+    raise Exception(u"Percentage values should be in decimal format")
 
 
 def validate_units(units):
@@ -68,7 +68,7 @@ def validate_units(units):
     """
     if units in [IMPERIAL_UNITS, SI_UNITS]:
         return units
-    raise Exception("Unkown units '{}', must use {} or {}".format(
+    raise Exception(u"Unkown units '{}', must use {} or {}".format(
         units, IMPERIAL_UNITS, SI_UNITS))
 
 
@@ -88,10 +88,15 @@ def validate_required_fields(data, required_fields):
     """
     for field, field_type in required_fields:
         if field not in data:
-            raise Exception("Required field '{}' missing from data".format(
+            raise Exception(u"Required field '{}' missing from data".format(
                 field))
+        if field_type == str:
+            try:
+                field_type = unicode
+            except NameError:
+                field_type = str
         if not isinstance(data[field], field_type):
-            raise Exception("Required field '{}' is not of type '{}'".format(
+            raise Exception(u"Required field '{}' is not of type '{}'".format(
                 field, field_type))
 
 
@@ -108,14 +113,19 @@ def validate_optional_fields(data, optional_fields, data_field='data'):
     a value that should be a key found in the data dict and
     where the second element is a python type or list/tuple of
     python types to check the field against.
-    """  # nopep8
+    """  # noqa
     # If no optional data field present then return
     if data_field not in data:
         return
     for field, field_type in optional_fields:
         if field in data[data_field]:
+            if field_type == str:
+                try:
+                    field_type = unicode
+                except NameError:
+                    field_type = str
             # With optional fields only check the type as they are overrides
             # and not all overrides need to be present
             if not isinstance(data[data_field][field], field_type):
-                raise Exception("Optional field '{}' in '{}' is not of type '{}'".format(  # nopep8
+                raise Exception(u"Optional field '{}' in '{}' is not of type '{}'".format(  # noqa
                     field, data_field, field_type))

@@ -21,30 +21,30 @@ class TestHops(unittest.TestCase):
 
     def test_str(self):
         out = str(self.hop)
-        self.assertEquals(out, 'Centennial, alpha 14.0%')
+        self.assertEquals(out, u'Centennial, alpha 14.0%')
 
     def test_repr(self):
         out = repr(self.hop)
-        self.assertEquals(out, "Hop('centennial', percent_alpha_acids=0.14)")
+        self.assertEquals(out, u"Hop('centennial', percent_alpha_acids=0.14)")
 
     def test_eq(self):
-        hop1 = Hop('cascade',
+        hop1 = Hop(u'cascade',
                    percent_alpha_acids=0.07)
-        hop2 = Hop('cascade',
+        hop2 = Hop(u'cascade',
                    percent_alpha_acids=0.07)
         self.assertEquals(hop1, hop2)
 
     def test_ne_name(self):
-        hop1 = Hop('cascade',
+        hop1 = Hop(u'cascade',
                    percent_alpha_acids=0.07)
-        hop2 = Hop('centennial',
+        hop2 = Hop(u'centennial',
                    percent_alpha_acids=0.07)
         self.assertTrue(hop1 != hop2)
 
     def test_ne_percent_alpha_acids(self):
-        hop1 = Hop('cascade',
+        hop1 = Hop(u'cascade',
                    percent_alpha_acids=0.07)
-        hop2 = Hop('cascade',
+        hop2 = Hop(u'cascade',
                    percent_alpha_acids=0.14)
         self.assertTrue(hop1 != hop2)
 
@@ -53,19 +53,19 @@ class TestHops(unittest.TestCase):
 
     def test_to_dict(self):
         out = self.hop.to_dict()
-        expected = {'name': 'centennial',
-                    'percent_alpha_acids': 0.14,
+        expected = {u'name': u'centennial',
+                    u'percent_alpha_acids': 0.14,
                     }
         self.assertEquals(out, expected)
 
     def test_to_json(self):
         out = self.hop.to_json()
-        expected = '{"name": "centennial", "percent_alpha_acids": 0.14}'
+        expected = u'{"name": "centennial", "percent_alpha_acids": 0.14}'
         self.assertEquals(out, expected)
 
     def test_format(self):
         out = self.hop.format()
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
                 centennial Hops
                 -----------------------------------
                 Alpha Acids:  14.0%""")
@@ -79,14 +79,14 @@ class TestHopAdditions(unittest.TestCase):
         self.hop2 = cascade
         self.addition_kwargs = [
             {
-                'boil_time': 60.0,
-                'weight': 0.57,
-                'utilization_cls_kwargs': {'units': IMPERIAL_UNITS},
+                u'boil_time': 60.0,
+                u'weight': 0.57,
+                u'utilization_cls_kwargs': {u'units': IMPERIAL_UNITS},
             },
             {
-                'boil_time': 5.0,
-                'weight': 0.76,
-                'utilization_cls_kwargs': {'units': IMPERIAL_UNITS},
+                u'boil_time': 5.0,
+                u'weight': 0.76,
+                u'utilization_cls_kwargs': {u'units': IMPERIAL_UNITS},
             },
         ]
 
@@ -114,12 +114,17 @@ class TestHopAdditions(unittest.TestCase):
     def test_str(self):
         out = str(self.hop_addition1)
         self.assertEquals(
-            out, 'Centennial, alpha 14.0%, 0.57 oz, 60.0 min, pellet')
+            out, u'Centennial, alpha 14.0%, 0.57 oz, 60.0 min, pellet')
 
     def test_repr(self):
         out = repr(self.hop_addition1)
-        self.assertEquals(
-                out, "HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, utilization_cls_kwargs={'units': 'imperial'}, units='imperial')")  # nopep8
+        try:
+            st_type = unicode  # noqa
+            self.assertEquals(
+                    out, u"HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, utilization_cls_kwargs={u'units': u'imperial'}, units='imperial')")  # noqa
+        except NameError:
+            self.assertEquals(
+                    out, u"HopAddition(Hop('centennial', percent_alpha_acids=0.14), weight=0.57, boil_time=60.0, hop_type='pellet', utilization_cls=HopsUtilizationGlennTinseth, utilization_cls_kwargs={'units': 'imperial'}, units='imperial')")  # noqa
 
     def test_eq(self):
         hop_add1 = HopAddition(cascade, boil_time=5.0, weight=0.76)
@@ -153,20 +158,20 @@ class TestHopAdditions(unittest.TestCase):
 
     def test_to_dict(self):
         out = self.hop_addition1.to_dict()
-        expected = {'name': 'centennial',
-                    'data': {'percent_alpha_acids': 0.14},
-                    'weight': 0.57,
-                    'boil_time': 60.0,
-                    'hop_type': 'pellet',
-                    'utilization_cls': 'Glenn Tinseth',
-                    'utilization_cls_kwargs': {'units': 'imperial'},
-                    'units': 'imperial',
+        expected = {u'name': u'centennial',
+                    u'data': {u'percent_alpha_acids': 0.14},
+                    u'weight': 0.57,
+                    u'boil_time': 60.0,
+                    u'hop_type': u'pellet',
+                    u'utilization_cls': u'Glenn Tinseth',
+                    u'utilization_cls_kwargs': {u'units': u'imperial'},
+                    u'units': u'imperial',
                     }
         self.assertEquals(out, expected)
 
     def test_to_json(self):
         out = self.hop_addition1.to_json()
-        expected = '{"boil_time": 60.0, "data": {"percent_alpha_acids": 0.14}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "imperial"}, "weight": 0.57}'  # nopep8
+        expected = u'{"boil_time": 60.0, "data": {"percent_alpha_acids": 0.14}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "imperial"}, "weight": 0.57}'  # noqa
         self.assertEquals(out, expected)
 
     def test_validate(self):
@@ -175,7 +180,7 @@ class TestHopAdditions(unittest.TestCase):
 
     def test_format(self):
         out = self.hop_addition1.format()
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
                 centennial Addition
                 -----------------------------------
                 Hop Type:     pellet
