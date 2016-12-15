@@ -3,6 +3,7 @@
 ## Version 0.0.7
 
 - Change all strings to unicode
+- Add __unicode__ method to all objects
 
 ## Version 0.0.6
 
