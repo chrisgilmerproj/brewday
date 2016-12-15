@@ -17,8 +17,8 @@ class TestHopsUtilization(unittest.TestCase):
         self.hop = centennial
         self.addition_kwargs = [
             {
-                'boil_time': 60.0,
-                'weight': 0.57,
+                u'boil_time': 60.0,
+                u'weight': 0.57,
             }
         ]
 
@@ -57,8 +57,8 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
         self.hop = centennial
         self.addition_kwargs = [
             {
-                'boil_time': 60.0,
-                'weight': 0.57,
+                u'boil_time': 60.0,
+                u'weight': 0.57,
             }
         ]
 
@@ -74,7 +74,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
 
     def test_str(self):
         self.assertEquals(str(self.hop_addition.utilization_cls),
-                          "Jackie Rager")
+                          u"Jackie Rager")
 
     def test_get_c_gravity(self):
         out = self.hop_addition.utilization_cls.get_c_gravity(self.sg)
@@ -106,7 +106,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
 
     def test_format_utilization_table(self):
         out = self.utilization_cls.format_utilization_table()
-        expected = ("""\
+        expected = (u"""\
             Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
             ===================================================================
        1.030   1.040   1.050   1.060   1.070   1.080   1.090   1.100   1.110   1.120   1.130
@@ -148,8 +148,8 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         self.hop = centennial
         self.addition_kwargs = [
             {
-                'boil_time': 60.0,
-                'weight': 0.57,
+                u'boil_time': 60.0,
+                u'weight': 0.57,
             }
         ]
 
@@ -165,7 +165,7 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
 
     def test_str(self):
         self.assertEquals(str(self.hop_addition.utilization_cls),
-                          "Glenn Tinseth")
+                          u"Glenn Tinseth")
 
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
