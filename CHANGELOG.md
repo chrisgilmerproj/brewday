@@ -2,7 +2,7 @@
 
 ## Version 0.0.7
 
-- TBD
+- Change all strings to unicode
 
 ## Version 0.0.6
 
