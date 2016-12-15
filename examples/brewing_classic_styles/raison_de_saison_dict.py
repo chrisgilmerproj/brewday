@@ -35,7 +35,7 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        u'name': "Raison de Saison (Extract)",
+        u'name': u"Raison de Saison (Extract)",
         u'start_volume': 7.0,
         u'final_volume': 6.0,
         u'grains': [
