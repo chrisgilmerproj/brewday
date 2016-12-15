@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 import unittest
 
 from brew.cli.yeast import get_parser

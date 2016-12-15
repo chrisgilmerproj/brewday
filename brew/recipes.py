@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 import json
+import sys
 import textwrap
 
 from .constants import BOIL_EVAPORATION
@@ -103,6 +104,12 @@ class Recipe(object):
                     self.units, hop_add.units))
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return self.name
 
     def __repr__(self):

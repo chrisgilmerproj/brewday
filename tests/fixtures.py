@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from brew.grains import Grain
 from brew.grains import GrainAddition
 from brew.hops import Hop
