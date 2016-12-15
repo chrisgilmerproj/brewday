@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Oak Barrel Winecraft
@@ -33,7 +34,7 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        u'name': u"Kolsch Ale (Extract)",
+        u'name': u"Kölsch Ale (Extract)",
         u'start_volume': 2.5,
         u'final_volume': 5.0,
         u'grains': [

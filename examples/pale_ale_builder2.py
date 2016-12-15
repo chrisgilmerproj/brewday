@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from brew.grains import Grain
 from brew.hops import Hop
 from brew.recipes import RecipeBuilder

@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Brewing Classic Styles: 80 Winning Recipes Anyone Can Brew
