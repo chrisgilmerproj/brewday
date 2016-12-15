@@ -10,3 +10,5 @@ dist/
 
 .tox/
 python-mingus/
+
+data
