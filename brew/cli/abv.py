@@ -68,7 +68,7 @@ def get_abv(og, fg,
         out.append(u"FG Adj : {:0.3f}".format(fg))
         out.append(u"FG Temp: {:0.2f} {}".format(fg_temp, t_unit))
         out.append(u"ABV    : {:0.2%}".format(abv))
-        return '\n'.join(out)
+        return u'\n'.join(out)
     else:
         return abv
 

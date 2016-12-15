@@ -233,7 +233,7 @@ def parse_yeast(yeast, loader):
         attenuation = yeast[u'data'].get(u'percent_attenuation', None)
 
     if not attenuation:
-        attenuation = yeast_data[u'percent_attenuation']
+        attenuation = yeast_data[u'attenuation'][0]
 
     return Yeast(name, percent_attenuation=attenuation)
 

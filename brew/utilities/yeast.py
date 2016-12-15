@@ -258,9 +258,9 @@ class WhiteYeastModel(YeastModel):
         G = (12.54793776 * x^-0.4594858324) - 0.9994994906
         """  # noqa
         # if inoculation_rate > 200:
-        #     raise Exception("Yeast will not grow at more than 200 M/ml")
+        #     raise Exception(u"Yeast will not grow at more than 200 M/ml")
         a, b, c = self.INOCULATION_CONST
         growth_rate = a + b * inoculation_rate ** c + self.adjustment
         # if growth_rate > 6:
-        #     raise Exception("Model does not allow for growth greater than 6")
+        #     raise Exception(u"Model does not allow for growth greater than 6")
         return growth_rate

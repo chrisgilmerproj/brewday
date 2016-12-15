@@ -39,7 +39,7 @@ from .validators import validate_percentage
 from .validators import validate_required_fields
 from .validators import validate_units
 
-__all__ = ['Recipe', 'RecipeBuilder']
+__all__ = [u'Recipe', u'RecipeBuilder']
 
 
 class Recipe(object):
@@ -108,9 +108,9 @@ class Recipe(object):
     def __repr__(self):
         out = u"{0}('{1}'".format(type(self).__name__, self.name)
         if self.grain_additions:
-            out = u"{0}, grain_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_additions]))  # noqa
+            out = u"{0}, grain_additions=[{1}]".format(out, u', '.join([repr(h) for h in self.grain_additions]))  # noqa
         if self.hop_additions:
-            out = u"{0}, hop_additions=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_additions]))  # noqa
+            out = u"{0}, hop_additions=[{1}]".format(out, u', '.join([repr(h) for h in self.hop_additions]))  # noqa
         if self.yeast:
             out = u"{0}, yeast={1}".format(out, repr(self.yeast))
         if self.percent_brew_house_yield:
@@ -630,8 +630,8 @@ class Recipe(object):
         kwargs.update(recipe_data)
         kwargs.update(self.types)
 
-        msg = ""
-        msg += textwrap.dedent("""\
+        msg = u""
+        msg += textwrap.dedent(u"""\
             {name}
             ===================================
 
@@ -655,24 +655,24 @@ class Recipe(object):
 
             """.format(**kwargs))  # noqa
 
-        msg += textwrap.dedent("""\
+        msg += textwrap.dedent(u"""\
             Grains
             ===================================
 
             """)
 
-        for grain_data in recipe_data['grains']:
+        for grain_data in recipe_data[u'grains']:
             grain_kwargs = {}
             grain_kwargs.update(grain_data)
             grain_kwargs.update(self.types)
 
-            grain_name = grain_data['name']
+            grain_name = grain_data[u'name']
             grain_add = self.grain_lookup[grain_name]
             if grain_add.units != self.units:
                 grain_add = grain_add.change_units()
 
             msg += grain_add.format()
-            msg += textwrap.dedent("""\
+            msg += textwrap.dedent(u"""\
 
                     Percent Malt Bill: {data[percent_malt_bill]:0.1%}
                     Working Yield:     {data[working_yield]:0.1%}
@@ -680,32 +680,32 @@ class Recipe(object):
 
                     """.format(**grain_kwargs))  # noqa
 
-        msg += textwrap.dedent("""\
+        msg += textwrap.dedent(u"""\
             Hops
             ===================================
 
             """)
 
-        for hop_data in recipe_data['hops']:
+        for hop_data in recipe_data[u'hops']:
             hop_kwargs = {}
             hop_kwargs.update(hop_data)
             hop_kwargs.update(self.types)
 
-            hop_key = '{}_{}'.format(hop_data['name'],
-                                     hop_data['boil_time'])
+            hop_key = u'{}_{}'.format(hop_data[u'name'],
+                                      hop_data[u'boil_time'])
             hop = self.hop_lookup[hop_key]
             if hop.units != self.units:
                 hop = hop.change_units()
 
             msg += hop.format()
-            msg += textwrap.dedent("""\
+            msg += textwrap.dedent(u"""\
 
                     IBUs:         {data[ibus]:0.1f}
                     Utilization:  {data[utilization]:0.1%}
 
                     """.format(**hop_kwargs))
 
-        msg += textwrap.dedent("""\
+        msg += textwrap.dedent(u"""\
             Yeast
             ===================================
 
@@ -772,22 +772,22 @@ class RecipeBuilder(object):
         return self.name
 
     def __repr__(self):
-        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        out = u"{0}('{1}'".format(type(self).__name__, self.name)
         if self.grain_list:
-            out = "{0}, grain_list=[{1}]".format(out, ', '.join([repr(h) for h in self.grain_list]))  # noqa
+            out = u"{0}, grain_list=[{1}]".format(out, u', '.join([repr(h) for h in self.grain_list]))  # noqa
         if self.hop_list:
-            out = "{0}, hop_list=[{1}]".format(out, ', '.join([repr(h) for h in self.hop_list]))  # noqa
+            out = u"{0}, hop_list=[{1}]".format(out, u', '.join([repr(h) for h in self.hop_list]))  # noqa
         if self.target_og:
-            out = "{0}, target_og={1}".format(out, self.target_og)  # noqa
+            out = u"{0}, target_og={1}".format(out, self.target_og)  # noqa
         if self.percent_brew_house_yield:
-            out = "{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # noqa
+            out = u"{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # noqa
         if self.start_volume:
-            out = "{0}, start_volume={1}".format(out, self.start_volume)
+            out = u"{0}, start_volume={1}".format(out, self.start_volume)
         if self.final_volume:
-            out = "{0}, final_volume={1}".format(out, self.final_volume)
+            out = u"{0}, final_volume={1}".format(out, self.final_volume)
         if self.units:
-            out = "{0}, units={1}".format(out, self.units)
-        out = "{0})".format(out)
+            out = u"{0}, units={1}".format(out, self.units)
+        out = u"{0})".format(out)
         return out
 
     def __eq__(self, other):
@@ -859,16 +859,16 @@ class RecipeBuilder(object):
             validate_percentage(percent)
 
         if sum(percent_list) != 1.0:
-            raise Exception("Percentages must sum to 1.0")
+            raise Exception(u"Percentages must sum to 1.0")
 
         if len(percent_list) != len(self.grain_list):
-            raise Exception("The length of percent_list must equal length of self.grain_list")  # noqa
+            raise Exception(u"The length of percent_list must equal length of self.grain_list")  # noqa
 
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
-            attr = 'ppg'
+            attr = u'ppg'
         if self.units == SI_UNITS:
-            attr = 'hwe'
+            attr = u'hwe'
 
         gu = sg_to_gu(self.target_og)
         total_points = gu * self.final_volume
@@ -899,13 +899,13 @@ class RecipeBuilder(object):
             validate_percentage(percent)
 
         if sum(percent_list) != 1.0:
-            raise Exception("Percentages must sum to 1.0")
+            raise Exception(u"Percentages must sum to 1.0")
 
         if len(percent_list) != len(self.grain_list):
-            raise Exception("The length of percent_list must equal length of self.grain_list")  # noqa
+            raise Exception(u"The length of percent_list must equal length of self.grain_list")  # noqa
 
         if len(boil_time_list) != len(self.hop_list):
-            raise Exception("The length of boil_time_list must equal length of self.hop_list")  # noqa
+            raise Exception(u"The length of boil_time_list must equal length of self.hop_list")  # noqa
 
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
