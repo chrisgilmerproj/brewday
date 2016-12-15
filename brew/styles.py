@@ -1,4 +1,5 @@
 import json
+import sys
 import textwrap
 
 from .validators import validate_required_fields
@@ -59,6 +60,12 @@ class Style(object):
         return value_list
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return u"{}{} {}".format(self.category, self.subcategory, self.style)
 
     def __repr__(self):

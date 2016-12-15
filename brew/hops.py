@@ -1,4 +1,5 @@
 import json
+import sys
 import textwrap
 
 from .constants import HOP_TYPE_PELLET
@@ -34,6 +35,12 @@ class Hop(object):
         self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return u"{0}, alpha {1:0.1%}".format(self.name.capitalize(),
                                              self.percent_alpha_acids)
 
@@ -136,6 +143,12 @@ class HopAddition(object):
                            units=units)
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return u"{hop}, {weight} {weight_small}, {boil_time} min, {hop_type}".format(  # noqa
                 hop=self.hop,
                 weight=self.weight,

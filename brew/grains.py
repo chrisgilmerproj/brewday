@@ -1,5 +1,6 @@
 import json
 import string
+import sys
 import textwrap
 
 from .constants import GRAIN_TYPE_CEREAL
@@ -59,6 +60,12 @@ class Grain(object):
             self.ppg = hwe_to_ppg(self.hwe)
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return string.capwords(self.name)
 
     def __repr__(self):
@@ -169,6 +176,12 @@ class GrainAddition(object):
                              units=units)
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return u"{grain}, weight {weight} {weight_large}".format(
             grain=self.grain,
             weight=self.weight,

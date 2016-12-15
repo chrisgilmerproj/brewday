@@ -776,6 +776,12 @@ class RecipeBuilder(object):
             self.hop_lookup[hop.name] = hop
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return self.name
 
     def __repr__(self):

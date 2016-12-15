@@ -42,6 +42,7 @@ teardown: ## Remove all virtualenv files
 
 lint: venv ## Run linting tests
 	$(WITH_VENV) flake8 $(PACKAGE_NAME)/
+	$(WITH_VENV) flake8 tests/
 
 test:  ## Run unit tests
 	tox

@@ -1,4 +1,5 @@
 import json
+import sys
 import textwrap
 
 from .validators import validate_optional_fields
@@ -22,6 +23,12 @@ class Yeast(object):
         self.percent_attenuation = validate_percentage(percent_attenuation)
 
     def __str__(self):
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode('utf8')
+
+    def __unicode__(self):
         return u"{0}, attenuation {1:0.1%}".format(self.name.capitalize(),
                                                    self.percent_attenuation)
 

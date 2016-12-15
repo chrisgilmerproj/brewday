@@ -73,7 +73,7 @@ class TestJSONDataLoader(unittest.TestCase):
 
     def test_format_name(self):
         name_list = [(u'pale malt 2-row us', u'pale_malt_2_row_us'),
-                     (u'caramel crystal malt 20l', u'caramel_crystal_malt_20l'),
+                     (u'caramel crystal malt 20l', u'caramel_crystal_malt_20l'),  # noqa
                      (u'centennial', u'centennial'),
                      (u'cascade us', u'cascade_us'),
                      (u'Wyeast 1056', u'wyeast_1056'),
