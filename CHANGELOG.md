@@ -2,6 +2,7 @@
 
 ## Version 0.0.7
 
+- Make Grain() return self.name instead of using string.capwords()
 - Change all strings to unicode
 - Add __unicode__ method to all objects
 
