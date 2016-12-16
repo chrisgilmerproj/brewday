@@ -5,6 +5,7 @@
 - Make Grain() return self.name instead of using string.capwords()
 - Change all strings to unicode
 - Add __unicode__ method to all objects
+- Encode all files with utf-8
 
 ## Version 0.0.6
 

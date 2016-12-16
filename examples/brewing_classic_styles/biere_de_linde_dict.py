@@ -75,13 +75,13 @@ def main():
              u'boil_time': 60.0},
             {u'name': u'fuggle',
              u'data': {
-                 'percent_alpha_acids': 0.05,
+                 u'percent_alpha_acids': 0.05,
              },
              u'weight': 1.5,
              u'boil_time': 10.0},
             {u'name': u'east kent golding',
              u'data': {
-                 'percent_alpha_acids': 0.05,
+                 u'percent_alpha_acids': 0.05,
              },
              u'weight': 1.5,
              u'boil_time': 0.0},
