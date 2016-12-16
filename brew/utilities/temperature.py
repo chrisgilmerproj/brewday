@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 
 __all__ = [
     u'fahrenheit_to_celsius',

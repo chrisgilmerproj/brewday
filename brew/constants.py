@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Unit Types
 #: Imperial Units
 IMPERIAL_UNITS = u'imperial'

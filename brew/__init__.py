@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from .grains import Grain  # noqa
 from .grains import GrainAddition  # noqa
 from .hops import Hop  # noqa

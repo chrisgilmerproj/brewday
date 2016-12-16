@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import math
 
 from ..constants import GAL_PER_LITER

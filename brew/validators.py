@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .constants import GRAIN_TYPE_LIST
 from .constants import HOP_TYPE_LIST
 from .constants import IMPERIAL_UNITS

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import math
 
 from ..constants import HOP_TYPE_PELLET

@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from ..constants import GAL_PER_LITER
 from ..constants import IMPERIAL_UNITS
 from ..constants import POUND_PER_KG

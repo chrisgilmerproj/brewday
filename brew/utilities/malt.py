@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from ..constants import FC_DIFF_TWO_ROW
 from ..constants import LITERS_OF_WORT_AT_SG
 from ..constants import MOISTURE_CORRECTION

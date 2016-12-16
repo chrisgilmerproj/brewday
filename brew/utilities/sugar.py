@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from ..constants import HYDROMETER_ADJUSTMENT_TEMP
 from ..constants import IMPERIAL_UNITS
 from ..constants import SI_UNITS
