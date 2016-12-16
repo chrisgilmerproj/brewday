@@ -22,7 +22,7 @@ class TestGrains(unittest.TestCase):
 
     def test_str(self):
         out = str(self.grain)
-        self.assertEquals(out, u'Pale 2-row')
+        self.assertEquals(out, u'pale 2-row')
 
     def test_repr(self):
         out = repr(self.grain)
@@ -117,7 +117,7 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_str(self):
         out = str(self.grain_add)
-        self.assertEquals(out, u'Pale 2-row, weight 13.96 lbs')
+        self.assertEquals(out, u'pale 2-row, weight 13.96 lbs')
 
     def test_repr(self):
         out = repr(self.grain_add)

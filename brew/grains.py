@@ -1,5 +1,4 @@
 import json
-import string
 import sys
 import textwrap
 
@@ -66,7 +65,7 @@ class Grain(object):
             return self.__unicode__().encode('utf8')
 
     def __unicode__(self):
-        return string.capwords(self.name)
+        return self.name
 
     def __repr__(self):
         out = u"{0}('{1}'".format(type(self).__name__, self.name)
