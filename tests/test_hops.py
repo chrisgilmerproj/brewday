@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import textwrap
 import unittest
 
@@ -23,6 +24,15 @@ class TestHops(unittest.TestCase):
     def test_str(self):
         out = str(self.hop)
         self.assertEquals(out, u'Centennial, alpha 14.0%')
+
+    def test_unicode(self):
+        hop = Hop(u'Galaxy ®',
+                  percent_alpha_acids=0.11)
+        out = str(hop)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'Galaxy ®, alpha 11.0%')
+        else:
+            self.assertEquals(out, u'Galaxy ®, alpha 11.0%'.encode('utf8'))
 
     def test_repr(self):
         out = repr(self.hop)
@@ -116,6 +126,18 @@ class TestHopAdditions(unittest.TestCase):
         out = str(self.hop_addition1)
         self.assertEquals(
             out, u'Centennial, alpha 14.0%, 0.57 oz, 60.0 min, pellet')
+
+    def test_unicode(self):
+        hop = Hop(u'Galaxy ®',
+                  percent_alpha_acids=0.11)
+        hop_add = HopAddition(hop,
+                              boil_time=60.0,
+                              weight=0.57)
+        out = str(hop_add)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'Galaxy ®, alpha 11.0%, 0.57 oz, 60.0 min, pellet')  # noqa
+        else:
+            self.assertEquals(out, u'Galaxy ®, alpha 11.0%, 0.57 oz, 60.0 min, pellet'.encode('utf8'))  # noqa
 
     def test_repr(self):
         out = repr(self.hop_addition1)

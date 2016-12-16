@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import textwrap
 import unittest
 
@@ -23,6 +24,16 @@ class TestGrains(unittest.TestCase):
     def test_str(self):
         out = str(self.grain)
         self.assertEquals(out, u'pale 2-row')
+
+    def test_unicode(self):
+        grain = Grain(u'château pilsen 2rs',
+                      color=3.0,
+                      ppg=37.0)
+        out = str(grain)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'château pilsen 2rs')
+        else:
+            self.assertEquals(out, u'château pilsen 2rs'.encode('utf8'))
 
     def test_repr(self):
         out = repr(self.grain)
@@ -118,6 +129,18 @@ class TestGrainAdditions(unittest.TestCase):
     def test_str(self):
         out = str(self.grain_add)
         self.assertEquals(out, u'pale 2-row, weight 13.96 lbs')
+
+    def test_unicode(self):
+        grain = Grain(u'château pilsen 2rs',
+                      color=3.0,
+                      ppg=37.0)
+        grain_add = GrainAddition(grain,
+                                  weight=0.78)
+        out = str(grain_add)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'château pilsen 2rs, weight 0.78 lbs')  # noqa
+        else:
+            self.assertEquals(out, u'château pilsen 2rs, weight 0.78 lbs'.encode('utf8'))  # noqa
 
     def test_repr(self):
         out = repr(self.grain_add)

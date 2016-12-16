@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import textwrap
 import unittest
 
@@ -17,6 +18,15 @@ class TestYeasts(unittest.TestCase):
     def test_str(self):
         out = str(self.yeast)
         self.assertEquals(out, u'Wyeast 1056, attenuation 75.0%')
+
+    def test_unicode(self):
+        yeast = Yeast(u'Kölsh',
+                      percent_attenuation=0.74)
+        out = str(yeast)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'Kölsh, attenuation 74.0%')
+        else:
+            self.assertEquals(out, u'Kölsh, attenuation 74.0%'.encode('utf8'))
 
     def test_repr(self):
         out = repr(self.yeast)
