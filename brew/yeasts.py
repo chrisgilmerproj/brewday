@@ -27,7 +27,7 @@ class Yeast(object):
         if sys.version_info[0] >= 3:
             return self.__unicode__()
         else:
-            return self.__unicode__().encode('utf8')
+            return self.__unicode__().encode(u'utf8')
 
     def __unicode__(self):
         return u"{0}, attenuation {1:0.1%}".format(self.name.capitalize(),

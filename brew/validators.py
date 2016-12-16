@@ -101,7 +101,7 @@ def validate_required_fields(data, required_fields):
                 field, field_type))
 
 
-def validate_optional_fields(data, optional_fields, data_field='data'):
+def validate_optional_fields(data, optional_fields, data_field=u'data'):
     """
     Validate fields which are optional as part of the data.
 

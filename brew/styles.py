@@ -64,7 +64,7 @@ class Style(object):
         if sys.version_info[0] >= 3:
             return self.__unicode__()
         else:
-            return self.__unicode__().encode('utf8')
+            return self.__unicode__().encode(u'utf8')
 
     def __unicode__(self):
         return u"{}{} {}".format(self.category, self.subcategory, self.style)
@@ -257,14 +257,14 @@ class Style(object):
 
     def to_dict(self):
         style_dict = {
-            'style': self.style,
-            'category': self.category,
-            'subcategory': self.subcategory,
-            'og': self.og,
-            'fg': self.fg,
-            'abv': self.abv,
-            'ibu': self.ibu,
-            'color': self.color,
+            u'style': self.style,
+            u'category': self.category,
+            u'subcategory': self.subcategory,
+            u'og': self.og,
+            u'fg': self.fg,
+            u'abv': self.abv,
+            u'ibu': self.ibu,
+            u'color': self.color,
         }
         return style_dict
 

@@ -63,7 +63,7 @@ class Grain(object):
         if sys.version_info[0] >= 3:
             return self.__unicode__()
         else:
-            return self.__unicode__().encode('utf8')
+            return self.__unicode__().encode(u'utf8')
 
     def __unicode__(self):
         return self.name
@@ -179,7 +179,7 @@ class GrainAddition(object):
         if sys.version_info[0] >= 3:
             return self.__unicode__()
         else:
-            return self.__unicode__().encode('utf8')
+            return self.__unicode__().encode(u'utf8')
 
     def __unicode__(self):
         return u"{grain}, weight {weight} {weight_large}".format(

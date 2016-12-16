@@ -106,7 +106,7 @@ class Recipe(object):
         if sys.version_info[0] >= 3:
             return self.__unicode__()
         else:
-            return self.__unicode__().encode('utf8')
+            return self.__unicode__().encode(u'utf8')
 
     def __unicode__(self):
         return self.name
@@ -589,7 +589,7 @@ class Recipe(object):
                 u'wort_color_srm': round(wort_color_srm, 1),
                 u'wort_color_ebc': round(wort_color_ebc, 1),
             })
-            recipe_dict['grains'].append(grain)
+            recipe_dict[u'grains'].append(grain)
 
         for hop_add in self.hop_additions:
             hop = hop_add.to_dict()
@@ -778,7 +778,7 @@ class RecipeBuilder(object):
         if sys.version_info[0] >= 3:
             return self.__unicode__()
         else:
-            return self.__unicode__().encode('utf8')
+            return self.__unicode__().encode(u'utf8')
 
     def __unicode__(self):
         return self.name
