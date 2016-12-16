@@ -18,10 +18,10 @@ def get_temp_conversion(fahrenheit, celsius):
 
 def get_parser():
     parser = argparse.ArgumentParser(description=u'Temperature Conversion')
-    parser.add_argument('-c', '--celsius', metavar='C', type=float,
-                        help='Temperature in Celsius')
-    parser.add_argument('-f', '--fahrenheit', metavar='F', type=float,
-                        help='Temperature in Fahrenheit')
+    parser.add_argument(u'-c', u'--celsius', metavar=u'C', type=float,
+                        help=u'Temperature in Celsius')
+    parser.add_argument(u'-f', u'--fahrenheit', metavar=u'F', type=float,
+                        help=u'Temperature in Fahrenheit')
     return parser
 
 

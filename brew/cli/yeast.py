@@ -110,42 +110,42 @@ def get_yeast_pitch_calculation(
 
 def get_parser():
     parser = argparse.ArgumentParser(description=u'Yeast Pitch Calculator')
-    parser.add_argument('--og', metavar='O', type=float,
+    parser.add_argument(u'--og', metavar=u'O', type=float,
                         default=1.05,
-                        help='Wort Original Gravity (default: %(default)s)')
-    parser.add_argument('--fv', metavar='V', type=float,
+                        help=u'Wort Original Gravity (default: %(default)s)')
+    parser.add_argument(u'--fv', metavar=u'V', type=float,
                         default=5.0,
-                        help='Wort Final Volume (default: %(default)s)')
-    parser.add_argument('--sg', metavar='O', type=float,
+                        help=u'Wort Final Volume (default: %(default)s)')
+    parser.add_argument(u'--sg', metavar=u'O', type=float,
                         default=1.036,
-                        help='Starter Original Gravity (default: %(default)s)')
-    parser.add_argument('--sv', metavar='V', type=float,
+                        help=u'Starter Original Gravity (default: %(default)s)')  # noqa
+    parser.add_argument(u'--sv', metavar=u'V', type=float,
                         default=2.0 * GAL_PER_LITER,
-                        help='Starter Volume (default: %(default)s)')
-    parser.add_argument('--target-pitch-rate', metavar='T', type=float,
+                        help=u'Starter Volume (default: %(default)s)')
+    parser.add_argument(u'--target-pitch-rate', metavar=u'T', type=float,
                         default=1.42,
-                        help='Target Pitch Rate (default: %(default)s)')
-    parser.add_argument('--type', metavar='T', type=str,
-                        default='liquid',
-                        help='Yeast Type (default: %(default)s)')
-    parser.add_argument('-c', '--cells', metavar='C', type=int,
+                        help=u'Target Pitch Rate (default: %(default)s)')
+    parser.add_argument(u'--type', metavar=u'T', type=str,
+                        default=u'liquid',
+                        help=u'Yeast Type (default: %(default)s)')
+    parser.add_argument(u'-c', u'--cells', metavar=u'C', type=int,
                         default=100,
-                        help='Number of cells per container in Billions')
-    parser.add_argument('-n', '--num', metavar='N', type=int,
+                        help=u'Number of cells per container in Billions')
+    parser.add_argument(u'-n', u'--num', metavar=u'N', type=int,
                         default=1,
-                        help='Number of containers (default: %(default)s)')
-    parser.add_argument('-d', '--days', metavar='D', type=int,
+                        help=u'Number of containers (default: %(default)s)')
+    parser.add_argument(u'-d', u'--days', metavar=u'D', type=int,
                         default=0,
-                        help='Number of days since yeast manufacture (default: %(default)s)')  # noqa
-    parser.add_argument('--model', metavar='M', type=str,
-                        default='white',
-                        help='Model of yeast growth, white or kaiser (default: %(default)s)')  # noqa
-    parser.add_argument('--method', metavar='M', type=str,
-                        default='stir plate',
-                        help='Method of growth (default: %(default)s)')  # noqa
-    parser.add_argument('--units', metavar="U", type=str,
+                        help=u'Number of days since yeast manufacture (default: %(default)s)')  # noqa
+    parser.add_argument(u'--model', metavar=u'M', type=str,
+                        default=u'white',
+                        help=u'Model of yeast growth, white or kaiser (default: %(default)s)')  # noqa
+    parser.add_argument(u'--method', metavar=u'M', type=str,
+                        default=u'stir plate',
+                        help=u'Method of growth (default: %(default)s)')  # noqa
+    parser.add_argument(u'--units', metavar=u'U', type=str,
                         default=IMPERIAL_UNITS,
-                        help='Units to use (default: %(default)s)')
+                        help=u'Units to use (default: %(default)s)')
     return parser
 
 

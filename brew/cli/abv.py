@@ -75,30 +75,30 @@ def get_abv(og, fg,
 
 def get_parser():
     parser = argparse.ArgumentParser(description=u'ABV Calculator')
-    parser.add_argument('-o', '--og', metavar='O', type=float,
+    parser.add_argument(u'-o', u'--og', metavar=u'O', type=float,
                         required=True,
-                        help='Original Gravity')
-    parser.add_argument('-f', '--fg', metavar='F', type=float,
+                        help=u'Original Gravity')
+    parser.add_argument(u'-f', u'--fg', metavar=u'F', type=float,
                         required=True,
-                        help='Final Gravity')
-    parser.add_argument('--og-temp', metavar='T', type=float,
+                        help=u'Final Gravity')
+    parser.add_argument(u'--og-temp', metavar=u'T', type=float,
                         default=HYDROMETER_ADJUSTMENT_TEMP,
-                        help='Original Gravity Temperature (default: %(default)s)')  # noqa
-    parser.add_argument('--fg-temp', metavar='T', type=float,
+                        help=u'Original Gravity Temperature (default: %(default)s)')  # noqa
+    parser.add_argument(u'--fg-temp', metavar=u'T', type=float,
                         default=HYDROMETER_ADJUSTMENT_TEMP,
-                        help='Final Gravity Temperature (default: %(default)s)')  # noqa
-    parser.add_argument('-a', '--alternative', action='store_true',
+                        help=u'Final Gravity Temperature (default: %(default)s)')  # noqa
+    parser.add_argument(u'-a', u'--alternative', action=u'store_true',
                         default=False,
-                        help='Use alternative ABV equation')
-    parser.add_argument('-r', '--refractometer', action='store_true',
+                        help=u'Use alternative ABV equation')
+    parser.add_argument(u'-r', u'--refractometer', action=u'store_true',
                         default=False,
-                        help='Adjust the Final Gravity if using a Refractometer reading')  # noqa
-    parser.add_argument('--units', metavar="U", type=str,
+                        help=u'Adjust the Final Gravity if using a Refractometer reading')  # noqa
+    parser.add_argument(u'--units', metavar=u"U", type=str,
                         default=IMPERIAL_UNITS,
-                        help='Units to use (default: %(default)s)')
-    parser.add_argument('-v', '--verbose', action='store_true',
+                        help=u'Units to use (default: %(default)s)')
+    parser.add_argument(u'-v', u'--verbose', action=u'store_true',
                         default=False,
-                        help='Verbose Output')
+                        help=u'Verbose Output')
     return parser
 
 
