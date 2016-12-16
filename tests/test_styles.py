@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import textwrap
 import unittest
 
@@ -46,6 +47,21 @@ class TestStyle(unittest.TestCase):
     def test_str(self):
         out = str(self.style)
         self.assertEquals(out, u'18B American Pale Ale')
+
+    def test_unicode(self):
+        style = Style(u'Kölsh',
+                      category=u'5',
+                      subcategory=u'B',
+                      og=[1.044, 1.050],
+                      fg=[1.007, 1.011],
+                      abv=[0.044, 0.052],
+                      ibu=[18, 30],
+                      color=[3.5, 5])
+        out = str(style)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'5B Kölsh')
+        else:
+            self.assertEquals(out, u'5B Kölsh'.encode('utf8'))
 
     def test_repr(self):
         out = repr(self.style)
