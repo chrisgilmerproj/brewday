@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from ..constants import HYDROMETER_ADJUSTMENT_TEMP
 from ..constants import IMPERIAL_UNITS
 from ..constants import SI_UNITS
@@ -6,17 +6,17 @@ from ..validators import validate_units
 from .temperature import celsius_to_fahrenheit
 
 __all__ = [
-    'sg_to_gu',
-    'gu_to_sg',
-    'plato_to_sg',
-    'sg_to_plato',
-    'brix_to_sg',
-    'sg_to_brix',
-    'brix_to_plato',
-    'plato_to_brix',
-    'apparent_extract_to_real_extract',
-    'hydrometer_adjustment',
-    'refractometer_adjustment',
+    u'sg_to_gu',
+    u'gu_to_sg',
+    u'plato_to_sg',
+    u'sg_to_plato',
+    u'brix_to_sg',
+    u'sg_to_brix',
+    u'brix_to_plato',
+    u'plato_to_brix',
+    u'apparent_extract_to_real_extract',
+    u'hydrometer_adjustment',
+    u'refractometer_adjustment',
 ]
 
 
@@ -61,7 +61,7 @@ def plato_to_sg(deg_plato):
     Source:
 
     * http://www.learntobrew.com/page/1mdhe/Shopping/Beer_Calculations.html
-    """  # nopep8
+    """  # noqa
     return (deg_plato / (258.6 - ((deg_plato / 258.2) * 227.1))) + 1.0
 
 
@@ -82,7 +82,7 @@ def sg_to_plato(sg):
     Source:
 
     * http://www.brewersfriend.com/2012/10/31/on-the-relationship-between-plato-and-specific-gravity/
-    """  # nopep8
+    """  # noqa
     # return (sg - 1.0) * 1000 / 4
     return ((135.997 * sg - 630.272) * sg + 1111.14) * sg - 616.868
 
@@ -116,7 +116,7 @@ def sg_to_brix(sg):
     * http://www.brewersfriend.com/brix-converter/
     """
     if sg > 1.17874:
-        raise Exception("Above 40 degBx this function no longer works")
+        raise Exception(u"Above 40 degBx this function no longer works")
     return (((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622)
 
 
@@ -139,7 +139,7 @@ def brix_to_plato(brix):
     Source:
 
     * https://en.wikipedia.org/wiki/Brix
-    """
+    """  # noqa
     return sg_to_plato(brix_to_sg(brix))
 
 
@@ -166,9 +166,9 @@ def apparent_extract_to_real_extract(original_extract, apparent_extract):
     Source:
 
     * Formula from Balling: De Clerck, Jean, A Textbook Of Brewing, Chapman & Hall Ltd., 1958
-    """  # nopep8
+    """  # noqa
     attenuation_coeff = 0.22 + 0.001 * original_extract
-    real_extract = (attenuation_coeff * original_extract + apparent_extract) / (1 + attenuation_coeff)  # nopep8
+    real_extract = (attenuation_coeff * original_extract + apparent_extract) / (1 + attenuation_coeff)  # noqa
     return real_extract
 
 
@@ -196,15 +196,15 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     * http://hbd.org/brewery/library/HydromCorr0992.html
     * http://www.brewersfriend.com/hydrometer-temp/
     * http://www.primetab.com/formulas.html
-    """  # nopep8
+    """  # noqa
     validate_units(units)
     if units == SI_UNITS:
         if temp < 0.0 or 100.0 < temp:
-            raise Exception("Correction does not work outside temps 0 - 100C")
+            raise Exception(u"Correction does not work outside temps 0 - 100C")
         temp = celsius_to_fahrenheit(temp)
     elif units == IMPERIAL_UNITS:
         if temp < 0.0 or 212.0 < temp:
-            raise Exception("Correction does not work outside temps 0 - 212F")
+            raise Exception(u"Correction does not work outside temps 0 - 212F")
 
     if temp == HYDROMETER_ADJUSTMENT_TEMP:
         return sg

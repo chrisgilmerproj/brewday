@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import json
+import sys
 import textwrap
 
 from .constants import HOP_TYPE_PELLET
@@ -16,7 +18,7 @@ from .validators import validate_percentage
 from .validators import validate_required_fields
 from .validators import validate_units
 
-__all__ = ['Hop', 'HopAddition']
+__all__ = [u'Hop', u'HopAddition']
 
 
 class Hop(object):
@@ -34,15 +36,21 @@ class Hop(object):
         self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
 
     def __str__(self):
-        return "{0}, alpha {1:0.1%}".format(self.name.capitalize(),
-                                            self.percent_alpha_acids)
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode(u'utf8')
+
+    def __unicode__(self):
+        return u"{0}, alpha {1:0.1%}".format(self.name.capitalize(),
+                                             self.percent_alpha_acids)
 
     def __repr__(self):
-        out = "{0}('{1}'".format(type(self).__name__, self.name)
+        out = u"{0}('{1}'".format(type(self).__name__, self.name)
         if self.percent_alpha_acids:
-            out = "{0}, percent_alpha_acids={1}".format(
+            out = u"{0}, percent_alpha_acids={1}".format(
                 out, self.percent_alpha_acids)
-        out = "{0})".format(out)
+        out = u"{0})".format(out)
         return out
 
     def __eq__(self, other):
@@ -57,15 +65,15 @@ class Hop(object):
         return not self.__eq__(other)
 
     def to_dict(self):
-        return {'name': self.name,
-                'percent_alpha_acids': round(self.percent_alpha_acids, 2),
+        return {u'name': self.name,
+                u'percent_alpha_acids': round(self.percent_alpha_acids, 2),
                 }
 
     def to_json(self):
         return json.dumps(self.to_dict(), sort_keys=True)
 
     def format(self):
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
                 {name} Hops
                 -----------------------------------
                 Alpha Acids:  {percent_alpha_acids:0.1%}""".format(
@@ -93,13 +101,13 @@ class HopAddition(object):
         :param HopsUtilization utilization_cls: The utilization class used for calculation
         :param dict utilization_cls_kwargs: The kwargs to initialize the utilization_cls object
         :param str units: The units
-        """  # nopep8
+        """  # noqa
         self.hop = hop
         self.weight = weight
         self.boil_time = boil_time
         self.hop_type = validate_hop_type(hop_type)
         self.utilization_cls_kwargs = utilization_cls_kwargs or {}
-        self.utilization_cls = utilization_cls(self, **self.utilization_cls_kwargs)  # nopep8
+        self.utilization_cls = utilization_cls(self, **self.utilization_cls_kwargs)  # noqa
 
         # Manage units
         self.set_units(units)
@@ -132,11 +140,17 @@ class HopAddition(object):
         return HopAddition(self.hop,
                            weight=weight,
                            boil_time=self.boil_time,
-                           utilization_cls_kwargs={'units': units},
+                           utilization_cls_kwargs={u'units': units},
                            units=units)
 
     def __str__(self):
-        return "{hop}, {weight} {weight_small}, {boil_time} min, {hop_type}".format(  # nopep8
+        if sys.version_info[0] >= 3:
+            return self.__unicode__()
+        else:
+            return self.__unicode__().encode(u'utf8')
+
+    def __unicode__(self):
+        return u"{hop}, {weight} {weight_small}, {boil_time} min, {hop_type}".format(  # noqa
                 hop=self.hop,
                 weight=self.weight,
                 boil_time=self.boil_time,
@@ -144,19 +158,19 @@ class HopAddition(object):
                 **self.types)
 
     def __repr__(self):
-        out = "{0}({1}".format(type(self).__name__, repr(self.hop))
+        out = u"{0}({1}".format(type(self).__name__, repr(self.hop))
         if self.weight:
-            out = "{0}, weight={1}".format(out, self.weight)
+            out = u"{0}, weight={1}".format(out, self.weight)
         if self.boil_time:
-            out = "{0}, boil_time={1}".format(out, self.boil_time)
+            out = u"{0}, boil_time={1}".format(out, self.boil_time)
         if self.hop_type:
-            out = "{0}, hop_type='{1}'".format(out, self.hop_type)
+            out = u"{0}, hop_type='{1}'".format(out, self.hop_type)
         if self.utilization_cls:
-            out = "{0}, utilization_cls={1}".format(out, type(self.utilization_cls).__name__)  # nopep8
+            out = u"{0}, utilization_cls={1}".format(out, type(self.utilization_cls).__name__)  # noqa
         if self.utilization_cls_kwargs:
-            out = "{0}, utilization_cls_kwargs={1}".format(out, self.utilization_cls_kwargs)  # nopep8
-        out = "{0}, units='{1}'".format(out, self.units)
-        out = "{0})".format(out)
+            out = u"{0}, utilization_cls_kwargs={1}".format(out, str(self.utilization_cls_kwargs))  # noqa
+        out = u"{0}, units='{1}'".format(out, self.units)
+        out = u"{0})".format(out)
         return out
 
     def __eq__(self, other):
@@ -175,14 +189,14 @@ class HopAddition(object):
 
     def to_dict(self):
         hop_data = self.hop.to_dict()
-        return {'name': hop_data.pop('name'),
-                'data': hop_data,
-                'weight': round(self.weight, 2),
-                'boil_time': round(self.boil_time, 1),
-                'hop_type': self.hop_type,
-                'utilization_cls': str(self.utilization_cls),
-                'utilization_cls_kwargs': self.utilization_cls_kwargs,
-                'units': self.units,
+        return {u'name': hop_data.pop(u'name'),
+                u'data': hop_data,
+                u'weight': round(self.weight, 2),
+                u'boil_time': round(self.boil_time, 1),
+                u'hop_type': self.hop_type,
+                u'utilization_cls': str(self.utilization_cls),
+                u'utilization_cls_kwargs': self.utilization_cls_kwargs,
+                u'units': self.units,
                 }
 
     def to_json(self):
@@ -190,13 +204,13 @@ class HopAddition(object):
 
     @classmethod
     def validate(cls, hop_data):
-        required_fields = [('name', str),
-                           ('weight', float),
-                           ('boil_time', float),
+        required_fields = [(u'name', str),
+                           (u'weight', float),
+                           (u'boil_time', float),
                            ]
-        optional_fields = [('percent_alpha_acids', float),
-                           ('hop_type', str),
-                           ('units', str),
+        optional_fields = [(u'percent_alpha_acids', float),
+                           (u'hop_type', str),
+                           (u'units', str),
                            ]
         validate_required_fields(hop_data, required_fields)
         validate_optional_fields(hop_data, optional_fields)
@@ -205,7 +219,7 @@ class HopAddition(object):
         kwargs = {}
         kwargs.update(self.to_dict())
         kwargs.update(self.types)
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
                 {name} Addition
                 -----------------------------------
                 Hop Type:     {hop_type}

@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 import unittest
 
 from brew.cli.temp import get_parser
@@ -27,20 +27,20 @@ class TestCliArgparserTemp(unittest.TestCase):
         self.parser = get_parser()
 
     def test_get_parser_celsius(self):
-        args = ['-c', '25.0']
+        args = [u'-c', u'25.0']
         out = self.parser.parse_args(args)
         expected = {
-            'celsius': 25.0,
-            'fahrenheit': None,
+            u'celsius': 25.0,
+            u'fahrenheit': None,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_fahrenheit(self):
-        args = ['-f', '62.0']
+        args = [u'-f', u'62.0']
         out = self.parser.parse_args(args)
         expected = {
-            'celsius': None,
-            'fahrenheit': 62.0,
+            u'celsius': None,
+            u'fahrenheit': 62.0,
         }
         self.assertEquals(out.__dict__, expected)
 
@@ -67,15 +67,15 @@ class TestCliMainTemp(unittest.TestCase):
         self.main = main
 
     def test_main_no_args(self):
-        args = {'output': {'celsius': None,
-                           'fahrenheit': None}}
+        args = {u'output': {u'celsius': None,
+                            u'fahrenheit': None}}
         with self.assertRaises(SystemExit):
             self.main(parser_fn=self.parser_fn,
                       parser_kwargs=args)
 
     def test_main_both_args(self):
-        args = {'output': {'celsius': 25.0,
-                           'fahrenheit': 62.0}}
+        args = {u'output': {u'celsius': 25.0,
+                            u'fahrenheit': 62.0}}
         with self.assertRaises(SystemExit):
             self.main(parser_fn=self.parser_fn,
                       parser_kwargs=args)
@@ -85,13 +85,13 @@ class TestCliMainTemp(unittest.TestCase):
             self.main(parser_fn=self.parser_fn)
 
     def test_main_celsius(self):
-        args = {'output': {'celsius': 25.0,
-                           'fahrenheit': None}}
+        args = {u'output': {u'celsius': 25.0,
+                            u'fahrenheit': None}}
         self.main(parser_fn=self.parser_fn,
                   parser_kwargs=args)
 
     def test_main_fahrenheit(self):
-        args = {'output': {'celsius': None,
-                           'fahrenheit': 62.0}}
+        args = {u'output': {u'celsius': None,
+                            u'fahrenheit': 62.0}}
         self.main(parser_fn=self.parser_fn,
                   parser_kwargs=args)

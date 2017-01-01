@@ -1,35 +1,37 @@
+# -*- coding: utf-8 -*-
+
 # Unit Types
 #: Imperial Units
-IMPERIAL_UNITS = 'imperial'
+IMPERIAL_UNITS = u'imperial'
 #: SI or Metric Units
-SI_UNITS = 'metric'
+SI_UNITS = u'metric'
 
 #: Imperial unit types
 IMPERIAL_TYPES = {
-    'volume': 'gallon',
-    'weight_large': 'lbs',
-    'weight_small': 'oz',
-    'temperature': 'degF',
+    u'volume': u'gallon',
+    u'weight_large': u'lbs',
+    u'weight_small': u'oz',
+    u'temperature': u'degF',
 }
 
 #: SI unit types
 SI_TYPES = {
-    'volume': 'liter',
-    'weight_large': 'kg',
-    'weight_small': 'mg',
-    'temperature': 'degC',
+    u'volume': u'liter',
+    u'weight_large': u'kg',
+    u'weight_small': u'mg',
+    u'temperature': u'degC',
 }
 
 # Grains
 
 #: Grain type cereal
-GRAIN_TYPE_CEREAL = 'cereal'
+GRAIN_TYPE_CEREAL = u'cereal'
 #: Grain type specialty
-GRAIN_TYPE_SPECIALTY = 'specialty'
+GRAIN_TYPE_SPECIALTY = u'specialty'
 #: Grain type DME
-GRAIN_TYPE_DME = 'dme'
+GRAIN_TYPE_DME = u'dme'
 #: Grain type LME
-GRAIN_TYPE_LME = 'lme'
+GRAIN_TYPE_LME = u'lme'
 #: Grain type list
 GRAIN_TYPE_LIST = [
     GRAIN_TYPE_CEREAL,
@@ -41,11 +43,11 @@ GRAIN_TYPE_LIST = [
 # Hops
 
 #: Hop type pellet
-HOP_TYPE_PELLET = 'pellet'
+HOP_TYPE_PELLET = u'pellet'
 #: Hop type whole leaf
-HOP_TYPE_WHOLE = 'whole'
+HOP_TYPE_WHOLE = u'whole'
 #: Hop type plug
-HOP_TYPE_PLUG = 'plug'
+HOP_TYPE_PLUG = u'plug'
 #: Hop type list
 HOP_TYPE_LIST = [
     HOP_TYPE_PELLET,

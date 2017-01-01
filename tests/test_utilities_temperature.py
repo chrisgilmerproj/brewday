@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from brew.utilities.temperature import celsius_to_fahrenheit

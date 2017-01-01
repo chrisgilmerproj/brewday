@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import textwrap
 import unittest
 
@@ -32,7 +33,7 @@ class TestCliAbv(unittest.TestCase):
 
     def test_get_abv_bad_units_raises(self):
         with self.assertRaises(Exception):
-            get_abv(self.og, self.og, units='bad')
+            get_abv(self.og, self.og, units=u'bad')
 
     def test_get_abv_units_imperial(self):
         abv = get_abv(self.og, self.fg, units=IMPERIAL_UNITS)
@@ -56,7 +57,7 @@ class TestCliAbv(unittest.TestCase):
 
     def test_get_abv_verbose(self):
         out = get_abv(self.og, self.fg, verbose=True)
-        expected = textwrap.dedent("""\
+        expected = textwrap.dedent(u"""\
             OG     : 1.057
             OG Adj : 1.057
             OG Temp: 59.00 F
@@ -78,101 +79,101 @@ class TestCliArgparserAbv(unittest.TestCase):
 
     def test_get_parser_required_og(self):
         with self.assertRaises(SystemExit):
-            self.parser.parse_args(['-f', '1.010'])
+            self.parser.parse_args([u'-f', u'1.010'])
 
     def test_get_parser_required_fg(self):
         with self.assertRaises(SystemExit):
-            self.parser.parse_args(['-o', '1.060'])
+            self.parser.parse_args([u'-o', u'1.060'])
 
     def test_get_parser_og_and_fg(self):
-        args = ['-o', '1.060', '-f', '1.010']
+        args = [u'-o', u'1.060', u'-f', u'1.010']
         out = self.parser.parse_args(args)
         expected = {
-            'alternative': False,
-            'fg': 1.01,
-            'fg_temp': 59.0,
-            'og': 1.06,
-            'og_temp': 59.0,
-            'refractometer': False,
-            'units': 'imperial',
-            'verbose': False,
+            u'alternative': False,
+            u'fg': 1.01,
+            u'fg_temp': 59.0,
+            u'og': 1.06,
+            u'og_temp': 59.0,
+            u'refractometer': False,
+            u'units': u'imperial',
+            u'verbose': False,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_update_temp(self):
-        args = ['-o', '1.060', '-f', '1.010',
-                '--og-temp', '61.0',
-                '--fg-temp', '61.0']
+        args = [u'-o', u'1.060', u'-f', u'1.010',
+                u'--og-temp', u'61.0',
+                u'--fg-temp', u'61.0']
         out = self.parser.parse_args(args)
         expected = {
-            'alternative': False,
-            'fg': 1.01,
-            'fg_temp': 61.0,
-            'og': 1.06,
-            'og_temp': 61.0,
-            'refractometer': False,
-            'units': 'imperial',
-            'verbose': False,
+            u'alternative': False,
+            u'fg': 1.01,
+            u'fg_temp': 61.0,
+            u'og': 1.06,
+            u'og_temp': 61.0,
+            u'refractometer': False,
+            u'units': u'imperial',
+            u'verbose': False,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_alternative(self):
-        args = ['-o', '1.060', '-f', '1.010', '--alternative']
+        args = [u'-o', u'1.060', u'-f', u'1.010', u'--alternative']
         out = self.parser.parse_args(args)
         expected = {
-            'alternative': True,
-            'fg': 1.01,
-            'fg_temp': 59.0,
-            'og': 1.06,
-            'og_temp': 59.0,
-            'refractometer': False,
-            'units': 'imperial',
-            'verbose': False,
+            u'alternative': True,
+            u'fg': 1.01,
+            u'fg_temp': 59.0,
+            u'og': 1.06,
+            u'og_temp': 59.0,
+            u'refractometer': False,
+            u'units': u'imperial',
+            u'verbose': False,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_refractometer(self):
-        args = ['-o', '1.060', '-f', '1.010', '--refractometer']
+        args = [u'-o', u'1.060', u'-f', u'1.010', u'--refractometer']
         out = self.parser.parse_args(args)
         expected = {
-            'alternative': False,
-            'fg': 1.01,
-            'fg_temp': 59.0,
-            'og': 1.06,
-            'og_temp': 59.0,
-            'refractometer': True,
-            'units': 'imperial',
-            'verbose': False,
+            u'alternative': False,
+            u'fg': 1.01,
+            u'fg_temp': 59.0,
+            u'og': 1.06,
+            u'og_temp': 59.0,
+            u'refractometer': True,
+            u'units': u'imperial',
+            u'verbose': False,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_units(self):
-        args = ['-o', '1.060', '-f', '1.010', '--units', 'si']
+        args = [u'-o', u'1.060', u'-f', u'1.010', u'--units', u'si']
         out = self.parser.parse_args(args)
         expected = {
-            'alternative': False,
-            'fg': 1.01,
-            'fg_temp': 59.0,
-            'og': 1.06,
-            'og_temp': 59.0,
-            'refractometer': False,
-            'units': 'si',
-            'verbose': False,
+            u'alternative': False,
+            u'fg': 1.01,
+            u'fg_temp': 59.0,
+            u'og': 1.06,
+            u'og_temp': 59.0,
+            u'refractometer': False,
+            u'units': u'si',
+            u'verbose': False,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_verbose(self):
-        args = ['-o', '1.060', '-f', '1.010', '-v']
+        args = [u'-o', u'1.060', u'-f', u'1.010', u'-v']
         out = self.parser.parse_args(args)
         expected = {
-            'alternative': False,
-            'fg': 1.01,
-            'fg_temp': 59.0,
-            'og': 1.06,
-            'og_temp': 59.0,
-            'refractometer': False,
-            'units': 'imperial',
-            'verbose': True,
+            u'alternative': False,
+            u'fg': 1.01,
+            u'fg_temp': 59.0,
+            u'og': 1.06,
+            u'og_temp': 59.0,
+            u'refractometer': False,
+            u'units': u'imperial',
+            u'verbose': True,
         }
         self.assertEquals(out.__dict__, expected)
 
@@ -203,25 +204,25 @@ class TestCliMainAbv(unittest.TestCase):
             self.main(parser_fn=self.parser_fn)
 
     def test_main_with_args(self):
-        args = {'output': {'og': 1.060,
-                           'fg': 1.010,
-                           'og_temp': 59.0,
-                           'fg_temp': 59.0,
-                           'alternative': False,
-                           'refractometer': False,
-                           'units': 'imperial',
-                           'verbose': False}}
+        args = {u'output': {u'og': 1.060,
+                            u'fg': 1.010,
+                            u'og_temp': 59.0,
+                            u'fg_temp': 59.0,
+                            u'alternative': False,
+                            u'refractometer': False,
+                            u'units': u'imperial',
+                            u'verbose': False}}
         self.main(parser_fn=self.parser_fn,
                   parser_kwargs=args)
 
     def test_main_verbose(self):
-        args = {'output': {'og': 1.060,
-                           'fg': 1.010,
-                           'og_temp': 59.0,
-                           'fg_temp': 59.0,
-                           'alternative': False,
-                           'refractometer': False,
-                           'units': 'imperial',
-                           'verbose': True}}
+        args = {u'output': {u'og': 1.060,
+                            u'fg': 1.010,
+                            u'og_temp': 59.0,
+                            u'fg_temp': 59.0,
+                            u'alternative': False,
+                            u'refractometer': False,
+                            u'units': u'imperial',
+                            u'verbose': True}}
         self.main(parser_fn=self.parser_fn,
                   parser_kwargs=args)

@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from ..constants import FC_DIFF_TWO_ROW
 from ..constants import LITERS_OF_WORT_AT_SG
 from ..constants import MOISTURE_CORRECTION
@@ -10,24 +10,24 @@ from ..validators import validate_percentage
 from .sugar import gu_to_sg
 
 __all__ = [
-    'dry_to_liquid_malt_weight',
-    'liquid_to_dry_malt_weight',
-    'grain_to_liquid_malt_weight',
-    'liquid_malt_to_grain_weight',
-    'dry_malt_to_grain_weight',
-    'grain_to_dry_malt_weight',
-    'specialty_grain_to_liquid_malt_weight',
-    'liquid_malt_to_specialty_grain_weight',
-    'fine_grind_to_coarse_grind',
-    'coarse_grind_to_fine_grind',
-    'dry_basis_to_as_is_basis',
-    'as_is_basis_to_dry_basis',
-    'sg_from_dry_basis',
-    'plato_from_dry_basis',
-    'basis_to_hwe',
-    'hwe_to_basis',
-    'ppg_to_hwe',
-    'hwe_to_ppg',
+    u'dry_to_liquid_malt_weight',
+    u'liquid_to_dry_malt_weight',
+    u'grain_to_liquid_malt_weight',
+    u'liquid_malt_to_grain_weight',
+    u'dry_malt_to_grain_weight',
+    u'grain_to_dry_malt_weight',
+    u'specialty_grain_to_liquid_malt_weight',
+    u'liquid_malt_to_specialty_grain_weight',
+    u'fine_grind_to_coarse_grind',
+    u'coarse_grind_to_fine_grind',
+    u'dry_basis_to_as_is_basis',
+    u'as_is_basis_to_dry_basis',
+    u'sg_from_dry_basis',
+    u'plato_from_dry_basis',
+    u'basis_to_hwe',
+    u'hwe_to_basis',
+    u'ppg_to_hwe',
+    u'hwe_to_ppg',
 ]
 
 
@@ -160,7 +160,7 @@ def dry_basis_to_as_is_basis(dry_basis,
     :param float moisture_content: A percentage of moisture content in finished malt in decimal form
     :return: As-Is Basis
     :rtype: float
-    """  # nopep8
+    """  # noqa
     validate_percentage(dry_basis)
     validate_percentage(moisture_content)
     return dry_basis * (1.0 - moisture_content)
@@ -175,7 +175,7 @@ def as_is_basis_to_dry_basis(as_is,
     :param float moisture_content: A percentage of moisture content in finished malt in decimal form
     :return: Dry Basis
     :rtype: float
-    """  # nopep8
+    """  # noqa
     validate_percentage(as_is)
     validate_percentage(moisture_content)
     return as_is / (1.0 - moisture_content)
@@ -194,7 +194,7 @@ def sg_from_dry_basis(dbcg,
     :param float brew_house_efficiency: The efficiency in decimal form
     :return: Specific Gravity available from Malt
     :rtype: float
-    """  # nopep8
+    """  # noqa
     validate_percentage(dbcg)
     validate_percentage(moisture_content)
     validate_percentage(moisture_correction)
@@ -217,7 +217,7 @@ def plato_from_dry_basis(dbcg,
     :param float brew_house_efficiency: The efficiency in decimal form
     :return: Specific Gravity available from Malt
     :rtype: float
-    """  # nopep8
+    """  # noqa
     validate_percentage(dbcg)
     validate_percentage(moisture_content)
     validate_percentage(moisture_correction)

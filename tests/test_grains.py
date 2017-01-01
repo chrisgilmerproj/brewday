@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import sys
 import textwrap
 import unittest
 
@@ -21,15 +23,25 @@ class TestGrains(unittest.TestCase):
 
     def test_str(self):
         out = str(self.grain)
-        self.assertEquals(out, 'Pale 2-row')
+        self.assertEquals(out, u'pale 2-row')
+
+    def test_unicode(self):
+        grain = Grain(u'château pilsen 2rs',
+                      color=3.0,
+                      ppg=37.0)
+        out = str(grain)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'château pilsen 2rs')
+        else:
+            self.assertEquals(out, u'château pilsen 2rs'.encode('utf8'))
 
     def test_repr(self):
         out = repr(self.grain)
-        self.assertEquals(out, "Grain('pale 2-row', color=2.0, hwe=308.78)")  # nopep8
+        self.assertEquals(out, u"Grain('pale 2-row', color=2.0, hwe=308.78)")  # noqa
 
     def test_format(self):
         out = self.grain.format()
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
             pale 2-row Grain
             -----------------------------------
             Color:             2.0 degL
@@ -42,7 +54,7 @@ class TestGrains(unittest.TestCase):
         self.assertEquals(round(wy, 2), 0.56)
 
     def test_grain_hwe(self):
-        pale = Grain('pale 2-row',
+        pale = Grain(u'pale 2-row',
                      color=2.0,
                      hwe=308.0)
         self.assertEquals(pale.hwe, 308.0)
@@ -50,43 +62,43 @@ class TestGrains(unittest.TestCase):
 
     def test_grain_ppg_hwe_raises(self):
         with self.assertRaises(Exception):
-            Grain('pale 2-row',
+            Grain(u'pale 2-row',
                   color=2.0,
                   ppg=37.0,
                   hwe=308.0)
 
     def test_eq(self):
-        grain1 = Grain('pale 2-row',
+        grain1 = Grain(u'pale 2-row',
                        color=2.0,
                        ppg=37.0)
-        grain2 = Grain('pale 2-row',
+        grain2 = Grain(u'pale 2-row',
                        color=2.0,
                        ppg=37.0)
         self.assertEquals(grain1, grain2)
 
     def test_ne_name(self):
-        grain1 = Grain('pale 2-row',
+        grain1 = Grain(u'pale 2-row',
                        color=2.0,
                        ppg=37.0)
-        grain2 = Grain('pale row',
+        grain2 = Grain(u'pale row',
                        color=2.0,
                        ppg=37.0)
         self.assertTrue(grain1 != grain2)
 
     def test_ne_color(self):
-        grain1 = Grain('pale 2-row',
+        grain1 = Grain(u'pale 2-row',
                        color=2.0,
                        ppg=37.0)
-        grain2 = Grain('pale 2-row',
+        grain2 = Grain(u'pale 2-row',
                        color=4.0,
                        ppg=37.0)
         self.assertTrue(grain1 != grain2)
 
     def test_ne_ppg(self):
-        grain1 = Grain('pale 2-row',
+        grain1 = Grain(u'pale 2-row',
                        color=2.0,
                        ppg=37.0)
-        grain2 = Grain('pale 2-row',
+        grain2 = Grain(u'pale 2-row',
                        color=2.0,
                        ppg=35.0)
         self.assertTrue(grain1 != grain2)
@@ -96,16 +108,16 @@ class TestGrains(unittest.TestCase):
 
     def test_to_dict(self):
         out = self.grain.to_dict()
-        expected = {'name': 'pale 2-row',
-                    'color': 2.0,
-                    'ppg': 37.0,
-                    'hwe': 308.78,
+        expected = {u'name': u'pale 2-row',
+                    u'color': 2.0,
+                    u'ppg': 37.0,
+                    u'hwe': 308.78,
                     }
         self.assertEquals(out, expected)
 
     def test_to_json(self):
         out = self.grain.to_json()
-        expected = '{"color": 2.0, "hwe": 308.78, "name": "pale 2-row", "ppg": 37.0}'  # nopep8
+        expected = u'{"color": 2.0, "hwe": 308.78, "name": "pale 2-row", "ppg": 37.0}'  # noqa
         self.assertEquals(out, expected)
 
 
@@ -116,11 +128,23 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_str(self):
         out = str(self.grain_add)
-        self.assertEquals(out, 'Pale 2-row, weight 13.96 lbs')
+        self.assertEquals(out, u'pale 2-row, weight 13.96 lbs')
+
+    def test_unicode(self):
+        grain = Grain(u'château pilsen 2rs',
+                      color=3.0,
+                      ppg=37.0)
+        grain_add = GrainAddition(grain,
+                                  weight=0.78)
+        out = str(grain_add)
+        if sys.version_info[0] >= 3:
+            self.assertEquals(out, u'château pilsen 2rs, weight 0.78 lbs')  # noqa
+        else:
+            self.assertEquals(out, u'château pilsen 2rs, weight 0.78 lbs'.encode('utf8'))  # noqa
 
     def test_repr(self):
         out = repr(self.grain_add)
-        self.assertEquals(out, "GrainAddition(Grain('pale 2-row', color=2.0, hwe=308.78), weight=13.96, grain_type='cereal', units='imperial')")  # nopep8
+        self.assertEquals(out, u"GrainAddition(Grain('pale 2-row', color=2.0, hwe=308.78), weight=13.96, grain_type='cereal', units='imperial')")  # noqa
 
     def test_get_weight_cereal(self):
         grain_add = GrainAddition(pale, weight=13.96,
@@ -169,9 +193,9 @@ class TestGrainAdditions(unittest.TestCase):
     def test_get_weight_map(self):
         out = self.grain_add.get_weight_map()
         expected = {
-            'grain_weight': 13.96,
-            'lme_weight': 10.47,
-            'dry_weight': 8.38,
+            u'grain_weight': 13.96,
+            u'lme_weight': 10.47,
+            u'dry_weight': 8.38,
         }
         self.assertEquals(out, expected)
 
@@ -207,21 +231,21 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_to_dict(self):
         out = self.grain_add.to_dict()
-        expected = {'name': 'pale 2-row',
-                    'data': {
-                        'color': 2.0,
-                        'ppg': 37.0,
-                        'hwe': 308.78,
+        expected = {u'name': u'pale 2-row',
+                    u'data': {
+                        u'color': 2.0,
+                        u'ppg': 37.0,
+                        u'hwe': 308.78,
                     },
-                    'grain_type': 'cereal',
-                    'weight': 13.96,
-                    'units': 'imperial',
+                    u'grain_type': u'cereal',
+                    u'weight': 13.96,
+                    u'units': u'imperial',
                     }
         self.assertEquals(out, expected)
 
     def test_to_json(self):
         out = self.grain_add.to_json()
-        expected = '{"data": {"color": 2.0, "hwe": 308.78, "ppg": 37.0}, "grain_type": "cereal", "name": "pale 2-row", "units": "imperial", "weight": 13.96}'  # nopep8
+        expected = u'{"data": {"color": 2.0, "hwe": 308.78, "ppg": 37.0}, "grain_type": "cereal", "name": "pale 2-row", "units": "imperial", "weight": 13.96}'  # noqa
         self.assertEquals(out, expected)
 
     def test_validate(self):
@@ -230,7 +254,7 @@ class TestGrainAdditions(unittest.TestCase):
 
     def test_format(self):
         out = self.grain_add.format()
-        msg = textwrap.dedent("""\
+        msg = textwrap.dedent(u"""\
             pale 2-row Addition
             -----------------------------------
             Grain Type:        cereal

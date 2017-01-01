@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import math
 
 from ..constants import HOP_TYPE_PELLET
@@ -11,9 +12,9 @@ from ..constants import SI_UNITS
 from ..validators import validate_units
 
 __all__ = [
-    'HopsUtilization',
-    'HopsUtilizationJackieRager',
-    'HopsUtilizationGlennTinseth',
+    u'HopsUtilization',
+    u'HopsUtilizationJackieRager',
+    u'HopsUtilizationGlennTinseth',
 ]
 
 
@@ -128,23 +129,23 @@ class HopsUtilization(object):
         boil_time_list = list(range(0, 60, 3)) + list(range(60, 130, 10))
         table = cls.get_utilization_table(gravity_list, boil_time_list)
 
-        title = 'Percent Alpha Acid Utilization - ' \
-                'Boil Time vs Wort Original Gravity'
+        title = u'Percent Alpha Acid Utilization - ' \
+                u'Boil Time vs Wort Original Gravity'
         table_size = 92
 
         out = []
         out.append(title.center(table_size))
-        out.append(str('=' * len(title)).center(table_size))
-        out.append('\n')
-        out.append(' '.join([' ' * 4] + ['{0:7.3f}'.format(l / 1000.0)
+        out.append(str(u'=' * len(title)).center(table_size))
+        out.append(u'\n')
+        out.append(u' '.join([u' ' * 4] + [u'{0:7.3f}'.format(l / 1000.0)
                    for l in gravity_list]))
-        out.append('-' * table_size)
+        out.append(u'-' * table_size)
         for index, line in enumerate(table):
             boil_time = boil_time_list[index]
-            out.append('{0} {1}'.format(
+            out.append(u'{0} {1}'.format(
                 str(boil_time).rjust(4),
-                ' '.join(['{0:7.3f}'.format(aau) for aau in line])))
-        return '\n'.join([o.rstrip() for o in out if o != '\n'])
+                u' '.join([u'{0:7.3f}'.format(aau) for aau in line])))
+        return u'\n'.join([o.rstrip() for o in out if o != u'\n'])
 
 
 class HopsUtilizationJackieRager(HopsUtilization):
@@ -155,7 +156,7 @@ class HopsUtilizationJackieRager(HopsUtilization):
     """
 
     def __str__(self):
-        return "Jackie Rager"
+        return u"Jackie Rager"
 
     @classmethod
     def get_c_gravity(cls, sg):
@@ -200,7 +201,7 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
     """
 
     def __str__(self):
-        return "Glenn Tinseth"
+        return u"Glenn Tinseth"
 
     @classmethod
     def get_bigness_factor(cls, sg):
@@ -216,7 +217,7 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
         for changes in the wort volume.
 
         :math:`\\text{Bigness factor} = 1.65 \\times 0.000125^{\\text{wort gravity} - 1}`
-        """  # nopep8
+        """  # noqa
         return 1.65 * 0.000125 ** (sg - 1)
 
     @classmethod
@@ -232,7 +233,7 @@ class HopsUtilizationGlennTinseth(HopsUtilization):
         boil time:
 
         :math:`\\text{Boil Time factor} = \\frac{1 - e^{-0.04 \\times \\text{time in mins}}}{4.15}`
-        """  # nopep8
+        """  # noqa
         return (1 - math.exp(-0.04 * boil_time)) / 4.15
 
     @classmethod

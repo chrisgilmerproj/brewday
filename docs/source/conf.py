@@ -298,4 +298,4 @@ texinfo_documents = [
 # -- Additional Config ----------------------------------------------------
 
 autoclass_content = 'both'
-mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'  # nopep8
+mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML'  # noqa

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from brew.utilities.malt import as_is_basis_to_dry_basis

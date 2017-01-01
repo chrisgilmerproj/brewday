@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from brew.constants import SI_UNITS
@@ -72,7 +73,7 @@ class TestSugarUtilities(unittest.TestCase):
 
     def test_hydrometer_adjustment_raises_bad_units(self):
         with self.assertRaises(Exception):
-            hydrometer_adjustment(1.050, 16.0, units='bad')
+            hydrometer_adjustment(1.050, 16.0, units=u'bad')
 
     def test_hydrometer_adjustment_raises_bad_temp(self):
         with self.assertRaises(Exception):

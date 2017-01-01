@@ -1,15 +1,16 @@
+# -*- coding: utf-8 -*-
 from ..constants import ABV_CONST
 from ..constants import ALCOHOL_SPECIFIC_GRAVITY
 from .sugar import apparent_extract_to_real_extract
 
 __all__ = [
-    'apparent_attenuation',
-    'real_attenuation',
-    'real_attenuation_from_apparent_extract',
-    'alcohol_by_volume_standard',
-    'final_gravity_from_abv_standard',
-    'alcohol_by_volume_alternative',
-    'alcohol_by_weight',
+    u'apparent_attenuation',
+    u'real_attenuation',
+    u'real_attenuation_from_apparent_extract',
+    u'alcohol_by_volume_standard',
+    u'final_gravity_from_abv_standard',
+    u'alcohol_by_volume_alternative',
+    u'alcohol_by_weight',
 ]
 
 
@@ -27,7 +28,7 @@ def apparent_attenuation(original_extract, apparent_extract):
     * Formula from Balling: De Clerck, Jean, A Textbook Of Brewing, Chapman & Hall Ltd., 1958
     * http://beersmith.com/blog/2010/09/07/apparent-and-real-attenuation-for-beer-brewers-part-1/
     * http://beersmith.com/blog/2010/09/14/apparent-and-real-attenuation-for-beer-brewers-part-2/
-    """  # nopep8
+    """  # noqa
     return (original_extract - apparent_extract) / original_extract
 
 
@@ -84,7 +85,7 @@ def alcohol_by_volume_standard(og, fg):
     * http://www.brewmorebeer.com/calculate-percent-alcohol-in-beer/
 
     :math:`\\text{ABV} = \\frac{46.07 \\text{g/mol C2H6O}}{44.0095 \\text{g/mol CO2}} \\times \\frac{1.0}{0.7936} \\times 100 \\times (og - fg)`
-    """  # nopep8
+    """  # noqa
     return (og - fg) * ABV_CONST / 100.0
 
 
@@ -128,7 +129,7 @@ def alcohol_by_volume_alternative(og, fg):
     Source:
 
     * http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
-    """  # nopep8
+    """  # noqa
     return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794) / 100.0
 
 

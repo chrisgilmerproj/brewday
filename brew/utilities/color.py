@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from ..constants import GAL_PER_LITER
 from ..constants import IMPERIAL_UNITS
 from ..constants import POUND_PER_KG
@@ -6,20 +6,20 @@ from ..constants import SI_UNITS
 from ..validators import validate_units
 
 __all__ = [
-    'srm_to_ebc',
-    'ebc_to_srm',
-    'calculate_mcu',
-    'calculate_srm_mosher',
-    'calculate_srm_daniels',
-    'calculate_srm_daniels_power',
-    'calculate_srm_noonan_power',
-    'calculate_srm_morey_hybrid',
-    'calculate_srm_morey',
-    'calculate_srm',
-    'lovibond_to_srm',
-    'srm_to_lovibond',
-    'srm_to_a430',
-    'ebc_to_a430',
+    u'srm_to_ebc',
+    u'ebc_to_srm',
+    u'calculate_mcu',
+    u'calculate_srm_mosher',
+    u'calculate_srm_daniels',
+    u'calculate_srm_daniels_power',
+    u'calculate_srm_noonan_power',
+    u'calculate_srm_morey_hybrid',
+    u'calculate_srm_morey',
+    u'calculate_srm',
+    u'lovibond_to_srm',
+    u'srm_to_lovibond',
+    u'srm_to_a430',
+    u'ebc_to_a430',
 ]
 
 
@@ -58,7 +58,7 @@ def calculate_mcu(grain_weight, beer_color, final_volume,
     Source:
 
     * http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
-    """  # nopep8
+    """  # noqa
     validate_units(units)
     if units == SI_UNITS:
         grain_weight = grain_weight * POUND_PER_KG
@@ -76,9 +76,9 @@ def calculate_srm_mosher(mcu):
     :return: SRM Color
     :rtype: float
     :raises Exception: If the MCU is < 7.0
-    """  # nopep8
+    """  # noqa
     if mcu < 7.0:
-        raise Exception("Mosher equation does not work for MCU < 7.0")
+        raise Exception(u"Mosher equation does not work for MCU < 7.0")
     srm = (mcu * 0.3) + 4.7
     return srm
 
@@ -91,9 +91,9 @@ def calculate_srm_daniels(mcu):
     :return: SRM Color
     :rtype: float
     :raises Exception: If the MCU is < 11.0
-    """  # nopep8
+    """  # noqa
     if mcu < 11.0:
-        raise Exception("Daniels equation does not work for MCU < 11.0")
+        raise Exception(u"Daniels equation does not work for MCU < 11.0")
     srm = (mcu * 0.2) + 8.4
     return srm
 
@@ -106,10 +106,10 @@ def calculate_srm_daniels_power(mcu):
     :return: SRM Color
     :rtype: float
     :raises Exception: If the SRM is > 50.0
-    """  # nopep8
+    """  # noqa
     srm = 1.73 * (mcu ** 0.64) - 0.27
     if srm > 50.0:
-        raise Exception("Daniels Power equation does not work above SRM 50.0")
+        raise Exception(u"Daniels Power equation does not work above SRM 50.0")
     return srm
 
 
@@ -121,10 +121,10 @@ def calculate_srm_noonan_power(mcu):
     :return: SRM Color
     :rtype: float
     :raises Exception: If the SRM is > 50.0
-    """  # nopep8
+    """  # noqa
     srm = 15.03 * (mcu ** 0.27) - 15.53
     if srm > 50.0:
-        raise Exception("Noonan Power equation does not work above SRM 50.0")
+        raise Exception(u"Noonan Power equation does not work above SRM 50.0")
     return srm
 
 
@@ -162,7 +162,7 @@ def calculate_srm_morey_hybrid(mcu):
     elif 37 <= mcu < 50:
         srm = calculate_srm_mosher(mcu)
     else:
-        raise Exception("Morey Hybrid does not work above MCU 50.0")
+        raise Exception(u"Morey Hybrid does not work above MCU 50.0")
 
     # SRM never gets above 50 so no exception is needed here
     return srm
@@ -181,10 +181,10 @@ def calculate_srm_morey(mcu):
 
     * http://www.morebeer.com/brewingtechniques/beerslaw/morey.html
     * http://beersmith.com/blog/2008/04/29/beer-color-understanding-srm-lovibond-and-ebc/
-    """  # nopep8
+    """  # noqa
     srm = 1.4922 * (mcu ** 0.6859)
     if srm > 50.0:
-        raise Exception("Morey equation does not work above SRM 50.0")
+        raise Exception(u"Morey equation does not work above SRM 50.0")
     return srm
 
 
@@ -242,7 +242,7 @@ def srm_to_a430(srm, dilution=1.0):
     Source:
 
     * https://en.wikipedia.org/wiki/Standard_Reference_Method
-    """  # nopep8
+    """  # noqa
     return srm / (12.7 * dilution)
 
 
@@ -258,5 +258,5 @@ def ebc_to_a430(ebc, dilution=1.0):
     Source:
 
     * https://en.wikipedia.org/wiki/Standard_Reference_Method
-    """  # nopep8
+    """  # noqa
     return srm_to_a430(ebc_to_srm(ebc), dilution=dilution)

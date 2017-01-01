@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from brew.constants import IMPERIAL_UNITS
@@ -17,8 +18,8 @@ class TestHopsUtilization(unittest.TestCase):
         self.hop = centennial
         self.addition_kwargs = [
             {
-                'boil_time': 60.0,
-                'weight': 0.57,
+                u'boil_time': 60.0,
+                u'weight': 0.57,
             }
         ]
 
@@ -57,8 +58,8 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
         self.hop = centennial
         self.addition_kwargs = [
             {
-                'boil_time': 60.0,
-                'weight': 0.57,
+                u'boil_time': 60.0,
+                u'weight': 0.57,
             }
         ]
 
@@ -74,7 +75,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
 
     def test_str(self):
         self.assertEquals(str(self.hop_addition.utilization_cls),
-                          "Jackie Rager")
+                          u"Jackie Rager")
 
     def test_get_c_gravity(self):
         out = self.hop_addition.utilization_cls.get_c_gravity(self.sg)
@@ -90,7 +91,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
         self.assertEquals(round(ibu, 2), 39.18)
 
     def test_get_percent_utilization(self):
-        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # nopep8
+        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # noqa
                 self.sg, self.boil_time)
         self.assertEquals(round(utilization * 100, 2), 29.80)
 
@@ -106,7 +107,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
 
     def test_format_utilization_table(self):
         out = self.utilization_cls.format_utilization_table()
-        expected = ("""\
+        expected = (u"""\
             Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
             ===================================================================
        1.030   1.040   1.050   1.060   1.070   1.080   1.090   1.100   1.110   1.120   1.130
@@ -137,7 +138,7 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
   90   0.319   0.319   0.319   0.304   0.290   0.278   0.266   0.255   0.246   0.236   0.228
  100   0.320   0.320   0.320   0.304   0.290   0.278   0.266   0.256   0.246   0.237   0.228
  110   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228
- 120   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228""")  # nopep8
+ 120   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228""")  # noqa
         self.assertEquals(out, expected)
 
 
@@ -148,8 +149,8 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         self.hop = centennial
         self.addition_kwargs = [
             {
-                'boil_time': 60.0,
-                'weight': 0.57,
+                u'boil_time': 60.0,
+                u'weight': 0.57,
             }
         ]
 
@@ -165,7 +166,7 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
 
     def test_str(self):
         self.assertEquals(str(self.hop_addition.utilization_cls),
-                          "Glenn Tinseth")
+                          u"Glenn Tinseth")
 
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
@@ -182,6 +183,6 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         self.assertEquals(round(bf, 2), 0.22)
 
     def test_get_percent_utilization(self):
-        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # nopep8
+        utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # noqa
                 self.sg, self.boil_time)
         self.assertEquals(round(utilization * 100, 2), 21.69)

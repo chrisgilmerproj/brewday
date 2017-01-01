@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from brew.cli.sugar import get_parser
@@ -13,54 +14,54 @@ class TestCliSugar(unittest.TestCase):
         self.sg = 1.092
 
     def test_get_sugar_conversion_brix_to_brix(self):
-        out = get_sugar_conversion(self.brix, None, None, 'b')
+        out = get_sugar_conversion(self.brix, None, None, u'b')
         self.assertEquals(round(out, 1), self.brix)
 
     def test_get_sugar_conversion_brix_to_plato(self):
-        out = get_sugar_conversion(self.brix, None, None, 'p')
+        out = get_sugar_conversion(self.brix, None, None, u'p')
         self.assertEquals(round(out, 1), self.plato)
 
     def test_get_sugar_conversion_brix_to_sg(self):
-        out = get_sugar_conversion(self.brix, None, None, 's')
+        out = get_sugar_conversion(self.brix, None, None, u's')
         self.assertEquals(round(out, 3), self.sg)
 
     def test_get_sugar_conversion_plato_to_brix(self):
-        out = get_sugar_conversion(None, self.plato, None, 'b')
+        out = get_sugar_conversion(None, self.plato, None, u'b')
         self.assertEquals(round(out, 1), self.brix)
 
     def test_get_sugar_conversion_plato_to_plato(self):
-        out = get_sugar_conversion(None, self.plato, None, 'p')
+        out = get_sugar_conversion(None, self.plato, None, u'p')
         self.assertEquals(round(out, 1), self.plato)
 
     def test_get_sugar_conversion_plato_to_sg(self):
-        out = get_sugar_conversion(None, self.plato, None, 's')
+        out = get_sugar_conversion(None, self.plato, None, u's')
         self.assertEquals(round(out, 3), self.sg)
 
     def test_get_sugar_conversion_sg_to_brix(self):
-        out = get_sugar_conversion(None, None, self.sg, 'b')
+        out = get_sugar_conversion(None, None, self.sg, u'b')
         self.assertEquals(round(out, 1), self.brix)
 
     def test_get_sugar_conversion_sg_to_plato(self):
-        out = get_sugar_conversion(None, None, self.sg, 'p')
+        out = get_sugar_conversion(None, None, self.sg, u'p')
         self.assertEquals(round(out, 1), self.plato)
 
     def test_get_sugar_conversion_sg_to_sg(self):
-        out = get_sugar_conversion(None, None, self.sg, 's')
+        out = get_sugar_conversion(None, None, self.sg, u's')
         self.assertEquals(round(out, 3), self.sg)
 
     def test_get_sugar_conversion_all_brix(self):
         out = get_sugar_conversion(self.brix, None, None, None)
-        expected = 'SG\tPlato\tBrix\n1.092\t22.0\t22.0'
+        expected = u'SG\tPlato\tBrix\n1.092\t22.0\t22.0'
         self.assertEquals(out, expected)
 
     def test_get_sugar_conversion_all_plato(self):
         out = get_sugar_conversion(None, self.plato, None, None)
-        expected = 'SG\tPlato\tBrix\n1.092\t22.0\t22.0'
+        expected = u'SG\tPlato\tBrix\n1.092\t22.0\t22.0'
         self.assertEquals(out, expected)
 
     def test_get_sugar_conversion_all_sg(self):
         out = get_sugar_conversion(None, None, self.sg, None)
-        expected = 'SG\tPlato\tBrix\n1.092\t22.0\t22.0'
+        expected = u'SG\tPlato\tBrix\n1.092\t22.0\t22.0'
         self.assertEquals(out, expected)
 
 
@@ -70,46 +71,46 @@ class TestCliArgparserSugar(unittest.TestCase):
         self.parser = get_parser()
 
     def test_get_parser_brix_in_none_out(self):
-        args = ['-b', '22.0']
+        args = [u'-b', u'22.0']
         out = self.parser.parse_args(args)
         expected = {
-            'brix': 22.0,
-            'plato': None,
-            'sg': None,
-            'out': None,
+            u'brix': 22.0,
+            u'plato': None,
+            u'sg': None,
+            u'out': None,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_plato_in_none_out(self):
-        args = ['-p', '22.0']
+        args = [u'-p', u'22.0']
         out = self.parser.parse_args(args)
         expected = {
-            'brix': None,
-            'plato': 22.0,
-            'sg': None,
-            'out': None,
+            u'brix': None,
+            u'plato': 22.0,
+            u'sg': None,
+            u'out': None,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_sg_in_none_out(self):
-        args = ['-s', '1.060']
+        args = [u'-s', u'1.060']
         out = self.parser.parse_args(args)
         expected = {
-            'brix': None,
-            'plato': None,
-            'sg': 1.060,
-            'out': None,
+            u'brix': None,
+            u'plato': None,
+            u'sg': 1.060,
+            u'out': None,
         }
         self.assertEquals(out.__dict__, expected)
 
     def test_get_parser_sg_in_brix_out(self):
-        args = ['-s', '1.060', '-o', 'b']
+        args = [u'-s', u'1.060', u'-o', u'b']
         out = self.parser.parse_args(args)
         expected = {
-            'brix': None,
-            'plato': None,
-            'sg': 1.060,
-            'out': 'b',
+            u'brix': None,
+            u'plato': None,
+            u'sg': 1.060,
+            u'out': u'b',
         }
         self.assertEquals(out.__dict__, expected)
 
@@ -136,10 +137,10 @@ class TestCliMainSugar(unittest.TestCase):
         self.main = main
 
     def test_main_no_args(self):
-        args = {'output': {'brix': None,
-                           'plato': None,
-                           'sg': None,
-                           'out': None}}
+        args = {u'output': {u'brix': None,
+                            u'plato': None,
+                            u'sg': None,
+                            u'out': None}}
         with self.assertRaises(SystemExit):
             self.main(parser_fn=self.parser_fn,
                       parser_kwargs=args)
@@ -149,18 +150,18 @@ class TestCliMainSugar(unittest.TestCase):
             self.main(parser_fn=self.parser_fn)
 
     def test_main_two_args(self):
-        args = {'output': {'brix': 22.0,
-                           'plato': 22.0,
-                           'sg': None,
-                           'out': None}}
+        args = {u'output': {u'brix': 22.0,
+                            u'plato': 22.0,
+                            u'sg': None,
+                            u'out': None}}
         with self.assertRaises(SystemExit):
             self.main(parser_fn=self.parser_fn,
                       parser_kwargs=args)
 
     def test_main_one_arg(self):
-        args = {'output': {'brix': 22.0,
-                           'plato': None,
-                           'sg': None,
-                           'out': None}}
+        args = {u'output': {u'brix': 22.0,
+                            u'plato': None,
+                            u'sg': None,
+                            u'out': None}}
         self.main(parser_fn=self.parser_fn,
                   parser_kwargs=args)

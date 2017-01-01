@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Oak Barrel Winecraft
@@ -22,7 +23,7 @@ Alcohol: 4.3% ABV
 Boil:    60 min
 Pre-Boil Volume:  2.5 G
 Pre-Boil Gravity: 
-"""  # nopep8
+"""  # noqa
 
 import os
 
@@ -33,41 +34,41 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        'name': "Kolsch Ale (Extract)",
-        'start_volume': 2.5,
-        'final_volume': 5.0,
-        'grains': [
-            {'name': 'Pilsner Liquid Extract',
-             'weight': 3.25,
-             'grain_type': 'lme'},
-            {'name': 'Munich Liquid Extract',
-             'data': {
-                 'color': 10.0,
-                 'ppg': 36,
+        u'name': u"Kölsch Ale (Extract)",
+        u'start_volume': 2.5,
+        u'final_volume': 5.0,
+        u'grains': [
+            {u'name': u'Pilsner Liquid Extract',
+             u'weight': 3.25,
+             u'grain_type': u'lme'},
+            {u'name': u'Munich Liquid Extract',
+             u'data': {
+                 u'color': 10.0,
+                 u'ppg': 36,
              },
-             'weight': 3.25,
-             'grain_type': 'lme'},
-            {'name': 'White Wheat Malt',
-             'weight': 0.25,
-             'grain_type': 'specialty'},
-            {'name': 'Caramel Crystal Malt 10l',
-             'weight': 0.25,
-             'grain_type': 'specialty'},
+             u'weight': 3.25,
+             u'grain_type': u'lme'},
+            {u'name': u'White Wheat Malt',
+             u'weight': 0.25,
+             u'grain_type': u'specialty'},
+            {u'name': u'Caramel Crystal Malt 10l',
+             u'weight': 0.25,
+             u'grain_type': u'specialty'},
         ],
-        'hops': [
-            {'name': 'Vanguard',
-             'weight': 1.0,
-             'boil_time': 60.0},
-            {'name': 'hersbrucker',
-             'weight': 1.0,
-             'boil_time': 0.0},
+        u'hops': [
+            {u'name': u'Vanguard',
+             u'weight': 1.0,
+             u'boil_time': 60.0},
+            {u'name': u'hersbrucker',
+             u'weight': 1.0,
+             u'boil_time': 0.0},
         ],
-        'yeast': {
-            'name': 'White Labs Wlp029',
+        u'yeast': {
+            u'name': u'White Labs Wlp029',
         },
-        'data': {
-            'percent_brew_house_yield': 0.70,
-            'units': 'imperial',
+        u'data': {
+            u'percent_brew_house_yield': 0.70,
+            u'units': u'imperial',
         },
     }
 

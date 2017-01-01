@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import textwrap
 import unittest
 
@@ -40,10 +41,10 @@ class TestRecipeSIUnits(unittest.TestCase):
         self.assertEquals(self.recipe.units, SI_UNITS)
         self.assertEquals(round(self.recipe.start_volume, 2), 26.50)
         self.assertEquals(round(self.recipe.final_volume, 2), 18.93)
-        self.assertEquals(round(self.recipe.grain_additions[0].weight, 2), 6.33)  # nopep8
-        self.assertEquals(round(self.recipe.grain_additions[1].weight, 2), 0.35)  # nopep8
-        self.assertEquals(round(self.recipe.hop_additions[0].weight, 2), 16159.21)  # nopep8
-        self.assertEquals(round(self.recipe.hop_additions[1].weight, 2), 21545.62)  # nopep8
+        self.assertEquals(round(self.recipe.grain_additions[0].weight, 2), 6.33)  # noqa
+        self.assertEquals(round(self.recipe.grain_additions[1].weight, 2), 0.35)  # noqa
+        self.assertEquals(round(self.recipe.hop_additions[0].weight, 2), 16159.21)  # noqa
+        self.assertEquals(round(self.recipe.hop_additions[1].weight, 2), 21545.62)  # noqa
         for grain_add in self.recipe.grain_additions:
             self.assertEquals(grain_add.units, SI_UNITS)
         for hop_add in self.recipe.hop_additions:
@@ -62,7 +63,7 @@ class TestRecipeSIUnits(unittest.TestCase):
                                  weight=4.75,
                                  grain_type=GRAIN_TYPE_LME,
                                  units=SI_UNITS)
-        recipe = Recipe('lme',
+        recipe = Recipe(u'lme',
                         grain_additions=[pale_lme],
                         hop_additions=self.hop_additions,
                         yeast=self.yeast,
@@ -76,7 +77,7 @@ class TestRecipeSIUnits(unittest.TestCase):
                                  weight=3.80,
                                  grain_type=GRAIN_TYPE_DME,
                                  units=SI_UNITS)
-        recipe = Recipe('dme',
+        recipe = Recipe(u'dme',
                         grain_additions=[pale_dme],
                         hop_additions=self.hop_additions,
                         yeast=self.yeast,
@@ -155,7 +156,7 @@ class TestRecipeSIUnits(unittest.TestCase):
                                  weight=4.75,
                                  grain_type=GRAIN_TYPE_LME,
                                  units=SI_UNITS)
-        recipe = Recipe('lme',
+        recipe = Recipe(u'lme',
                         grain_additions=[pale_lme],
                         hop_additions=self.hop_additions,
                         yeast=self.yeast,
@@ -169,7 +170,7 @@ class TestRecipeSIUnits(unittest.TestCase):
                                  weight=3.80,
                                  grain_type=GRAIN_TYPE_DME,
                                  units=SI_UNITS)
-        recipe = Recipe('dme',
+        recipe = Recipe(u'dme',
                         grain_additions=[pale_dme],
                         hop_additions=self.hop_additions,
                         yeast=self.yeast,
@@ -193,7 +194,7 @@ class TestRecipeSIUnits(unittest.TestCase):
                                  weight=4.75,
                                  grain_type=GRAIN_TYPE_LME,
                                  units=SI_UNITS)
-        recipe = Recipe('lme',
+        recipe = Recipe(u'lme',
                         grain_additions=[pale_lme],
                         hop_additions=self.hop_additions,
                         yeast=self.yeast,
@@ -207,7 +208,7 @@ class TestRecipeSIUnits(unittest.TestCase):
                                  weight=3.80,
                                  grain_type=GRAIN_TYPE_DME,
                                  units=SI_UNITS)
-        recipe = Recipe('dme',
+        recipe = Recipe(u'dme',
                         grain_additions=[pale_dme],
                         hop_additions=self.hop_additions,
                         yeast=self.yeast,
@@ -264,21 +265,21 @@ class TestRecipeSIUnits(unittest.TestCase):
     def test_get_total_wort_color_map(self):
         wort_map = self.recipe.get_total_wort_color_map()
         expected = {
-            'srm': {'daniels': 'N/A', 'morey': 6.6, 'mosher': 7.3},
-            'ebc': {'daniels': 'N/A', 'morey': 13.0, 'mosher': 14.4},
+            u'srm': {u'daniels': u'N/A', u'morey': 6.6, u'mosher': 7.3},
+            u'ebc': {u'daniels': u'N/A', u'morey': 13.0, u'mosher': 14.4},
         }
         self.assertEquals(wort_map, expected)
 
     def test_to_json(self):
         self.assertEquals(self.recipe.units, SI_UNITS)
         out = self.recipe.to_json()
-        expected = '{"data": {"abv_alternative": 0.0798, "abv_standard": 0.0749, "abw_alternative": 0.0633, "abw_standard": 0.0595, "boil_gravity": 1.054, "bu_to_gu": 0.6, "final_gravity": 1.019, "original_gravity": 1.076, "percent_brew_house_yield": 0.7, "total_ibu": 33.0, "total_wort_color_map": {"ebc": {"daniels": "N/A", "morey": 13.0, "mosher": 14.4}, "srm": {"daniels": "N/A", "morey": 6.6, "mosher": 7.3}}, "units": "metric"}, "final_volume": 18.93, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.95, "ppg": 37.0, "working_yield": 0.56, "wort_color_ebc": 9.6, "wort_color_srm": 4.9}, "grain_type": "cereal", "name": "pale 2-row", "units": "metric", "weight": 6.33}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.05, "ppg": 35.0, "working_yield": 0.53, "wort_color_ebc": 6.4, "wort_color_srm": 3.3}, "grain_type": "cereal", "name": "crystal C20", "units": "metric", "weight": 0.35}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.2, "percent_alpha_acids": 0.14, "utilization": 0.24}, "hop_type": "pellet", "name": "centennial", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 16159.21}, {"boil_time": 5.0, "data": {"ibus": 3.9, "percent_alpha_acids": 0.07, "utilization": 0.05}, "hop_type": "pellet", "name": "cascade", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 21545.62}], "name": "pale ale", "start_volume": 26.5, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # nopep8
+        expected = u'{"data": {"abv_alternative": 0.0798, "abv_standard": 0.0749, "abw_alternative": 0.0633, "abw_standard": 0.0595, "boil_gravity": 1.054, "bu_to_gu": 0.6, "final_gravity": 1.019, "original_gravity": 1.076, "percent_brew_house_yield": 0.7, "total_ibu": 33.0, "total_wort_color_map": {"ebc": {"daniels": "N/A", "morey": 13.0, "mosher": 14.4}, "srm": {"daniels": "N/A", "morey": 6.6, "mosher": 7.3}}, "units": "metric"}, "final_volume": 18.93, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.95, "ppg": 37.0, "working_yield": 0.56, "wort_color_ebc": 9.6, "wort_color_srm": 4.9}, "grain_type": "cereal", "name": "pale 2-row", "units": "metric", "weight": 6.33}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.05, "ppg": 35.0, "working_yield": 0.53, "wort_color_ebc": 6.4, "wort_color_srm": 3.3}, "grain_type": "cereal", "name": "crystal C20", "units": "metric", "weight": 0.35}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.2, "percent_alpha_acids": 0.14, "utilization": 0.24}, "hop_type": "pellet", "name": "centennial", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 16159.21}, {"boil_time": 5.0, "data": {"ibus": 3.9, "percent_alpha_acids": 0.07, "utilization": 0.05}, "hop_type": "pellet", "name": "cascade", "units": "metric", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {"units": "metric"}, "weight": 21545.62}], "name": "pale ale", "start_volume": 26.5, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # noqa
         self.assertEquals(out, expected)
 
     def test_format(self):
         self.assertEquals(self.recipe.units, SI_UNITS)
         out = self.recipe.format()
-        expected = textwrap.dedent("""\
+        expected = textwrap.dedent(u"""\
             pale ale
             ===================================
 

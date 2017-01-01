@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Brewing Classic Styles: 80 Winning Recipes Anyone Can Brew
@@ -23,7 +24,7 @@ Alcohol: 6.9% ABV (5.4% ABW)
 Boil:    60 min
 Pre-Boil Volume:  7 Gal (26.5L)
 Pre-Boil Gravity: 1.051 (12.7P)
-"""  # nopep8
+"""  # noqa
 
 import os
 
@@ -34,64 +35,64 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        'name': "Raison de Saison (Extract)",
-        'start_volume': 7.0,
-        'final_volume': 6.0,
-        'grains': [
-            {'name': 'Pilsner Liquid Extract',
-             'data': {
-                 'color': 2.3,
-                 'ppg': 37,
+        u'name': u"Raison de Saison (Extract)",
+        u'start_volume': 7.0,
+        u'final_volume': 6.0,
+        u'grains': [
+            {u'name': u'Pilsner Liquid Extract',
+             u'data': {
+                 u'color': 2.3,
+                 u'ppg': 37,
              },
-             'weight': 7.7,
-             'grain_type': 'lme'},
-            {'name': 'Cane Beet Sugar',
-             'weight': 1.0,
-             'grain_type': 'dme'},
-            {'name': 'Wheat Liquid Extract',
-             'data': {
-                 'color': 4.0,
-                 'ppg': 37,
+             u'weight': 7.7,
+             u'grain_type': u'lme'},
+            {u'name': u'Cane Beet Sugar',
+             u'weight': 1.0,
+             u'grain_type': u'dme'},
+            {u'name': u'Wheat Liquid Extract',
+             u'data': {
+                 u'color': 4.0,
+                 u'ppg': 37,
              },
-             'weight': 0.75,
-             'grain_type': 'lme'},
-            {'name': 'munich liquid malt extract',
-             'data': {
-                 'color': 9.0,
-                 'ppg': 37,
+             u'weight': 0.75,
+             u'grain_type': u'lme'},
+            {u'name': u'munich liquid malt extract',
+             u'data': {
+                 u'color': 9.0,
+                 u'ppg': 37,
              },
-             'weight': 0.5,
-             'grain_type': 'lme'},
-            {'name': 'Caramunich Malt',
-             'data': {
-                 'color': 60.0,
+             u'weight': 0.5,
+             u'grain_type': u'lme'},
+            {u'name': u'Caramunich Malt',
+             u'data': {
+                 u'color': 60.0,
              },
-             'weight': 0.125,
-             'grain_type': 'specialty'},
+             u'weight': 0.125,
+             u'grain_type': u'specialty'},
         ],
-        'hops': [
-            {'name': 'Hallertau US',
-             'data': {
-                 'percent_alpha_acids': 0.05,
+        u'hops': [
+            {u'name': u'Hallertau US',
+             u'data': {
+                 u'percent_alpha_acids': 0.05,
              },
-             'weight': 1.7,
-             'boil_time': 60.0},
-            {'name': 'Hallertau US',
-             'data': {
-                 'percent_alpha_acids': 0.05,
+             u'weight': 1.7,
+             u'boil_time': 60.0},
+            {u'name': u'Hallertau US',
+             u'data': {
+                 u'percent_alpha_acids': 0.05,
              },
-             'weight': 0.75,
-             'boil_time': 0.0},
+             u'weight': 0.75,
+             u'boil_time': 0.0},
         ],
-        'yeast': {
-            'name': 'Wyeast 3724',
-            'data': {
-                'percent_attenuation': 0.86,
+        u'yeast': {
+            u'name': u'Wyeast 3724',
+            u'data': {
+                u'percent_attenuation': 0.86,
             },
         },
-        'data': {
-            'percent_brew_house_yield': 0.70,
-            'units': 'imperial',
+        u'data': {
+            u'percent_brew_house_yield': 0.70,
+            u'units': u'imperial',
         },
     }
 

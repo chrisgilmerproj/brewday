@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Brewing Classic Styles: 80 Winning Recipes Anyone Can Brew
@@ -23,7 +24,7 @@ Alcohol: 6.2% ABV (4.8% ABW)
 Boil:    60 min
 Pre-Boil Volume:  7 Gal (26.5L)
 Pre-Boil Gravity: 1.053 (13.0P)
-"""  # nopep8
+"""  # noqa
 
 import os
 
@@ -34,66 +35,66 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        'name': "Biere de l'Inde (Extract)",
-        'start_volume': 7.0,
-        'final_volume': 6.0,
-        'grains': [
-            {'name': 'English Pale Ale Liquid Extract',
-             'data': {
-                 'color': 3.5,
-                 'ppg': 37,
+        u'name': u"Biere de l'Inde (Extract)",
+        u'start_volume': 7.0,
+        u'final_volume': 6.0,
+        u'grains': [
+            {u'name': u'English Pale Ale Liquid Extract',
+             u'data': {
+                 u'color': 3.5,
+                 u'ppg': 37,
              },
-             'weight': 8.7,
-             'grain_type': 'lme'},
-            {'name': 'wheat liquid extract',
-             'data': {
-                 'color': 4.0,
-                 'ppg': 37,
+             u'weight': 8.7,
+             u'grain_type': u'lme'},
+            {u'name': u'wheat liquid extract',
+             u'data': {
+                 u'color': 4.0,
+                 u'ppg': 37,
              },
-             'weight': 0.5,
-             'grain_type': 'lme'},
-            {'name': 'biscuit malt',
-             'data': {
-                 'color': 25.0,
+             u'weight': 0.5,
+             u'grain_type': u'lme'},
+            {u'name': u'biscuit malt',
+             u'data': {
+                 u'color': 25.0,
              },
-             'weight': 0.5,
-             'grain_type': 'specialty'},
-            {'name': 'caramel crystal malt 40l',
-             'weight': 0.5,
-             'grain_type': 'specialty'},
-            {'name': 'caramel crystal malt 120l',
-             'weight': 0.375,
-             'grain_type': 'specialty'},
+             u'weight': 0.5,
+             u'grain_type': u'specialty'},
+            {u'name': u'caramel crystal malt 40l',
+             u'weight': 0.5,
+             u'grain_type': u'specialty'},
+            {u'name': u'caramel crystal malt 120l',
+             u'weight': 0.375,
+             u'grain_type': u'specialty'},
         ],
-        'hops': [
-            {'name': 'challenger',
-             'data': {
-                 'percent_alpha_acids': 0.08,
+        u'hops': [
+            {u'name': u'challenger',
+             u'data': {
+                 u'percent_alpha_acids': 0.08,
              },
-             'weight': 1.43,
-             'boil_time': 60.0},
-            {'name': 'fuggle',
-             'data': {
-                 'percent_alpha_acids': 0.05,
+             u'weight': 1.43,
+             u'boil_time': 60.0},
+            {u'name': u'fuggle',
+             u'data': {
+                 u'percent_alpha_acids': 0.05,
              },
-             'weight': 1.5,
-             'boil_time': 10.0},
-            {'name': 'east kent golding',
-             'data': {
-                 'percent_alpha_acids': 0.05,
+             u'weight': 1.5,
+             u'boil_time': 10.0},
+            {u'name': u'east kent golding',
+             u'data': {
+                 u'percent_alpha_acids': 0.05,
              },
-             'weight': 1.5,
-             'boil_time': 0.0},
+             u'weight': 1.5,
+             u'boil_time': 0.0},
         ],
-        'yeast': {
-            'name': 'Wyeast 1028',
-            'data': {
-                'percent_attenuation': 0.74,
+        u'yeast': {
+            u'name': u'Wyeast 1028',
+            u'data': {
+                u'percent_attenuation': 0.74,
             },
         },
-        'data': {
-            'percent_brew_house_yield': 0.70,
-            'units': 'imperial',
+        u'data': {
+            u'percent_brew_house_yield': 0.70,
+            u'units': u'imperial',
         },
     }
 

@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Brewing Classic Styles: 80 Winning Recipes Anyone Can Brew
@@ -23,7 +24,7 @@ Alcohol: 5.4% ABV (4.2% ABW)
 Boil:    60 min
 Pre-Boil Volume:  7 Gal (26.5L)
 Pre-Boil Gravity: 1.047 (11.7P)
-"""  # nopep8
+"""  # noqa
 
 import os
 
@@ -34,52 +35,52 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        'name': "Munich Madness (All Grain)",
-        'start_volume': 7.0,
-        'final_volume': 6.0,
-        'grains': [
-            {'name': 'Pilsner 2 row Ger',
-             'data': {
-                 'color': 2.3,
+        u'name': u"Munich Madness (All Grain)",
+        u'start_volume': 7.0,
+        u'final_volume': 6.0,
+        u'grains': [
+            {u'name': u'Pilsner 2 row Ger',
+             u'data': {
+                 u'color': 2.3,
              },
-             'weight': 5.0},
-            {'name': 'Munich Malt 10L',
-             'data': {
-                 'color': 9.0,
+             u'weight': 5.0},
+            {u'name': u'Munich Malt 10L',
+             u'data': {
+                 u'color': 9.0,
              },
-             'weight': 4.0},
-            {'name': 'Vienna Malt',
-             'weight': 3.0},
-            {'name': 'Caramunich Malt',
-             'data': {
-                 'color': 60.0,
+             u'weight': 4.0},
+            {u'name': u'Vienna Malt',
+             u'weight': 3.0},
+            {u'name': u'Caramunich Malt',
+             u'data': {
+                 u'color': 60.0,
              },
-             'weight': 1.0,
-             'grain_type': 'specialty'},
+             u'weight': 1.0,
+             u'grain_type': u'specialty'},
         ],
-        'hops': [
-            {'name': 'Hallertau US',
-             'data': {
-                 'percent_alpha_acids': 0.04,
+        u'hops': [
+            {u'name': u'Hallertau US',
+             u'data': {
+                 u'percent_alpha_acids': 0.04,
              },
-             'weight': 1.5,
-             'boil_time': 60.0},
-            {'name': 'Hallertau US',
-             'data': {
-                 'percent_alpha_acids': 0.04,
+             u'weight': 1.5,
+             u'boil_time': 60.0},
+            {u'name': u'Hallertau US',
+             u'data': {
+                 u'percent_alpha_acids': 0.04,
              },
-             'weight': 0.5,
-             'boil_time': 20.0},
+             u'weight': 0.5,
+             u'boil_time': 20.0},
         ],
-        'yeast': {
-            'name': 'Wyeast 2206',
-            'data': {
-                'percent_attenuation': 0.73,
+        u'yeast': {
+            u'name': u'Wyeast 2206',
+            u'data': {
+                u'percent_attenuation': 0.73,
             },
         },
-        'data': {
-            'percent_brew_house_yield': 0.70,
-            'units': 'imperial',
+        u'data': {
+            u'percent_brew_house_yield': 0.70,
+            u'units': u'imperial',
         },
     }
 

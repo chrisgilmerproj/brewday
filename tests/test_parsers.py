@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 import mock
@@ -16,21 +17,21 @@ from fixtures import yeast
 class CerealsLoader(DataLoader):
     def get_item(self, dir_suffix, item_name):
         grain_add = pale_add.to_dict()
-        grain_add.update(grain_add.pop('data'))
+        grain_add.update(grain_add.pop(u'data'))
         return grain_add
 
 
 class HopsLoader(DataLoader):
     def get_item(self, dir_suffix, item_name):
         hop_add = cascade_add.to_dict()
-        hop_add.update(hop_add.pop('data'))
+        hop_add.update(hop_add.pop(u'data'))
         return hop_add
 
 
 class YeastLoader(DataLoader):
     def get_item(self, dir_suffix, item_name):
         yst = yeast.to_dict()
-        yst.update(yst.pop('data'))
+        yst.update(yst.pop(u'data'))
         return yst
 
 
@@ -71,11 +72,11 @@ class TestJSONDataLoader(unittest.TestCase):
         self.loader = JSONDataLoader('./')
 
     def test_format_name(self):
-        name_list = [('pale malt 2-row us', 'pale_malt_2_row_us'),
-                     ('caramel crystal malt 20l', 'caramel_crystal_malt_20l'),
-                     ('centennial', 'centennial'),
-                     ('cascade us', 'cascade_us'),
-                     ('Wyeast 1056', 'wyeast_1056'),
+        name_list = [(u'pale malt 2-row us', u'pale_malt_2_row_us'),
+                     (u'caramel crystal malt 20l', u'caramel_crystal_malt_20l'),  # noqa
+                     (u'centennial', u'centennial'),
+                     (u'cascade us', u'cascade_us'),
+                     (u'Wyeast 1056', u'wyeast_1056'),
                      ]
         for name, expected in name_list:
             out = self.loader.format_name(name)
@@ -101,15 +102,15 @@ class TestCerealParser(unittest.TestCase):
 
     def test_parse_cereals_no_color(self):
         grain_add = pale_add.to_dict()
-        grain_add['data'].pop('color')
-        grain_add.update(grain_add.pop('data'))
+        grain_add[u'data'].pop(u'color')
+        grain_add.update(grain_add.pop(u'data'))
         out = parse_cereals(grain_add, self.loader)
         self.assertEquals(out, pale_add)
 
     def test_parse_cereals_no_ppg(self):
         grain_add = pale_add.to_dict()
-        grain_add['data'].pop('ppg')
-        grain_add.update(grain_add.pop('data'))
+        grain_add[u'data'].pop(u'ppg')
+        grain_add.update(grain_add.pop(u'data'))
         out = parse_cereals(grain_add, self.loader)
         self.assertEquals(out, pale_add)
 
@@ -133,8 +134,8 @@ class TestHopsParser(unittest.TestCase):
 
     def test_parse_hops_no_percent_alpha_acids(self):
         hop_add = cascade_add.to_dict()
-        hop_add['data'].pop('percent_alpha_acids')
-        hop_add.update(hop_add.pop('data'))
+        hop_add[u'data'].pop(u'percent_alpha_acids')
+        hop_add.update(hop_add.pop(u'data'))
         out = parse_hops(hop_add, self.loader)
         self.assertEquals(out, cascade_add)
 
@@ -158,8 +159,8 @@ class TestYeastParser(unittest.TestCase):
 
     def test_parse_yeast_no_percent_attenuation(self):
         yst = yeast.to_dict()
-        yst['data'].pop('percent_attenuation')
-        yst.update(yst.pop('data'))
+        yst[u'data'].pop(u'percent_attenuation')
+        yst.update(yst.pop(u'data'))
         out = parse_yeast(yst, self.loader)
         self.assertEquals(out, yeast)
 
@@ -169,7 +170,7 @@ class TestRecipeParser(unittest.TestCase):
     def setUp(self):
         # A special recipe is needed since the loaders only return
         # pre-chosen additions
-        self.recipe = Recipe(name='pale ale',
+        self.recipe = Recipe(name=u'pale ale',
                              grain_additions=[pale_add, pale_add],
                              hop_additions=[cascade_add, cascade_add],
                              yeast=yeast,

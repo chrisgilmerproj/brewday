@@ -14,7 +14,7 @@ setup(
     license="MIT",
     description='Brew Day Tools',
     url='https://github.com/chrisgilmerproj/brewday',
-    download_url='https://github.com/chrisgilmerproj/brewday/tarball/{}'.format(VERSION),  # nopep8
+    download_url='https://github.com/chrisgilmerproj/brewday/tarball/{}'.format(VERSION),  # noqa
     packages=find_packages(exclude=["*.tests",
                                     "*.tests.*",
                                     "tests.*",
