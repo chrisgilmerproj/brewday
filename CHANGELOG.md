@@ -2,6 +2,7 @@
 
 ## Version 0.0.7
 
+- Increase decimal precision in percentage outputs for Grain and Hops
 - Make Grain() return self.name instead of using string.capwords()
 - Change all strings to unicode
 - Add __unicode__ method to all objects

@@ -266,7 +266,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
     def test_to_json(self):
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
         out = self.recipe.to_json()
-        expected = u'{"data": {"abv_alternative": 0.0798, "abv_standard": 0.0749, "abw_alternative": 0.0633, "abw_standard": 0.0595, "boil_gravity": 1.054, "bu_to_gu": 0.6, "final_gravity": 1.019, "original_gravity": 1.076, "percent_brew_house_yield": 0.7, "total_ibu": 33.0, "total_wort_color_map": {"ebc": {"daniels": "N/A", "morey": 13.0, "mosher": 14.4}, "srm": {"daniels": "N/A", "morey": 6.6, "mosher": 7.3}}, "units": "imperial"}, "final_volume": 5.0, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.95, "ppg": 37.0, "working_yield": 0.56, "wort_color_ebc": 9.6, "wort_color_srm": 4.9}, "grain_type": "cereal", "name": "pale 2-row", "units": "imperial", "weight": 13.96}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.05, "ppg": 35.0, "working_yield": 0.53, "wort_color_ebc": 6.4, "wort_color_srm": 3.3}, "grain_type": "cereal", "name": "crystal C20", "units": "imperial", "weight": 0.78}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.2, "percent_alpha_acids": 0.14, "utilization": 0.24}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {}, "weight": 0.57}, {"boil_time": 5.0, "data": {"ibus": 3.9, "percent_alpha_acids": 0.07, "utilization": 0.05}, "hop_type": "pellet", "name": "cascade", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {}, "weight": 0.76}], "name": "pale ale", "start_volume": 7.0, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # noqa
+        expected = u'{"data": {"abv_alternative": 0.0798, "abv_standard": 0.0749, "abw_alternative": 0.0633, "abw_standard": 0.0595, "boil_gravity": 1.054, "bu_to_gu": 0.6, "final_gravity": 1.019, "original_gravity": 1.076, "percent_brew_house_yield": 0.7, "total_ibu": 33.0, "total_wort_color_map": {"ebc": {"daniels": "N/A", "morey": 13.0, "mosher": 14.4}, "srm": {"daniels": "N/A", "morey": 6.6, "mosher": 7.3}}, "units": "imperial"}, "final_volume": 5.0, "grains": [{"data": {"color": 2.0, "hwe": 308.78, "percent_malt_bill": 0.947, "ppg": 37.0, "working_yield": 0.56, "wort_color_ebc": 9.6, "wort_color_srm": 4.9}, "grain_type": "cereal", "name": "pale 2-row", "units": "imperial", "weight": 13.96}, {"data": {"color": 20.0, "hwe": 292.09, "percent_malt_bill": 0.053, "ppg": 35.0, "working_yield": 0.53, "wort_color_ebc": 6.4, "wort_color_srm": 3.3}, "grain_type": "cereal", "name": "crystal C20", "units": "imperial", "weight": 0.78}], "hops": [{"boil_time": 60.0, "data": {"ibus": 29.2, "percent_alpha_acids": 0.14, "utilization": 0.244}, "hop_type": "pellet", "name": "centennial", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {}, "weight": 0.57}, {"boil_time": 5.0, "data": {"ibus": 3.9, "percent_alpha_acids": 0.07, "utilization": 0.049}, "hop_type": "pellet", "name": "cascade", "units": "imperial", "utilization_cls": "Glenn Tinseth", "utilization_cls_kwargs": {}, "weight": 0.76}], "name": "pale ale", "start_volume": 7.0, "yeast": {"data": {"percent_attenuation": 0.75}, "name": "Wyeast 1056"}}'  # noqa
         self.assertEquals(out, expected)
 
     def test_format(self):
@@ -301,7 +301,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             -----------------------------------
             Grain Type:        cereal
             Weight:            13.96 lbs
-            Percent Malt Bill: 95.0%
+            Percent Malt Bill: 94.7%
             Working Yield:     56.0%
             SRM/EBC:           4.9 degL / 9.6
 
@@ -309,7 +309,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             -----------------------------------
             Grain Type:        cereal
             Weight:            0.78 lbs
-            Percent Malt Bill: 5.0%
+            Percent Malt Bill: 5.3%
             Working Yield:     53.0%
             SRM/EBC:           3.3 degL / 6.4
 
@@ -323,7 +323,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             Weight:       0.57 oz
             Boil Time:    60.0 min
             IBUs:         29.2
-            Utilization:  24.0%
+            Utilization:  24.4%
 
             cascade Addition
             -----------------------------------
@@ -332,7 +332,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             Weight:       0.76 oz
             Boil Time:    5.0 min
             IBUs:         3.9
-            Utilization:  5.0%
+            Utilization:  4.9%
 
             Yeast
             ===================================
