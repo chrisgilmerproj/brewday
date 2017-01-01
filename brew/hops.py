@@ -66,7 +66,7 @@ class Hop(object):
 
     def to_dict(self):
         return {u'name': self.name,
-                u'percent_alpha_acids': round(self.percent_alpha_acids, 2),
+                u'percent_alpha_acids': round(self.percent_alpha_acids, 3),
                 }
 
     def to_json(self):

@@ -559,7 +559,7 @@ class Recipe(object):
             u'start_volume': round(self.start_volume, 2),
             u'final_volume': round(self.final_volume, 2),
             u'data': {
-                u'percent_brew_house_yield': round(self.percent_brew_house_yield, 2),  # noqa
+                u'percent_brew_house_yield': round(self.percent_brew_house_yield, 3),  # noqa
                 u'original_gravity': round(og, 3),
                 u'boil_gravity': round(bg, 3),
                 u'final_gravity': round(fg, 3),
@@ -581,8 +581,8 @@ class Recipe(object):
             grain = grain_add.to_dict()
             wort_color_srm = self.get_wort_color(grain_add)
             wort_color_ebc = srm_to_ebc(wort_color_srm)
-            working_yield = round(grain_add.grain.get_working_yield(self.percent_brew_house_yield), 2)  # noqa
-            percent_malt_bill = round(self.get_percent_malt_bill(grain_add), 2)
+            working_yield = round(grain_add.grain.get_working_yield(self.percent_brew_house_yield), 3)  # noqa
+            percent_malt_bill = round(self.get_percent_malt_bill(grain_add), 3)
             grain[u'data'].update({
                 u'working_yield': working_yield,
                 u'percent_malt_bill': percent_malt_bill,
@@ -604,7 +604,7 @@ class Recipe(object):
 
             hop[u'data'].update({
                 u'ibus': round(ibus, 1),
-                u'utilization': round(utilization, 2),
+                u'utilization': round(utilization, 3),
             })
             recipe_dict[u'hops'].append(hop)
 
