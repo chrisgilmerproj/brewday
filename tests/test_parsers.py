@@ -42,6 +42,10 @@ class TestDataLoader(unittest.TestCase):
         self.loader.DATA = {}
         self.loader.EXT = 'json'
 
+    def test_data_dir_does_not_exist(self):
+        with self.assertRaises(Exception):
+            DataLoader('./baddirectory')
+
     def test_read_data_raises(self):
         with self.assertRaises(NotImplementedError):
             self.loader.read_data('filename')
