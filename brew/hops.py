@@ -31,8 +31,11 @@ class Hop(object):
         """
         :param str name: The name of the hop
         :param float percent_alpha_acids: The percent alpha acids in the hop
+        :raises Exception: If percent_alpha_acids is not provided
         """
         self.name = name
+        if percent_alpha_acids is None:
+            raise Exception(u"Must provide percent alpha acids")
         self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
 
     def __str__(self):

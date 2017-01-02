@@ -121,12 +121,38 @@ class TestCerealParser(unittest.TestCase):
         out = parse_cereals(grain_add, self.loader)
         self.assertEquals(out, pale_add)
 
+    def test_parse_cereals_no_color_data(self):
+        class Loader(DataLoader):
+            def get_item(self, dir_suffix, item_name):
+                grain_add = pale_add.to_dict()
+                grain_add[u'data'].pop(u'color')
+                grain_add.update(grain_add.pop(u'data'))
+                return grain_add
+        grain_add = pale_add.to_dict()
+        grain_add[u'data'].pop(u'color')
+        grain_add.update(grain_add.pop(u'data'))
+        with self.assertRaises(Exception):
+            parse_cereals(grain_add, Loader('./'))
+
     def test_parse_cereals_no_ppg(self):
         grain_add = pale_add.to_dict()
         grain_add[u'data'].pop(u'ppg')
         grain_add.update(grain_add.pop(u'data'))
         out = parse_cereals(grain_add, self.loader)
         self.assertEquals(out, pale_add)
+
+    def test_parse_cereals_no_ppg_data(self):
+        class Loader(DataLoader):
+            def get_item(self, dir_suffix, item_name):
+                grain_add = pale_add.to_dict()
+                grain_add[u'data'].pop(u'ppg')
+                grain_add.update(grain_add.pop(u'data'))
+                return grain_add
+        grain_add = pale_add.to_dict()
+        grain_add[u'data'].pop(u'ppg')
+        grain_add.update(grain_add.pop(u'data'))
+        with self.assertRaises(Exception):
+            parse_cereals(grain_add, Loader('./'))
 
 
 class TestHopsParser(unittest.TestCase):
@@ -153,6 +179,19 @@ class TestHopsParser(unittest.TestCase):
         out = parse_hops(hop_add, self.loader)
         self.assertEquals(out, cascade_add)
 
+    def test_parse_hops_no_percent_alpha_acids_data(self):
+        class Loader(DataLoader):
+            def get_item(self, dir_suffix, item_name):
+                hop_add = cascade_add.to_dict()
+                hop_add[u'data'].pop(u'percent_alpha_acids')
+                hop_add.update(hop_add.pop(u'data'))
+                return hop_add
+        hop_add = cascade_add.to_dict()
+        hop_add[u'data'].pop(u'percent_alpha_acids')
+        hop_add.update(hop_add.pop(u'data'))
+        with self.assertRaises(Exception):
+            parse_hops(hop_add, Loader('./'))
+
 
 class TestYeastParser(unittest.TestCase):
 
@@ -177,6 +216,19 @@ class TestYeastParser(unittest.TestCase):
         yst.update(yst.pop(u'data'))
         out = parse_yeast(yst, self.loader)
         self.assertEquals(out, yeast)
+
+    def test_parse_yeast_no_percent_attenuation_data(self):
+        class Loader(DataLoader):
+            def get_item(self, dir_suffix, item_name):
+                yst = yeast.to_dict()
+                yst[u'data'].pop(u'percent_attenuation')
+                yst.update(yst.pop(u'data'))
+                return yst
+        yst = yeast.to_dict()
+        yst[u'data'].pop(u'percent_attenuation')
+        yst.update(yst.pop(u'data'))
+        with self.assertRaises(Exception):
+            parse_yeast(yst, Loader('./'))
 
 
 class TestRecipeParser(unittest.TestCase):

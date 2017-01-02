@@ -140,10 +140,10 @@ def parse_cereals(cereal, loader, dir_suffix='cereals/'):
         ppg = cereal[u'data'].get(u'ppg', None)
 
     if not color:
-        color = float(cereal_data[u'color'])
+        color = cereal_data.get(u'color', None)
 
     if not ppg:
-        ppg = float(cereal_data[u'ppg'])
+        ppg = cereal_data.get(u'ppg', None)
 
     grain_obj = Grain(name, color=color, ppg=ppg)
 
@@ -187,7 +187,7 @@ def parse_hops(hop, loader, dir_suffix='hops/'):
         alpha_acids = hop[u'data'].get(u'percent_alpha_acids', None)
 
     if not alpha_acids:
-        alpha_acids = float(hop_data[u'percent_alpha_acids'])
+        alpha_acids = hop_data.get(u'percent_alpha_acids', None)
 
     hop_obj = Hop(name, percent_alpha_acids=alpha_acids)
     hop_add_kwargs = {
@@ -229,7 +229,7 @@ def parse_yeast(yeast, loader, dir_suffix='yeast/'):
         attenuation = yeast[u'data'].get(u'percent_attenuation', None)
 
     if not attenuation:
-        attenuation = yeast_data[u'percent_attenuation']
+        attenuation = yeast_data.get(u'percent_attenuation', None)
 
     return Yeast(name, percent_attenuation=attenuation)
 

@@ -46,9 +46,13 @@ class Grain(object):
         :param float color: The color of the grain in SRM
         :param float ppg: The potential points per gallon
         :param float hwe: The hot water extract value
+        :raises Exception: If color is not provided
+        :raises Exception: If ppg or hwe is not provided
         :raises Exception: If both ppg and hwe are provided
         """
         self.name = name
+        if color is None:
+            raise Exception(u"Must provide color value")
         self.color = float(color)
         if ppg and hwe:
             raise Exception(u"Cannot provide both ppg and hwe")
@@ -58,6 +62,8 @@ class Grain(object):
         elif hwe:
             self.hwe = float(hwe)
             self.ppg = hwe_to_ppg(self.hwe)
+        else:
+            raise Exception(u"Must provide ppg or hwe")
 
     def __str__(self):
         if sys.version_info[0] >= 3:
