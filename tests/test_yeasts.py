@@ -81,3 +81,8 @@ class TestYeasts(unittest.TestCase):
                 -----------------------------------
                 Attenuation:  75.0%""")
         self.assertEquals(out, msg)
+
+    def test_yeast_no_percent_attenuation(self):
+        with self.assertRaises(Exception):
+            Yeast(u'Wyeast 1056',
+                  percent_attenuation=None)

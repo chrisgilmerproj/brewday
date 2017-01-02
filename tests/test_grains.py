@@ -60,6 +60,16 @@ class TestGrains(unittest.TestCase):
         self.assertEquals(pale.hwe, 308.0)
         self.assertEquals(round(pale.ppg, 2), 36.91)
 
+    def test_grain_no_color_raises(self):
+        with self.assertRaises(Exception):
+            Grain(u'pale 2-row',
+                  ppg=37.0)
+
+    def test_grain_no_ppg_or_hwe_raises(self):
+        with self.assertRaises(Exception):
+            Grain(u'pale 2-row',
+                  color=2.0)
+
     def test_grain_ppg_hwe_raises(self):
         with self.assertRaises(Exception):
             Grain(u'pale 2-row',

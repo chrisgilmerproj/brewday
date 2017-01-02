@@ -2,6 +2,7 @@
 
 ## Version 0.0.7
 
+- Make parsers fail nicely when directories or data is missing
 - Increase decimal precision in percentage outputs for Grain and Hops
 - Make Grain() return self.name instead of using string.capwords()
 - Change all strings to unicode
