@@ -2,6 +2,7 @@
 import glob
 import json
 import os
+import warnings
 
 from brew.grains import Grain
 from brew.grains import GrainAddition
@@ -57,7 +58,7 @@ class DataLoader(object):
         :param str dir_suffix: The directory name suffix
         :param str item_name: The name of the item to load
         :return: The item as a python dict
-        :raises Exception: If item not found in the directory
+        :raises Warning: If item not found in the directory
         """
         item_dir = os.path.join(self.data_dir, dir_suffix)
 
@@ -71,8 +72,9 @@ class DataLoader(object):
 
         name = self.format_name(item_name)
         if name not in self.DATA[dir_suffix]:
-            raise Exception(u'Item from {} dir not found: {}'.format(dir_suffix,  # noqa
-                                                                     name))
+            warnings.warn(u'Item from {} dir not found: {}'.format(dir_suffix,  # noqa
+                                                                   name))
+            return {}
 
         # Cache file data
         if not self.DATA[dir_suffix][name]:
@@ -124,11 +126,7 @@ def parse_cereals(cereal, loader):
     """
     GrainAddition.validate(cereal)
 
-    cereal_data = {}
-    try:
-        cereal_data = loader.get_item('cereals/', cereal[u'name'])
-    except Exception:
-        pass
+    cereal_data = loader.get_item('cereals/', cereal[u'name'])
 
     name = cereal_data.get(u'name', cereal[u'name'])
     color = None
@@ -177,11 +175,7 @@ def parse_hops(hop, loader):
     """
     HopAddition.validate(hop)
 
-    hop_data = {}
-    try:
-        hop_data = loader.get_item('hops/', hop[u'name'])
-    except Exception:
-        pass
+    hop_data = loader.get_item('hops/', hop[u'name'])
 
     name = hop_data.get(u'name', hop[u'name'])
     alpha_acids = None
@@ -223,11 +217,7 @@ def parse_yeast(yeast, loader):
     """
     Yeast.validate(yeast)
 
-    yeast_data = {}
-    try:
-        yeast_data = loader.get_item('yeast/', yeast[u'name'])  # noqa
-    except Exception:
-        pass
+    yeast_data = loader.get_item('yeast/', yeast[u'name'])  # noqa
 
     name = yeast_data.get(u'name', yeast[u'name'])
     attenuation = None
@@ -275,11 +265,11 @@ def parse_recipe(recipe, loader,
     the key 'name' and the remaining attributes will be looked up in the data
     directory if they are not provided.
     """  # noqa
-    if not cereals_loader:
+    if cereals_loader is None:
         cereals_loader = loader
-    if not hops_loader:
+    if hops_loader is None:
         hops_loader = loader
-    if not yeast_loader:
+    if yeast_loader is None:
         yeast_loader = loader
 
     Recipe.validate(recipe)

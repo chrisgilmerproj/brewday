@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
+import warnings
 
 import mock
 from brew.parsers import DataLoader
@@ -66,8 +67,12 @@ class TestDataLoader(unittest.TestCase):
             return 'data'
         self.loader.read_data = read_data
         mock_glob.return_value = ['cereals/crystal_40.json']
-        with self.assertRaises(Exception):
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
             self.loader.get_item('cereals/', 'crystal 20')
+            self.assertEqual(len(w), 1)
+            self.assertTrue(issubclass(w[-1].category, Warning))
+            self.assertTrue('dir not found' in str(w[-1].message))
 
 
 class TestJSONDataLoader(unittest.TestCase):
@@ -97,9 +102,9 @@ class TestCerealParser(unittest.TestCase):
         out = parse_cereals(self.grain_add, self.loader)
         self.assertEquals(out, pale_add)
 
-    def test_parse_cereals_loader_raises(self):
-        def get_item(self, dir_suffix, item_name):
-            raise Exception
+    def test_parse_cereals_loader_returns_no_data(self):
+        def get_item(dir_suffix, item_name):
+            return {}
         self.loader.get_item = get_item
         out = parse_cereals(self.grain_add, self.loader)
         self.assertEquals(out, pale_add)
@@ -129,9 +134,9 @@ class TestHopsParser(unittest.TestCase):
         out = parse_hops(self.hop_add, self.loader)
         self.assertEquals(out, cascade_add)
 
-    def test_parse_hops_loader_raises(self):
-        def get_item(self, dir_suffix, item_name):
-            raise Exception
+    def test_parse_hops_loader_returns_no_data(self):
+        def get_item(dir_suffix, item_name):
+            return {}
         self.loader.get_item = get_item
         out = parse_hops(self.hop_add, self.loader)
         self.assertEquals(out, cascade_add)
@@ -154,9 +159,9 @@ class TestYeastParser(unittest.TestCase):
         out = parse_yeast(self.yeast, self.loader)
         self.assertEquals(out, yeast)
 
-    def test_parse_yeast_loader_raises(self):
-        def get_item(self, dir_suffix, item_name):
-            raise Exception
+    def test_parse_yeast_loader_returns_no_data(self):
+        def get_item(dir_suffix, item_name):
+            return {}
         self.loader.get_item = get_item
         out = parse_yeast(self.yeast, self.loader)
         self.assertEquals(out, yeast)
@@ -195,5 +200,5 @@ class TestRecipeParser(unittest.TestCase):
         self.assertEquals(out, self.recipe)
 
     def test_parse_recipe_default_loader(self):
-        out = parse_recipe(self.recipe_data, None)
+        out = parse_recipe(self.recipe_data, DataLoader('./'))
         self.assertEquals(out, self.recipe)
