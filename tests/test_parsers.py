@@ -57,19 +57,24 @@ class TestDataLoader(unittest.TestCase):
             return 'data'
         self.loader.read_data = read_data
         mock_glob.return_value = ['cereals/crystal_20.json']
-        out = self.loader.get_item('cereals/', 'crystal 20')
+        out = self.loader.get_item('/', 'crystal 20')
         expected = 'data'
         self.assertEquals(out, expected)
 
     @mock.patch('glob.glob')
-    def test_get_item_raises(self, mock_glob):
+    def test_get_item_dir_does_not_exist(self, mock_glob):
+        with self.assertRaises(Exception):
+            self.loader.get_item('baditemdir/', 'crystal 20')
+
+    @mock.patch('glob.glob')
+    def test_get_item_warns(self, mock_glob):
         def read_data(item_filename):
             return 'data'
         self.loader.read_data = read_data
         mock_glob.return_value = ['cereals/crystal_40.json']
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
-            self.loader.get_item('cereals/', 'crystal 20')
+            self.loader.get_item('/', 'crystal 20')
             self.assertEqual(len(w), 1)
             self.assertTrue(issubclass(w[-1].category, Warning))
             self.assertTrue('dir not found' in str(w[-1].message))
@@ -200,5 +205,8 @@ class TestRecipeParser(unittest.TestCase):
         self.assertEquals(out, self.recipe)
 
     def test_parse_recipe_default_loader(self):
-        out = parse_recipe(self.recipe_data, DataLoader('./'))
+        out = parse_recipe(self.recipe_data, DataLoader('./'),
+                           cereals_dir_suffix='/',
+                           hops_dir_suffix='/',
+                           yeast_dir_suffix='/')
         self.assertEquals(out, self.recipe)

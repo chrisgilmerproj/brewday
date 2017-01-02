@@ -58,9 +58,12 @@ class DataLoader(object):
         :param str dir_suffix: The directory name suffix
         :param str item_name: The name of the item to load
         :return: The item as a python dict
+        :raises Exception: If item directory does not exist
         :raises Warning: If item not found in the directory
         """
         item_dir = os.path.join(self.data_dir, dir_suffix)
+        if not os.path.isdir(item_dir):
+            raise Exception(u"Item directory '{}' does not exist".format(item_dir))  # noqa
 
         # Cache the directory
         if dir_suffix not in self.DATA:
@@ -105,7 +108,7 @@ class JSONDataLoader(DataLoader):
         return data
 
 
-def parse_cereals(cereal, loader):
+def parse_cereals(cereal, loader, dir_suffix='cereals/'):
     """
     Parse grains data from a recipe
 
@@ -126,7 +129,7 @@ def parse_cereals(cereal, loader):
     """
     GrainAddition.validate(cereal)
 
-    cereal_data = loader.get_item('cereals/', cereal[u'name'])
+    cereal_data = loader.get_item(dir_suffix, cereal[u'name'])
 
     name = cereal_data.get(u'name', cereal[u'name'])
     color = None
@@ -154,7 +157,7 @@ def parse_cereals(cereal, loader):
     return GrainAddition(grain_obj, **grain_add_kwargs)
 
 
-def parse_hops(hop, loader):
+def parse_hops(hop, loader, dir_suffix='hops/'):
     """
     Parse hops data from a recipe
 
@@ -175,7 +178,7 @@ def parse_hops(hop, loader):
     """
     HopAddition.validate(hop)
 
-    hop_data = loader.get_item('hops/', hop[u'name'])
+    hop_data = loader.get_item(dir_suffix, hop[u'name'])
 
     name = hop_data.get(u'name', hop[u'name'])
     alpha_acids = None
@@ -198,7 +201,7 @@ def parse_hops(hop, loader):
     return HopAddition(hop_obj, **hop_add_kwargs)
 
 
-def parse_yeast(yeast, loader):
+def parse_yeast(yeast, loader, dir_suffix='yeast/'):
     """
     Parse yeast data from a recipe
 
@@ -217,7 +220,7 @@ def parse_yeast(yeast, loader):
     """
     Yeast.validate(yeast)
 
-    yeast_data = loader.get_item('yeast/', yeast[u'name'])  # noqa
+    yeast_data = loader.get_item(dir_suffix, yeast[u'name'])  # noqa
 
     name = yeast_data.get(u'name', yeast[u'name'])
     attenuation = None
@@ -234,7 +237,10 @@ def parse_yeast(yeast, loader):
 def parse_recipe(recipe, loader,
                  cereals_loader=None,
                  hops_loader=None,
-                 yeast_loader=None):
+                 yeast_loader=None,
+                 cereals_dir_suffix='cereals/',
+                 hops_dir_suffix='hops/',
+                 yeast_dir_suffix='yeast/'):
     """
     Parse a recipe from a python Dict
 
@@ -276,13 +282,16 @@ def parse_recipe(recipe, loader,
 
     grain_additions = []
     for grain in recipe[u'grains']:
-        grain_additions.append(parse_cereals(grain, cereals_loader))
+        grain_additions.append(parse_cereals(grain, cereals_loader,
+                                             dir_suffix=cereals_dir_suffix))
 
     hop_additions = []
     for hop in recipe[u'hops']:
-        hop_additions.append(parse_hops(hop, hops_loader))
+        hop_additions.append(parse_hops(hop, hops_loader,
+                                        dir_suffix=hops_dir_suffix))
 
-    yeast = parse_yeast(recipe[u'yeast'], yeast_loader)
+    yeast = parse_yeast(recipe[u'yeast'], yeast_loader,
+                        dir_suffix=yeast_dir_suffix)
 
     recipe_kwargs = {
         u'grain_additions': grain_additions,
