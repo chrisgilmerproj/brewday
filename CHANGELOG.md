@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 0.0.8
+
+- TBD
+
 ## Version 0.0.7
 
 - Make parsers fail nicely when directories or data is missing

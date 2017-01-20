@@ -102,7 +102,7 @@ Example:
     (.venv) $ pip install -r requirements-local.txt --upgrade && make clean html
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/brewday.svg
-   :target: https://pypi.python.org/pypi/brewday/0.0.6
+   :target: https://pypi.python.org/pypi/brewday/0.0.7
 .. |Versions| image:: https://img.shields.io/pypi/pyversions/brewday.svg
    :target: https://img.shields.io/pypi/pyversions/brewday.svg
 .. |Build Status| image:: https://travis-ci.org/chrisgilmerproj/brewday.svg?branch=master
