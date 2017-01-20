@@ -5,6 +5,8 @@ import textwrap
 
 from .validators import validate_required_fields
 
+__all__ = [u'Style']
+
 
 class Style(object):
     """
