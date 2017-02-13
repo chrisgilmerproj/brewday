@@ -130,7 +130,9 @@ def alcohol_by_volume_alternative(og, fg):
 
     * http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
     """  # noqa
-    return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794) / 100.0
+    # Density listed (possibly incorrectly) from Zymergy Mag
+    DENSITY_ETHANOL = 0.794
+    return (76.08 * (og - fg) / (1.775 - og)) * (fg / DENSITY_ETHANOL) / 100.0
 
 
 def alcohol_by_weight(abv):
