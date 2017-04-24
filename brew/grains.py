@@ -52,7 +52,7 @@ class Grain(object):
         """
         self.name = name
         if color is None:
-            raise Exception(u"Must provide color value")
+            raise Exception(u"Must provide color value for {}".format(self.name))
         self.color = float(color)
         if ppg and hwe:
             raise Exception(u"Cannot provide both ppg and hwe")
