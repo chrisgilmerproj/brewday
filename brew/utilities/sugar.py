@@ -2,6 +2,7 @@
 from ..constants import HYDROMETER_ADJUSTMENT_TEMP
 from ..constants import IMPERIAL_UNITS
 from ..constants import SI_UNITS
+from ..exceptions import SugarException
 from ..validators import validate_units
 from .temperature import celsius_to_fahrenheit
 
@@ -116,7 +117,7 @@ def sg_to_brix(sg):
     * http://www.brewersfriend.com/brix-converter/
     """
     if sg > 1.17874:
-        raise Exception(u"Above 40 degBx this function no longer works")
+        raise SugarException(u"Above 40 degBx this function no longer works")
     return (((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622)
 
 
@@ -181,7 +182,7 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     :param str units: The units
     :return: Specific Gravity corrected for temperature
     :rtype: float
-    :raises Exception: If temperature outside freezing to boiling range of water
+    :raises SugarException: If temperature outside freezing to boiling range of water
 
     The correction formula is from Lyons (1992), who used the following formula
     to fit data from the Handbook of Chemistry and Physics (CRC):
@@ -200,11 +201,11 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     validate_units(units)
     if units == SI_UNITS:
         if temp < 0.0 or 100.0 < temp:
-            raise Exception(u"Correction does not work outside temps 0 - 100C")
+            raise SugarException(u"Correction does not work outside temps 0 - 100C")
         temp = celsius_to_fahrenheit(temp)
     elif units == IMPERIAL_UNITS:
         if temp < 0.0 or 212.0 < temp:
-            raise Exception(u"Correction does not work outside temps 0 - 212F")
+            raise SugarException(u"Correction does not work outside temps 0 - 212F")
 
     if temp == HYDROMETER_ADJUSTMENT_TEMP:
         return sg
