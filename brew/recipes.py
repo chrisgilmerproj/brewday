@@ -197,12 +197,6 @@ class Recipe(object):
         :return: PPG or HWE depending on the units of the Recipe
         :rtype: float
         """
-        # Pick the attribute based on units
-        if self.units == IMPERIAL_UNITS:
-            attr = u'ppg'
-        if self.units == SI_UNITS:
-            attr = u'hwe'
-
         total_points = 0
         for grain_add in self.grain_additions:
             # DME and LME are 100% efficient in disolving in water
@@ -210,7 +204,7 @@ class Recipe(object):
             efficiency = self.percent_brew_house_yield
             if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
                 efficiency = 1.0
-            total_points += getattr(grain_add.grain, attr) * grain_add.weight * efficiency  # noqa
+            total_points += grain_add.gu * efficiency  # noqa
         return total_points
 
     def get_original_gravity_units(self):

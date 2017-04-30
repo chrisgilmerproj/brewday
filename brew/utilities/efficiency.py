@@ -24,7 +24,5 @@ def calculate_brew_house_yield(wort_volume, sg, grain_additions):
     seperately and measure the specific gravity of that process.
     """
 
-    gravity_units = 0.0
-    for grain_add in grain_additions:
-        gravity_units += grain_add.grain.ppg * grain_add.weight
+    gravity_units = sum([grain_add.gu for grain_add in grain_additions])
     return sg_to_gu(sg) * wort_volume / gravity_units

@@ -282,6 +282,22 @@ class GrainAddition(object):
             u'dry_weight': round(self.get_dry_weight(), 2),
         }
 
+    @property
+    def gu(self):
+        return self.get_gravity_units()
+
+    def get_gravity_units(self):
+        """
+        Get the gravity units for the Grain Addition
+        :return: Gravity Units
+        """
+        # Pick the attribute based on units
+        if self.units == IMPERIAL_UNITS:
+            attr = u'ppg'
+        if self.units == SI_UNITS:
+            attr = u'hwe'
+        return getattr(self.grain, attr) * self.weight
+
     def to_dict(self):
         grain_data = self.grain.to_dict()
         return {u'name': grain_data.pop('name'),
