@@ -6,6 +6,7 @@ import mock
 from brew.exceptions import DataLoaderException
 from brew.exceptions import GrainException
 from brew.exceptions import HopException
+from brew.exceptions import YeastException
 from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_cereals
@@ -240,8 +241,10 @@ class TestYeastParser(unittest.TestCase):
         yst = yeast.to_dict()
         yst[u'data'].pop(u'percent_attenuation')
         yst.update(yst.pop(u'data'))
-        with self.assertRaises(Exception):
+        with self.assertRaises(YeastException) as ctx:
             parse_yeast(yst, Loader('./'))
+        self.assertEquals(ctx.exception.message,
+                          u"Wyeast 1056: Must provide percent attenuation")
 
 
 class TestRecipeParser(unittest.TestCase):
