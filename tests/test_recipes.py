@@ -126,24 +126,28 @@ class TestRecipe(unittest.TestCase):
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
 
     def test_set_raises(self):
-        with self.assertRaises(ValidatorException):
+        with self.assertRaises(ValidatorException) as ctx:
             self.recipe.set_units(u'bad')
 
     def test_grains_units_mismatch_raises(self):
         grain_additions = [g.change_units() for g in self.grain_additions]
-        with self.assertRaises(RecipeException):
+        with self.assertRaises(RecipeException) as ctx:
             Recipe(name=u'pale ale',
                    grain_additions=grain_additions,
                    hop_additions=self.hop_additions,
                    yeast=self.yeast)
+        self.assertEquals(str(ctx.exception),
+                          u"Grain addition units must be in 'imperial' not 'metric'")  # noqa
 
     def test_hops_units_mismatch_raises(self):
         hop_additions = [h.change_units() for h in self.hop_additions]
-        with self.assertRaises(RecipeException):
+        with self.assertRaises(RecipeException) as ctx:
             Recipe(name=u'pale ale',
                    grain_additions=self.grain_additions,
                    hop_additions=hop_additions,
                    yeast=self.yeast)
+        self.assertEquals(str(ctx.exception),
+                          u"Hop addition units must be in 'imperial' not 'metric'")  # noqa
 
 
 class TestRecipeBuilder(unittest.TestCase):
