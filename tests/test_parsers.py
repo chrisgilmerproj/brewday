@@ -50,7 +50,7 @@ class TestDataLoader(unittest.TestCase):
     def test_data_dir_does_not_exist(self):
         with self.assertRaises(DataLoaderException) as ctx:
             DataLoader('./baddirectory')
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u"Directory './baddirectory' does not exist")
 
     def test_read_data_raises(self):
@@ -71,7 +71,7 @@ class TestDataLoader(unittest.TestCase):
     def test_get_item_dir_does_not_exist(self, mock_glob):
         with self.assertRaises(DataLoaderException) as ctx:
             self.loader.get_item('baditemdir/', 'crystal 20')
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u"Item directory './baditemdir/' does not exist")
 
     @mock.patch('glob.glob')
@@ -141,7 +141,7 @@ class TestCerealParser(unittest.TestCase):
         grain_add.update(grain_add.pop(u'data'))
         with self.assertRaises(GrainException) as ctx:
             parse_cereals(grain_add, Loader('./'))
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u"pale 2-row: Must provide color value")
 
     def test_parse_cereals_no_ppg(self):
@@ -163,7 +163,7 @@ class TestCerealParser(unittest.TestCase):
         grain_add.update(grain_add.pop(u'data'))
         with self.assertRaises(GrainException) as ctx:
             parse_cereals(grain_add, Loader('./'))
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u"pale 2-row: Must provide ppg or hwe")
 
 
@@ -203,7 +203,7 @@ class TestHopsParser(unittest.TestCase):
         hop_add.update(hop_add.pop(u'data'))
         with self.assertRaises(HopException) as ctx:
             parse_hops(hop_add, Loader('./'))
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u"cascade: Must provide percent alpha acids")
 
 
@@ -243,7 +243,7 @@ class TestYeastParser(unittest.TestCase):
         yst.update(yst.pop(u'data'))
         with self.assertRaises(YeastException) as ctx:
             parse_yeast(yst, Loader('./'))
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u"Wyeast 1056: Must provide percent attenuation")
 
 

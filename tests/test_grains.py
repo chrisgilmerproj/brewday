@@ -65,14 +65,14 @@ class TestGrains(unittest.TestCase):
         with self.assertRaises(GrainException) as ctx:
             Grain(u'pale 2-row',
                   ppg=37.0)
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u'pale 2-row: Must provide color value')
 
     def test_grain_no_ppg_or_hwe_raises(self):
         with self.assertRaises(GrainException) as ctx:
             Grain(u'pale 2-row',
                   color=2.0)
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u'pale 2-row: Must provide ppg or hwe')
 
     def test_grain_ppg_hwe_raises(self):
@@ -81,7 +81,7 @@ class TestGrains(unittest.TestCase):
                   color=2.0,
                   ppg=37.0,
                   hwe=308.0)
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u'pale 2-row: Cannot provide both ppg and hwe')
 
     def test_eq(self):

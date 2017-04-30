@@ -87,5 +87,5 @@ class TestYeasts(unittest.TestCase):
         with self.assertRaises(YeastException) as ctx:
             Yeast(u'Wyeast 1056',
                   percent_attenuation=None)
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u"Wyeast 1056: Must provide percent attenuation")

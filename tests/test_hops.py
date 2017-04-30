@@ -86,7 +86,7 @@ class TestHops(unittest.TestCase):
     def test_hop_no_percent_alpha_acids(self):
         with self.assertRaises(HopException) as ctx:
             Hop(u'centennial')
-        self.assertEquals(ctx.exception.message,
+        self.assertEquals(str(ctx.exception),
                           u'centennial: Must provide percent alpha acids')
 
 
