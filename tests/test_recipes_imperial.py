@@ -7,6 +7,7 @@ from brew.constants import GRAIN_TYPE_LME
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.constants import SUCROSE_PLATO
+from brew.exceptions import RecipeException
 from brew.grains import GrainAddition
 from brew.recipes import Recipe
 from fixtures import builder
@@ -371,12 +372,12 @@ class TestRecipeBuilderImperialUnits(unittest.TestCase):
 
     def test_get_grain_additions_raises_percent_sum_invalid(self):
         percent_list = [0.90, 0.05]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException):
             self.builder.get_grain_additions(percent_list)
 
     def test_get_grain_additions_raises_percent_length_mismatch(self):
         percent_list = [0.90, 0.05, 0.05]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException):
             self.builder.get_grain_additions(percent_list)
 
     def test_get_hop_additions(self):
@@ -389,19 +390,19 @@ class TestRecipeBuilderImperialUnits(unittest.TestCase):
     def test_get_hop_additions_raises_percent_sum_invalid(self):
         percent_list = [0.8827, 0.2173]
         boil_time_list = [60.0, 5.0]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException):
             self.builder.get_hop_additions(percent_list, boil_time_list)
 
     def test_get_hop_additions_raises_percent_length_mismatch(self):
         percent_list = [0.8827, 0.0173, 0.10]
         boil_time_list = [60.0, 5.0]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException):
             self.builder.get_hop_additions(percent_list, boil_time_list)
 
     def test_get_hop_additions_raises_boil_time_length_mismatch(self):
         percent_list = [0.8827, 0.1173]
         boil_time_list = [60.0, 5.0, 5.0]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException):
             self.builder.get_hop_additions(percent_list, boil_time_list)
 
     def test_get_yeast_attenuation(self):

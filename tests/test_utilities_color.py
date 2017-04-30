@@ -4,6 +4,7 @@ import unittest
 from brew.constants import KG_PER_POUND
 from brew.constants import LITER_PER_GAL
 from brew.constants import SI_UNITS
+from brew.exceptions import ColorException
 from brew.utilities.color import calculate_mcu
 from brew.utilities.color import calculate_srm
 from brew.utilities.color import calculate_srm_daniels
@@ -96,7 +97,7 @@ class TestColorUtilities(unittest.TestCase):
 
         mcu = calculate_mcu(100.0, 30.0, 5.5)
         self.assertTrue(50 < mcu)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ColorException):
             calculate_srm_morey_hybrid(mcu)
 
     def test_calculate_srm_mosher_raises(self):
@@ -104,7 +105,7 @@ class TestColorUtilities(unittest.TestCase):
         color = 30.0  # degL
         vol = 5.5  # gal
         mcu = calculate_mcu(weight, color, vol)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ColorException):
             calculate_srm_mosher(mcu)
 
     def test_calculate_srm_daniels_power_raises(self):
@@ -112,7 +113,7 @@ class TestColorUtilities(unittest.TestCase):
         color = 30.0  # degL
         vol = 5.5  # gal
         mcu = calculate_mcu(weight, color, vol)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ColorException):
             calculate_srm_daniels_power(mcu)
 
     def test_calculate_srm_noonan_power_raises(self):
@@ -120,7 +121,7 @@ class TestColorUtilities(unittest.TestCase):
         color = 30.0  # degL
         vol = 5.5  # gal
         mcu = calculate_mcu(weight, color, vol)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ColorException):
             calculate_srm_noonan_power(mcu)
 
     def test_calculate_srm_morey_raises(self):
@@ -128,7 +129,7 @@ class TestColorUtilities(unittest.TestCase):
         color = 1000.0  # degL
         vol = 1.0  # gal
         mcu = calculate_mcu(weight, color, vol)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ColorException):
             calculate_srm_morey(mcu)
 
     def test_calculate_srm_raises(self):
@@ -136,7 +137,7 @@ class TestColorUtilities(unittest.TestCase):
         color = 1000.0  # degL
         vol = 1.0  # gal
         mcu = calculate_mcu(weight, color, vol)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ColorException):
             calculate_srm(mcu)
 
     def test_lovibond_to_srm(self):

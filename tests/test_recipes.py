@@ -4,6 +4,8 @@ import unittest
 
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.exceptions import RecipeException
+from brew.exceptions import ValidatorException
 from brew.recipes import Recipe
 from brew.recipes import RecipeBuilder
 from fixtures import builder
@@ -124,12 +126,12 @@ class TestRecipe(unittest.TestCase):
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
 
     def test_set_raises(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidatorException):
             self.recipe.set_units(u'bad')
 
     def test_grains_units_mismatch_raises(self):
         grain_additions = [g.change_units() for g in self.grain_additions]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException):
             Recipe(name=u'pale ale',
                    grain_additions=grain_additions,
                    hop_additions=self.hop_additions,
@@ -137,7 +139,7 @@ class TestRecipe(unittest.TestCase):
 
     def test_hops_units_mismatch_raises(self):
         hop_additions = [h.change_units() for h in self.hop_additions]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException):
             Recipe(name=u'pale ale',
                    grain_additions=self.grain_additions,
                    hop_additions=hop_additions,
@@ -225,5 +227,5 @@ class TestRecipeBuilder(unittest.TestCase):
         self.assertEquals(self.builder.units, IMPERIAL_UNITS)
 
     def test_set_raises(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidatorException):
             self.builder.set_units(u'bad')
