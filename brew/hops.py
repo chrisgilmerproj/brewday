@@ -11,6 +11,7 @@ from .constants import OZ_PER_MG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WEIGHT_TOLERANCE
+from .exceptions import HopException
 from .utilities.hops import HopsUtilizationGlennTinseth
 from .validators import validate_hop_type
 from .validators import validate_optional_fields
@@ -31,11 +32,12 @@ class Hop(object):
         """
         :param str name: The name of the hop
         :param float percent_alpha_acids: The percent alpha acids in the hop
-        :raises Exception: If percent_alpha_acids is not provided
+        :raises HopException: If percent_alpha_acids is not provided
         """
         self.name = name
         if percent_alpha_acids is None:
-            raise Exception(u"Must provide percent alpha acids")
+            raise HopException(u"{}: Must provide percent alpha acids".format(
+                self.name))
         self.percent_alpha_acids = validate_percentage(percent_alpha_acids)
 
     def __str__(self):
