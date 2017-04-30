@@ -2,7 +2,8 @@
 
 ## Version 0.0.8
 
-- TBD
+- Add custom exceptions
+- Improve error messages for faster debugging
 
 ## Version 0.0.7
 
