@@ -36,6 +36,8 @@ from .utilities.hops import HopsUtilizationGlennTinseth
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_gu
 from .utilities.sugar import sg_to_plato
+from .validators import validate_grain_type
+from .validators import validate_hop_type
 from .validators import validate_optional_fields
 from .validators import validate_percentage
 from .validators import validate_required_fields
@@ -549,6 +551,26 @@ class Recipe(object):
                 u'mosher': ebc_mosher,
             },
         }
+
+    def get_grain_additions_by_type(self, grain_type):
+        """
+        Return grain additions by given grain_type
+
+        :param str grain_type: The type of grains to return
+        :return: list of GrainAddition objects
+        """
+        validate_grain_type(grain_type)
+        return [grain_add for grain_add in self.grain_additions if grain_add.grain_type == grain_type]  # noqa
+
+    def get_hop_additions_by_type(self, hop_type):
+        """
+        Return hop additions by given hop_type
+
+        :param str hop_type: The type of hops to return
+        :return: list of HopAddition objects
+        """
+        validate_hop_type(hop_type)
+        return [hop_add for hop_add in self.hop_additions if hop_add.hop_type == hop_type]  # noqa
 
     def to_dict(self):
         og = self.og
