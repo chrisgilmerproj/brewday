@@ -9,6 +9,7 @@ from brew.constants import GRAIN_TYPE_LME
 from brew.constants import GRAIN_TYPE_SPECIALTY
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.exceptions import GrainException
 from brew.grains import Grain
 from brew.grains import GrainAddition
 from fixtures import crystal
@@ -61,21 +62,27 @@ class TestGrains(unittest.TestCase):
         self.assertEquals(round(pale.ppg, 2), 36.91)
 
     def test_grain_no_color_raises(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(GrainException) as ctx:
             Grain(u'pale 2-row',
                   ppg=37.0)
+        self.assertEquals(str(ctx.exception),
+                          u'pale 2-row: Must provide color value')
 
     def test_grain_no_ppg_or_hwe_raises(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(GrainException) as ctx:
             Grain(u'pale 2-row',
                   color=2.0)
+        self.assertEquals(str(ctx.exception),
+                          u'pale 2-row: Must provide ppg or hwe')
 
     def test_grain_ppg_hwe_raises(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(GrainException) as ctx:
             Grain(u'pale 2-row',
                   color=2.0,
                   ppg=37.0,
                   hwe=308.0)
+        self.assertEquals(str(ctx.exception),
+                          u'pale 2-row: Cannot provide both ppg and hwe')
 
     def test_eq(self):
         grain1 = Grain(u'pale 2-row',

@@ -8,6 +8,7 @@ from ..constants import LITER_PER_GAL
 from ..constants import OZ_PER_G
 from ..constants import SI_TYPES
 from ..constants import SI_UNITS
+from ..exceptions import YeastException
 from ..validators import validate_units
 from .sugar import plato_to_sg
 from .sugar import sg_to_gu
@@ -70,7 +71,7 @@ class YeastModel(object):
 
     def __init__(self, method, units=IMPERIAL_UNITS):
         if method not in self.METHOD_TO_GROWTH_ADJ.keys():
-            raise Exception(u"Method '{}' not allowed for yeast model".format(
+            raise YeastException(u"Method '{}' not allowed for yeast model".format(  # noqa
                 method))
         self.method = method
         self.adjustment = self.METHOD_TO_GROWTH_ADJ[method]
@@ -259,9 +260,9 @@ class WhiteYeastModel(YeastModel):
         G = (12.54793776 * x^-0.4594858324) - 0.9994994906
         """  # noqa
         # if inoculation_rate > 200:
-        #     raise Exception(u"Yeast will not grow at more than 200 M/ml")
+        #     raise YeastException(u"Yeast will not grow at more than 200 M/ml")  # noqa
         a, b, c = self.INOCULATION_CONST
         growth_rate = a + b * inoculation_rate ** c + self.adjustment
         # if growth_rate > 6:
-        #     raise Exception(u"Model does not allow for growth greater than 6")  # noqa
+        #     raise YeastException(u"Model does not allow for growth greater than 6")  # noqa
         return growth_rate

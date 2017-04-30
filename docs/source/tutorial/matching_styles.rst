@@ -64,15 +64,15 @@ In order to match the recipe we use a method on the class:
     True
 
 Interestingly the recipe used in the examples does not match the BJCP style!
-The only feature that matches the style is the IBUs, but the remaining values
-for og, fg, abv, and color are all too high.  That means its time to correct
+The only feature that matches the style is the IBUs and coor, but the remaining
+values for og, fg, and abv are all too high.  That means its time to correct
 our recipe.
 
 As a short hand you can also get this information in a more friendly way:
 
 .. code-block:: python
 
-    >>> style.recipe_matches(recipe)
+    >>> style.recipe_errors(recipe)
     ['OG is above style', 'FG is above style', 'ABV is above style']
 
 This will help you quickly discover the problems with your recipe.
@@ -185,8 +185,9 @@ recipe and check the style:
     >>> style.color_matches(recipe.color)
     True
 
-Nice job, now your have a beer recipe that matches the style of an American
-Pale Ale.
+Nice job, now you have a beer recipe that matches the style of an American
+Pale Ale. Be sure that you have an accurate value for your percent brew
+house yield and your changes of brewing this beer will be pretty good.
 
 ----
 

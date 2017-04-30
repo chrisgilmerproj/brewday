@@ -3,6 +3,7 @@ import json
 import sys
 import textwrap
 
+from .exceptions import YeastException
 from .validators import validate_optional_fields
 from .validators import validate_percentage
 from .validators import validate_required_fields
@@ -19,11 +20,12 @@ class Yeast(object):
                  percent_attenuation=0.75):
         """
         :param float percent_attenuation: The percentage the yeast is expected to attenuate the sugar in the yeast to create alcohol
-        :raises Exception: If percent_attenuation is not provided
+        :raises YeastException: If percent_attenuation is not provided
         """  # noqa
         self.name = name
         if percent_attenuation is None:
-            raise Exception(u"Must provide percent attenuation")
+            raise YeastException(u"{}: Must provide percent attenuation".format(  # noqa
+                self.name))
         self.percent_attenuation = validate_percentage(percent_attenuation)
 
     def __str__(self):
