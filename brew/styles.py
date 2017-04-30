@@ -3,6 +3,7 @@ import json
 import sys
 import textwrap
 
+from .exceptions import StyleException
 from .validators import validate_required_fields
 
 __all__ = [u'Style']
@@ -48,18 +49,24 @@ class Style(object):
 
         :param list value_list: A list of values to validate
         :param str name: The name of the value_list being validated
+        :raises StyleException: If value_list for item is empty
+        :raises StyleException: If value_list is not a list or tuple
+        :raises StyleException: If two values are not provided
+        :raises StyleException: If either value of wrong type
+        :raises StyleException: If value_list is out of order
         """
         if not value_list:
-            raise Exception(u"Must provide {}".format(name))
+            raise StyleException(u"Must provide value_list for {}".format(
+                name))
         if not isinstance(value_list, (list, tuple)):
-            raise Exception(u"{} must be a list".format(name))
+            raise StyleException(u"{} must be a list".format(name))
         if len(value_list) != 2:
-            raise Exception(u"{} must contain two value_lists".format(name))
+            raise StyleException(u"{} must contain two values".format(name))
         for v in value_list:
             if not isinstance(v, value_type):
-                raise Exception(u"{} must be type '{}'".format(name, value_type))  # noqa
+                raise StyleException(u"{} must be type '{}'".format(name, value_type))  # noqa
         if value_list[0] > value_list[1]:
-            raise Exception(u"{} values must be lowest value first".format(name))  # noqa
+            raise StyleException(u"{} values must be lowest value first".format(name))  # noqa
         return value_list
 
     def __str__(self):
