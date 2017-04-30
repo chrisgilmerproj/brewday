@@ -94,15 +94,15 @@ class Recipe(object):
         for grain_add in self.grain_additions:
             self.grain_lookup[grain_add.grain.name] = grain_add
             if grain_add.units != self.units:
-                raise RecipeException(u"Grain addition units must be in '{}' not '{}'".format(  # noqa
-                    self.units, grain_add.units))
+                raise RecipeException(u"{}: Grain addition units must be in '{}' not '{}'".format(  # noqa
+                    self.name, self.units, grain_add.units))
         for hop_add in self.hop_additions:
             # The same hops may be used several times, so we must distinguish
             hop_key = u'{}_{}'.format(hop_add.hop.name, hop_add.boil_time)
             self.hop_lookup[hop_key] = hop_add
             if hop_add.units != self.units:
-                raise RecipeException(u"Hop addition units must be in '{}' not '{}'".format(  # noqa
-                    self.units, hop_add.units))
+                raise RecipeException(u"{}: Hop addition units must be in '{}' not '{}'".format(  # noqa
+                    self.name, self.units, hop_add.units))
 
     def __str__(self):
         if sys.version_info[0] >= 3:
