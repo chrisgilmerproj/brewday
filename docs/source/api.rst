@@ -8,6 +8,7 @@ Model API
    :maxdepth: 2
 
    api/constants.rst
+   api/exceptions.rst
    api/grains.rst
    api/hops.rst
    api/parsers.rst
