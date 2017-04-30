@@ -14,6 +14,7 @@ from .constants import POUND_PER_KG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WEIGHT_TOLERANCE
+from .exceptions import GrainException
 from .utilities.malt import dry_malt_to_grain_weight
 from .utilities.malt import dry_to_liquid_malt_weight
 from .utilities.malt import grain_to_dry_malt_weight
@@ -46,16 +47,18 @@ class Grain(object):
         :param float color: The color of the grain in SRM
         :param float ppg: The potential points per gallon
         :param float hwe: The hot water extract value
-        :raises Exception: If color is not provided
-        :raises Exception: If ppg or hwe is not provided
-        :raises Exception: If both ppg and hwe are provided
+        :raises GrainException: If color is not provided
+        :raises GrainException: If ppg or hwe is not provided
+        :raises GrainException: If both ppg and hwe are provided
         """
         self.name = name
         if color is None:
-            raise Exception(u"Must provide color value for {}".format(self.name))
+            raise GrainException(u"{}: Must provide color value".format(
+                self.name))
         self.color = float(color)
         if ppg and hwe:
-            raise Exception(u"Cannot provide both ppg and hwe")
+            raise GrainException(u"{}: Cannot provide both ppg and hwe".format(
+                self.name))
         if ppg:
             self.ppg = float(ppg)
             self.hwe = ppg_to_hwe(self.ppg)
@@ -63,7 +66,8 @@ class Grain(object):
             self.hwe = float(hwe)
             self.ppg = hwe_to_ppg(self.hwe)
         else:
-            raise Exception(u"Must provide ppg or hwe")
+            raise GrainException(u"{}: Must provide ppg or hwe".format(
+                self.name))
 
     def __str__(self):
         if sys.version_info[0] >= 3:
