@@ -3,6 +3,7 @@ import sys
 import textwrap
 import unittest
 
+from brew.exceptions import YeastException
 from brew.yeasts import Yeast
 from fixtures import cascade_add
 from fixtures import yeast
@@ -83,6 +84,8 @@ class TestYeasts(unittest.TestCase):
         self.assertEquals(out, msg)
 
     def test_yeast_no_percent_attenuation(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(YeastException) as ctx:
             Yeast(u'Wyeast 1056',
                   percent_attenuation=None)
+        self.assertEquals(str(ctx.exception),
+                          u"Wyeast 1056: Must provide percent attenuation")

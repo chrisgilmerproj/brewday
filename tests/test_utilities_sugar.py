@@ -2,6 +2,8 @@
 import unittest
 
 from brew.constants import SI_UNITS
+from brew.exceptions import SugarException
+from brew.exceptions import ValidatorException
 from brew.utilities.sugar import apparent_extract_to_real_extract
 from brew.utilities.sugar import brix_to_plato
 from brew.utilities.sugar import brix_to_sg
@@ -42,8 +44,10 @@ class TestSugarUtilities(unittest.TestCase):
         self.assertEquals(round(brix, 1), 22.0)
 
     def test_sg_to_brix_raises(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(SugarException) as ctx:
             sg_to_brix(1.18)
+        self.assertEquals(str(ctx.exception),
+                          u"Above 40 degBx this function no longer works")
 
     def test_sg_to_plato(self):
         plato = sg_to_plato(1.057)
@@ -72,21 +76,29 @@ class TestSugarUtilities(unittest.TestCase):
         self.assertEquals(round(sg, 3), 1.050)
 
     def test_hydrometer_adjustment_raises_bad_units(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidatorException) as ctx:
             hydrometer_adjustment(1.050, 16.0, units=u'bad')
 
     def test_hydrometer_adjustment_raises_bad_temp(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(SugarException) as ctx:
             hydrometer_adjustment(1.050, -1.0)
+        self.assertEquals(str(ctx.exception),
+                          u"Correction does not work outside temps 0 - 212F")
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(SugarException) as ctx:
             hydrometer_adjustment(1.050, 213.0)
+        self.assertEquals(str(ctx.exception),
+                          u"Correction does not work outside temps 0 - 212F")
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(SugarException) as ctx:
             hydrometer_adjustment(1.050, -1.0, units=SI_UNITS)
+        self.assertEquals(str(ctx.exception),
+                          u"Correction does not work outside temps 0 - 100C")
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(SugarException) as ctx:
             hydrometer_adjustment(1.050, 101.0, units=SI_UNITS)
+        self.assertEquals(str(ctx.exception),
+                          u"Correction does not work outside temps 0 - 100C")
 
     def test_refractometer_adjustment(self):
         fg = refractometer_adjustment(1.050, 1.011)

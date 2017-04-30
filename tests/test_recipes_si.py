@@ -8,6 +8,7 @@ from brew.constants import IMPERIAL_UNITS
 from brew.constants import LITER_PER_GAL
 from brew.constants import SI_UNITS
 from brew.constants import SUCROSE_PLATO
+from brew.exceptions import RecipeException
 from brew.grains import GrainAddition
 from brew.recipes import Recipe
 from fixtures import builder
@@ -382,13 +383,17 @@ class TestRecipeBuilderSIUnits(unittest.TestCase):
 
     def test_get_grain_additions_raises_sum_invalid(self):
         percent_list = [0.90, 0.05]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException) as ctx:
             self.builder.get_grain_additions(percent_list)
+        self.assertEquals(str(ctx.exception),
+                          u"Percentages must sum to 1.0")
 
     def test_get_grain_additions_raises_length_mismatch(self):
         percent_list = [0.90, 0.05, 0.05]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException) as ctx:
             self.builder.get_grain_additions(percent_list)
+        self.assertEquals(str(ctx.exception),
+                          u"The length of percent_list must equal length of self.grain_list")  # noqa
 
     def test_get_hop_additions(self):
         percent_list = [0.8827, 0.1173]
@@ -400,20 +405,26 @@ class TestRecipeBuilderSIUnits(unittest.TestCase):
     def test_get_hop_additions_raises_percent_sum_invalid(self):
         percent_list = [0.8827, 0.2173]
         boil_time_list = [60.0, 5.0]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException) as ctx:
             self.builder.get_hop_additions(percent_list, boil_time_list)
+        self.assertEquals(str(ctx.exception),
+                          u"Percentages must sum to 1.0")
 
     def test_get_hop_additions_raises_percent_length_mismatch(self):
         percent_list = [0.8827, 0.0173, 0.10]
         boil_time_list = [60.0, 5.0]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException) as ctx:
             self.builder.get_hop_additions(percent_list, boil_time_list)
+        self.assertEquals(str(ctx.exception),
+                          u"The length of percent_list must equal length of self.grain_list")  # noqa
 
     def test_get_hop_additions_raises_boil_time_length_mismatch(self):
         percent_list = [0.8827, 0.1173]
         boil_time_list = [60.0, 5.0, 5.0]
-        with self.assertRaises(Exception):
+        with self.assertRaises(RecipeException) as ctx:
             self.builder.get_hop_additions(percent_list, boil_time_list)
+        self.assertEquals(str(ctx.exception),
+                          u"The length of boil_time_list must equal length of self.hop_list")  # noqa
 
     def test_get_yeast_attenuation(self):
         abv = 0.0749

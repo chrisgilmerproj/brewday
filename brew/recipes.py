@@ -18,6 +18,8 @@ from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
+from .exceptions import ColorException
+from .exceptions import RecipeException
 from .grains import GrainAddition
 from .hops import HopAddition
 from .utilities.abv import alcohol_by_volume_alternative
@@ -67,8 +69,8 @@ class Recipe(object):
         :param float start_volume: The starting volume of the wort
         :param float final_volume: The final volume of the wort
         :param str units: The units
-        :raises Exception: If the units of any GrainAddition is not the same as the units of the Recipe
-        :raises Exception: If the units of any HopAddition is not the same as the units of the Recipe
+        :raises RecipeException: If the units of any GrainAddition is not the same as the units of the Recipe
+        :raises RecipeException: If the units of any HopAddition is not the same as the units of the Recipe
         """  # noqa
         self.name = name
         if grain_additions is None:
@@ -92,15 +94,15 @@ class Recipe(object):
         for grain_add in self.grain_additions:
             self.grain_lookup[grain_add.grain.name] = grain_add
             if grain_add.units != self.units:
-                raise Exception(u"Grain addition units must be in '{}' not '{}'".format(  # noqa
-                    self.units, grain_add.units))
+                raise RecipeException(u"{}: Grain addition units must be in '{}' not '{}'".format(  # noqa
+                    self.name, self.units, grain_add.units))
         for hop_add in self.hop_additions:
             # The same hops may be used several times, so we must distinguish
             hop_key = u'{}_{}'.format(hop_add.hop.name, hop_add.boil_time)
             self.hop_lookup[hop_key] = hop_add
             if hop_add.units != self.units:
-                raise Exception(u"Hop addition units must be in '{}' not '{}'".format(  # noqa
-                    self.units, hop_add.units))
+                raise RecipeException(u"{}: Hop addition units must be in '{}' not '{}'".format(  # noqa
+                    self.name, self.units, hop_add.units))
 
     def __str__(self):
         if sys.version_info[0] >= 3:
@@ -518,21 +520,21 @@ class Recipe(object):
             srm_morey = calculate_srm_morey(mcu)
             ebc_morey = round(srm_to_ebc(srm_morey), 1)
             srm_morey = round(srm_morey, 1)
-        except Exception:
+        except ColorException:
             pass
 
         try:
             srm_daniels = calculate_srm_daniels(mcu)
             ebc_daniels = round(srm_to_ebc(srm_daniels), 1)
             srm_daniels = round(srm_daniels, 1)
-        except Exception:
+        except ColorException:
             pass
 
         try:
             srm_mosher = calculate_srm_mosher(mcu)
             ebc_mosher = round(srm_to_ebc(srm_mosher), 1)
             srm_mosher = round(srm_mosher, 1)
-        except Exception:
+        except ColorException:
             pass
 
         return {
@@ -864,17 +866,17 @@ class RecipeBuilder(object):
         :param list percent_list: A list of percentages mapped to each Grain
         :return: A list of Grain Additions
         :rtype: list(GrainAddition)
-        :raises Exception: If sum of percentages does not equal 1.0
-        :raises Exception: If length of percent_list does not match length of self.grain_list
+        :raises RecipeException: If sum of percentages does not equal 1.0
+        :raises RecipeException: If length of percent_list does not match length of self.grain_list
         """  # noqa
         for percent in percent_list:
             validate_percentage(percent)
 
         if sum(percent_list) != 1.0:
-            raise Exception(u"Percentages must sum to 1.0")
+            raise RecipeException(u"Percentages must sum to 1.0")
 
         if len(percent_list) != len(self.grain_list):
-            raise Exception(u"The length of percent_list must equal length of self.grain_list")  # noqa
+            raise RecipeException(u"The length of percent_list must equal length of self.grain_list")  # noqa
 
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
@@ -903,21 +905,21 @@ class RecipeBuilder(object):
         :param HopsUtilization utilization_cls: The utilization class used for calculation
         :return: A list of Hop Additions
         :rtype: list(HopAddition)
-        :raises Exception: If sum of percentages does not equal 1.0
-        :raises Exception: If length of percent_list does not match length of self.grain_list
-        :raises Exception: If length of boil_time_list does not match length of self.hop_list
+        :raises RecipeException: If sum of percentages does not equal 1.0
+        :raises RecipeException: If length of percent_list does not match length of self.grain_list
+        :raises RecipeException: If length of boil_time_list does not match length of self.hop_list
         """  # noqa
         for percent in percent_list:
             validate_percentage(percent)
 
         if sum(percent_list) != 1.0:
-            raise Exception(u"Percentages must sum to 1.0")
+            raise RecipeException(u"Percentages must sum to 1.0")
 
         if len(percent_list) != len(self.grain_list):
-            raise Exception(u"The length of percent_list must equal length of self.grain_list")  # noqa
+            raise RecipeException(u"The length of percent_list must equal length of self.grain_list")  # noqa
 
         if len(boil_time_list) != len(self.hop_list):
-            raise Exception(u"The length of boil_time_list must equal length of self.hop_list")  # noqa
+            raise RecipeException(u"The length of boil_time_list must equal length of self.hop_list")  # noqa
 
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:

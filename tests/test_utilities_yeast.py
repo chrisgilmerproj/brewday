@@ -3,6 +3,7 @@ import unittest
 
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.exceptions import YeastException
 from brew.utilities.yeast import KaiserYeastModel
 from brew.utilities.yeast import pitch_rate_conversion
 from brew.utilities.yeast import WhiteYeastModel
@@ -34,8 +35,10 @@ class TestYeastModel(unittest.TestCase):
         self.yeast_model = YeastModel(u'stir plate')
 
     def test_yeast_model_raises(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(YeastException) as ctx:
             YeastModel(u'not an allowed method')
+        self.assertEquals(str(ctx.exception),
+                          u"Method 'not an allowed method' not allowed for yeast model")  # noqa
 
     def test_get_growth_rate(self):
         inoculation_rate = 6.17
