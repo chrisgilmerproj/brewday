@@ -110,7 +110,7 @@ def calculate_srm_daniels_power(mcu):
     """  # noqa
     srm = 1.73 * (mcu ** 0.64) - 0.27
     if srm > 50.0:
-        raise ColorException(u"Daniels Power equation does not work above SRM 50.0")
+        raise ColorException(u"Daniels Power equation does not work above SRM 50.0")  # noqa
     return srm
 
 
@@ -125,7 +125,7 @@ def calculate_srm_noonan_power(mcu):
     """  # noqa
     srm = 15.03 * (mcu ** 0.27) - 15.53
     if srm > 50.0:
-        raise ColorException(u"Noonan Power equation does not work above SRM 50.0")
+        raise ColorException(u"Noonan Power equation does not work above SRM 50.0")  # noqa
     return srm
 
 

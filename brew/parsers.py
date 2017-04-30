@@ -36,7 +36,7 @@ class DataLoader(object):
         :param str data_dir: The directory where the data resides
         """
         if not os.path.isdir(data_dir):
-            raise DataLoaderException(u"Directory '{}' does not exist".format(data_dir))
+            raise DataLoaderException(u"Directory '{}' does not exist".format(data_dir))  # noqa
         self.data_dir = data_dir
 
     @classmethod

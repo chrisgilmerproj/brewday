@@ -20,7 +20,6 @@ from .constants import WATER_WEIGHT_IMPERIAL
 from .constants import WATER_WEIGHT_SI
 from .exceptions import ColorException
 from .exceptions import RecipeException
-from .exceptions import ValidatorException
 from .grains import GrainAddition
 from .hops import HopAddition
 from .utilities.abv import alcohol_by_volume_alternative

@@ -24,7 +24,7 @@ class Yeast(object):
         """  # noqa
         self.name = name
         if percent_attenuation is None:
-            raise YeastException(u"{}: Must provide percent attenuation".format(
+            raise YeastException(u"{}: Must provide percent attenuation".format(  # noqa
                 self.name))
         self.percent_attenuation = validate_percentage(percent_attenuation)
 

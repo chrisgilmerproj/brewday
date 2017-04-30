@@ -126,7 +126,7 @@ class TestRecipe(unittest.TestCase):
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
 
     def test_set_raises(self):
-        with self.assertRaises(ValidatorException) as ctx:
+        with self.assertRaises(ValidatorException) as ctx:  # noqa
             self.recipe.set_units(u'bad')
 
     def test_grains_units_mismatch_raises(self):
