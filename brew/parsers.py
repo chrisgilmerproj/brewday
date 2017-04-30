@@ -4,13 +4,13 @@ import json
 import os
 import warnings
 
-from brew.exceptions import DataLoaderException
-from brew.grains import Grain
-from brew.grains import GrainAddition
-from brew.hops import Hop
-from brew.hops import HopAddition
-from brew.recipes import Recipe
-from brew.yeasts import Yeast
+from .exceptions import DataLoaderException
+from .grains import Grain
+from .grains import GrainAddition
+from .hops import Hop
+from .hops import HopAddition
+from .recipes import Recipe
+from .yeasts import Yeast
 
 __all__ = [
     u'DataLoader',
