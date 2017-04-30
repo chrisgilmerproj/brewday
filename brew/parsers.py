@@ -4,6 +4,7 @@ import json
 import os
 import warnings
 
+from brew.exceptions import DataLoaderException
 from brew.grains import Grain
 from brew.grains import GrainAddition
 from brew.hops import Hop
@@ -35,7 +36,7 @@ class DataLoader(object):
         :param str data_dir: The directory where the data resides
         """
         if not os.path.isdir(data_dir):
-            raise Exception(u"Directory '{}' does not exist".format(data_dir))
+            raise DataLoaderException(u"Directory '{}' does not exist".format(data_dir))
         self.data_dir = data_dir
 
     @classmethod
@@ -58,12 +59,12 @@ class DataLoader(object):
         :param str dir_suffix: The directory name suffix
         :param str item_name: The name of the item to load
         :return: The item as a python dict
-        :raises Exception: If item directory does not exist
+        :raises DataLoaderException: If item directory does not exist
         :raises Warning: If item not found in the directory
         """
         item_dir = os.path.join(self.data_dir, dir_suffix)
         if not os.path.isdir(item_dir):
-            raise Exception(u"Item directory '{}' does not exist".format(item_dir))  # noqa
+            raise DataLoaderException(u"Item directory '{}' does not exist".format(item_dir))  # noqa
 
         # Cache the directory
         if dir_suffix not in self.DATA:

@@ -3,6 +3,9 @@ import unittest
 import warnings
 
 import mock
+from brew.exceptions import DataLoaderException
+from brew.exceptions import GrainException
+from brew.exceptions import HopException
 from brew.parsers import DataLoader
 from brew.parsers import JSONDataLoader
 from brew.parsers import parse_cereals
@@ -44,8 +47,10 @@ class TestDataLoader(unittest.TestCase):
         self.loader.EXT = 'json'
 
     def test_data_dir_does_not_exist(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(DataLoaderException) as ctx:
             DataLoader('./baddirectory')
+        self.assertEquals(ctx.exception.message,
+                          u"Directory './baddirectory' does not exist")
 
     def test_read_data_raises(self):
         with self.assertRaises(NotImplementedError):
@@ -63,8 +68,10 @@ class TestDataLoader(unittest.TestCase):
 
     @mock.patch('glob.glob')
     def test_get_item_dir_does_not_exist(self, mock_glob):
-        with self.assertRaises(Exception):
+        with self.assertRaises(DataLoaderException) as ctx:
             self.loader.get_item('baditemdir/', 'crystal 20')
+        self.assertEquals(ctx.exception.message,
+                          u"Item directory './baditemdir/' does not exist")
 
     @mock.patch('glob.glob')
     def test_get_item_warns(self, mock_glob):
@@ -131,8 +138,10 @@ class TestCerealParser(unittest.TestCase):
         grain_add = pale_add.to_dict()
         grain_add[u'data'].pop(u'color')
         grain_add.update(grain_add.pop(u'data'))
-        with self.assertRaises(Exception):
+        with self.assertRaises(GrainException) as ctx:
             parse_cereals(grain_add, Loader('./'))
+        self.assertEquals(ctx.exception.message,
+                          u"pale 2-row: Must provide color value")
 
     def test_parse_cereals_no_ppg(self):
         grain_add = pale_add.to_dict()
@@ -151,8 +160,10 @@ class TestCerealParser(unittest.TestCase):
         grain_add = pale_add.to_dict()
         grain_add[u'data'].pop(u'ppg')
         grain_add.update(grain_add.pop(u'data'))
-        with self.assertRaises(Exception):
+        with self.assertRaises(GrainException) as ctx:
             parse_cereals(grain_add, Loader('./'))
+        self.assertEquals(ctx.exception.message,
+                          u"pale 2-row: Must provide ppg or hwe")
 
 
 class TestHopsParser(unittest.TestCase):
@@ -189,8 +200,10 @@ class TestHopsParser(unittest.TestCase):
         hop_add = cascade_add.to_dict()
         hop_add[u'data'].pop(u'percent_alpha_acids')
         hop_add.update(hop_add.pop(u'data'))
-        with self.assertRaises(Exception):
+        with self.assertRaises(HopException) as ctx:
             parse_hops(hop_add, Loader('./'))
+        self.assertEquals(ctx.exception.message,
+                          u"cascade: Must provide percent alpha acids")
 
 
 class TestYeastParser(unittest.TestCase):
