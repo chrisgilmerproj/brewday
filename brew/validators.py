@@ -3,6 +3,7 @@ from .constants import GRAIN_TYPE_LIST
 from .constants import HOP_TYPE_LIST
 from .constants import IMPERIAL_UNITS
 from .constants import SI_UNITS
+from .exceptions import ValidatorException
 
 __all__ = [
     u'validate_grain_type',
@@ -21,11 +22,11 @@ def validate_grain_type(grain_type):
     :param str grain_type: Type of Grain
     :return: grain type
     :rtype: str
-    :raises Exception: If grain type is unknown
+    :raises ValidatorException: If grain type is unknown
     """
     if grain_type in GRAIN_TYPE_LIST:
         return grain_type
-    raise Exception(u"Unkown grain type '{}', must use {}".format(
+    raise ValidatorException(u"Unkown grain type '{}', must use {}".format(
         grain_type, u', '.join(GRAIN_TYPE_LIST)))
 
 
@@ -36,11 +37,11 @@ def validate_hop_type(hop_type):
     :param str hop_type: Type of Grain
     :return: hop type
     :rtype: str
-    :raises Exception: If hop type is unknown
+    :raises ValidatorException: If hop type is unknown
     """
     if hop_type in HOP_TYPE_LIST:
         return hop_type
-    raise Exception(u"Unkown hop type '{}', must use {}".format(
+    raise ValidatorException(u"Unkown hop type '{}', must use {}".format(
         hop_type, u', '.join(HOP_TYPE_LIST)))
 
 
@@ -51,11 +52,11 @@ def validate_percentage(percent):
     :param float percent: Percentage between 0.0 and 1.0
     :return: percentage
     :rtype: float
-    :raises Exception: If decimal percentage not between 0.0 and 1.0
+    :raises ValidatorException: If decimal percentage not between 0.0 and 1.0
     """
     if 0.0 <= percent <= 1.0:
         return percent
-    raise Exception(u"Percentage values should be in decimal format")
+    raise ValidatorException(u"Percentage values should be in decimal format")
 
 
 def validate_units(units):
@@ -65,11 +66,11 @@ def validate_units(units):
     :param str units: Unit type
     :return: units
     :rtype: str
-    :raises Exception: If units is unknown
+    :raises ValidatorException: If units is unknown
     """
     if units in [IMPERIAL_UNITS, SI_UNITS]:
         return units
-    raise Exception(u"Unkown units '{}', must use {} or {}".format(
+    raise ValidatorException(u"Unkown units '{}', must use {} or {}".format(
         units, IMPERIAL_UNITS, SI_UNITS))
 
 
@@ -79,8 +80,8 @@ def validate_required_fields(data, required_fields):
 
     :param dict data: A python dictionary to check for required fields
     :param list(tuple) required_fields: Values and types to check for in data
-    :raises Exception: Required field is missing from data
-    :raises Exception: Required field is of the wrong type
+    :raises ValidatorException: Required field is missing from data
+    :raises ValidatorException: Required field is of the wrong type
 
     The format is a list of tuples where the first element is a string with
     a value that should be a key found in the data dict and
@@ -89,7 +90,7 @@ def validate_required_fields(data, required_fields):
     """
     for field, field_type in required_fields:
         if field not in data:
-            raise Exception(u"Required field '{}' missing from data".format(
+            raise ValidatorException(u"Required field '{}' missing from data".format(  # noqa
                 field))
         if field_type == str:
             try:
@@ -97,7 +98,7 @@ def validate_required_fields(data, required_fields):
             except NameError:
                 field_type = str
         if not isinstance(data[field], field_type):
-            raise Exception(u"Required field '{}' is not of type '{}'".format(
+            raise ValidatorException(u"Required field '{}' is not of type '{}'".format(  # noqa
                 field, field_type))
 
 
@@ -108,7 +109,7 @@ def validate_optional_fields(data, optional_fields, data_field=u'data'):
     :param dict data: A python dictionary to check for required fields
     :param list(tuple) optional_fields: Values and types to check for in data
     :param str data_field: The key in the data dictionary containing the optional fields
-    :raises Exception: Optional field is of the wrong type
+    :raises ValidatorException: Optional field is of the wrong type
 
     The format is a list of tuples where the first element is a string with
     a value that should be a key found in the data dict and
@@ -128,5 +129,5 @@ def validate_optional_fields(data, optional_fields, data_field=u'data'):
             # With optional fields only check the type as they are overrides
             # and not all overrides need to be present
             if not isinstance(data[data_field][field], field_type):
-                raise Exception(u"Optional field '{}' in '{}' is not of type '{}'".format(  # noqa
+                raise ValidatorException(u"Optional field '{}' in '{}' is not of type '{}'".format(  # noqa
                     field, data_field, field_type))

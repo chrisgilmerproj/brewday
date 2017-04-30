@@ -6,6 +6,7 @@ __all__ = [
     u'GrainException',
     u'HopException',
     u'StyleException',
+    u'ValidatorException',
     u'YeastException',
 ]
 
@@ -27,6 +28,10 @@ class HopException(BrewdayException):
 
 
 class StyleException(BrewdayException):
+    pass
+
+
+class ValidatorException(BrewdayException):
     pass
 
 
