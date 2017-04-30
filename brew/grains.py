@@ -289,13 +289,15 @@ class GrainAddition(object):
     def get_gravity_units(self):
         """
         Get the gravity units for the Grain Addition
-        :return: Gravity Units
+        :return: Gravity Units as PPG or HWE depending on units
+        :rtype: float
         """
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
             attr = u'ppg'
         if self.units == SI_UNITS:
             attr = u'hwe'
+
         return getattr(self.grain, attr) * self.weight
 
     def to_dict(self):
