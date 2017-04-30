@@ -8,6 +8,21 @@ __all__ = [
 
 
 def calculate_brew_house_yield(wort_volume, sg, grain_additions):
+    """
+    Calculate Brew House Yield
+
+    :param float wort_volume: The volume of the wort
+    :param float sg: THe specific gravity of the wort
+    :param list grain_additions: A list of grain additions in the wort
+    :type grain_additions: list of GrainAddition objects
+    :return: The brew house yield as a percentage
+
+    Brew House Yield is a function of the wort volume, the measured specific
+    gravity, and the grain additions used to make the wort.  This equation is
+    thrown off by use of LME or DME since both have 100% efficiency in a brew.
+    A better measure is to look at just the grains that needed to be steeped
+    seperately and measure the specific gravity of that process.
+    """
 
     gravity_units = 0.0
     for grain_add in grain_additions:
