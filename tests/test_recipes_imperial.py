@@ -60,7 +60,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
                         units=IMPERIAL_UNITS)
 
         out = recipe.get_total_points()
-        self.assertEquals(round(out, 2), 387.39)
+        self.assertEquals(round(out, 2), 516.52)
 
     def test_get_total_points_dme(self):
         pale_dme = GrainAddition(pale,
@@ -74,7 +74,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
                         units=IMPERIAL_UNITS)
 
         out = recipe.get_total_points()
-        self.assertEquals(round(out, 2), 310.06)
+        self.assertEquals(round(out, 2), 516.77)
 
     def test_get_original_gravity_units(self):
         out = self.recipe.get_original_gravity_units()

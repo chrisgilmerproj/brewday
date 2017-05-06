@@ -291,6 +291,10 @@ class GrainAddition(object):
         Get the gravity units for the Grain Addition
         :return: Gravity Units as PPG or HWE depending on units
         :rtype: float
+
+        Gravity Units are really a property of whole grains, not of extracts.
+        Therefore the units will always be represented after the weight has
+        been converted from an extract weight to a cereal weight.
         """
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
@@ -298,7 +302,7 @@ class GrainAddition(object):
         if self.units == SI_UNITS:
             attr = u'hwe'
 
-        return getattr(self.grain, attr) * self.weight
+        return getattr(self.grain, attr) * self.get_cereal_weight()
 
     def to_dict(self):
         grain_data = self.grain.to_dict()
