@@ -11,8 +11,7 @@ class TestEfficiencyUtilities(unittest.TestCase):
         self.recipe = recipe
 
     def test_calculate_brew_house_yield(self):
-        out = calculate_brew_house_yield(recipe.start_volume,
+        out = calculate_brew_house_yield(recipe.final_volume,
                                          recipe.og,
                                          recipe.grain_additions)
-        expected = 0.98
-        self.assertEquals(round(out, 3), expected)
+        self.assertEquals(round(out, 3), self.recipe.percent_brew_house_yield)
