@@ -116,6 +116,11 @@ def alcohol_by_volume_alternative(og, fg):
 
     :math:`\\text{ABV} = \\frac{76.08 \\times \\big( \\text{og} - \\text{fg} \\big)}{1.775 - \\text{og}} \\times \\frac{\\text{fg}}{0.794}`
 
+    This comes from Balling's famous formula, where the Original Extract and
+    Real Extract values have been converted using the simple Plato to SG
+    equation, giving Alcohol by Weight.  This is then converted to Alcohol
+    by Volume multiplying by the ratio of Final Gravity to Density of Ethanol.
+
     The alternate equation reports a higher ABV for higher gravity beers.
     This equation is just a different take on it. Scientists rarely agree
     when it comes to equations. There will probably be another equation for
@@ -130,7 +135,9 @@ def alcohol_by_volume_alternative(og, fg):
 
     * http://www.brewersfriend.com/2011/06/16/alcohol-by-volume-calculator-updated/
     """  # noqa
-    return (76.08 * (og - fg) / (1.775 - og)) * (fg / 0.794) / 100.0
+    # Density listed (possibly incorrectly) from Zymergy Mag
+    DENSITY_ETHANOL = 0.794
+    return (76.08 * (og - fg) / (1.775 - og)) * (fg / DENSITY_ETHANOL) / 100.0
 
 
 def alcohol_by_weight(abv):
