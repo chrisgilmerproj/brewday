@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from ..constants import GRAIN_TYPE_DME
-from ..constants import GRAIN_TYPE_LME
 from .sugar import sg_to_gu
 
 __all__ = [
