@@ -57,7 +57,7 @@ class Recipe(object):
                  grain_additions=None,
                  hop_additions=None,
                  yeast=None,
-                 percent_brew_house_yield=0.70,
+                 brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
                  units=IMPERIAL_UNITS):
@@ -67,7 +67,7 @@ class Recipe(object):
         :type grain_additions: list of GrainAddition objects
         :param hop_additions: A list of Hop Additions
         :type hop_additions: list of HopAddition objects
-        :param float percent_brew_house_yield: The brew house yield
+        :param float brew_house_yield: The brew house yield
         :param float start_volume: The starting volume of the wort
         :param float final_volume: The final volume of the wort
         :param str units: The units
@@ -83,7 +83,7 @@ class Recipe(object):
         self.hop_additions = hop_additions
         self.yeast = yeast
 
-        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # noqa
+        self.brew_house_yield = validate_percentage(brew_house_yield)  # noqa
         self.start_volume = start_volume
         self.final_volume = final_volume
 
@@ -123,8 +123,8 @@ class Recipe(object):
             out = u"{0}, hop_additions=[{1}]".format(out, u', '.join([repr(h) for h in self.hop_additions]))  # noqa
         if self.yeast:
             out = u"{0}, yeast={1}".format(out, repr(self.yeast))
-        if self.percent_brew_house_yield:
-            out = u"{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # noqa
+        if self.brew_house_yield:
+            out = u"{0}, brew_house_yield={1}".format(out, self.brew_house_yield)  # noqa
         if self.start_volume:
             out = u"{0}, start_volume={1}".format(out, self.start_volume)
         if self.final_volume:
@@ -141,8 +141,8 @@ class Recipe(object):
            (self.grain_additions == other.grain_additions) and \
            (self.hop_additions == other.hop_additions) and \
            (self.yeast == other.yeast) and \
-           (self.percent_brew_house_yield ==
-               other.percent_brew_house_yield) and \
+           (self.brew_house_yield ==
+               other.brew_house_yield) and \
            (self.start_volume == other.start_volume) and \
            (self.final_volume == other.final_volume) and \
            (self.units == other.units):
@@ -185,7 +185,7 @@ class Recipe(object):
                       hop_additions=[ha.change_units() for ha in
                                      self.hop_additions],
                       yeast=self.yeast,
-                      percent_brew_house_yield=self.percent_brew_house_yield,
+                      brew_house_yield=self.brew_house_yield,
                       start_volume=start_volume,
                       final_volume=final_volume,
                       units=units)
@@ -201,7 +201,7 @@ class Recipe(object):
         for grain_add in self.grain_additions:
             # DME and LME are 100% efficient in disolving in water
             # Cereal extraction depends on brew house yield
-            efficiency = self.percent_brew_house_yield
+            efficiency = self.brew_house_yield
             if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
                 efficiency = 1.0
             total_points += grain_add.gu * efficiency  # noqa
@@ -297,7 +297,7 @@ class Recipe(object):
         :return: Brew House Yield
         :rtyle: float
         """
-        num = plato_actual * vol_actual * self.percent_brew_house_yield
+        num = plato_actual * vol_actual * self.brew_house_yield
         den = self.plato * self.final_volume
         return num / den
 
@@ -340,10 +340,8 @@ class Recipe(object):
         the brew house yield will decrease the size of the DME
         accordingly.
         """
-        if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
-            return grain_add.get_dry_weight()
-        else:
-            return grain_add.get_dry_weight() * self.percent_brew_house_yield  # noqa
+        return grain_add.convert_to_dme(
+            brew_house_yield=self.brew_house_yield).weight
 
     def get_total_dry_weight(self):
         """
@@ -371,7 +369,7 @@ class Recipe(object):
         accordingly.
         """
         if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
-            return grain_add.get_cereal_weight() / self.percent_brew_house_yield  # noqa
+            return grain_add.get_cereal_weight() / self.brew_house_yield  # noqa
         else:
             return grain_add.get_cereal_weight()
 
@@ -577,7 +575,7 @@ class Recipe(object):
             u'start_volume': round(self.start_volume, 2),
             u'final_volume': round(self.final_volume, 2),
             u'data': {
-                u'percent_brew_house_yield': round(self.percent_brew_house_yield, 3),  # noqa
+                u'brew_house_yield': round(self.brew_house_yield, 3),  # noqa
                 u'original_gravity': round(og, 3),
                 u'boil_gravity': round(bg, 3),
                 u'final_gravity': round(fg, 3),
@@ -599,7 +597,7 @@ class Recipe(object):
             grain = grain_add.to_dict()
             wort_color_srm = self.get_wort_color(grain_add)
             wort_color_ebc = srm_to_ebc(wort_color_srm)
-            working_yield = round(grain_add.grain.get_working_yield(self.percent_brew_house_yield), 3)  # noqa
+            working_yield = round(grain_add.grain.get_working_yield(self.brew_house_yield), 3)  # noqa
             percent_malt_bill = round(self.get_percent_malt_bill(grain_add), 3)
             grain[u'data'].update({
                 u'working_yield': working_yield,
@@ -642,7 +640,7 @@ class Recipe(object):
                            (u'hops', (list, tuple)),
                            (u'yeast', dict),
                            ]
-        optional_fields = [(u'percent_brew_house_yield', float),
+        optional_fields = [(u'brew_house_yield', float),
                            (u'units', str),
                            ]
         validate_required_fields(recipe, required_fields)
@@ -659,7 +657,7 @@ class Recipe(object):
             {name}
             ===================================
 
-            Brew House Yield:   {data[percent_brew_house_yield]:0.1%}
+            Brew House Yield:   {data[brew_house_yield]:0.1%}
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
 
@@ -751,7 +749,7 @@ class RecipeBuilder(object):
                  hop_list=None,
                  target_ibu=33.0,
                  target_og=1.050,
-                 percent_brew_house_yield=0.70,
+                 brew_house_yield=0.70,
                  start_volume=7.0,
                  final_volume=5.0,
                  units=IMPERIAL_UNITS):
@@ -763,7 +761,7 @@ class RecipeBuilder(object):
         :type hop_list: list of Hop objects
         :param float target_ibu: The IBU Target
         :param float target_og: The Original Gravity Target
-        :param float percent_brew_house_yield: The brew house yield
+        :param float brew_house_yield: The brew house yield
         :param float start_volume: The starting volume of the wort
         :param float final_volume: The final volume of the wort
         :param str units: The units
@@ -778,7 +776,7 @@ class RecipeBuilder(object):
 
         self.target_ibu = target_ibu
         self.target_og = target_og
-        self.percent_brew_house_yield = validate_percentage(percent_brew_house_yield)  # noqa
+        self.brew_house_yield = validate_percentage(brew_house_yield)  # noqa
         self.start_volume = start_volume
         self.final_volume = final_volume
 
@@ -809,8 +807,8 @@ class RecipeBuilder(object):
             out = u"{0}, hop_list=[{1}]".format(out, u', '.join([repr(h) for h in self.hop_list]))  # noqa
         if self.target_og:
             out = u"{0}, target_og={1}".format(out, self.target_og)  # noqa
-        if self.percent_brew_house_yield:
-            out = u"{0}, percent_brew_house_yield={1}".format(out, self.percent_brew_house_yield)  # noqa
+        if self.brew_house_yield:
+            out = u"{0}, brew_house_yield={1}".format(out, self.brew_house_yield)  # noqa
         if self.start_volume:
             out = u"{0}, start_volume={1}".format(out, self.start_volume)
         if self.final_volume:
@@ -827,8 +825,8 @@ class RecipeBuilder(object):
            (self.grain_list == other.grain_list) and \
            (self.hop_list == other.hop_list) and \
            (self.target_og == other.target_og) and \
-           (self.percent_brew_house_yield ==
-               other.percent_brew_house_yield) and \
+           (self.brew_house_yield ==
+               other.brew_house_yield) and \
            (self.start_volume == other.start_volume) and \
            (self.final_volume == other.final_volume) and \
            (self.units == other.units):
@@ -870,7 +868,7 @@ class RecipeBuilder(object):
             grain_list=self.grain_list,
             hop_list=self.hop_list,
             target_og=self.target_og,
-            percent_brew_house_yield=self.percent_brew_house_yield,
+            brew_house_yield=self.brew_house_yield,
             start_volume=start_volume,
             final_volume=final_volume,
             units=units)
@@ -905,7 +903,7 @@ class RecipeBuilder(object):
 
         grain_additions = []
         for index, grain in enumerate(self.grain_list):
-            efficiency = self.percent_brew_house_yield
+            efficiency = self.brew_house_yield
             weight = (percent_list[index] * total_points) / (getattr(grain, attr) * efficiency)  # noqa
             grain_add = GrainAddition(grain, weight=weight, units=self.units)
             grain_additions.append(grain_add)

@@ -14,4 +14,4 @@ class TestEfficiencyUtilities(unittest.TestCase):
         out = calculate_brew_house_yield(recipe.final_volume,
                                          recipe.og,
                                          recipe.grain_additions)
-        self.assertEquals(round(out, 3), self.recipe.percent_brew_house_yield)
+        self.assertEquals(round(out, 3), self.recipe.brew_house_yield)

@@ -263,8 +263,8 @@ def parse_recipe(recipe, loader,
     Additionally the recipe may contain override data in the 'data'
     attribute with the following keys:
 
-    * percent_brew_house_yield (float)
-    * units                    (str)
+    * brew_house_yield (float)
+    * units            (str)
 
     All other fields will be ignored and may be used for other metadata.
 
@@ -302,9 +302,9 @@ def parse_recipe(recipe, loader,
         u'final_volume': recipe[u'final_volume'],
     }
     if u'data' in recipe:
-        if u'percent_brew_house_yield' in recipe[u'data']:
-            recipe_kwargs[u'percent_brew_house_yield'] = \
-                recipe[u'data'][u'percent_brew_house_yield']
+        if u'brew_house_yield' in recipe[u'data']:
+            recipe_kwargs[u'brew_house_yield'] = \
+                recipe[u'data'][u'brew_house_yield']
         if u'units' in recipe[u'data']:
             recipe_kwargs[u'units'] = recipe[u'data'][u'units']
 

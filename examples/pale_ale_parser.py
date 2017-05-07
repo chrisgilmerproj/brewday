@@ -52,7 +52,7 @@ def main():
             },
         },
         u'data': {
-            u'percent_brew_house_yield': 0.70,
+            u'brew_house_yield': 0.70,
             u'units': u'imperial',
         },
     }
