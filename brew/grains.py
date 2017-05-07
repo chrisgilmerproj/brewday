@@ -292,6 +292,8 @@ class GrainAddition(object):
         :rtype: GrainAddition
         """
         validate_percentage(brew_house_yield)
+        if self.grain_type == GRAIN_TYPE_CEREAL:
+            brew_house_yield = 1.0
         return GrainAddition(
             self.grain,
             weight=self.get_cereal_weight() / brew_house_yield,
@@ -308,6 +310,8 @@ class GrainAddition(object):
         :rtype: GrainAddition
         """
         validate_percentage(brew_house_yield)
+        if self.grain_type == GRAIN_TYPE_LME:
+            brew_house_yield = 1.0
         return GrainAddition(
             self.grain,
             weight=self.get_lme_weight() * brew_house_yield,
@@ -324,6 +328,8 @@ class GrainAddition(object):
         :rtype: GrainAddition
         """
         validate_percentage(brew_house_yield)
+        if self.grain_type == GRAIN_TYPE_DME:
+            brew_house_yield = 1.0
         return GrainAddition(
             self.grain,
             weight=self.get_dme_weight() * brew_house_yield,
