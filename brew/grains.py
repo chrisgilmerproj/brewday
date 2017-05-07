@@ -310,7 +310,7 @@ class GrainAddition(object):
         :rtype: GrainAddition
         """
         validate_percentage(brew_house_yield)
-        if self.grain_type == GRAIN_TYPE_LME:
+        if self.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
             brew_house_yield = 1.0
         return GrainAddition(
             self.grain,
@@ -328,7 +328,7 @@ class GrainAddition(object):
         :rtype: GrainAddition
         """
         validate_percentage(brew_house_yield)
-        if self.grain_type == GRAIN_TYPE_DME:
+        if self.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
             brew_house_yield = 1.0
         return GrainAddition(
             self.grain,
