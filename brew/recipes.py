@@ -341,9 +341,9 @@ class Recipe(object):
         accordingly.
         """
         if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
-            return grain_add.get_dry_weight()
+            return grain_add.get_dme_weight()
         else:
-            return grain_add.get_dry_weight() * self.percent_brew_house_yield  # noqa
+            return grain_add.get_dme_weight() * self.percent_brew_house_yield  # noqa
 
     def get_total_dry_weight(self):
         """

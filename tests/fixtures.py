@@ -22,11 +22,13 @@ grain_list = [pale, crystal]
 pale_add = GrainAddition(pale,
                          weight=13.96)
 pale_add_lme = pale_add.convert_to_lme(bhy=BHY)
+pale_add_dme = pale_add.convert_to_dme(bhy=BHY)
 
 crystal_add = GrainAddition(crystal,
                             weight=0.78)
 grain_additions = [pale_add, crystal_add]
 grain_additions_lme = [pale_add_lme, crystal_add]
+grain_additions_dme = [pale_add_dme, crystal_add]
 
 # Define Hops
 centennial = Hop(name=u'centennial',
@@ -60,6 +62,16 @@ recipe = Recipe(
 recipe_lme = Recipe(
     name=u'pale ale lme',
     grain_additions=grain_additions_lme,
+    hop_additions=hop_additions,
+    yeast=yeast,
+    percent_brew_house_yield=0.70,
+    start_volume=7.0,
+    final_volume=5.0,
+)
+
+recipe_dme = Recipe(
+    name=u'pale ale dme',
+    grain_additions=grain_additions_dme,
     hop_additions=hop_additions,
     yeast=yeast,
     percent_brew_house_yield=0.70,

@@ -171,7 +171,7 @@ class TestGrainAdditions(unittest.TestCase):
         self.assertEqual(round(out, 2), 13.96)
         out = grain_add.get_lme_weight()
         self.assertEqual(round(out, 2), 10.47)
-        out = grain_add.get_dry_weight()
+        out = grain_add.get_dme_weight()
         self.assertEqual(round(out, 2), 8.38)
 
     def test_get_weight_lme(self):
@@ -182,7 +182,7 @@ class TestGrainAdditions(unittest.TestCase):
         self.assertEqual(round(out, 2), 13.96)
         out = grain_add.get_lme_weight()
         self.assertEqual(round(out, 2), 10.47)
-        out = grain_add.get_dry_weight()
+        out = grain_add.get_dme_weight()
         self.assertEqual(round(out, 2), 8.38)
 
     def test_get_weight_dry(self):
@@ -193,7 +193,7 @@ class TestGrainAdditions(unittest.TestCase):
         self.assertEqual(round(out, 2), 13.97)
         out = grain_add.get_lme_weight()
         self.assertEqual(round(out, 2), 10.48)
-        out = grain_add.get_dry_weight()
+        out = grain_add.get_dme_weight()
         self.assertEqual(round(out, 2), 8.38)
 
     def test_get_weight_specialty(self):
@@ -204,7 +204,7 @@ class TestGrainAdditions(unittest.TestCase):
         self.assertEqual(round(out, 2), 13.96)
         out = grain_add.get_lme_weight()
         self.assertEqual(round(out, 2), 12.42)
-        out = grain_add.get_dry_weight()
+        out = grain_add.get_dme_weight()
         self.assertEqual(round(out, 2), 9.94)
 
     def test_get_weight_map(self):

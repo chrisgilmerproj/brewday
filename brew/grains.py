@@ -252,7 +252,7 @@ class GrainAddition(object):
         elif self.grain_type == GRAIN_TYPE_SPECIALTY:
             return specialty_grain_to_liquid_malt_weight(self.weight)
 
-    def get_dry_weight(self):
+    def get_dme_weight(self):
         """
         Get the weight of the addition in Dry Malt Extract weight
 
@@ -279,7 +279,7 @@ class GrainAddition(object):
         return {
             u'grain_weight': round(self.get_cereal_weight(), 2),
             u'lme_weight': round(self.get_lme_weight(), 2),
-            u'dry_weight': round(self.get_dry_weight(), 2),
+            u'dry_weight': round(self.get_dme_weight(), 2),
         }
 
     def convert_to_cereal(self, bhy=1.0):
