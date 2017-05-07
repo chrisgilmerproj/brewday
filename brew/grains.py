@@ -282,6 +282,27 @@ class GrainAddition(object):
             u'dry_weight': round(self.get_dry_weight(), 2),
         }
 
+    def convert_to_cereal(self, bhy=1.0):
+        return GrainAddition(
+            self.grain,
+            weight=self.get_cereal_weight() / bhy,
+            grain_type=GRAIN_TYPE_CEREAL,
+            units=self.units)
+
+    def convert_to_lme(self, bhy=1.0):
+        return GrainAddition(
+            self.grain,
+            weight=self.get_lme_weight() * bhy,
+            grain_type=GRAIN_TYPE_LME,
+            units=self.units)
+
+    def convert_to_dme(self, bhy=1.0):
+        return GrainAddition(
+            self.grain,
+            weight=self.get_dme_weight() * bhy,
+            grain_type=GRAIN_TYPE_DME,
+            units=self.units)
+
     @property
     def gu(self):
         return self.get_gravity_units()

@@ -8,6 +8,8 @@ from brew.recipes import RecipeBuilder
 from brew.styles import Style
 from brew.yeasts import Yeast
 
+BHY = 0.70
+
 # Define Grains
 pale = Grain(u'pale 2-row',
              color=2.0,
@@ -19,10 +21,12 @@ grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
                          weight=13.96)
+pale_add_lme = pale_add.convert_to_lme(bhy=BHY)
 
 crystal_add = GrainAddition(crystal,
                             weight=0.78)
 grain_additions = [pale_add, crystal_add]
+grain_additions_lme = [pale_add_lme, crystal_add]
 
 # Define Hops
 centennial = Hop(name=u'centennial',
@@ -43,14 +47,25 @@ hop_additions = [centennial_add, cascade_add]
 yeast = Yeast(u"Wyeast 1056")
 
 # Define Recipes
-recipe = Recipe(name=u'pale ale',
-                grain_additions=grain_additions,
-                hop_additions=hop_additions,
-                yeast=yeast,
-                percent_brew_house_yield=0.70,
-                start_volume=7.0,
-                final_volume=5.0,
-                )
+recipe = Recipe(
+    name=u'pale ale',
+    grain_additions=grain_additions,
+    hop_additions=hop_additions,
+    yeast=yeast,
+    percent_brew_house_yield=BHY,
+    start_volume=7.0,
+    final_volume=5.0,
+)
+
+recipe_lme = Recipe(
+    name=u'pale ale lme',
+    grain_additions=grain_additions_lme,
+    hop_additions=hop_additions,
+    yeast=yeast,
+    percent_brew_house_yield=0.70,
+    start_volume=7.0,
+    final_volume=5.0,
+)
 
 # Define Recipe Builder
 builder = RecipeBuilder(name=u'pale ale',
