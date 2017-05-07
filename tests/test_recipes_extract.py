@@ -12,8 +12,6 @@ class TestRecipeExtract(unittest.TestCase):
         # Define Recipes
         self.recipe = recipe
         self.recipe_lme = recipe_lme
-
-        # self.recipe_lme = recipe_lme
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
 
     def test_recipe_is_recipe_lme(self):
