@@ -248,7 +248,7 @@ class TestStyle(unittest.TestCase):
                           ],
                           hop_additions=hop_additions,
                           yeast=yeast,
-                          percent_brew_house_yield=0.70,
+                          brew_house_yield=0.70,
                           start_volume=7.0,
                           final_volume=5.0,
                           )
@@ -278,7 +278,7 @@ class TestStyle(unittest.TestCase):
                           ],
                           hop_additions=hop_additions,
                           yeast=yeast,
-                          percent_brew_house_yield=0.70,
+                          brew_house_yield=0.70,
                           start_volume=7.0,
                           final_volume=5.0,
                           )

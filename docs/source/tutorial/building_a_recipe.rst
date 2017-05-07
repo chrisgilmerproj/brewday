@@ -147,7 +147,7 @@ Now we want to put them together into a :py:class:`brew.recipes.Recipe`.
                   grain_additions=grain_additions,
                   hop_additions=hop_additions,
                   yeast=yeast,
-                  percent_brew_house_yield=0.70,
+                  brew_house_yield=0.70,
                   start_volume=7.0,
                   final_volume=5.0)
 

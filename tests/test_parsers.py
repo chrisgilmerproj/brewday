@@ -256,7 +256,7 @@ class TestRecipeParser(unittest.TestCase):
                              grain_additions=[pale_add, pale_add],
                              hop_additions=[cascade_add, cascade_add],
                              yeast=yeast,
-                             percent_brew_house_yield=0.70,  # %
+                             brew_house_yield=0.70,  # %
                              start_volume=7.0,  # G
                              final_volume=5.0,  # G
                              )

@@ -54,7 +54,7 @@ recipe = Recipe(
     grain_additions=grain_additions,
     hop_additions=hop_additions,
     yeast=yeast,
-    percent_brew_house_yield=BHY,
+    brew_house_yield=BHY,
     start_volume=7.0,
     final_volume=5.0,
 )
@@ -64,7 +64,7 @@ recipe_lme = Recipe(
     grain_additions=grain_additions_lme,
     hop_additions=hop_additions,
     yeast=yeast,
-    percent_brew_house_yield=0.70,
+    brew_house_yield=0.70,
     start_volume=7.0,
     final_volume=5.0,
 )
@@ -74,7 +74,7 @@ recipe_dme = Recipe(
     grain_additions=grain_additions_dme,
     hop_additions=hop_additions,
     yeast=yeast,
-    percent_brew_house_yield=0.70,
+    brew_house_yield=0.70,
     start_volume=7.0,
     final_volume=5.0,
 )
@@ -85,7 +85,7 @@ builder = RecipeBuilder(name=u'pale ale',
                         hop_list=hop_list,
                         target_ibu=33.0,
                         target_og=1.0761348,
-                        percent_brew_house_yield=0.70,
+                        brew_house_yield=0.70,
                         start_volume=7.0,
                         final_volume=5.0,
                         )

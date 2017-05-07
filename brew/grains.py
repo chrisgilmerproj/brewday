@@ -121,17 +121,17 @@ class Grain(object):
             **self.to_dict()))
         return msg
 
-    def get_working_yield(self, percent_brew_house_yield):
+    def get_working_yield(self, brew_house_yield):
         """
         Get Working Yield
 
-        :param float percent_brew_house_yield: The Percent Brew House Yield
+        :param float brew_house_yield: The Percent Brew House Yield
         :return: The working yield
         :rtype: float
         """
-        validate_percentage(percent_brew_house_yield)
+        validate_percentage(brew_house_yield)
         return (hwe_to_basis(self.hwe) *
-                percent_brew_house_yield)
+                brew_house_yield)
 
 
 class GrainAddition(object):
