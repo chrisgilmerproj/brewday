@@ -340,10 +340,8 @@ class Recipe(object):
         the brew house yield will decrease the size of the DME
         accordingly.
         """
-        if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
-            return grain_add.get_dme_weight()
-        else:
-            return grain_add.get_dme_weight() * self.percent_brew_house_yield  # noqa
+        return grain_add.convert_to_dme(
+            brew_house_yield=self.percent_brew_house_yield).weight
 
     def get_total_dry_weight(self):
         """
