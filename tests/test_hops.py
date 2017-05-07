@@ -6,6 +6,7 @@ import unittest
 from brew.constants import HOP_TYPE_WHOLE
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
+from brew.exceptions import HopException
 from brew.hops import Hop
 from brew.hops import HopAddition
 from brew.utilities.sugar import plato_to_sg
@@ -83,8 +84,10 @@ class TestHops(unittest.TestCase):
         self.assertEquals(out, msg)
 
     def test_hop_no_percent_alpha_acids(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(HopException) as ctx:
             Hop(u'centennial')
+        self.assertEquals(str(ctx.exception),
+                          u'centennial: Must provide percent alpha acids')
 
 
 class TestHopAdditions(unittest.TestCase):

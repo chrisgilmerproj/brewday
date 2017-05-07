@@ -14,6 +14,7 @@ from .constants import POUND_PER_KG
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WEIGHT_TOLERANCE
+from .exceptions import GrainException
 from .utilities.malt import dry_malt_to_grain_weight
 from .utilities.malt import dry_to_liquid_malt_weight
 from .utilities.malt import grain_to_dry_malt_weight
@@ -46,16 +47,18 @@ class Grain(object):
         :param float color: The color of the grain in SRM
         :param float ppg: The potential points per gallon
         :param float hwe: The hot water extract value
-        :raises Exception: If color is not provided
-        :raises Exception: If ppg or hwe is not provided
-        :raises Exception: If both ppg and hwe are provided
+        :raises GrainException: If color is not provided
+        :raises GrainException: If ppg or hwe is not provided
+        :raises GrainException: If both ppg and hwe are provided
         """
         self.name = name
         if color is None:
-            raise Exception(u"Must provide color value")
+            raise GrainException(u"{}: Must provide color value".format(
+                self.name))
         self.color = float(color)
         if ppg and hwe:
-            raise Exception(u"Cannot provide both ppg and hwe")
+            raise GrainException(u"{}: Cannot provide both ppg and hwe".format(
+                self.name))
         if ppg:
             self.ppg = float(ppg)
             self.hwe = ppg_to_hwe(self.ppg)
@@ -63,7 +66,8 @@ class Grain(object):
             self.hwe = float(hwe)
             self.ppg = hwe_to_ppg(self.hwe)
         else:
-            raise Exception(u"Must provide ppg or hwe")
+            raise GrainException(u"{}: Must provide ppg or hwe".format(
+                self.name))
 
     def __str__(self):
         if sys.version_info[0] >= 3:
@@ -117,17 +121,17 @@ class Grain(object):
             **self.to_dict()))
         return msg
 
-    def get_working_yield(self, percent_brew_house_yield):
+    def get_working_yield(self, brew_house_yield):
         """
         Get Working Yield
 
-        :param float percent_brew_house_yield: The Percent Brew House Yield
+        :param float brew_house_yield: The Percent Brew House Yield
         :return: The working yield
         :rtype: float
         """
-        validate_percentage(percent_brew_house_yield)
+        validate_percentage(brew_house_yield)
         return (hwe_to_basis(self.hwe) *
-                percent_brew_house_yield)
+                brew_house_yield)
 
 
 class GrainAddition(object):
@@ -248,7 +252,7 @@ class GrainAddition(object):
         elif self.grain_type == GRAIN_TYPE_SPECIALTY:
             return specialty_grain_to_liquid_malt_weight(self.weight)
 
-    def get_dry_weight(self):
+    def get_dme_weight(self):
         """
         Get the weight of the addition in Dry Malt Extract weight
 
@@ -275,8 +279,84 @@ class GrainAddition(object):
         return {
             u'grain_weight': round(self.get_cereal_weight(), 2),
             u'lme_weight': round(self.get_lme_weight(), 2),
-            u'dry_weight': round(self.get_dry_weight(), 2),
+            u'dry_weight': round(self.get_dme_weight(), 2),
         }
+
+    def convert_to_cereal(self, brew_house_yield=1.0):
+        """
+        Convert Grain Addition to GRAIN_TYPE_CEREAL
+
+        :param float brew_house_yield: The brew house yield as a percentage
+
+        :return: GrainAddition of type GRAIN_TYPE_CEREAL
+        :rtype: GrainAddition
+        """
+        validate_percentage(brew_house_yield)
+        if self.grain_type == GRAIN_TYPE_CEREAL:
+            brew_house_yield = 1.0
+        return GrainAddition(
+            self.grain,
+            weight=self.get_cereal_weight() / brew_house_yield,
+            grain_type=GRAIN_TYPE_CEREAL,
+            units=self.units)
+
+    def convert_to_lme(self, brew_house_yield=1.0):
+        """
+        Convert Grain Addition to GRAIN_TYPE_LME
+
+        :param float brew_house_yield: The brew house yield as a percentage
+
+        :return: GrainAddition of type GRAIN_TYPE_LME
+        :rtype: GrainAddition
+        """
+        validate_percentage(brew_house_yield)
+        if self.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
+            brew_house_yield = 1.0
+        return GrainAddition(
+            self.grain,
+            weight=self.get_lme_weight() * brew_house_yield,
+            grain_type=GRAIN_TYPE_LME,
+            units=self.units)
+
+    def convert_to_dme(self, brew_house_yield=1.0):
+        """
+        Convert Grain Addition to GRAIN_TYPE_DME
+
+        :param float brew_house_yield: The brew house yield as a percentage
+
+        :return: GrainAddition of type GRAIN_TYPE_DME
+        :rtype: GrainAddition
+        """
+        validate_percentage(brew_house_yield)
+        if self.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
+            brew_house_yield = 1.0
+        return GrainAddition(
+            self.grain,
+            weight=self.get_dme_weight() * brew_house_yield,
+            grain_type=GRAIN_TYPE_DME,
+            units=self.units)
+
+    @property
+    def gu(self):
+        return self.get_gravity_units()
+
+    def get_gravity_units(self):
+        """
+        Get the gravity units for the Grain Addition
+        :return: Gravity Units as PPG or HWE depending on units
+        :rtype: float
+
+        Gravity Units are really a property of whole grains, not of extracts.
+        Therefore the units will always be represented after the weight has
+        been converted from an extract weight to a cereal weight.
+        """
+        # Pick the attribute based on units
+        if self.units == IMPERIAL_UNITS:
+            attr = u'ppg'
+        if self.units == SI_UNITS:
+            attr = u'hwe'
+
+        return getattr(self.grain, attr) * self.get_cereal_weight()
 
     def to_dict(self):
         grain_data = self.grain.to_dict()

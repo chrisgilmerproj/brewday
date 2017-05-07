@@ -3,6 +3,7 @@ from ..constants import GAL_PER_LITER
 from ..constants import IMPERIAL_UNITS
 from ..constants import POUND_PER_KG
 from ..constants import SI_UNITS
+from ..exceptions import ColorException
 from ..validators import validate_units
 
 __all__ = [
@@ -75,10 +76,10 @@ def calculate_srm_mosher(mcu):
     :param float mcu: The Malt Color Units
     :return: SRM Color
     :rtype: float
-    :raises Exception: If the MCU is < 7.0
+    :raises ColorException: If the MCU is < 7.0
     """  # noqa
     if mcu < 7.0:
-        raise Exception(u"Mosher equation does not work for MCU < 7.0")
+        raise ColorException(u"Mosher equation does not work for MCU < 7.0")
     srm = (mcu * 0.3) + 4.7
     return srm
 
@@ -90,10 +91,10 @@ def calculate_srm_daniels(mcu):
     :param float mcu: The Malt Color Units
     :return: SRM Color
     :rtype: float
-    :raises Exception: If the MCU is < 11.0
+    :raises ColorException: If the MCU is < 11.0
     """  # noqa
     if mcu < 11.0:
-        raise Exception(u"Daniels equation does not work for MCU < 11.0")
+        raise ColorException(u"Daniels equation does not work for MCU < 11.0")
     srm = (mcu * 0.2) + 8.4
     return srm
 
@@ -105,11 +106,11 @@ def calculate_srm_daniels_power(mcu):
     :param float mcu: The Malt Color Units
     :return: SRM Color
     :rtype: float
-    :raises Exception: If the SRM is > 50.0
+    :raises ColorException: If the SRM is > 50.0
     """  # noqa
     srm = 1.73 * (mcu ** 0.64) - 0.27
     if srm > 50.0:
-        raise Exception(u"Daniels Power equation does not work above SRM 50.0")
+        raise ColorException(u"Daniels Power equation does not work above SRM 50.0")  # noqa
     return srm
 
 
@@ -120,11 +121,11 @@ def calculate_srm_noonan_power(mcu):
     :param float mcu: The Malt Color Units
     :return: SRM Color
     :rtype: float
-    :raises Exception: If the SRM is > 50.0
+    :raises ColorException: If the SRM is > 50.0
     """  # noqa
     srm = 15.03 * (mcu ** 0.27) - 15.53
     if srm > 50.0:
-        raise Exception(u"Noonan Power equation does not work above SRM 50.0")
+        raise ColorException(u"Noonan Power equation does not work above SRM 50.0")  # noqa
     return srm
 
 
@@ -135,7 +136,7 @@ def calculate_srm_morey_hybrid(mcu):
     :param float mcu: The Malt Color Units
     :return: SRM Color
     :rtype: float
-    :raises Exception: If the MCU is > 50.0
+    :raises ColorException: If the MCU is > 50.0
 
     Assumptions:
 
@@ -162,7 +163,7 @@ def calculate_srm_morey_hybrid(mcu):
     elif 37 <= mcu < 50:
         srm = calculate_srm_mosher(mcu)
     else:
-        raise Exception(u"Morey Hybrid does not work above MCU 50.0")
+        raise ColorException(u"Morey Hybrid does not work above MCU 50.0")
 
     # SRM never gets above 50 so no exception is needed here
     return srm
@@ -175,7 +176,7 @@ def calculate_srm_morey(mcu):
     :param float mcu: The Malt Color Units
     :return: SRM Color
     :rtype: float
-    :raises Exception: If the SRM is > 50.0
+    :raises ColorException: If the SRM is > 50.0
 
     Source:
 
@@ -184,7 +185,7 @@ def calculate_srm_morey(mcu):
     """  # noqa
     srm = 1.4922 * (mcu ** 0.6859)
     if srm > 50.0:
-        raise Exception(u"Morey equation does not work above SRM 50.0")
+        raise ColorException(u"Morey equation does not work above SRM 50.0")
     return srm
 
 
@@ -195,7 +196,7 @@ def calculate_srm(mcu):
     :param float mcu: The Malt Color Units
     :return: SRM Color
     :rtype: float
-    :raises Exception: If the SRM is > 50.0
+    :raises ColorException: If the SRM is > 50.0
     """
     return calculate_srm_morey(mcu)
 

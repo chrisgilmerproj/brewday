@@ -4,12 +4,13 @@ import json
 import os
 import warnings
 
-from brew.grains import Grain
-from brew.grains import GrainAddition
-from brew.hops import Hop
-from brew.hops import HopAddition
-from brew.recipes import Recipe
-from brew.yeasts import Yeast
+from .exceptions import DataLoaderException
+from .grains import Grain
+from .grains import GrainAddition
+from .hops import Hop
+from .hops import HopAddition
+from .recipes import Recipe
+from .yeasts import Yeast
 
 __all__ = [
     u'DataLoader',
@@ -35,7 +36,7 @@ class DataLoader(object):
         :param str data_dir: The directory where the data resides
         """
         if not os.path.isdir(data_dir):
-            raise Exception(u"Directory '{}' does not exist".format(data_dir))
+            raise DataLoaderException(u"Directory '{}' does not exist".format(data_dir))  # noqa
         self.data_dir = data_dir
 
     @classmethod
@@ -58,12 +59,12 @@ class DataLoader(object):
         :param str dir_suffix: The directory name suffix
         :param str item_name: The name of the item to load
         :return: The item as a python dict
-        :raises Exception: If item directory does not exist
+        :raises DataLoaderException: If item directory does not exist
         :raises Warning: If item not found in the directory
         """
         item_dir = os.path.join(self.data_dir, dir_suffix)
         if not os.path.isdir(item_dir):
-            raise Exception(u"Item directory '{}' does not exist".format(item_dir))  # noqa
+            raise DataLoaderException(u"Item directory '{}' does not exist".format(item_dir))  # noqa
 
         # Cache the directory
         if dir_suffix not in self.DATA:
@@ -262,8 +263,8 @@ def parse_recipe(recipe, loader,
     Additionally the recipe may contain override data in the 'data'
     attribute with the following keys:
 
-    * percent_brew_house_yield (float)
-    * units                    (str)
+    * brew_house_yield (float)
+    * units            (str)
 
     All other fields will be ignored and may be used for other metadata.
 
@@ -301,9 +302,9 @@ def parse_recipe(recipe, loader,
         u'final_volume': recipe[u'final_volume'],
     }
     if u'data' in recipe:
-        if u'percent_brew_house_yield' in recipe[u'data']:
-            recipe_kwargs[u'percent_brew_house_yield'] = \
-                recipe[u'data'][u'percent_brew_house_yield']
+        if u'brew_house_yield' in recipe[u'data']:
+            recipe_kwargs[u'brew_house_yield'] = \
+                recipe[u'data'][u'brew_house_yield']
         if u'units' in recipe[u'data']:
             recipe_kwargs[u'units'] = recipe[u'data'][u'units']
 

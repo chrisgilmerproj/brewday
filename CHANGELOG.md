@@ -2,7 +2,14 @@
 
 ## Version 0.0.8
 
-- TBD
+- Rename percent_brew_house_yield to brew_house_yield
+- Add tests for LME and DME recipes
+- Add methods to convert GrainAddition to different grain types
+- Add method to get grains and hops from recipe by type
+- Make gravity units a property on grain additions
+- Add brew house yield calculator utility
+- Add custom exceptions
+- Improve error messages for faster debugging
 
 ## Version 0.0.7
 

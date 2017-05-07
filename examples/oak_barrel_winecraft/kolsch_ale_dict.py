@@ -67,7 +67,7 @@ def main():
             u'name': u'White Labs Wlp029',
         },
         u'data': {
-            u'percent_brew_house_yield': 0.70,
+            u'brew_house_yield': 0.70,
             u'units': u'imperial',
         },
     }

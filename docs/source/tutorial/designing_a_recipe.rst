@@ -53,7 +53,7 @@ for building our recipe:
                             hop_list=hop_list,
                             target_ibu=33.0,
                             target_og=1.0761348,
-                            percent_brew_house_yield=0.70,
+                            brew_house_yield=0.70,
                             start_volume=7.0,
                             final_volume=5.0,
                             )
@@ -92,12 +92,12 @@ Produces the output::
 
 Now you have designed the grain bill for your recipe.
 
-The Hop Bill
+The Hops Bill
 --------------
 
 Next we will use the :py:class:`brew.recipes.RecipeBuilder` to determine the
 hop additions that we'll be using.  This is done by providing an estimate of
-the percentages each grain will contribute to the final beer.  In this case the
+the percentages each hop will contribute to the final beer.  In this case the
 centennial will contribute 88.27% and the cascade will contribute 11.73%.
 
 Additionally we need to know how long each hop will be in the boil.  For the

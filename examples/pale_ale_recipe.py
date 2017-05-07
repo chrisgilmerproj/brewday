@@ -48,7 +48,7 @@ def main():
                   grain_additions=grain_additions,
                   hop_additions=hop_additions,
                   yeast=yeast,
-                  percent_brew_house_yield=0.70,  # %
+                  brew_house_yield=0.70,  # %
                   start_volume=7.0,  # G
                   final_volume=5.0,  # G
                   )
