@@ -246,6 +246,16 @@ class TestGrainAdditions(unittest.TestCase):
     def test_ne_grain_class(self):
         self.assertTrue(pale_add != pale)
 
+    def test_gu(self):
+        out = self.grain_add.gu
+        expected = 516.52
+        self.assertEquals(out, expected)
+
+    def test_get_gravity_units(self):
+        out = self.grain_add.get_gravity_units()
+        expected = 516.52
+        self.assertEquals(out, expected)
+
     def test_to_dict(self):
         out = self.grain_add.to_dict()
         expected = {u'name': u'pale 2-row',

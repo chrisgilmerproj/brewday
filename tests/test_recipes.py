@@ -2,6 +2,10 @@
 import sys
 import unittest
 
+from brew.constants import GRAIN_TYPE_CEREAL
+from brew.constants import GRAIN_TYPE_LME
+from brew.constants import HOP_TYPE_PELLET
+from brew.constants import HOP_TYPE_WHOLE
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.exceptions import RecipeException
@@ -148,6 +152,18 @@ class TestRecipe(unittest.TestCase):
                    yeast=self.yeast)
         self.assertEquals(str(ctx.exception),
                           u"pale ale: Hop addition units must be in 'imperial' not 'metric'")  # noqa
+
+    def test_get_grain_additions_by_type(self):
+        grain_additions = self.recipe.get_grain_additions_by_type(GRAIN_TYPE_CEREAL)  # noqa
+        self.assertEquals(grain_additions, self.recipe.grain_additions)
+        grain_additions = self.recipe.get_grain_additions_by_type(GRAIN_TYPE_LME)  # noqa
+        self.assertEquals(grain_additions, [])
+
+    def test_get_hop_additions_by_type(self):
+        hop_additions = self.recipe.get_hop_additions_by_type(HOP_TYPE_PELLET)  # noqa
+        self.assertEquals(hop_additions, self.recipe.hop_additions)
+        hop_additions = self.recipe.get_hop_additions_by_type(HOP_TYPE_WHOLE)  # noqa
+        self.assertEquals(hop_additions, [])
 
 
 class TestRecipeBuilder(unittest.TestCase):

@@ -2,6 +2,9 @@
 
 ## Version 0.0.8
 
+- Add method to get grains and hops from recipe by type
+- Make gravity units a property on grain additions
+- Add brew house yield calculator utility
 - Add custom exceptions
 - Improve error messages for faster debugging
 
