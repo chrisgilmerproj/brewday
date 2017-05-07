@@ -21,8 +21,8 @@ grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
                          weight=13.96)
-pale_add_lme = pale_add.convert_to_lme(bhy=BHY)
-pale_add_dme = pale_add.convert_to_dme(bhy=BHY)
+pale_add_lme = pale_add.convert_to_lme(brew_house_yield=BHY)
+pale_add_dme = pale_add.convert_to_dme(brew_house_yield=BHY)
 
 crystal_add = GrainAddition(crystal,
                             weight=0.78)

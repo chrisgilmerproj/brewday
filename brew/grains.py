@@ -282,24 +282,51 @@ class GrainAddition(object):
             u'dry_weight': round(self.get_dme_weight(), 2),
         }
 
-    def convert_to_cereal(self, bhy=1.0):
+    def convert_to_cereal(self, brew_house_yield=1.0):
+        """
+        Convert Grain Addition to GRAIN_TYPE_CEREAL
+
+        :param float brew_house_yield: The brew house yield as a percentage
+
+        :return: GrainAddition of type GRAIN_TYPE_CEREAL
+        :rtype: GrainAddition
+        """
+        validate_percentage(brew_house_yield)
         return GrainAddition(
             self.grain,
-            weight=self.get_cereal_weight() / bhy,
+            weight=self.get_cereal_weight() / brew_house_yield,
             grain_type=GRAIN_TYPE_CEREAL,
             units=self.units)
 
-    def convert_to_lme(self, bhy=1.0):
+    def convert_to_lme(self, brew_house_yield=1.0):
+        """
+        Convert Grain Addition to GRAIN_TYPE_LME
+
+        :param float brew_house_yield: The brew house yield as a percentage
+
+        :return: GrainAddition of type GRAIN_TYPE_LME
+        :rtype: GrainAddition
+        """
+        validate_percentage(brew_house_yield)
         return GrainAddition(
             self.grain,
-            weight=self.get_lme_weight() * bhy,
+            weight=self.get_lme_weight() * brew_house_yield,
             grain_type=GRAIN_TYPE_LME,
             units=self.units)
 
-    def convert_to_dme(self, bhy=1.0):
+    def convert_to_dme(self, brew_house_yield=1.0):
+        """
+        Convert Grain Addition to GRAIN_TYPE_DME
+
+        :param float brew_house_yield: The brew house yield as a percentage
+
+        :return: GrainAddition of type GRAIN_TYPE_DME
+        :rtype: GrainAddition
+        """
+        validate_percentage(brew_house_yield)
         return GrainAddition(
             self.grain,
-            weight=self.get_dme_weight() * bhy,
+            weight=self.get_dme_weight() * brew_house_yield,
             grain_type=GRAIN_TYPE_DME,
             units=self.units)
 
