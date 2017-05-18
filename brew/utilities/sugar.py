@@ -216,12 +216,13 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     return sg + (correction * 0.001)
 
 
-def refractometer_adjustment(og, fg):
+def refractometer_adjustment(og, fg, wort_correction_factor=1.04):
     """
     Adjust the Refractometer for the presence of alcohol.
 
     :param float og: Original Gravity
     :param float fg: Final Gravity
+    :param float wort_correction_factor: A correction to the reading given by the refractometer
     :return: Final Gravity adjusted
     :rtype: float
 
@@ -230,13 +231,13 @@ def refractometer_adjustment(og, fg):
 
     Sources:
 
-    * http://seanterrill.com/2011/04/07/refractometer-fg-results/
-    """
-    og_brix = sg_to_brix(og)
-    fg_brix = sg_to_brix(fg)
+    * New Cubic from http://seanterrill.com/2011/04/07/refractometer-fg-results/
+    """  # noqa
+    og_brix = sg_to_brix(og) / wort_correction_factor
+    fg_brix = sg_to_brix(fg) / wort_correction_factor
 
     new_fg = (1.0000 -
-              0.0044993 * og_brix + 0.011774 * fg_brix +
-              0.00027581 * (og_brix ** 2) - 0.0012717 * (fg_brix ** 2) -
-              0.0000072800 * (og_brix ** 3) + 0.000063293 * (fg_brix ** 3))
-    return brix_to_sg(new_fg)
+              0.0044993 * og_brix + 0.0117741 * fg_brix +
+              0.000275806 * (og_brix ** 2) - 0.00127169 * (fg_brix ** 2) -
+              0.00000727999 * (og_brix ** 3) + 0.0000632929 * (fg_brix ** 3))
+    return new_fg

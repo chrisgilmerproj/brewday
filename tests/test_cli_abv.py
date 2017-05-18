@@ -49,11 +49,11 @@ class TestCliAbv(unittest.TestCase):
 
     def test_get_abv_refractometer(self):
         abv = get_abv(self.og, self.fg, refractometer=True)
-        self.assertEquals(round(abv * 100, 2), 6.97)
+        self.assertEquals(round(abv * 100, 2), 7.70)
 
     def test_get_abv_alternative_refractometer(self):
         abv = get_abv(self.og, self.fg, alternative=True, refractometer=True)
-        self.assertEquals(round(abv * 100, 2), 7.12)
+        self.assertEquals(round(abv * 100, 2), 7.82)
 
     def test_get_abv_verbose(self):
         out = get_abv(self.og, self.fg, verbose=True)
