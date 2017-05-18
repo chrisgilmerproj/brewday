@@ -101,5 +101,5 @@ class TestSugarUtilities(unittest.TestCase):
                           u"Correction does not work outside temps 0 - 100C")
 
     def test_refractometer_adjustment(self):
-        fg = refractometer_adjustment(1.050, 1.011)
-        self.assertEquals(round(fg, 3), 1.004)
+        fg = refractometer_adjustment(1.053, 1.032)
+        self.assertEquals(round(fg, 3), 1.017)
