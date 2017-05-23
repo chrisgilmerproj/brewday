@@ -78,6 +78,8 @@ class TestSugarUtilities(unittest.TestCase):
     def test_hydrometer_adjustment_raises_bad_units(self):
         with self.assertRaises(ValidatorException) as ctx:
             hydrometer_adjustment(1.050, 16.0, units=u'bad')
+        self.assertEquals(str(ctx.exception),
+                          u"Unkown units 'bad', must use imperial or metric")
 
     def test_hydrometer_adjustment_raises_bad_temp(self):
         with self.assertRaises(SugarException) as ctx:
