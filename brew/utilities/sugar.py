@@ -201,11 +201,11 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     validate_units(units)
     if units == SI_UNITS:
         if temp < 0.0 or 100.0 < temp:
-            raise SugarException(u"Correction does not work outside temps 0 - 100C")
+            raise SugarException(u"Correction does not work outside temps 0 - 100C")  # noqa
         temp = celsius_to_fahrenheit(temp)
     elif units == IMPERIAL_UNITS:
         if temp < 0.0 or 212.0 < temp:
-            raise SugarException(u"Correction does not work outside temps 0 - 212F")
+            raise SugarException(u"Correction does not work outside temps 0 - 212F")  # noqa
 
     if temp == HYDROMETER_ADJUSTMENT_TEMP:
         return sg
