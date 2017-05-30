@@ -117,6 +117,10 @@ SUCROSE_PLATO = 11.486
 #: Maximum PPG for 100% sugar dissolved in water
 SUCROSE_PPG = 46.214
 
+# General PPG Numbers (GU / lb)
+PPG_DME = 45.0
+PPG_LME = 37.0
+
 # Hot Water Extract is a measure of how many liters of wort are required at a
 # Specific Gravity of 1.001
 #: Liters of Wort at SG 1.001 for HWE
@@ -153,4 +157,4 @@ ABV_CONST = 131.25  # RATIO_C2H6O_TO_CO2 / ALCOHOL_SPECIFIC_GRAVITY * 100.0
 WEIGHT_TOLERANCE = 0.005
 
 #: Percent of water evaporated during boil, usually 8% or between 8%-10%
-BOIL_EVAPORATION = 0.00
+BOIL_EVAPORATION = 0.08

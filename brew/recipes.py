@@ -14,6 +14,7 @@ from .constants import HOPS_CONSTANT_SI
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import LITER_PER_GAL
+from .constants import PPG_DME
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
@@ -32,6 +33,7 @@ from .utilities.color import calculate_srm_daniels
 from .utilities.color import calculate_srm_morey
 from .utilities.color import calculate_srm_mosher
 from .utilities.color import srm_to_ebc
+from .utilities.efficiency import get_wort_correction
 from .utilities.hops import HopsUtilizationGlennTinseth
 from .utilities.sugar import gu_to_sg
 from .utilities.sugar import sg_to_gu
@@ -274,6 +276,17 @@ class Recipe(object):
     @property
     def fg(self):
         return self.get_final_gravity()
+
+    def get_wort_correction(self, current_gu, current_volume,
+                            efficiency=PPG_DME):
+        """
+        Get the amount of sugar to add to correct the wort
+        """
+        return get_wort_correction(current_gu,
+                                   current_volume,
+                                   self.get_original_gravity_units(),
+                                   self.final_volume,
+                                   efficiency=efficiency)
 
     def get_degrees_plato(self):
         """
@@ -651,6 +664,10 @@ class Recipe(object):
         kwargs = {}
         kwargs.update(recipe_data)
         kwargs.update(self.types)
+        # Additional format information
+        kwargs.update({
+            'evaporation': BOIL_EVAPORATION,
+        })
 
         msg = u""
         msg += textwrap.dedent(u"""\
@@ -661,7 +678,7 @@ class Recipe(object):
             Start Volume:       {start_volume:0.1f}
             Final Volume:       {final_volume:0.1f}
 
-            Boil Gravity:       {data[boil_gravity]:0.3f}
+            Boil Gravity:       {data[boil_gravity]:0.3f} (Evaporation @ {evaporation:0.1%})
             Original Gravity:   {data[original_gravity]:0.3f}
             Final Gravity:      {data[final_gravity]:0.3f}
 
