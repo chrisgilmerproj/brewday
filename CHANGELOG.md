@@ -2,6 +2,8 @@
 
 ## Version 0.0.8
 
+- Fix strike temperature equation
+- Add mash infusion equation
 - Fix refractometer adjustment method
 - Ensure testing passes in python 3.6
 - Rename percent_brew_house_yield to brew_house_yield

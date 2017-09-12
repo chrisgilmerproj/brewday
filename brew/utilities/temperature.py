@@ -3,6 +3,8 @@
 __all__ = [
     u'fahrenheit_to_celsius',
     u'celsius_to_fahrenheit',
+    u'strike_temp',
+    u'mash_infusion',
 ]
 
 
@@ -26,3 +28,43 @@ def celsius_to_fahrenheit(temp):
     :rtype: float
     """
     return(temp * 1.8) + 32.0
+
+
+def strike_temp(target_temp, initial_temp, liquor_to_grist_ratio=1.5):
+    """
+    Get Strike Water Temperature
+
+    All temperatures in F.
+
+    http://howtobrew.com/book/section-3/the-methods-of-mashing/calculations-for-boiling-water-additions
+
+    :param float target_temp: Mash Temperature to Achieve
+    :param float initial_temp: Malt Temperature
+    :param float liquor_to_grist_ratio: The Liquor to Grist Ratio (qt:lbs)
+    :return: The strike water temperature
+    :rtype: float
+    """  # noqa
+    return (0.2 / liquor_to_grist_ratio) \
+        * (target_temp - initial_temp) + target_temp
+
+
+def mash_infusion(target_temp, initial_temp,
+                  grain_weight, water_volume, infusion_temp=212):
+    """
+    Get Volume of water to infuse into mash to reach scheduled temperature
+
+    All temperatures in F.
+
+    http://howtobrew.com/book/section-3/the-methods-of-mashing/calculations-for-boiling-water-additions
+
+    :param float target_temp: Mash Temperature to Achieve
+    :param float inital_temp: Mash Temperature
+    :param float grain_weight: Total weight of grain in mash (lbs)
+    :param float water_volume: Total volume of water in mash (qt)
+    :param float infusion_temp: Temperature of water to infuse
+    :return: The volume of water to add to the mash (qt)
+    :rtype: float
+    """
+    return (target_temp - initial_temp) \
+        * (0.2 * grain_weight + water_volume) \
+        / (infusion_temp - target_temp)
