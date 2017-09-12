@@ -422,20 +422,6 @@ class Recipe(object):
         """
         return self.get_total_ibu() / self.get_boil_gravity_units()
 
-    @classmethod
-    def get_strike_temp(cls, mash_temp, malt_temp, liquor_to_grist_ratio):
-        """
-        Get Strike Water Temperature
-
-        :param float mash_temp: Mash Temperature
-        :param float malt_temp: Malt Temperature
-        :param float liquor_to_grist_ratio: The Liquor to Grist Ratio
-        :return: The strike water temperature
-        :rtype: float
-        """
-        return (((0.4 * (mash_temp - malt_temp)) /
-                liquor_to_grist_ratio) + mash_temp)
-
     def get_mash_water_volume(self, liquor_to_grist_ratio):
         """
         Get the Mash Water Volume

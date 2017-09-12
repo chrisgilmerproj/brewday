@@ -3,6 +3,8 @@ import unittest
 
 from brew.utilities.temperature import celsius_to_fahrenheit
 from brew.utilities.temperature import fahrenheit_to_celsius
+from brew.utilities.temperature import mash_infusion
+from brew.utilities.temperature import strike_temp
 
 
 class TestTemperatureUtilities(unittest.TestCase):
@@ -22,3 +24,11 @@ class TestTemperatureUtilities(unittest.TestCase):
         self.assertEquals(ctemp, 0.0)
         ctemp = fahrenheit_to_celsius(-40.0)
         self.assertEquals(ctemp, -40.0)
+
+    def test_strike_temp(self):
+        temp = strike_temp(104.0, 70.0, 1.0 / 1.0, )
+        self.assertEquals(round(temp, 2), 110.8)
+
+    def test_mash_infusion(self):
+        vol = mash_infusion(140.0, 104.0, 8.0, 8.0, 210.0)
+        self.assertEquals(round(vol, 2), 4.94)
