@@ -32,7 +32,7 @@ class TestValidators(unittest.TestCase):
         with self.assertRaises(ValidatorException) as ctx:
             validate_hop_type(u'bad hop type')
         self.assertEquals(str(ctx.exception),
-                          u"Unkown hop type 'bad hop type', must use pellet, whole, plug")  # noqa
+                          u"Unkown hop type 'bad hop type', must use pellet, whole, whole wet, plug")  # noqa
 
     def test_validate_percentage_pass(self):
         out = validate_percentage(0.97)
