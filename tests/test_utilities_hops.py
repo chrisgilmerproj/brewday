@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from brew.constants import HOP_TYPE_WHOLE_WET
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.hops import HopAddition
@@ -90,6 +91,19 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
                                          self.final_volume)
         self.assertEquals(round(ibu, 2), 39.18)
 
+    def test_get_ibus_whole_wet(self):
+        # Whole Dry Weight is 1.1 times more than pellet weight
+        # Whole Wet Weight is 5.5 times more than dry weight
+        weight = 0.57 * 1.1 * 5.5
+        hop_addition = HopAddition(self.hop,
+                                   boil_time=self.boil_time,
+                                   weight=weight,
+                                   hop_type=HOP_TYPE_WHOLE_WET,
+                                   utilization_cls=self.utilization_cls)
+        ibu = hop_addition.get_ibus(self.sg,
+                                    self.final_volume)
+        self.assertEquals(round(ibu, 2), 39.18)
+
     def test_get_percent_utilization(self):
         utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # noqa
                 self.sg, self.boil_time)
@@ -171,6 +185,19 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
                                          self.final_volume)
+        self.assertEquals(round(ibu, 2), 28.52)
+
+    def test_get_ibus_whole_wet(self):
+        # Whole Dry Weight is 1.1 times more than pellet weight
+        # Whole Wet Weight is 5.5 times more than dry weight
+        weight = 0.57 * 1.1 * 5.5
+        hop_addition = HopAddition(self.hop,
+                                   boil_time=self.boil_time,
+                                   weight=weight,
+                                   hop_type=HOP_TYPE_WHOLE_WET,
+                                   utilization_cls=self.utilization_cls)
+        ibu = hop_addition.get_ibus(self.sg,
+                                    self.final_volume)
         self.assertEquals(round(ibu, 2), 28.52)
 
     def test_get_bigness_factor(self):
