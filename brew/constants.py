@@ -46,18 +46,25 @@ GRAIN_TYPE_LIST = [
 HOP_TYPE_PELLET = u'pellet'
 #: Hop type whole leaf
 HOP_TYPE_WHOLE = u'whole'
+#: Hop type whole leaf, wet
+HOP_TYPE_WHOLE_WET = u'whole wet'
 #: Hop type plug
 HOP_TYPE_PLUG = u'plug'
 #: Hop type list
 HOP_TYPE_LIST = [
     HOP_TYPE_PELLET,
     HOP_TYPE_WHOLE,
+    HOP_TYPE_WHOLE_WET,
     HOP_TYPE_PLUG,
 ]
 
 # Hop utilization scale factors
 #: Hop utilization scale factor for pellets
 HOP_UTILIZATION_SCALE_PELLET = 1.1  # 110%
+
+# Wet or fresh hops are needed in a quantity 5-6x more than dry whole hops
+#: Hop whole wet to dry conversion
+HOP_WHOLE_WET_TO_DRY = 1.0 / 5.5
 
 # Conversions
 # Try to define SI to US units instead of US to SI.

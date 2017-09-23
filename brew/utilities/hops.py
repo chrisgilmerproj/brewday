@@ -2,7 +2,9 @@
 import math
 
 from ..constants import HOP_TYPE_PELLET
+from ..constants import HOP_TYPE_WHOLE_WET
 from ..constants import HOP_UTILIZATION_SCALE_PELLET
+from ..constants import HOP_WHOLE_WET_TO_DRY
 from ..constants import HOPS_CONSTANT_IMPERIAL
 from ..constants import HOPS_CONSTANT_SI
 from ..constants import IMPERIAL_TYPES
@@ -74,10 +76,14 @@ class HopsUtilization(object):
             hops_constant = HOPS_CONSTANT_SI
         utilization = self.get_percent_utilization(
             sg, self.hop_addition.boil_time)
+        # Hop weight for wet is greater than dry
+        hop_weight = self.hop_addition.weight
+        if self.hop_addition.hop_type == HOP_TYPE_WHOLE_WET:
+            hop_weight = hop_weight * HOP_WHOLE_WET_TO_DRY
         # Utilization is 10% higher for pellet vs whole/plug
         if self.hop_addition.hop_type == HOP_TYPE_PELLET:
             utilization *= HOP_UTILIZATION_SCALE_PELLET
-        num = (self.hop_addition.weight * utilization *
+        num = (hop_weight * utilization *
                self.hop_addition.hop.percent_alpha_acids *
                hops_constant)
         return num / final_volume
