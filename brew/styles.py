@@ -3,6 +3,7 @@ import json
 import sys
 import textwrap
 
+from .exceptions import ColorException
 from .exceptions import StyleException
 from .validators import validate_required_fields
 
@@ -261,7 +262,10 @@ class Style(object):
         errors.extend(self.fg_errors(recipe.fg))
         errors.extend(self.abv_errors(recipe.abv))
         errors.extend(self.ibu_errors(recipe.ibu))
-        errors.extend(self.color_errors(recipe.color))
+        try:
+            errors.extend(self.color_errors(recipe.color))
+        except ColorException:
+            errors.extend(['Color cannot be calculated'])
         return errors
 
     def to_dict(self):
@@ -310,3 +314,22 @@ class Style(object):
             Color (SRM):        {color[0]:0.1f} - {color[1]:0.1f}
             """.format(**kwargs))  # noqa
         return msg
+
+
+class StyleFactory(object):
+
+    def __init__(self, filename):
+        self.filename = filename
+        with open(filename, 'r') as f:
+            self.data = json.loads(f.read())
+
+    def create_style(self, category, subcategory):
+        data = self.data.get(category, {}).get(subcategory, None)
+        return Style(data['style'],
+                     category=data['category'],
+                     subcategory=data['subcategory'],
+                     og=data['og'],
+                     fg=data['fg'],
+                     abv=data['abv'],
+                     ibu=data['ibu'],
+                     color=data['color'])
