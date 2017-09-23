@@ -2,6 +2,9 @@
 
 ## Version 0.0.8
 
+- Add ability to shorten recipe format
+- Add Style Factory Class
+- Add Wet Whole Hop Type
 - Fix strike temperature equation
 - Add mash infusion equation
 - Fix refractometer adjustment method
