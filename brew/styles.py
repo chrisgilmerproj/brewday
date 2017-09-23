@@ -335,7 +335,7 @@ class StyleFactory(object):
         :return: A Style Object
         :rtype: Style
         """
-        data = self.data.get(category, {}).get(subcategory, None)
+        data = self.data.get(str(category), {}).get(subcategory, None)
         return Style(data['style'],
                      category=data['category'],
                      subcategory=data['subcategory'],
@@ -344,3 +344,16 @@ class StyleFactory(object):
                      abv=data['abv'],
                      ibu=data['ibu'],
                      color=data['color'])
+
+    def format(self):
+        for category in sorted(self.data.keys(), key=int):
+            substyles = self.data[category]
+            for subcategory in sorted(substyles.keys()):
+                try:
+                    style = self.create_style(category, subcategory)
+                    print(style.format())
+                except StyleException:
+                    name = self.data[category][subcategory]['style']
+                    print("{}{} {} - Not parseable".format(category,
+                                                           subcategory,
+                                                           name))
