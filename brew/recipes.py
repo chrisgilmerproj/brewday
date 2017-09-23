@@ -632,7 +632,12 @@ class Recipe(object):
         validate_required_fields(recipe, required_fields)
         validate_optional_fields(recipe, optional_fields)
 
-    def format(self):
+    def format(self, short=False):
+        """
+        Format the recipe for printing
+
+        :param bool short: Produce short output
+        """
         recipe_data = self.to_dict()
         kwargs = {}
         kwargs.update(recipe_data)
@@ -660,10 +665,14 @@ class Recipe(object):
             Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]} degL / {data[total_wort_color_map][ebc][morey]}
             Daniels (SRM/EBC):  {data[total_wort_color_map][srm][daniels]} degL / {data[total_wort_color_map][ebc][daniels]}
             Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]} degL / {data[total_wort_color_map][ebc][mosher]}
-
             """.format(**kwargs))  # noqa
 
+        # If short output is requested then return it
+        if short:
+            return msg
+
         msg += textwrap.dedent(u"""\
+
             Grains
             ===================================
 
