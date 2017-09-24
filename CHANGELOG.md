@@ -2,6 +2,7 @@
 
 ## Version 0.0.8
 
+- Add hop type weight conversion utility
 - Add ability to shorten recipe format
 - Add Style Factory Class
 - Add Wet Whole Hop Type

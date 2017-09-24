@@ -64,7 +64,7 @@ HOP_UTILIZATION_SCALE_PELLET = 1.1  # 110%
 
 # Wet or fresh hops are needed in a quantity 5-6x more than dry whole hops
 #: Hop whole wet to dry conversion
-HOP_WHOLE_WET_TO_DRY = 1.0 / 5.5
+HOP_WHOLE_DRY_TO_WET = 5.5
 
 # Conversions
 # Try to define SI to US units instead of US to SI.
