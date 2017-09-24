@@ -346,14 +346,16 @@ class StyleFactory(object):
                      color=data['color'])
 
     def format(self):
+        msg = []
         for category in sorted(self.data.keys(), key=int):
             substyles = self.data[category]
             for subcategory in sorted(substyles.keys()):
                 try:
                     style = self.create_style(category, subcategory)
-                    print(style.format())
+                    msg.append(style.format())
                 except StyleException:
                     name = self.data[category][subcategory]['style']
-                    print("{}{} {} - Not parseable".format(category,
-                                                           subcategory,
-                                                           name))
+                    msg.append("{}{} {} - Not parseable".format(category,
+                                                                subcategory,
+                                                                name))
+        return '\n'.join(msg)
