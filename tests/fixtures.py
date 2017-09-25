@@ -14,6 +14,9 @@ BHY = 0.70
 pale = Grain(u'pale 2-row',
              color=2.0,
              ppg=37.0)
+pale_lme = pale.convert_to_lme()
+pale_dme = pale.convert_to_dme()
+
 crystal = Grain(u'crystal C20',
                 color=20.0,
                 ppg=35.0)

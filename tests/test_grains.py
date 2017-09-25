@@ -15,6 +15,8 @@ from brew.grains import GrainAddition
 from fixtures import BHY
 from fixtures import crystal
 from fixtures import pale
+from fixtures import pale_dme
+from fixtures import pale_lme
 from fixtures import pale_add
 
 
@@ -138,6 +140,14 @@ class TestGrains(unittest.TestCase):
         expected = u'{"color": 2.0, "hwe": 308.78, "name": "pale 2-row", "ppg": 37.0}'  # noqa
         self.assertEquals(out, expected)
 
+    def test_convert_to_lme(self):
+        ga_lme = self.grain.convert_to_lme()
+        self.assertEquals(ga_lme.ppg, 36)
+
+    def test_convert_to_dme(self):
+        ga_dme = self.grain.convert_to_dme()
+        self.assertEquals(ga_dme.ppg, 44)
+
 
 class TestGrainAdditions(unittest.TestCase):
 
@@ -180,7 +190,7 @@ class TestGrainAdditions(unittest.TestCase):
                                   grain_type=GRAIN_TYPE_LME)
         self.assertEquals(grain_add.grain_type, GRAIN_TYPE_LME)
         out = grain_add.get_cereal_weight()
-        self.assertEqual(round(out, 2), 13.96)
+        self.assertEqual(round(out, 2), 10.76)
         out = grain_add.get_lme_weight()
         self.assertEqual(round(out, 2), 10.47)
         out = grain_add.get_dme_weight()
@@ -191,7 +201,7 @@ class TestGrainAdditions(unittest.TestCase):
                                   grain_type=GRAIN_TYPE_DME)
         self.assertEquals(grain_add.grain_type, GRAIN_TYPE_DME)
         out = grain_add.get_cereal_weight()
-        self.assertEqual(round(out, 2), 13.97)
+        self.assertEqual(round(out, 2), 7.05)
         out = grain_add.get_lme_weight()
         self.assertEqual(round(out, 2), 10.48)
         out = grain_add.get_dme_weight()
@@ -221,37 +231,43 @@ class TestGrainAdditions(unittest.TestCase):
         grain_add = GrainAddition(pale,
                                   weight=1.0,
                                   grain_type=GRAIN_TYPE_CEREAL)
-        ga_cereal_weight = grain_add.convert_to_cereal(brew_house_yield=BHY).weight  # noqa
-        ga_lme_weight = grain_add.convert_to_lme(brew_house_yield=BHY).weight
-        ga_dme_weight = grain_add.convert_to_dme(brew_house_yield=BHY).weight
+        ga_cereal = grain_add.convert_to_cereal(brew_house_yield=BHY)
+        ga_lme = grain_add.convert_to_lme(brew_house_yield=BHY)
+        ga_dme = grain_add.convert_to_dme(brew_house_yield=BHY)
 
-        self.assertEquals(grain_add.weight, ga_cereal_weight)
-        self.assertEquals(ga_lme_weight, 0.75 * BHY)
-        self.assertEquals(ga_dme_weight, 0.6 * BHY)
+        self.assertEquals(ga_cereal.weight, 1.0)
+        self.assertEquals(round(ga_lme.weight, 2), 0.72)
+        self.assertEquals(round(ga_dme.weight, 2), 0.59)
+        self.assertEquals(ga_lme.grain.ppg, 36)
+        self.assertEquals(ga_dme.grain.ppg, 44)
 
     def test_convert_to_lme(self):
-        grain_add = GrainAddition(pale,
+        grain_add = GrainAddition(pale_lme,
                                   weight=1.0,
                                   grain_type=GRAIN_TYPE_LME)
-        ga_cereal_weight = grain_add.convert_to_cereal(brew_house_yield=BHY).weight  # noqa
-        ga_lme_weight = grain_add.convert_to_lme(brew_house_yield=BHY).weight
-        ga_dme_weight = grain_add.convert_to_dme(brew_house_yield=BHY).weight
+        ga_cereal = grain_add.convert_to_cereal(brew_house_yield=BHY)
+        ga_lme = grain_add.convert_to_lme(brew_house_yield=BHY)
+        ga_dme = grain_add.convert_to_dme(brew_house_yield=BHY)
 
-        self.assertEquals(round(ga_cereal_weight, 2), 1.90)
-        self.assertEquals(grain_add.weight, ga_lme_weight)
-        self.assertEquals(ga_dme_weight, 0.8)
+        self.assertEquals(round(ga_cereal.weight, 2), 1.43)
+        self.assertEquals(ga_lme.weight, 1.0)
+        self.assertEquals(round(ga_dme.weight, 2), 0.82)
+        self.assertEquals(ga_lme.grain.ppg, 36)
+        self.assertEquals(ga_dme.grain.ppg, 44)
 
     def test_convert_to_dme(self):
-        grain_add = GrainAddition(pale,
+        grain_add = GrainAddition(pale_dme,
                                   weight=1.0,
                                   grain_type=GRAIN_TYPE_DME)
-        ga_cereal_weight = grain_add.convert_to_cereal(brew_house_yield=BHY).weight  # noqa
-        ga_lme_weight = grain_add.convert_to_lme(brew_house_yield=BHY).weight
-        ga_dme_weight = grain_add.convert_to_dme(brew_house_yield=BHY).weight
+        ga_cereal = grain_add.convert_to_cereal(brew_house_yield=BHY)
+        ga_lme = grain_add.convert_to_lme(brew_house_yield=BHY)
+        ga_dme = grain_add.convert_to_dme(brew_house_yield=BHY)
 
-        self.assertEquals(round(ga_cereal_weight, 2), 2.38)
-        self.assertEquals(ga_lme_weight, 1.25)
-        self.assertEquals(grain_add.weight, ga_dme_weight)
+        self.assertEquals(round(ga_cereal.weight, 2), 1.43)
+        self.assertEquals(round(ga_lme.weight, 2), 1.22)
+        self.assertEquals(ga_dme.weight, 1.0)
+        self.assertEquals(ga_lme.grain.ppg, 36)
+        self.assertEquals(ga_dme.grain.ppg, 44)
 
     def test_eq(self):
         grain_add1 = GrainAddition(pale, weight=13.96)

@@ -133,6 +133,12 @@ class Grain(object):
         return (hwe_to_basis(self.hwe) *
                 brew_house_yield)
 
+    def convert_to_lme(self):
+        return Grain(self.name, color=self.color, ppg=36.0)
+
+    def convert_to_dme(self):
+        return Grain(self.name, color=self.color, ppg=44.0)
+
 
 class GrainAddition(object):
     """
@@ -230,9 +236,9 @@ class GrainAddition(object):
         if self.grain_type == GRAIN_TYPE_CEREAL:
             return self.weight
         elif self.grain_type == GRAIN_TYPE_DME:
-            return dry_malt_to_grain_weight(self.weight)
+            return self.weight * (self.grain.ppg / 44.0)
         elif self.grain_type == GRAIN_TYPE_LME:
-            return liquid_malt_to_grain_weight(self.weight)
+            return self.weight * (self.grain.ppg / 36.0)
         elif self.grain_type == GRAIN_TYPE_SPECIALTY:
             return self.weight
 
@@ -312,9 +318,12 @@ class GrainAddition(object):
         validate_percentage(brew_house_yield)
         if self.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
             brew_house_yield = 1.0
+        new_grain = self.grain.convert_to_lme()
+        ppg_factor = self.grain.ppg / new_grain.ppg
+        weight = self.weight * ppg_factor * brew_house_yield
         return GrainAddition(
-            self.grain,
-            weight=self.get_lme_weight() * brew_house_yield,
+            new_grain,
+            weight=weight,
             grain_type=GRAIN_TYPE_LME,
             units=self.units)
 
@@ -330,9 +339,12 @@ class GrainAddition(object):
         validate_percentage(brew_house_yield)
         if self.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
             brew_house_yield = 1.0
+        new_grain = self.grain.convert_to_dme()
+        ppg_factor = self.grain.ppg / new_grain.ppg
+        weight = self.weight * ppg_factor * brew_house_yield
         return GrainAddition(
-            self.grain,
-            weight=self.get_dme_weight() * brew_house_yield,
+            new_grain,
+            weight=weight,
             grain_type=GRAIN_TYPE_DME,
             units=self.units)
 
@@ -345,10 +357,6 @@ class GrainAddition(object):
         Get the gravity units for the Grain Addition
         :return: Gravity Units as PPG or HWE depending on units
         :rtype: float
-
-        Gravity Units are really a property of whole grains, not of extracts.
-        Therefore the units will always be represented after the weight has
-        been converted from an extract weight to a cereal weight.
         """
         # Pick the attribute based on units
         if self.units == IMPERIAL_UNITS:
@@ -356,7 +364,7 @@ class GrainAddition(object):
         if self.units == SI_UNITS:
             attr = u'hwe'
 
-        return getattr(self.grain, attr) * self.get_cereal_weight()
+        return getattr(self.grain, attr) * self.weight
 
     def to_dict(self):
         grain_data = self.grain.to_dict()

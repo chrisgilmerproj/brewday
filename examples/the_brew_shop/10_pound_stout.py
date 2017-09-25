@@ -67,7 +67,7 @@ def main():
             u'name': u'Wyeast 1084',
         },
         u'data': {
-            u'brew_house_yield': 0.65,
+            u'brew_house_yield': 0.80,
             u'units': u'imperial',
         },
     }
