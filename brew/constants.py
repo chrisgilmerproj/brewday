@@ -133,10 +133,6 @@ SUCROSE_PLATO = 11.486
 #: Maximum PPG for 100% sugar dissolved in water
 SUCROSE_PPG = 46.214
 
-# General PPG Numbers (GU / lb)
-PPG_DME = 45.0
-PPG_LME = 37.0
-
 # Hot Water Extract is a measure of how many liters of wort are required at a
 # Specific Gravity of 1.001
 #: Liters of Wort at SG 1.001 for HWE
