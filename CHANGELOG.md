@@ -2,6 +2,8 @@
 
 ## Version 0.0.8
 
+- Fix grain conversions
+- Fix utilization for extract recipes
 - Add hop type weight conversion utility
 - Add ability to shorten recipe format
 - Add Style Factory Class
