@@ -15,6 +15,7 @@ from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import LITER_PER_GAL
 from .constants import PPG_DME
+from .constants import PPG_CEREAL
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
@@ -353,8 +354,7 @@ class Recipe(object):
         the brew house yield will decrease the size of the DME
         accordingly.
         """
-        return grain_add.convert_to_dme(
-            brew_house_yield=self.brew_house_yield).weight
+        return grain_add.get_dme_weight()
 
     def get_total_dry_weight(self):
         """
@@ -368,7 +368,7 @@ class Recipe(object):
             weights.append(self.get_grain_add_dry_weight(grain_add))
         return sum(weights)
 
-    def get_grain_add_cereal_weight(self, grain_add):
+    def get_grain_add_cereal_weight(self, grain_add, ppg=PPG_CEREAL):
         """
         Get Grain Addition as Cereal
 
@@ -381,10 +381,7 @@ class Recipe(object):
         the brew house yield will increase the size of the grain
         accordingly.
         """
-        if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
-            return grain_add.get_cereal_weight() / self.brew_house_yield  # noqa
-        else:
-            return grain_add.get_cereal_weight()
+        return grain_add.get_cereal_weight(ppg=ppg)
 
     def get_total_grain_weight(self):
         """
@@ -434,34 +431,6 @@ class Recipe(object):
         :rtype: float
         """
         return self.get_total_ibu() / self.get_boil_gravity_units()
-
-    @classmethod
-    def get_strike_temp(cls, mash_temp, malt_temp, liquor_to_grist_ratio):
-        """
-        Get Strike Water Temperature
-
-        :param float mash_temp: Mash Temperature
-        :param float malt_temp: Malt Temperature
-        :param float liquor_to_grist_ratio: The Liquor to Grist Ratio
-        :return: The strike water temperature
-        :rtype: float
-        """
-        return (((0.4 * (mash_temp - malt_temp)) /
-                liquor_to_grist_ratio) + mash_temp)
-
-    def get_mash_water_volume(self, liquor_to_grist_ratio):
-        """
-        Get the Mash Water Volume
-
-        :param float liquor_to_grist_ratio: The Liquor to Grist Ratio
-        :return: The mash water volume
-        :rtype: float
-        """
-        water_weight = WATER_WEIGHT_IMPERIAL
-        if self.units == SI_UNITS:
-            water_weight = WATER_WEIGHT_SI
-        return (self.get_total_dry_weight() * liquor_to_grist_ratio /
-                water_weight)
 
     @property
     def abv(self):
@@ -659,7 +628,12 @@ class Recipe(object):
         validate_required_fields(recipe, required_fields)
         validate_optional_fields(recipe, optional_fields)
 
-    def format(self):
+    def format(self, short=False):
+        """
+        Format the recipe for printing
+
+        :param bool short: Produce short output
+        """
         recipe_data = self.to_dict()
         kwargs = {}
         kwargs.update(recipe_data)
@@ -691,10 +665,14 @@ class Recipe(object):
             Morey   (SRM/EBC):  {data[total_wort_color_map][srm][morey]} degL / {data[total_wort_color_map][ebc][morey]}
             Daniels (SRM/EBC):  {data[total_wort_color_map][srm][daniels]} degL / {data[total_wort_color_map][ebc][daniels]}
             Mosher  (SRM/EBC):  {data[total_wort_color_map][srm][mosher]} degL / {data[total_wort_color_map][ebc][mosher]}
-
             """.format(**kwargs))  # noqa
 
+        # If short output is requested then return it
+        if short:
+            return msg
+
         msg += textwrap.dedent(u"""\
+
             Grains
             ===================================
 

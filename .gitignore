@@ -12,3 +12,4 @@ dist/
 python-mingus/
 
 data
+*_personal.py

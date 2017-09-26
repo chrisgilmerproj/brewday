@@ -2,7 +2,11 @@
 import math
 
 from ..constants import HOP_TYPE_PELLET
+from ..constants import HOP_TYPE_PLUG
+from ..constants import HOP_TYPE_WHOLE
+from ..constants import HOP_TYPE_WHOLE_WET
 from ..constants import HOP_UTILIZATION_SCALE_PELLET
+from ..constants import HOP_WHOLE_DRY_TO_WET
 from ..constants import HOPS_CONSTANT_IMPERIAL
 from ..constants import HOPS_CONSTANT_SI
 from ..constants import IMPERIAL_TYPES
@@ -12,10 +16,44 @@ from ..constants import SI_UNITS
 from ..validators import validate_units
 
 __all__ = [
+    u'hop_type_weight_conversion',
     u'HopsUtilization',
     u'HopsUtilizationJackieRager',
     u'HopsUtilizationGlennTinseth',
 ]
+
+
+def hop_type_weight_conversion(weight, old_type, new_type):
+    """
+    Convert weight of hops between one type and another
+
+    :param float weight: Weight of the hops
+    :param str old_type: The old hop type to convert from
+    :param str new_type: The new hop type to convert to
+    :return: New weight of the hops
+    :rtype: float
+    """
+    # If same type then no change
+    if old_type == new_type:
+        return weight
+
+    # If hop types are equivalent then no change
+    equivalent_types = [HOP_TYPE_PLUG, HOP_TYPE_WHOLE]
+    if old_type in equivalent_types and new_type in equivalent_types:
+        return weight
+
+    conversion = 1.0
+    if old_type == HOP_TYPE_WHOLE_WET:
+        conversion /= HOP_WHOLE_DRY_TO_WET
+    elif new_type == HOP_TYPE_WHOLE_WET:
+        conversion *= HOP_WHOLE_DRY_TO_WET
+
+    if old_type == HOP_TYPE_PELLET:
+        conversion *= HOP_UTILIZATION_SCALE_PELLET
+    elif new_type == HOP_TYPE_PELLET:
+        conversion /= HOP_UTILIZATION_SCALE_PELLET
+
+    return weight * conversion
 
 
 class HopsUtilization(object):
@@ -74,10 +112,16 @@ class HopsUtilization(object):
             hops_constant = HOPS_CONSTANT_SI
         utilization = self.get_percent_utilization(
             sg, self.hop_addition.boil_time)
+        # Hop weight for wet is greater than dry
+        hop_weight = self.hop_addition.weight
+        if self.hop_addition.hop_type == HOP_TYPE_WHOLE_WET:
+            hop_weight = hop_type_weight_conversion(hop_weight,
+                                                    self.hop_addition.hop_type,
+                                                    HOP_TYPE_WHOLE)
         # Utilization is 10% higher for pellet vs whole/plug
         if self.hop_addition.hop_type == HOP_TYPE_PELLET:
             utilization *= HOP_UTILIZATION_SCALE_PELLET
-        num = (self.hop_addition.weight * utilization *
+        num = (hop_weight * utilization *
                self.hop_addition.hop.percent_alpha_acids *
                hops_constant)
         return num / final_volume

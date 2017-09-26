@@ -46,18 +46,25 @@ GRAIN_TYPE_LIST = [
 HOP_TYPE_PELLET = u'pellet'
 #: Hop type whole leaf
 HOP_TYPE_WHOLE = u'whole'
+#: Hop type whole leaf, wet
+HOP_TYPE_WHOLE_WET = u'whole wet'
 #: Hop type plug
 HOP_TYPE_PLUG = u'plug'
 #: Hop type list
 HOP_TYPE_LIST = [
     HOP_TYPE_PELLET,
     HOP_TYPE_WHOLE,
+    HOP_TYPE_WHOLE_WET,
     HOP_TYPE_PLUG,
 ]
 
 # Hop utilization scale factors
 #: Hop utilization scale factor for pellets
 HOP_UTILIZATION_SCALE_PELLET = 1.1  # 110%
+
+# Wet or fresh hops are needed in a quantity 5-6x more than dry whole hops
+#: Hop whole wet to dry conversion
+HOP_WHOLE_DRY_TO_WET = 5.5
 
 # Conversions
 # Try to define SI to US units instead of US to SI.
@@ -109,6 +116,15 @@ MOISTURE_FINISHED_MALT = 0.04
 # MOISTURE_CORRECTION = 0.002
 #: Moisture correction factor
 MOISTURE_CORRECTION = 0.0
+
+# Commonly used PPG numbers exist for DME and LME but they should be considered
+# as guidelines.
+#: Common PPG for DME
+PPG_DME = 44.0
+#: Common PPG for LME
+PPG_LME = 36.0
+#: Common PPG for Cereal
+PPG_CEREAL = 30.0
 
 # Sucrose is considered 100% extractable in water, so the maximum PPG and
 # Plato are listed here

@@ -1,14 +1,88 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from brew.constants import HOP_TYPE_PELLET
+from brew.constants import HOP_TYPE_PLUG
+from brew.constants import HOP_TYPE_WHOLE
+from brew.constants import HOP_TYPE_WHOLE_WET
+from brew.constants import HOP_UTILIZATION_SCALE_PELLET
+from brew.constants import HOP_WHOLE_DRY_TO_WET
 from brew.constants import IMPERIAL_UNITS
 from brew.constants import SI_UNITS
 from brew.hops import HopAddition
+from brew.utilities.hops import hop_type_weight_conversion
 from brew.utilities.hops import HopsUtilization
 from brew.utilities.hops import HopsUtilizationGlennTinseth
 from brew.utilities.hops import HopsUtilizationJackieRager
 from brew.utilities.sugar import plato_to_sg
 from fixtures import centennial
+
+
+class TestHopUtilities(unittest.TestCase):
+
+    def test_hope_type_weight_conversion_same_type(self):
+        weight = 1.0
+        old_type = HOP_TYPE_PELLET
+        new_type = HOP_TYPE_PELLET
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = 1.0
+        self.assertEquals(new_weight, expected)
+
+    def test_hope_type_weight_conversion_equivalent_types(self):
+        weight = 1.0
+        old_type = HOP_TYPE_PLUG
+        new_type = HOP_TYPE_WHOLE
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = 1.0
+        self.assertEquals(new_weight, expected)
+
+    def test_hope_type_weight_conversion_whole_wet_to_dry(self):
+        weight = HOP_WHOLE_DRY_TO_WET
+        old_type = HOP_TYPE_WHOLE_WET
+        new_type = HOP_TYPE_WHOLE
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = 1.0
+        self.assertEquals(new_weight, expected)
+
+    def test_hope_type_weight_conversion_whole_dry_to_wet(self):
+        weight = 1.0
+        old_type = HOP_TYPE_WHOLE
+        new_type = HOP_TYPE_WHOLE_WET
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = HOP_WHOLE_DRY_TO_WET
+        self.assertEquals(new_weight, expected)
+
+    def test_hope_type_weight_conversion_pellet_to_whole(self):
+        weight = 1.0
+        old_type = HOP_TYPE_PELLET
+        new_type = HOP_TYPE_WHOLE
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = HOP_UTILIZATION_SCALE_PELLET
+        self.assertEquals(new_weight, expected)
+
+    def test_hope_type_weight_conversion_whole_to_pellet(self):
+        weight = HOP_UTILIZATION_SCALE_PELLET
+        old_type = HOP_TYPE_WHOLE
+        new_type = HOP_TYPE_PELLET
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = 1.0
+        self.assertEquals(new_weight, expected)
+
+    def test_hope_type_weight_conversion_pellet_to_whole_wet(self):
+        weight = 1.0
+        old_type = HOP_TYPE_PELLET
+        new_type = HOP_TYPE_WHOLE_WET
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = 1.0 * HOP_UTILIZATION_SCALE_PELLET * HOP_WHOLE_DRY_TO_WET
+        self.assertEquals(new_weight, expected)
+
+    def test_hope_type_weight_conversion_whole_wet_to_pellet(self):
+        weight = 1.0 * HOP_UTILIZATION_SCALE_PELLET * HOP_WHOLE_DRY_TO_WET
+        old_type = HOP_TYPE_WHOLE_WET
+        new_type = HOP_TYPE_PELLET
+        new_weight = hop_type_weight_conversion(weight, old_type, new_type)
+        expected = 1.0
+        self.assertEquals(round(new_weight, 1), expected)
 
 
 class TestHopsUtilization(unittest.TestCase):
@@ -88,6 +162,19 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
                                          self.final_volume)
+        self.assertEquals(round(ibu, 2), 39.18)
+
+    def test_get_ibus_whole_wet(self):
+        # Whole Dry Weight is HOP_UTILIZATION_SCALE_PELLET times more than pellet weight
+        # Whole Wet Weight is HOP_WHOLE_DRY_TO_WET times more than dry weight
+        weight = 0.57 * HOP_UTILIZATION_SCALE_PELLET * HOP_WHOLE_DRY_TO_WET
+        hop_addition = HopAddition(self.hop,
+                                   boil_time=self.boil_time,
+                                   weight=weight,
+                                   hop_type=HOP_TYPE_WHOLE_WET,
+                                   utilization_cls=self.utilization_cls)
+        ibu = hop_addition.get_ibus(self.sg,
+                                    self.final_volume)
         self.assertEquals(round(ibu, 2), 39.18)
 
     def test_get_percent_utilization(self):
@@ -171,6 +258,21 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
     def test_get_ibus(self):
         ibu = self.hop_addition.get_ibus(self.sg,
                                          self.final_volume)
+        self.assertEquals(round(ibu, 2), 28.52)
+
+    def test_get_ibus_whole_wet(self):
+        """
+        Whole Dry Weight is HOP_UTILIZATION_SCALE_PELLET times more than pellet weight
+        Whole Wet Weight is HOP_WHOLE_DRY_TO_WET times more than dry weight
+        """  # noqa
+        weight = 0.57 * HOP_UTILIZATION_SCALE_PELLET * HOP_WHOLE_DRY_TO_WET
+        hop_addition = HopAddition(self.hop,
+                                   boil_time=self.boil_time,
+                                   weight=weight,
+                                   hop_type=HOP_TYPE_WHOLE_WET,
+                                   utilization_cls=self.utilization_cls)
+        ibu = hop_addition.get_ibus(self.sg,
+                                    self.final_volume)
         self.assertEquals(round(ibu, 2), 28.52)
 
     def test_get_bigness_factor(self):

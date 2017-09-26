@@ -2,6 +2,14 @@
 
 ## Version 0.0.8
 
+- Fix grain conversions
+- Fix utilization for extract recipes
+- Add hop type weight conversion utility
+- Add ability to shorten recipe format
+- Add Style Factory Class
+- Add Wet Whole Hop Type
+- Fix strike temperature equation
+- Add mash infusion equation
 - Fix refractometer adjustment method
 - Ensure testing passes in python 3.6
 - Rename percent_brew_house_yield to brew_house_yield

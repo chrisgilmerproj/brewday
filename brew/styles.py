@@ -3,6 +3,7 @@ import json
 import sys
 import textwrap
 
+from .exceptions import ColorException
 from .exceptions import StyleException
 from .validators import validate_required_fields
 
@@ -113,7 +114,7 @@ class Style(object):
 
         :param float og: Original Gravity
         :return: True if matches style, otherwise False
-        :rtyle: bool
+        :rtype: bool
         """
         return (self.og[0] <= og <= self.og[1])
 
@@ -123,7 +124,7 @@ class Style(object):
 
         :param float og: Original Gravity
         :return: List
-        :rtyle: list
+        :rtype: list
         """
         errors = []
         if og < self.og[0]:
@@ -138,7 +139,7 @@ class Style(object):
 
         :param float fg: Final Gravity
         :return: True if matches style, otherwise False
-        :rtyle: bool
+        :rtype: bool
         """
         return (self.fg[0] <= fg <= self.fg[1])
 
@@ -148,7 +149,7 @@ class Style(object):
 
         :param float fg: Final Gravity
         :return: List
-        :rtyle: list
+        :rtype: list
         """
         errors = []
         if fg < self.fg[0]:
@@ -163,7 +164,7 @@ class Style(object):
 
         :param float abv: Alcohol by Volume
         :return: True if matches style, otherwise False
-        :rtyle: bool
+        :rtype: bool
         """
         return (self.abv[0] <= abv <= self.abv[1])
 
@@ -173,7 +174,7 @@ class Style(object):
 
         :param float abv: Alcohol by Volume
         :return: List
-        :rtyle: list
+        :rtype: list
         """
         errors = []
         if abv < self.abv[0]:
@@ -188,7 +189,7 @@ class Style(object):
 
         :param float ibu: IBU
         :return: True if matches style, otherwise False
-        :rtyle: bool
+        :rtype: bool
         """
         return (self.ibu[0] <= ibu <= self.ibu[1])
 
@@ -198,7 +199,7 @@ class Style(object):
 
         :param float ibu: IBU
         :return: List
-        :rtyle: list
+        :rtype: list
         """
         errors = []
         if ibu < self.ibu[0]:
@@ -213,7 +214,7 @@ class Style(object):
 
         :param float color: Color in SRM
         :return: True if matches style, otherwise False
-        :rtyle: bool
+        :rtype: bool
         """
         return (self.color[0] <= color <= self.color[1])
 
@@ -223,7 +224,7 @@ class Style(object):
 
         :param float color: Color in SRM
         :return: List
-        :rtyle: list
+        :rtype: list
         """
         errors = []
         if color < self.color[0]:
@@ -261,7 +262,10 @@ class Style(object):
         errors.extend(self.fg_errors(recipe.fg))
         errors.extend(self.abv_errors(recipe.abv))
         errors.extend(self.ibu_errors(recipe.ibu))
-        errors.extend(self.color_errors(recipe.color))
+        try:
+            errors.extend(self.color_errors(recipe.color))
+        except ColorException:
+            errors.extend(['Color cannot be calculated'])
         return errors
 
     def to_dict(self):
@@ -310,3 +314,48 @@ class Style(object):
             Color (SRM):        {color[0]:0.1f} - {color[1]:0.1f}
             """.format(**kwargs))  # noqa
         return msg
+
+
+class StyleFactory(object):
+
+    def __init__(self, filename):
+        """
+        :param str filename: The filename of a JSON file containing Styles
+        """
+        self.filename = filename
+        with open(filename, 'r') as f:
+            self.data = json.loads(f.read())
+
+    def create_style(self, category, subcategory):
+        """
+        Create a style given a category and subcategory.
+
+        :param int category: The Style Category
+        :param str subcategory: The Style Subcategory
+        :return: A Style Object
+        :rtype: Style
+        """
+        data = self.data.get(str(category), {}).get(subcategory, None)
+        return Style(data['style'],
+                     category=data['category'],
+                     subcategory=data['subcategory'],
+                     og=data['og'],
+                     fg=data['fg'],
+                     abv=data['abv'],
+                     ibu=data['ibu'],
+                     color=data['color'])
+
+    def format(self):
+        msg = []
+        for category in sorted(self.data.keys(), key=int):
+            substyles = self.data[category]
+            for subcategory in sorted(substyles.keys()):
+                try:
+                    style = self.create_style(category, subcategory)
+                    msg.append(style.format())
+                except StyleException:
+                    name = self.data[category][subcategory]['style']
+                    msg.append("{}{} {} - Not parseable".format(category,
+                                                                subcategory,
+                                                                name))
+        return '\n'.join(msg)
