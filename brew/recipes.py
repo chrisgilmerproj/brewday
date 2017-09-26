@@ -14,6 +14,7 @@ from .constants import HOPS_CONSTANT_SI
 from .constants import IMPERIAL_TYPES
 from .constants import IMPERIAL_UNITS
 from .constants import LITER_PER_GAL
+from .constants import PPG_CEREAL
 from .constants import SI_TYPES
 from .constants import SI_UNITS
 from .constants import WATER_WEIGHT_IMPERIAL
@@ -340,8 +341,7 @@ class Recipe(object):
         the brew house yield will decrease the size of the DME
         accordingly.
         """
-        return grain_add.convert_to_dme(
-            brew_house_yield=self.brew_house_yield).weight
+        return grain_add.get_dme_weight()
 
     def get_total_dry_weight(self):
         """
@@ -355,7 +355,7 @@ class Recipe(object):
             weights.append(self.get_grain_add_dry_weight(grain_add))
         return sum(weights)
 
-    def get_grain_add_cereal_weight(self, grain_add):
+    def get_grain_add_cereal_weight(self, grain_add, ppg=PPG_CEREAL):
         """
         Get Grain Addition as Cereal
 
@@ -368,10 +368,7 @@ class Recipe(object):
         the brew house yield will increase the size of the grain
         accordingly.
         """
-        if grain_add.grain_type in [GRAIN_TYPE_DME, GRAIN_TYPE_LME]:
-            return grain_add.get_cereal_weight() / self.brew_house_yield  # noqa
-        else:
-            return grain_add.get_cereal_weight()
+        return grain_add.get_cereal_weight(ppg=ppg)
 
     def get_total_grain_weight(self):
         """
@@ -421,20 +418,6 @@ class Recipe(object):
         :rtype: float
         """
         return self.get_total_ibu() / self.get_boil_gravity_units()
-
-    def get_mash_water_volume(self, liquor_to_grist_ratio):
-        """
-        Get the Mash Water Volume
-
-        :param float liquor_to_grist_ratio: The Liquor to Grist Ratio
-        :return: The mash water volume
-        :rtype: float
-        """
-        water_weight = WATER_WEIGHT_IMPERIAL
-        if self.units == SI_UNITS:
-            water_weight = WATER_WEIGHT_SI
-        return (self.get_total_dry_weight() * liquor_to_grist_ratio /
-                water_weight)
 
     @property
     def abv(self):

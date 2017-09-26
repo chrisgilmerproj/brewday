@@ -8,6 +8,8 @@ from brew.constants import GRAIN_TYPE_DME
 from brew.constants import GRAIN_TYPE_LME
 from brew.constants import GRAIN_TYPE_SPECIALTY
 from brew.constants import IMPERIAL_UNITS
+from brew.constants import PPG_DME
+from brew.constants import PPG_LME
 from brew.constants import SI_UNITS
 from brew.exceptions import GrainException
 from brew.grains import Grain
@@ -18,6 +20,7 @@ from fixtures import pale
 from fixtures import pale_dme
 from fixtures import pale_lme
 from fixtures import pale_add
+from fixtures import ppg_pale
 
 
 class TestGrains(unittest.TestCase):
@@ -32,7 +35,7 @@ class TestGrains(unittest.TestCase):
     def test_unicode(self):
         grain = Grain(u'château pilsen 2rs',
                       color=3.0,
-                      ppg=37.0)
+                      ppg=ppg_pale)
         out = str(grain)
         if sys.version_info[0] >= 3:
             self.assertEquals(out, u'château pilsen 2rs')
@@ -67,7 +70,7 @@ class TestGrains(unittest.TestCase):
     def test_grain_no_color_raises(self):
         with self.assertRaises(GrainException) as ctx:
             Grain(u'pale 2-row',
-                  ppg=37.0)
+                  ppg=ppg_pale)
         self.assertEquals(str(ctx.exception),
                           u'pale 2-row: Must provide color value')
 
@@ -82,7 +85,7 @@ class TestGrains(unittest.TestCase):
         with self.assertRaises(GrainException) as ctx:
             Grain(u'pale 2-row',
                   color=2.0,
-                  ppg=37.0,
+                  ppg=ppg_pale,
                   hwe=308.0)
         self.assertEquals(str(ctx.exception),
                           u'pale 2-row: Cannot provide both ppg and hwe')
@@ -90,34 +93,34 @@ class TestGrains(unittest.TestCase):
     def test_eq(self):
         grain1 = Grain(u'pale 2-row',
                        color=2.0,
-                       ppg=37.0)
+                       ppg=ppg_pale)
         grain2 = Grain(u'pale 2-row',
                        color=2.0,
-                       ppg=37.0)
+                       ppg=ppg_pale)
         self.assertEquals(grain1, grain2)
 
     def test_ne_name(self):
         grain1 = Grain(u'pale 2-row',
                        color=2.0,
-                       ppg=37.0)
+                       ppg=ppg_pale)
         grain2 = Grain(u'pale row',
                        color=2.0,
-                       ppg=37.0)
+                       ppg=ppg_pale)
         self.assertTrue(grain1 != grain2)
 
     def test_ne_color(self):
         grain1 = Grain(u'pale 2-row',
                        color=2.0,
-                       ppg=37.0)
+                       ppg=ppg_pale)
         grain2 = Grain(u'pale 2-row',
                        color=4.0,
-                       ppg=37.0)
+                       ppg=ppg_pale)
         self.assertTrue(grain1 != grain2)
 
     def test_ne_ppg(self):
         grain1 = Grain(u'pale 2-row',
                        color=2.0,
-                       ppg=37.0)
+                       ppg=ppg_pale)
         grain2 = Grain(u'pale 2-row',
                        color=2.0,
                        ppg=35.0)
@@ -130,7 +133,7 @@ class TestGrains(unittest.TestCase):
         out = self.grain.to_dict()
         expected = {u'name': u'pale 2-row',
                     u'color': 2.0,
-                    u'ppg': 37.0,
+                    u'ppg': ppg_pale,
                     u'hwe': 308.78,
                     }
         self.assertEquals(out, expected)
@@ -140,13 +143,24 @@ class TestGrains(unittest.TestCase):
         expected = u'{"color": 2.0, "hwe": 308.78, "name": "pale 2-row", "ppg": 37.0}'  # noqa
         self.assertEquals(out, expected)
 
+    def test_convert_to_cereal(self):
+        ppg = ppg_pale
+        ga_cereal = pale_lme.convert_to_cereal(ppg=ppg)
+        self.assertEquals(ga_cereal.ppg, ppg)
+
+    def test_convert_to_cereal_raises(self):
+        with self.assertRaises(GrainException) as ctx:
+            pale_lme.convert_to_cereal()
+        self.assertEquals(str(ctx.exception),
+                          u'Must provide PPG to convert to cereal')
+
     def test_convert_to_lme(self):
-        ga_lme = self.grain.convert_to_lme()
-        self.assertEquals(ga_lme.ppg, 36)
+        ga_lme = self.grain.convert_to_lme(ppg=PPG_LME)
+        self.assertEquals(ga_lme.ppg, PPG_LME)
 
     def test_convert_to_dme(self):
-        ga_dme = self.grain.convert_to_dme()
-        self.assertEquals(ga_dme.ppg, 44)
+        ga_dme = self.grain.convert_to_dme(ppg=PPG_DME)
+        self.assertEquals(ga_dme.ppg, PPG_DME)
 
 
 class TestGrainAdditions(unittest.TestCase):
@@ -161,7 +175,7 @@ class TestGrainAdditions(unittest.TestCase):
     def test_unicode(self):
         grain = Grain(u'château pilsen 2rs',
                       color=3.0,
-                      ppg=37.0)
+                      ppg=ppg_pale)
         grain_add = GrainAddition(grain,
                                   weight=0.78)
         out = str(grain_add)
@@ -178,52 +192,52 @@ class TestGrainAdditions(unittest.TestCase):
         grain_add = GrainAddition(pale, weight=13.96,
                                   grain_type=GRAIN_TYPE_CEREAL)
         self.assertEquals(grain_add.grain_type, GRAIN_TYPE_CEREAL)
-        out = grain_add.get_cereal_weight()
+        out = grain_add.get_cereal_weight(ppg=ppg_pale)
         self.assertEqual(round(out, 2), 13.96)
         out = grain_add.get_lme_weight()
-        self.assertEqual(round(out, 2), 10.47)
+        self.assertEqual(round(out, 2), 14.35)
         out = grain_add.get_dme_weight()
-        self.assertEqual(round(out, 2), 8.38)
+        self.assertEqual(round(out, 2), 11.74)
 
     def test_get_weight_lme(self):
-        grain_add = GrainAddition(pale, weight=10.47,
+        grain_add = GrainAddition(pale_lme, weight=14.35,
                                   grain_type=GRAIN_TYPE_LME)
         self.assertEquals(grain_add.grain_type, GRAIN_TYPE_LME)
-        out = grain_add.get_cereal_weight()
-        self.assertEqual(round(out, 2), 10.76)
+        out = grain_add.get_cereal_weight(ppg=ppg_pale)
+        self.assertEqual(round(out, 2), 13.96)
         out = grain_add.get_lme_weight()
-        self.assertEqual(round(out, 2), 10.47)
+        self.assertEqual(round(out, 2), 14.35)
         out = grain_add.get_dme_weight()
-        self.assertEqual(round(out, 2), 8.38)
+        self.assertEqual(round(out, 2), 11.74)
 
-    def test_get_weight_dry(self):
-        grain_add = GrainAddition(pale, weight=8.38,
+    def test_get_weight_dme(self):
+        grain_add = GrainAddition(pale_dme, weight=11.74,
                                   grain_type=GRAIN_TYPE_DME)
         self.assertEquals(grain_add.grain_type, GRAIN_TYPE_DME)
-        out = grain_add.get_cereal_weight()
-        self.assertEqual(round(out, 2), 7.05)
+        out = grain_add.get_cereal_weight(ppg=ppg_pale)
+        self.assertEqual(round(out, 2), 13.96)
         out = grain_add.get_lme_weight()
-        self.assertEqual(round(out, 2), 10.48)
+        self.assertEqual(round(out, 2), 14.35)
         out = grain_add.get_dme_weight()
-        self.assertEqual(round(out, 2), 8.38)
+        self.assertEqual(round(out, 2), 11.74)
 
     def test_get_weight_specialty(self):
         grain_add = GrainAddition(pale, weight=13.96,
                                   grain_type=GRAIN_TYPE_SPECIALTY)
         self.assertEquals(grain_add.grain_type, GRAIN_TYPE_SPECIALTY)
-        out = grain_add.get_cereal_weight()
+        out = grain_add.get_cereal_weight(ppg=ppg_pale)
         self.assertEqual(round(out, 2), 13.96)
         out = grain_add.get_lme_weight()
-        self.assertEqual(round(out, 2), 12.42)
+        self.assertEqual(round(out, 2), 14.35)
         out = grain_add.get_dme_weight()
-        self.assertEqual(round(out, 2), 9.94)
+        self.assertEqual(round(out, 2), 11.74)
 
     def test_get_weight_map(self):
         out = self.grain_add.get_weight_map()
         expected = {
             u'grain_weight': 13.96,
-            u'lme_weight': 10.47,
-            u'dry_weight': 8.38,
+            u'lme_weight': 14.35,
+            u'dry_weight': 11.74,
         }
         self.assertEquals(out, expected)
 
@@ -231,43 +245,49 @@ class TestGrainAdditions(unittest.TestCase):
         grain_add = GrainAddition(pale,
                                   weight=1.0,
                                   grain_type=GRAIN_TYPE_CEREAL)
-        ga_cereal = grain_add.convert_to_cereal(brew_house_yield=BHY)
-        ga_lme = grain_add.convert_to_lme(brew_house_yield=BHY)
-        ga_dme = grain_add.convert_to_dme(brew_house_yield=BHY)
+        ga_cereal = grain_add.convert_to_cereal(ppg=ppg_pale,
+                                                brew_house_yield=BHY)
+        ga_lme = grain_add.convert_to_lme(ppg=PPG_LME, brew_house_yield=BHY)
+        ga_dme = grain_add.convert_to_dme(ppg=PPG_DME, brew_house_yield=BHY)
 
         self.assertEquals(ga_cereal.weight, 1.0)
         self.assertEquals(round(ga_lme.weight, 2), 0.72)
         self.assertEquals(round(ga_dme.weight, 2), 0.59)
-        self.assertEquals(ga_lme.grain.ppg, 36)
-        self.assertEquals(ga_dme.grain.ppg, 44)
+
+    def test_convert_to_cereal_raises(self):
+        grain_add = GrainAddition(pale_lme,
+                                  weight=1.0,
+                                  grain_type=GRAIN_TYPE_LME)
+        with self.assertRaises(GrainException) as ctx:
+            grain_add.convert_to_cereal(brew_house_yield=BHY)
+        self.assertEquals(str(ctx.exception),
+                          u'Must provide PPG to convert to cereal')
 
     def test_convert_to_lme(self):
         grain_add = GrainAddition(pale_lme,
                                   weight=1.0,
                                   grain_type=GRAIN_TYPE_LME)
-        ga_cereal = grain_add.convert_to_cereal(brew_house_yield=BHY)
-        ga_lme = grain_add.convert_to_lme(brew_house_yield=BHY)
-        ga_dme = grain_add.convert_to_dme(brew_house_yield=BHY)
+        ga_cereal = grain_add.convert_to_cereal(ppg=ppg_pale,
+                                                brew_house_yield=BHY)
+        ga_lme = grain_add.convert_to_lme(ppg=PPG_LME, brew_house_yield=BHY)
+        ga_dme = grain_add.convert_to_dme(ppg=PPG_DME, brew_house_yield=BHY)
 
-        self.assertEquals(round(ga_cereal.weight, 2), 1.43)
+        self.assertEquals(round(ga_cereal.weight, 2), 1.39)
         self.assertEquals(ga_lme.weight, 1.0)
         self.assertEquals(round(ga_dme.weight, 2), 0.82)
-        self.assertEquals(ga_lme.grain.ppg, 36)
-        self.assertEquals(ga_dme.grain.ppg, 44)
 
     def test_convert_to_dme(self):
         grain_add = GrainAddition(pale_dme,
                                   weight=1.0,
                                   grain_type=GRAIN_TYPE_DME)
-        ga_cereal = grain_add.convert_to_cereal(brew_house_yield=BHY)
-        ga_lme = grain_add.convert_to_lme(brew_house_yield=BHY)
-        ga_dme = grain_add.convert_to_dme(brew_house_yield=BHY)
+        ga_cereal = grain_add.convert_to_cereal(ppg=ppg_pale,
+                                                brew_house_yield=BHY)
+        ga_lme = grain_add.convert_to_lme(ppg=PPG_LME, brew_house_yield=BHY)
+        ga_dme = grain_add.convert_to_dme(ppg=PPG_DME, brew_house_yield=BHY)
 
-        self.assertEquals(round(ga_cereal.weight, 2), 1.43)
+        self.assertEquals(round(ga_cereal.weight, 2), 1.7)
         self.assertEquals(round(ga_lme.weight, 2), 1.22)
         self.assertEquals(ga_dme.weight, 1.0)
-        self.assertEquals(ga_lme.grain.ppg, 36)
-        self.assertEquals(ga_dme.grain.ppg, 44)
 
     def test_eq(self):
         grain_add1 = GrainAddition(pale, weight=13.96)
@@ -314,7 +334,7 @@ class TestGrainAdditions(unittest.TestCase):
         expected = {u'name': u'pale 2-row',
                     u'data': {
                         u'color': 2.0,
-                        u'ppg': 37.0,
+                        u'ppg': ppg_pale,
                         u'hwe': 308.78,
                     },
                     u'grain_type': u'cereal',

@@ -117,6 +117,15 @@ MOISTURE_FINISHED_MALT = 0.04
 #: Moisture correction factor
 MOISTURE_CORRECTION = 0.0
 
+# Commonly used PPG numbers exist for DME and LME but they should be considered
+# as guidelines.
+#: Common PPG for DME
+PPG_DME = 44.0
+#: Common PPG for LME
+PPG_LME = 36.0
+#: Common PPG for Cereal
+PPG_CEREAL = 30.0
+
 # Sucrose is considered 100% extractable in water, so the maximum PPG and
 # Plato are listed here
 #: Maximum Plato for 100% sugar dissolved in water

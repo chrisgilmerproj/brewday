@@ -11,15 +11,17 @@ from brew.yeasts import Yeast
 BHY = 0.70
 
 # Define Grains
+ppg_pale = 37.0
 pale = Grain(u'pale 2-row',
              color=2.0,
-             ppg=37.0)
+             ppg=ppg_pale)
 pale_lme = pale.convert_to_lme()
 pale_dme = pale.convert_to_dme()
 
+ppg_crystal = 35.0
 crystal = Grain(u'crystal C20',
                 color=20.0,
-                ppg=35.0)
+                ppg=ppg_crystal)
 grain_list = [pale, crystal]
 
 pale_add = GrainAddition(pale,
