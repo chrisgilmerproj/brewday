@@ -22,6 +22,7 @@ setup(
     entry_points={
         'console_scripts': [
             'abv = brew.cli.abv:main',
+            'gv = brew.cli.gravity_volume:main',
             'sugar = brew.cli.sugar:main',
             'temp = brew.cli.temp:main',
             'yeast = brew.cli.yeast:main',

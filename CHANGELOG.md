@@ -2,6 +2,8 @@
 
 ## Version 0.0.8
 
+- Add equation to get boiling point at different altitudes
+- Add a gravity-volume converter cli
 - Fix grain conversions
 - Fix utilization for extract recipes
 - Add hop type weight conversion utility

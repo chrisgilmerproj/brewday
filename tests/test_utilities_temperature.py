@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from brew.utilities.temperature import boiling_point
 from brew.utilities.temperature import celsius_to_fahrenheit
 from brew.utilities.temperature import fahrenheit_to_celsius
 from brew.utilities.temperature import mash_infusion
@@ -32,3 +33,9 @@ class TestTemperatureUtilities(unittest.TestCase):
     def test_mash_infusion(self):
         vol = mash_infusion(140.0, 104.0, 8.0, 8.0, 210.0)
         self.assertEquals(round(vol, 2), 4.94)
+
+    def test_boiling_point(self):
+        bp = boiling_point(0)
+        self.assertEquals(round(bp, 2), 212.01)
+        bp = boiling_point(3000)
+        self.assertEquals(round(bp, 2), 206.62)
