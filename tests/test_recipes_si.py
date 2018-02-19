@@ -291,7 +291,7 @@ class TestRecipeSIUnits(unittest.TestCase):
             Start Volume:       26.5
             Final Volume:       18.9
 
-            Boil Gravity:       1.054
+            Boil Gravity:       1.054 (Evaporation @ 0.0%)
             Original Gravity:   1.076
             Final Gravity:      1.019
 

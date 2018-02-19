@@ -280,7 +280,7 @@ class TestRecipeImperialUnits(unittest.TestCase):
             Start Volume:       7.0
             Final Volume:       5.0
 
-            Boil Gravity:       1.054
+            Boil Gravity:       1.054 (Evaporation @ 0.0%)
             Original Gravity:   1.076
             Final Gravity:      1.019
 

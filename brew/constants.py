@@ -168,5 +168,6 @@ ABV_CONST = 131.25  # RATIO_C2H6O_TO_CO2 / ALCOHOL_SPECIFIC_GRAVITY * 100.0
 #: Weight Tolerance, considered equal within this range
 WEIGHT_TOLERANCE = 0.005
 
+# TBD: Set to zero until more testing is completed
 #: Percent of water evaporated during boil, usually 8% or between 8%-10%
-BOIL_EVAPORATION = 0.00
+BOIL_EVAPORATION = 0.0

@@ -2,6 +2,7 @@
 
 ## Version 0.0.8
 
+- Add tools to determine amount of sugar needed to correct wort during brew
 - Add equation to get boiling point at different altitudes
 - Add a gravity-volume converter cli
 - Fix grain conversions
