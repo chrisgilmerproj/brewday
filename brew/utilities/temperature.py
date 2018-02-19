@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import math
+
 __all__ = [
     u'fahrenheit_to_celsius',
     u'celsius_to_fahrenheit',
     u'strike_temp',
     u'mash_infusion',
+    u'boiling_point',
 ]
 
 
@@ -68,3 +71,19 @@ def mash_infusion(target_temp, initial_temp,
     return (target_temp - initial_temp) \
         * (0.2 * grain_weight + water_volume) \
         / (infusion_temp - target_temp)
+
+
+def boiling_point(altitude):
+    """
+    Get the boiling point at a specific altitude
+
+    https://www.omnicalculator.com/chemistry/boiling-point-altitude
+
+    :param float altitude: Altitude in feet (ft)
+    :return: The boiling point in degF
+    :rtype: float
+    """
+
+    pressure = 29.921 * pow((1 - 0.0000068753 * altitude), 5.2559)
+    boiling_point = 49.161 * math.log(pressure) + 44.932
+    return boiling_point
