@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version 0.0.8
+## Version 1.0.0
 
 - Add tools to determine amount of sugar needed to correct wort during brew
 - Add equation to get boiling point at different altitudes
