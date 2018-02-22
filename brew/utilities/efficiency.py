@@ -5,6 +5,7 @@ from ..constants import PPG_DME
 
 __all__ = [
     u'calculate_brew_house_yield',
+    u'get_wort_correction',
 ]
 
 
@@ -41,6 +42,8 @@ def get_wort_correction(boil_gravity, boil_volume,
     :param float boil_volume: The volume of the boil
     :param float final_gravity: The desired final gravity in GU
     :param float final_volume: The desired final volume
-    :param float efficiency: The efficiency of the medium to add
-    """
+    :param float efficiency: The efficiency of the medium to add in PPG (GU/lbs/gallon)
+    :return: The amount of DME or LME to add to the boil in lbs
+    :rtype: float
+    """  # noqa
     return (final_gravity * final_volume - boil_gravity * boil_volume) / efficiency  # noqa

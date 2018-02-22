@@ -118,12 +118,12 @@ MOISTURE_FINISHED_MALT = 0.04
 MOISTURE_CORRECTION = 0.0
 
 # Commonly used PPG numbers exist for DME and LME but they should be considered
-# as guidelines.
-#: Common PPG for DME
+# as guidelines. The units are GU/lbs/gallon (points-pounds-gallon or PPG).
+#: Common PPG for DME in GU/lbs/gallon
 PPG_DME = 44.0
-#: Common PPG for LME
+#: Common PPG for LME in GU/lbs/gallon
 PPG_LME = 36.0
-#: Common PPG for Cereal
+#: Common PPG for Cereal in GU/lbs/gallon
 PPG_CEREAL = 30.0
 
 # Sucrose is considered 100% extractable in water, so the maximum PPG and

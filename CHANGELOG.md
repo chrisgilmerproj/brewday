@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 1.0.1
+
+- Add get_wort_correction to __all__
+- Fix documentation for PPG
+
 ## Version 1.0.0
 
 - Add tools to determine amount of sugar needed to correct wort during brew
