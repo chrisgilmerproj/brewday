@@ -2,6 +2,7 @@
 
 ## Version 1.0.1
 
+- Include gv utility in README
 - Add get_wort_correction to __all__
 - Fix documentation for PPG
 
