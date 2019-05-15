@@ -4,13 +4,13 @@ from ..constants import ALCOHOL_SPECIFIC_GRAVITY
 from .sugar import apparent_extract_to_real_extract
 
 __all__ = [
-    u'apparent_attenuation',
-    u'real_attenuation',
-    u'real_attenuation_from_apparent_extract',
-    u'alcohol_by_volume_standard',
-    u'final_gravity_from_abv_standard',
-    u'alcohol_by_volume_alternative',
-    u'alcohol_by_weight',
+    u"apparent_attenuation",
+    u"real_attenuation",
+    u"real_attenuation_from_apparent_extract",
+    u"alcohol_by_volume_standard",
+    u"final_gravity_from_abv_standard",
+    u"alcohol_by_volume_alternative",
+    u"alcohol_by_weight",
 ]
 
 
@@ -53,8 +53,7 @@ def real_attenuation_from_apparent_extract(original_extract, apparent_extract):
     :return: The percent of real attenuation
     :rtype: float
     """
-    real_extract = apparent_extract_to_real_extract(original_extract,
-                                                    apparent_extract)
+    real_extract = apparent_extract_to_real_extract(original_extract, apparent_extract)
     return real_attenuation(original_extract, real_extract)
 
 

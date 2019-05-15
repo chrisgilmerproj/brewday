@@ -16,10 +16,10 @@ from ..constants import SI_UNITS
 from ..validators import validate_units
 
 __all__ = [
-    u'hop_type_weight_conversion',
-    u'HopsUtilization',
-    u'HopsUtilizationJackieRager',
-    u'HopsUtilizationGlennTinseth',
+    u"hop_type_weight_conversion",
+    u"HopsUtilization",
+    u"HopsUtilizationJackieRager",
+    u"HopsUtilizationGlennTinseth",
 ]
 
 
@@ -61,8 +61,7 @@ class HopsUtilization(object):
     http://www.boondocks-brewing.com/hops
     """
 
-    def __init__(self, hop_addition,
-                 units=IMPERIAL_UNITS):
+    def __init__(self, hop_addition, units=IMPERIAL_UNITS):
         """
         :param HopAddition hop_addition: A hop addition
         :param str units: The units
@@ -95,8 +94,7 @@ class HopsUtilization(object):
             units = SI_UNITS
         elif self.units == SI_UNITS:
             units = IMPERIAL_UNITS
-        return HopsUtilization(self.hop_addition,
-                               units=units)
+        return HopsUtilization(self.hop_addition, units=units)
 
     def get_ibus(self, sg, final_volume):
         """
@@ -110,20 +108,22 @@ class HopsUtilization(object):
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
             hops_constant = HOPS_CONSTANT_SI
-        utilization = self.get_percent_utilization(
-            sg, self.hop_addition.boil_time)
+        utilization = self.get_percent_utilization(sg, self.hop_addition.boil_time)
         # Hop weight for wet is greater than dry
         hop_weight = self.hop_addition.weight
         if self.hop_addition.hop_type == HOP_TYPE_WHOLE_WET:
-            hop_weight = hop_type_weight_conversion(hop_weight,
-                                                    self.hop_addition.hop_type,
-                                                    HOP_TYPE_WHOLE)
+            hop_weight = hop_type_weight_conversion(
+                hop_weight, self.hop_addition.hop_type, HOP_TYPE_WHOLE
+            )
         # Utilization is 10% higher for pellet vs whole/plug
         if self.hop_addition.hop_type == HOP_TYPE_PELLET:
             utilization *= HOP_UTILIZATION_SCALE_PELLET
-        num = (hop_weight * utilization *
-               self.hop_addition.hop.percent_alpha_acids *
-               hops_constant)
+        num = (
+            hop_weight
+            * utilization
+            * self.hop_addition.hop.percent_alpha_acids
+            * hops_constant
+        )
         return num / final_volume
 
     @classmethod
@@ -173,23 +173,30 @@ class HopsUtilization(object):
         boil_time_list = list(range(0, 60, 3)) + list(range(60, 130, 10))
         table = cls.get_utilization_table(gravity_list, boil_time_list)
 
-        title = u'Percent Alpha Acid Utilization - ' \
-                u'Boil Time vs Wort Original Gravity'
+        title = (
+            u"Percent Alpha Acid Utilization - " u"Boil Time vs Wort Original Gravity"
+        )
         table_size = 92
 
         out = []
         out.append(title.center(table_size))
-        out.append(str(u'=' * len(title)).center(table_size))
-        out.append(u'\n')
-        out.append(u' '.join([u' ' * 4] + [u'{0:7.3f}'.format(l / 1000.0)
-                   for l in gravity_list]))
-        out.append(u'-' * table_size)
+        out.append(str(u"=" * len(title)).center(table_size))
+        out.append(u"\n")
+        out.append(
+            u" ".join(
+                [u" " * 4] + [u"{0:7.3f}".format(l / 1000.0) for l in gravity_list]
+            )
+        )
+        out.append(u"-" * table_size)
         for index, line in enumerate(table):
             boil_time = boil_time_list[index]
-            out.append(u'{0} {1}'.format(
-                str(boil_time).rjust(4),
-                u' '.join([u'{0:7.3f}'.format(aau) for aau in line])))
-        return u'\n'.join([o.rstrip() for o in out if o != u'\n'])
+            out.append(
+                u"{0} {1}".format(
+                    str(boil_time).rjust(4),
+                    u" ".join([u"{0:7.3f}".format(aau) for aau in line]),
+                )
+            )
+        return u"\n".join([o.rstrip() for o in out if o != u"\n"])
 
 
 class HopsUtilizationJackieRager(HopsUtilization):

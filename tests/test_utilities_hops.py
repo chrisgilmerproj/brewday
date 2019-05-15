@@ -19,7 +19,6 @@ from fixtures import centennial
 
 
 class TestHopUtilities(unittest.TestCase):
-
     def test_hope_type_weight_conversion_same_type(self):
         weight = 1.0
         old_type = HOP_TYPE_PELLET
@@ -86,26 +85,22 @@ class TestHopUtilities(unittest.TestCase):
 
 
 class TestHopsUtilization(unittest.TestCase):
-
     def setUp(self):
         self.utilization_cls = HopsUtilization
         self.hop = centennial
-        self.addition_kwargs = [
-            {
-                u'boil_time': 60.0,
-                u'weight': 0.57,
-            }
-        ]
+        self.addition_kwargs = [{u"boil_time": 60.0, u"weight": 0.57}]
 
         # Additions
         self.plato = 14.0
         self.sg = plato_to_sg(self.plato)
         self.final_volume = 5.0
         self.boil_time = 60.0
-        self.hop_addition = HopAddition(self.hop,
-                                        boil_time=self.boil_time,
-                                        weight=0.57,
-                                        utilization_cls=self.utilization_cls)
+        self.hop_addition = HopAddition(
+            self.hop,
+            boil_time=self.boil_time,
+            weight=0.57,
+            utilization_cls=self.utilization_cls,
+        )
 
     def test_get_ibus_raises(self):
         with self.assertRaises(NotImplementedError):
@@ -114,11 +109,11 @@ class TestHopsUtilization(unittest.TestCase):
     def test_get_percent_utilization_raises(self):
         with self.assertRaises(NotImplementedError):
             self.hop_addition.utilization_cls.get_percent_utilization(
-                self.sg, self.final_volume)
+                self.sg, self.final_volume
+            )
 
     def test_change_units(self):
-        self.assertEquals(self.hop_addition.utilization_cls.units,
-                          IMPERIAL_UNITS)
+        self.assertEquals(self.hop_addition.utilization_cls.units, IMPERIAL_UNITS)
         util = self.hop_addition.utilization_cls.change_units()
         self.assertEquals(util.units, SI_UNITS)
         util = util.change_units()
@@ -126,30 +121,25 @@ class TestHopsUtilization(unittest.TestCase):
 
 
 class TestHopsUtilizationJackieRager(unittest.TestCase):
-
     def setUp(self):
         self.utilization_cls = HopsUtilizationJackieRager
         self.hop = centennial
-        self.addition_kwargs = [
-            {
-                u'boil_time': 60.0,
-                u'weight': 0.57,
-            }
-        ]
+        self.addition_kwargs = [{u"boil_time": 60.0, u"weight": 0.57}]
 
         # Additions
         self.plato = 14.0
         self.sg = plato_to_sg(self.plato)
         self.final_volume = 5.0
         self.boil_time = 60.0
-        self.hop_addition = HopAddition(self.hop,
-                                        boil_time=self.boil_time,
-                                        weight=0.57,
-                                        utilization_cls=self.utilization_cls)
+        self.hop_addition = HopAddition(
+            self.hop,
+            boil_time=self.boil_time,
+            weight=0.57,
+            utilization_cls=self.utilization_cls,
+        )
 
     def test_str(self):
-        self.assertEquals(str(self.hop_addition.utilization_cls),
-                          u"Jackie Rager")
+        self.assertEquals(str(self.hop_addition.utilization_cls), u"Jackie Rager")
 
     def test_get_c_gravity(self):
         out = self.hop_addition.utilization_cls.get_c_gravity(self.sg)
@@ -160,41 +150,40 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
         self.assertEquals(round(out, 3), 1.000)
 
     def test_get_ibus(self):
-        ibu = self.hop_addition.get_ibus(self.sg,
-                                         self.final_volume)
+        ibu = self.hop_addition.get_ibus(self.sg, self.final_volume)
         self.assertEquals(round(ibu, 2), 39.18)
 
     def test_get_ibus_whole_wet(self):
         # Whole Dry Weight is HOP_UTILIZATION_SCALE_PELLET times more than pellet weight
         # Whole Wet Weight is HOP_WHOLE_DRY_TO_WET times more than dry weight
         weight = 0.57 * HOP_UTILIZATION_SCALE_PELLET * HOP_WHOLE_DRY_TO_WET
-        hop_addition = HopAddition(self.hop,
-                                   boil_time=self.boil_time,
-                                   weight=weight,
-                                   hop_type=HOP_TYPE_WHOLE_WET,
-                                   utilization_cls=self.utilization_cls)
-        ibu = hop_addition.get_ibus(self.sg,
-                                    self.final_volume)
+        hop_addition = HopAddition(
+            self.hop,
+            boil_time=self.boil_time,
+            weight=weight,
+            hop_type=HOP_TYPE_WHOLE_WET,
+            utilization_cls=self.utilization_cls,
+        )
+        ibu = hop_addition.get_ibus(self.sg, self.final_volume)
         self.assertEquals(round(ibu, 2), 39.18)
 
     def test_get_percent_utilization(self):
         utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # noqa
-                self.sg, self.boil_time)
+            self.sg, self.boil_time
+        )
         self.assertEquals(round(utilization * 100, 2), 29.80)
 
     def test_get_utilization_table(self):
         gravity_list = list(range(1030, 1140, 10))
         boil_time_list = list(range(0, 60, 3)) + list(range(60, 130, 10))
-        table = self.utilization_cls.get_utilization_table(
-            gravity_list,
-            boil_time_list)
+        table = self.utilization_cls.get_utilization_table(gravity_list, boil_time_list)
         self.assertEquals(table[0][0], 0.051)
         self.assertEquals(table[13][5], 0.205)
         self.assertEquals(table[26][10], 0.228)
 
     def test_format_utilization_table(self):
         out = self.utilization_cls.format_utilization_table()
-        expected = (u"""\
+        expected = u"""\
             Percent Alpha Acid Utilization - Boil Time vs Wort Original Gravity
             ===================================================================
        1.030   1.040   1.050   1.060   1.070   1.080   1.090   1.100   1.110   1.120   1.130
@@ -225,39 +214,33 @@ class TestHopsUtilizationJackieRager(unittest.TestCase):
   90   0.319   0.319   0.319   0.304   0.290   0.278   0.266   0.255   0.246   0.236   0.228
  100   0.320   0.320   0.320   0.304   0.290   0.278   0.266   0.256   0.246   0.237   0.228
  110   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228
- 120   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228""")  # noqa
+ 120   0.320   0.320   0.320   0.304   0.291   0.278   0.266   0.256   0.246   0.237   0.228"""  # noqa
         self.assertEquals(out, expected)
 
 
 class TestHopsUtilizationGlennTinseth(unittest.TestCase):
-
     def setUp(self):
         self.utilization_cls = HopsUtilizationGlennTinseth
         self.hop = centennial
-        self.addition_kwargs = [
-            {
-                u'boil_time': 60.0,
-                u'weight': 0.57,
-            }
-        ]
+        self.addition_kwargs = [{u"boil_time": 60.0, u"weight": 0.57}]
 
         # Additions
         self.plato = 14.0
         self.sg = plato_to_sg(self.plato)
         self.final_volume = 5.0
         self.boil_time = 60.0
-        self.hop_addition = HopAddition(self.hop,
-                                        boil_time=self.boil_time,
-                                        weight=0.57,
-                                        utilization_cls=self.utilization_cls)
+        self.hop_addition = HopAddition(
+            self.hop,
+            boil_time=self.boil_time,
+            weight=0.57,
+            utilization_cls=self.utilization_cls,
+        )
 
     def test_str(self):
-        self.assertEquals(str(self.hop_addition.utilization_cls),
-                          u"Glenn Tinseth")
+        self.assertEquals(str(self.hop_addition.utilization_cls), u"Glenn Tinseth")
 
     def test_get_ibus(self):
-        ibu = self.hop_addition.get_ibus(self.sg,
-                                         self.final_volume)
+        ibu = self.hop_addition.get_ibus(self.sg, self.final_volume)
         self.assertEquals(round(ibu, 2), 28.52)
 
     def test_get_ibus_whole_wet(self):
@@ -266,13 +249,14 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         Whole Wet Weight is HOP_WHOLE_DRY_TO_WET times more than dry weight
         """  # noqa
         weight = 0.57 * HOP_UTILIZATION_SCALE_PELLET * HOP_WHOLE_DRY_TO_WET
-        hop_addition = HopAddition(self.hop,
-                                   boil_time=self.boil_time,
-                                   weight=weight,
-                                   hop_type=HOP_TYPE_WHOLE_WET,
-                                   utilization_cls=self.utilization_cls)
-        ibu = hop_addition.get_ibus(self.sg,
-                                    self.final_volume)
+        hop_addition = HopAddition(
+            self.hop,
+            boil_time=self.boil_time,
+            weight=weight,
+            hop_type=HOP_TYPE_WHOLE_WET,
+            utilization_cls=self.utilization_cls,
+        )
+        ibu = hop_addition.get_ibus(self.sg, self.final_volume)
         self.assertEquals(round(ibu, 2), 28.52)
 
     def test_get_bigness_factor(self):
@@ -280,11 +264,11 @@ class TestHopsUtilizationGlennTinseth(unittest.TestCase):
         self.assertEquals(round(bf, 2), 0.99)
 
     def test_get_boil_time_factor(self):
-        bf = self.hop_addition.utilization_cls.get_boil_time_factor(
-            self.boil_time)
+        bf = self.hop_addition.utilization_cls.get_boil_time_factor(self.boil_time)
         self.assertEquals(round(bf, 2), 0.22)
 
     def test_get_percent_utilization(self):
         utilization = self.hop_addition.utilization_cls.get_percent_utilization(  # noqa
-                self.sg, self.boil_time)
+            self.sg, self.boil_time
+        )
         self.assertEquals(round(utilization * 100, 2), 21.69)

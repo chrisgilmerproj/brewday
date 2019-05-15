@@ -13,7 +13,6 @@ from brew.utilities.sugar import sg_to_plato
 
 
 class TestABVUtilities(unittest.TestCase):
-
     def test_apparent_attenuation(self):
         oe = sg_to_plato(1.060)
         ae = sg_to_plato(1.010)

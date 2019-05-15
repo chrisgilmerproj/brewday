@@ -22,7 +22,6 @@ from brew.utilities.malt import specialty_grain_to_liquid_malt_weight
 
 
 class TestMaltUtilities(unittest.TestCase):
-
     def test_dry_to_liquid_malt_weight(self):
         out = dry_to_liquid_malt_weight(5.0)
         self.assertEquals(out, 6.25)

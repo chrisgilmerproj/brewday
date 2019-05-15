@@ -10,24 +10,24 @@ from ..validators import validate_percentage
 from .sugar import gu_to_sg
 
 __all__ = [
-    u'dry_to_liquid_malt_weight',
-    u'liquid_to_dry_malt_weight',
-    u'grain_to_liquid_malt_weight',
-    u'liquid_malt_to_grain_weight',
-    u'dry_malt_to_grain_weight',
-    u'grain_to_dry_malt_weight',
-    u'specialty_grain_to_liquid_malt_weight',
-    u'liquid_malt_to_specialty_grain_weight',
-    u'fine_grind_to_coarse_grind',
-    u'coarse_grind_to_fine_grind',
-    u'dry_basis_to_as_is_basis',
-    u'as_is_basis_to_dry_basis',
-    u'sg_from_dry_basis',
-    u'plato_from_dry_basis',
-    u'basis_to_hwe',
-    u'hwe_to_basis',
-    u'ppg_to_hwe',
-    u'hwe_to_ppg',
+    u"dry_to_liquid_malt_weight",
+    u"liquid_to_dry_malt_weight",
+    u"grain_to_liquid_malt_weight",
+    u"liquid_malt_to_grain_weight",
+    u"dry_malt_to_grain_weight",
+    u"grain_to_dry_malt_weight",
+    u"specialty_grain_to_liquid_malt_weight",
+    u"liquid_malt_to_specialty_grain_weight",
+    u"fine_grind_to_coarse_grind",
+    u"coarse_grind_to_fine_grind",
+    u"dry_basis_to_as_is_basis",
+    u"as_is_basis_to_dry_basis",
+    u"sg_from_dry_basis",
+    u"plato_from_dry_basis",
+    u"basis_to_hwe",
+    u"hwe_to_basis",
+    u"ppg_to_hwe",
+    u"hwe_to_ppg",
 ]
 
 
@@ -151,8 +151,7 @@ def coarse_grind_to_fine_grind(coarse_grind, fc_diff=FC_DIFF_TWO_ROW):
     return coarse_grind + fc_diff
 
 
-def dry_basis_to_as_is_basis(dry_basis,
-                             moisture_content=MOISTURE_FINISHED_MALT):
+def dry_basis_to_as_is_basis(dry_basis, moisture_content=MOISTURE_FINISHED_MALT):
     """
     Dry Basis to As-Is Basis Percentage
 
@@ -166,8 +165,7 @@ def dry_basis_to_as_is_basis(dry_basis,
     return dry_basis * (1.0 - moisture_content)
 
 
-def as_is_basis_to_dry_basis(as_is,
-                             moisture_content=MOISTURE_FINISHED_MALT):
+def as_is_basis_to_dry_basis(as_is, moisture_content=MOISTURE_FINISHED_MALT):
     """
     As-Is Basis to Dry Basis Percentage
 
@@ -181,10 +179,12 @@ def as_is_basis_to_dry_basis(as_is,
     return as_is / (1.0 - moisture_content)
 
 
-def sg_from_dry_basis(dbcg,
-                      moisture_content=MOISTURE_FINISHED_MALT,
-                      moisture_correction=MOISTURE_CORRECTION,
-                      brew_house_efficiency=0.90):
+def sg_from_dry_basis(
+    dbcg,
+    moisture_content=MOISTURE_FINISHED_MALT,
+    moisture_correction=MOISTURE_CORRECTION,
+    brew_house_efficiency=0.90,
+):
     """
     Specific Gravity from Dry Basis Percentage
 
@@ -199,15 +199,20 @@ def sg_from_dry_basis(dbcg,
     validate_percentage(moisture_content)
     validate_percentage(moisture_correction)
     validate_percentage(brew_house_efficiency)
-    gu = ((dbcg - moisture_content - moisture_correction) *
-          brew_house_efficiency * SUCROSE_PPG)
+    gu = (
+        (dbcg - moisture_content - moisture_correction)
+        * brew_house_efficiency
+        * SUCROSE_PPG
+    )
     return gu_to_sg(gu)
 
 
-def plato_from_dry_basis(dbcg,
-                         moisture_content=MOISTURE_FINISHED_MALT,
-                         moisture_correction=MOISTURE_CORRECTION,
-                         brew_house_efficiency=0.90):
+def plato_from_dry_basis(
+    dbcg,
+    moisture_content=MOISTURE_FINISHED_MALT,
+    moisture_correction=MOISTURE_CORRECTION,
+    brew_house_efficiency=0.90,
+):
     """
     Degrees Plato from Dry Basis Percentage
 
@@ -222,8 +227,11 @@ def plato_from_dry_basis(dbcg,
     validate_percentage(moisture_content)
     validate_percentage(moisture_correction)
     validate_percentage(brew_house_efficiency)
-    return ((dbcg - moisture_content - moisture_correction) *
-            brew_house_efficiency * SUCROSE_PLATO)
+    return (
+        (dbcg - moisture_content - moisture_correction)
+        * brew_house_efficiency
+        * SUCROSE_PLATO
+    )
 
 
 def basis_to_hwe(basis_percentage):

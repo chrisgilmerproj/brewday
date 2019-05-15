@@ -27,9 +27,8 @@ def get_chart():
     chart = []
     for dbcg in range(5000, 7600, 100) + range(7600, 8025, 25):
         sg = sg_from_dry_basis(
-            dbcg / 10000.0,
-            moisture_content=mc,
-            brew_house_efficiency=bhe)
+            dbcg / 10000.0, moisture_content=mc, brew_house_efficiency=bhe
+        )
         gu = sg_to_gu(sg)
         chart.append([round(dbcg / 100.0, 2), round(gu, 2), round(sg, 4)])
     return chart

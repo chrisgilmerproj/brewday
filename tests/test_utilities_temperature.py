@@ -9,7 +9,6 @@ from brew.utilities.temperature import strike_temp
 
 
 class TestTemperatureUtilities(unittest.TestCase):
-
     def test_celsius_to_fahrenheit(self):
         ftemp = celsius_to_fahrenheit(100.0)
         self.assertEquals(ftemp, 212.0)
@@ -27,7 +26,7 @@ class TestTemperatureUtilities(unittest.TestCase):
         self.assertEquals(ctemp, -40.0)
 
     def test_strike_temp(self):
-        temp = strike_temp(104.0, 70.0, 1.0 / 1.0, )
+        temp = strike_temp(104.0, 70.0, 1.0 / 1.0)
         self.assertEquals(round(temp, 2), 110.8)
 
     def test_mash_infusion(self):

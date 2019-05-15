@@ -37,30 +37,42 @@ def get_sugar_conversion(brix_in, plato_in, sg_in, sugar_out):
     brix = round(brix, 1)
     plato = round(plato, 1)
     sg = round(sg, 3)
-    if sugar_out and sugar_out in [u'b', u'p', u's']:
-        if sugar_out == u'b':
+    if sugar_out and sugar_out in [u"b", u"p", u"s"]:
+        if sugar_out == u"b":
             return brix
-        elif sugar_out == u'p':
+        elif sugar_out == u"p":
             return plato
-        elif sugar_out == u's':
+        elif sugar_out == u"s":
             return sg
     else:
-        out = textwrap.dedent(u"""\
+        out = textwrap.dedent(
+            u"""\
         SG\tPlato\tBrix
-        {:0.3f}\t{:0.1f}\t{:0.1f}""".format(sg, plato, brix))
+        {:0.3f}\t{:0.1f}\t{:0.1f}""".format(
+                sg, plato, brix
+            )
+        )
         return out
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description=u'Sugar Conversion')
-    parser.add_argument(u'-b', u'--brix', metavar=u'B', type=float,
-                        help=u'Degrees Brix')
-    parser.add_argument(u'-p', u'--plato', metavar=u'P', type=float,
-                        help=u'Degrees Plato')
-    parser.add_argument(u'-s', u'--sg', metavar=u'S', type=float,
-                        help=u'Specific Gravity')
-    parser.add_argument(u'-o', u'--out', metavar=u'O', type=str,
-                        help=u'Desired Output (b, p, s accepted)')
+    parser = argparse.ArgumentParser(description=u"Sugar Conversion")
+    parser.add_argument(
+        u"-b", u"--brix", metavar=u"B", type=float, help=u"Degrees Brix"
+    )
+    parser.add_argument(
+        u"-p", u"--plato", metavar=u"P", type=float, help=u"Degrees Plato"
+    )
+    parser.add_argument(
+        u"-s", u"--sg", metavar=u"S", type=float, help=u"Specific Gravity"
+    )
+    parser.add_argument(
+        u"-o",
+        u"--out",
+        metavar=u"O",
+        type=str,
+        help=u"Desired Output (b, p, s accepted)",
+    )
     return parser
 
 

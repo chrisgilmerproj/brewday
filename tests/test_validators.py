@@ -13,16 +13,17 @@ from brew.validators import validate_units
 
 
 class TestValidators(unittest.TestCase):
-
     def test_validate_grain_type(self):
         out = validate_grain_type(GRAIN_TYPE_CEREAL)
         self.assertEqual(out, GRAIN_TYPE_CEREAL)
 
     def test_validate_grain_type_raises(self):
         with self.assertRaises(ValidatorException) as ctx:
-            validate_grain_type(u'bad grain type')
-        self.assertEquals(str(ctx.exception),
-                          u"Unkown grain type 'bad grain type', must use cereal, specialty, dme, lme")  # noqa
+            validate_grain_type(u"bad grain type")
+        self.assertEquals(
+            str(ctx.exception),
+            u"Unkown grain type 'bad grain type', must use cereal, specialty, dme, lme",
+        )  # noqa
 
     def test_validate_hop_type(self):
         out = validate_hop_type(HOP_TYPE_PELLET)
@@ -30,9 +31,11 @@ class TestValidators(unittest.TestCase):
 
     def test_validate_hop_type_raises(self):
         with self.assertRaises(ValidatorException) as ctx:
-            validate_hop_type(u'bad hop type')
-        self.assertEquals(str(ctx.exception),
-                          u"Unkown hop type 'bad hop type', must use pellet, whole, whole wet, plug")  # noqa
+            validate_hop_type(u"bad hop type")
+        self.assertEquals(
+            str(ctx.exception),
+            u"Unkown hop type 'bad hop type', must use pellet, whole, whole wet, plug",
+        )  # noqa
 
     def test_validate_percentage_pass(self):
         out = validate_percentage(0.97)
@@ -41,63 +44,67 @@ class TestValidators(unittest.TestCase):
     def test_validate_percentage_raises(self):
         with self.assertRaises(ValidatorException) as ctx:
             validate_percentage(1.01)
-        self.assertEquals(str(ctx.exception),
-                          u"Percentage values should be in decimal format")
+        self.assertEquals(
+            str(ctx.exception), u"Percentage values should be in decimal format"
+        )
 
         with self.assertRaises(ValidatorException) as ctx:
             validate_percentage(-0.01)
-        self.assertEquals(str(ctx.exception),
-                          u"Percentage values should be in decimal format")
+        self.assertEquals(
+            str(ctx.exception), u"Percentage values should be in decimal format"
+        )
 
     def test_validate_units(self):
-        out = validate_units(u'metric')
-        self.assertEquals(out, u'metric')
+        out = validate_units(u"metric")
+        self.assertEquals(out, u"metric")
 
     def test_validate_units_raises(self):
         with self.assertRaises(ValidatorException) as ctx:
-            validate_units(u'bad')
-        self.assertEquals(str(ctx.exception),
-                          u"Unkown units 'bad', must use imperial or metric")
+            validate_units(u"bad")
+        self.assertEquals(
+            str(ctx.exception), u"Unkown units 'bad', must use imperial or metric"
+        )
 
     def test_validate_required_fields(self):
-        data = {u'required': u'data'}
-        required_fields = [(u'required', str)]
+        data = {u"required": u"data"}
+        required_fields = [(u"required", str)]
         validate_required_fields(data, required_fields)
 
     def test_validate_required_fields_missing_field_raises(self):
-        data = {u'missing': u'data'}
-        required_fields = [(u'required', str)]
+        data = {u"missing": u"data"}
+        required_fields = [(u"required", str)]
         with self.assertRaises(ValidatorException) as ctx:
             validate_required_fields(data, required_fields)
-        self.assertEquals(str(ctx.exception),
-                          u"Required field 'required' missing from data")
+        self.assertEquals(
+            str(ctx.exception), u"Required field 'required' missing from data"
+        )
 
     def test_validate_required_fields_wrong_field_type_raises(self):
-        data = {u'required': u'data'}
-        required_fields = [(u'required', int)]
+        data = {u"required": u"data"}
+        required_fields = [(u"required", int)]
         with self.assertRaises(ValidatorException) as ctx:  # noqa
             validate_required_fields(data, required_fields)
         # self.assertEquals(str(ctx.exception),
         #                   u"Required field 'required' is not of type '<type 'int'>'")  # noqa
 
     def test_validate_optional_fields(self):
-        data = {u'data': {u'optional': u'data'}}
-        optional_fields = [(u'optional', str)]
+        data = {u"data": {u"optional": u"data"}}
+        optional_fields = [(u"optional", str)]
         validate_optional_fields(data, optional_fields)
 
     def test_validate_optional_fields_extra_data(self):
-        data = {u'data': {u'extra': u'data'}}
-        optional_fields = [(u'optional', str)]
+        data = {u"data": {u"extra": u"data"}}
+        optional_fields = [(u"optional", str)]
         validate_optional_fields(data, optional_fields)
 
     def test_validate_optional_fields_missing_data_field(self):
-        data = {u'missing': {u'optional': u'data'}}
-        optional_fields = [(u'optional', str)]
+        data = {u"missing": {u"optional": u"data"}}
+        optional_fields = [(u"optional", str)]
         validate_optional_fields(data, optional_fields)
 
     def test_validate_optional_fields_wrong_field_type_raises(self):
-        data = {u'data': {u'optional': u'data'}}
-        optional_fields = [(u'optional', int)]
+        data = {u"data": {u"optional": u"data"}}
+        optional_fields = [(u"optional", int)]
         with self.assertRaises(ValidatorException) as ctx:  # noqa
             validate_optional_fields(data, optional_fields)
         # self.assertEquals(str(ctx.exception),

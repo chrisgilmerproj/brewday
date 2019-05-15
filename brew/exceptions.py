@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
-    u'BrewdayException',
-    u'ColorException',
-    u'DataLoaderException',
-    u'GrainException',
-    u'HopException',
-    u'RecipeException',
-    u'StyleException',
-    u'SugarException',
-    u'ValidatorException',
-    u'YeastException',
+    u"BrewdayException",
+    u"ColorException",
+    u"DataLoaderException",
+    u"GrainException",
+    u"HopException",
+    u"RecipeException",
+    u"StyleException",
+    u"SugarException",
+    u"ValidatorException",
+    u"YeastException",
 ]
 
 

@@ -34,45 +34,41 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        u'name': u"Kölsch Ale (Extract)",
-        u'start_volume': 2.5,
-        u'final_volume': 5.0,
-        u'grains': [
-            {u'name': u'Pilsner Liquid Extract',
-             u'weight': 3.25,
-             u'grain_type': u'lme'},
-            {u'name': u'Munich Liquid Extract',
-             u'data': {
-                 u'color': 10.0,
-                 u'ppg': 36,
-             },
-             u'weight': 3.25,
-             u'grain_type': u'lme'},
-            {u'name': u'White Wheat Malt',
-             u'weight': 0.25,
-             u'grain_type': u'specialty'},
-            {u'name': u'Caramel Crystal Malt 10l',
-             u'weight': 0.25,
-             u'grain_type': u'specialty'},
+        u"name": u"Kölsch Ale (Extract)",
+        u"start_volume": 2.5,
+        u"final_volume": 5.0,
+        u"grains": [
+            {
+                u"name": u"Pilsner Liquid Extract",
+                u"weight": 3.25,
+                u"grain_type": u"lme",
+            },
+            {
+                u"name": u"Munich Liquid Extract",
+                u"data": {u"color": 10.0, u"ppg": 36},
+                u"weight": 3.25,
+                u"grain_type": u"lme",
+            },
+            {
+                u"name": u"White Wheat Malt",
+                u"weight": 0.25,
+                u"grain_type": u"specialty",
+            },
+            {
+                u"name": u"Caramel Crystal Malt 10l",
+                u"weight": 0.25,
+                u"grain_type": u"specialty",
+            },
         ],
-        u'hops': [
-            {u'name': u'Vanguard',
-             u'weight': 1.0,
-             u'boil_time': 60.0},
-            {u'name': u'hersbrucker',
-             u'weight': 1.0,
-             u'boil_time': 0.0},
+        u"hops": [
+            {u"name": u"Vanguard", u"weight": 1.0, u"boil_time": 60.0},
+            {u"name": u"hersbrucker", u"weight": 1.0, u"boil_time": 0.0},
         ],
-        u'yeast': {
-            u'name': u'White Labs Wlp029',
-        },
-        u'data': {
-            u'brew_house_yield': 0.70,
-            u'units': u'imperial',
-        },
+        u"yeast": {u"name": u"White Labs Wlp029"},
+        u"data": {u"brew_house_yield": 0.70, u"units": u"imperial"},
     }
 
-    data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
+    data_dir = os.path.abspath(os.path.join(os.getcwd(), "data/"))
     loader = JSONDataLoader(data_dir)
     beer = parse_recipe(recipe, loader)
     print(beer.format())

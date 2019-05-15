@@ -7,7 +7,6 @@ from brew.cli.gravity_volume import main
 
 
 class TestCliTemp(unittest.TestCase):
-
     def setUp(self):
         self.ov = 3
         self.fv = 10
@@ -19,23 +18,17 @@ class TestCliTemp(unittest.TestCase):
 
 
 class TestCliArgparserTemp(unittest.TestCase):
-
     def setUp(self):
         self.parser = get_parser()
 
     def test_get_parser(self):
-        args = [u'-o', u'3.0', u'-f', u'10.0', u'-g', u'1.050']
+        args = [u"-o", u"3.0", u"-f", u"10.0", u"-g", u"1.050"]
         out = self.parser.parse_args(args)
-        expected = {
-            u'original_volume': 3.0,
-            u'final_volume': 10.0,
-            u'gravity': 1.050,
-        }
+        expected = {u"original_volume": 3.0, u"final_volume": 10.0, u"gravity": 1.050}
         self.assertEquals(out.__dict__, expected)
 
 
 class TestCliMainTemp(unittest.TestCase):
-
     def setUp(self):
         class Parser(object):
             def __init__(self, output):
@@ -44,6 +37,7 @@ class TestCliMainTemp(unittest.TestCase):
             def parse_args(self):
                 class Args(object):
                     pass
+
                 args = Args()
                 if self.output:
                     for k, v in self.output.items():
@@ -52,24 +46,31 @@ class TestCliMainTemp(unittest.TestCase):
 
         def g_parser(output=None):
             return Parser(output)
+
         self.parser_fn = g_parser
         self.main = main
 
     def test_main_no_args(self):
-        args = {u'output': {u'original_volume': None,
-                            u'final_volume': None,
-                            u'gravity': None}}
+        args = {
+            u"output": {
+                u"original_volume": None,
+                u"final_volume": None,
+                u"gravity": None,
+            }
+        }
         with self.assertRaises(SystemExit):
-            self.main(parser_fn=self.parser_fn,
-                      parser_kwargs=args)
+            self.main(parser_fn=self.parser_fn, parser_kwargs=args)
 
     def test_main_no_kwargs(self):
         with self.assertRaises(AttributeError):
             self.main(parser_fn=self.parser_fn)
 
     def test_main_all_args(self):
-        args = {u'output': {u'original_volume': 3.0,
-                            u'final_volume': 10.0,
-                            u'gravity': 1.050}}
-        self.main(parser_fn=self.parser_fn,
-                  parser_kwargs=args)
+        args = {
+            u"output": {
+                u"original_volume": 3.0,
+                u"final_volume": 10.0,
+                u"gravity": 1.050,
+            }
+        }
+        self.main(parser_fn=self.parser_fn, parser_kwargs=args)

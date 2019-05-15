@@ -7,7 +7,7 @@ from .exceptions import ColorException
 from .exceptions import StyleException
 from .validators import validate_required_fields
 
-__all__ = [u'Style']
+__all__ = [u"Style"]
 
 
 class Style(object):
@@ -15,15 +15,17 @@ class Style(object):
     A beer style
     """
 
-    def __init__(self,
-                 style,
-                 category=u'',
-                 subcategory=u'',
-                 og=None,
-                 fg=None,
-                 abv=None,
-                 ibu=None,
-                 color=None):
+    def __init__(
+        self,
+        style,
+        category=u"",
+        subcategory=u"",
+        og=None,
+        fg=None,
+        abv=None,
+        ibu=None,
+        color=None,
+    ):
         """
         :param str category: The style category
         :param str subcategory: The style subcategory
@@ -57,24 +59,27 @@ class Style(object):
         :raises StyleException: If value_list is out of order
         """
         if not value_list:
-            raise StyleException(u"Must provide value_list for {}".format(
-                name))
+            raise StyleException(u"Must provide value_list for {}".format(name))
         if not isinstance(value_list, (list, tuple)):
             raise StyleException(u"{} must be a list".format(name))
         if len(value_list) != 2:
             raise StyleException(u"{} must contain two values".format(name))
         for v in value_list:
             if not isinstance(v, value_type):
-                raise StyleException(u"{} must be type '{}'".format(name, value_type))  # noqa
+                raise StyleException(
+                    u"{} must be type '{}'".format(name, value_type)
+                )  # noqa
         if value_list[0] > value_list[1]:
-            raise StyleException(u"{} values must be lowest value first".format(name))  # noqa
+            raise StyleException(
+                u"{} values must be lowest value first".format(name)
+            )  # noqa
         return value_list
 
     def __str__(self):
         if sys.version_info[0] >= 3:
             return self.__unicode__()
         else:
-            return self.__unicode__().encode(u'utf8')
+            return self.__unicode__().encode(u"utf8")
 
     def __unicode__(self):
         return u"{}{} {}".format(self.category, self.subcategory, self.style)
@@ -94,14 +99,16 @@ class Style(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        if (self.style == other.style) and \
-           (self.category == other.category) and \
-           (self.subcategory == other.subcategory) and \
-           (self.og == other.og) and \
-           (self.fg == other.fg) and \
-           (self.abv == other.abv) and \
-           (self.ibu == other.ibu) and \
-           (self.color == other.color):
+        if (
+            (self.style == other.style)
+            and (self.category == other.category)
+            and (self.subcategory == other.subcategory)
+            and (self.og == other.og)
+            and (self.fg == other.fg)
+            and (self.abv == other.abv)
+            and (self.ibu == other.ibu)
+            and (self.color == other.color)
+        ):
             return True
         return False
 
@@ -116,7 +123,7 @@ class Style(object):
         :return: True if matches style, otherwise False
         :rtype: bool
         """
-        return (self.og[0] <= og <= self.og[1])
+        return self.og[0] <= og <= self.og[1]
 
     def og_errors(self, og):
         """
@@ -128,9 +135,9 @@ class Style(object):
         """
         errors = []
         if og < self.og[0]:
-            errors.append(u'OG is below style')
+            errors.append(u"OG is below style")
         if og > self.og[1]:
-            errors.append(u'OG is above style')
+            errors.append(u"OG is above style")
         return errors
 
     def fg_matches(self, fg):
@@ -141,7 +148,7 @@ class Style(object):
         :return: True if matches style, otherwise False
         :rtype: bool
         """
-        return (self.fg[0] <= fg <= self.fg[1])
+        return self.fg[0] <= fg <= self.fg[1]
 
     def fg_errors(self, fg):
         """
@@ -153,9 +160,9 @@ class Style(object):
         """
         errors = []
         if fg < self.fg[0]:
-            errors.append(u'FG is below style')
+            errors.append(u"FG is below style")
         if fg > self.fg[1]:
-            errors.append(u'FG is above style')
+            errors.append(u"FG is above style")
         return errors
 
     def abv_matches(self, abv):
@@ -166,7 +173,7 @@ class Style(object):
         :return: True if matches style, otherwise False
         :rtype: bool
         """
-        return (self.abv[0] <= abv <= self.abv[1])
+        return self.abv[0] <= abv <= self.abv[1]
 
     def abv_errors(self, abv):
         """
@@ -178,9 +185,9 @@ class Style(object):
         """
         errors = []
         if abv < self.abv[0]:
-            errors.append(u'ABV is below style')
+            errors.append(u"ABV is below style")
         if abv > self.abv[1]:
-            errors.append(u'ABV is above style')
+            errors.append(u"ABV is above style")
         return errors
 
     def ibu_matches(self, ibu):
@@ -191,7 +198,7 @@ class Style(object):
         :return: True if matches style, otherwise False
         :rtype: bool
         """
-        return (self.ibu[0] <= ibu <= self.ibu[1])
+        return self.ibu[0] <= ibu <= self.ibu[1]
 
     def ibu_errors(self, ibu):
         """
@@ -203,9 +210,9 @@ class Style(object):
         """
         errors = []
         if ibu < self.ibu[0]:
-            errors.append(u'IBU is below style')
+            errors.append(u"IBU is below style")
         if ibu > self.ibu[1]:
-            errors.append(u'IBU is above style')
+            errors.append(u"IBU is above style")
         return errors
 
     def color_matches(self, color):
@@ -216,7 +223,7 @@ class Style(object):
         :return: True if matches style, otherwise False
         :rtype: bool
         """
-        return (self.color[0] <= color <= self.color[1])
+        return self.color[0] <= color <= self.color[1]
 
     def color_errors(self, color):
         """
@@ -228,9 +235,9 @@ class Style(object):
         """
         errors = []
         if color < self.color[0]:
-            errors.append(u'Color is below style')
+            errors.append(u"Color is below style")
         if color > self.color[1]:
-            errors.append(u'Color is above style')
+            errors.append(u"Color is above style")
         return errors
 
     def recipe_matches(self, recipe):
@@ -241,11 +248,13 @@ class Style(object):
         :return: True if recipe matches style, otherwise False
         :rtype: bool
         """
-        if self.og_matches(recipe.og) and \
-           self.fg_matches(recipe.fg) and \
-           self.abv_matches(recipe.abv) and \
-           self.ibu_matches(recipe.ibu) and \
-           self.color_matches(recipe.color):
+        if (
+            self.og_matches(recipe.og)
+            and self.fg_matches(recipe.fg)
+            and self.abv_matches(recipe.abv)
+            and self.ibu_matches(recipe.ibu)
+            and self.color_matches(recipe.color)
+        ):
             return True
         return False
 
@@ -265,19 +274,19 @@ class Style(object):
         try:
             errors.extend(self.color_errors(recipe.color))
         except ColorException:
-            errors.extend(['Color cannot be calculated'])
+            errors.extend(["Color cannot be calculated"])
         return errors
 
     def to_dict(self):
         style_dict = {
-            u'style': self.style,
-            u'category': self.category,
-            u'subcategory': self.subcategory,
-            u'og': self.og,
-            u'fg': self.fg,
-            u'abv': self.abv,
-            u'ibu': self.ibu,
-            u'color': self.color,
+            u"style": self.style,
+            u"category": self.category,
+            u"subcategory": self.subcategory,
+            u"og": self.og,
+            u"fg": self.fg,
+            u"abv": self.abv,
+            u"ibu": self.ibu,
+            u"color": self.color,
         }
         return style_dict
 
@@ -286,15 +295,16 @@ class Style(object):
 
     @classmethod
     def validate(cls, recipe):
-        required_fields = [(u'style', str),
-                           (u'category', str),
-                           (u'subcategory', str),
-                           (u'og', (list, tuple)),
-                           (u'fg', (list, tuple)),
-                           (u'abv', (list, tuple)),
-                           (u'ibu', (list, tuple)),
-                           (u'color', (list, tuple)),
-                           ]
+        required_fields = [
+            (u"style", str),
+            (u"category", str),
+            (u"subcategory", str),
+            (u"og", (list, tuple)),
+            (u"fg", (list, tuple)),
+            (u"abv", (list, tuple)),
+            (u"ibu", (list, tuple)),
+            (u"color", (list, tuple)),
+        ]
         validate_required_fields(recipe, required_fields)
 
     def format(self):
@@ -303,7 +313,8 @@ class Style(object):
         kwargs.update(style_data)
 
         msg = u""
-        msg += textwrap.dedent(u"""\
+        msg += textwrap.dedent(
+            u"""\
             {category}{subcategory} {style}
             ===================================
 
@@ -312,18 +323,20 @@ class Style(object):
             ABV:                {abv[0]:0.2%} - {abv[1]:0.2%}
             IBU:                {ibu[0]:0.1f} - {ibu[1]:0.1f}
             Color (SRM):        {color[0]:0.1f} - {color[1]:0.1f}
-            """.format(**kwargs))  # noqa
+            """.format(
+                **kwargs
+            )
+        )  # noqa
         return msg
 
 
 class StyleFactory(object):
-
     def __init__(self, filename):
         """
         :param str filename: The filename of a JSON file containing Styles
         """
         self.filename = filename
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             self.data = json.loads(f.read())
 
     def create_style(self, category, subcategory):
@@ -336,14 +349,16 @@ class StyleFactory(object):
         :rtype: Style
         """
         data = self.data.get(str(category), {}).get(subcategory, None)
-        return Style(data['style'],
-                     category=data['category'],
-                     subcategory=data['subcategory'],
-                     og=data['og'],
-                     fg=data['fg'],
-                     abv=data['abv'],
-                     ibu=data['ibu'],
-                     color=data['color'])
+        return Style(
+            data["style"],
+            category=data["category"],
+            subcategory=data["subcategory"],
+            og=data["og"],
+            fg=data["fg"],
+            abv=data["abv"],
+            ibu=data["ibu"],
+            color=data["color"],
+        )
 
     def format(self):
         msg = []
@@ -354,8 +369,8 @@ class StyleFactory(object):
                     style = self.create_style(category, subcategory)
                     msg.append(style.format())
                 except StyleException:
-                    name = self.data[category][subcategory]['style']
-                    msg.append("{}{} {} - Not parseable".format(category,
-                                                                subcategory,
-                                                                name))
-        return '\n'.join(msg)
+                    name = self.data[category][subcategory]["style"]
+                    msg.append(
+                        "{}{} {} - Not parseable".format(category, subcategory, name)
+                    )
+        return "\n".join(msg)

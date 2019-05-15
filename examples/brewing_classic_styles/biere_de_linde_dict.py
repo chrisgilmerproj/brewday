@@ -35,70 +35,64 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        u'name': u"Biere de l'Inde (Extract)",
-        u'start_volume': 7.0,
-        u'final_volume': 6.0,
-        u'grains': [
-            {u'name': u'English Pale Ale Liquid Extract',
-             u'data': {
-                 u'color': 3.5,
-                 u'ppg': 37,
-             },
-             u'weight': 8.7,
-             u'grain_type': u'lme'},
-            {u'name': u'wheat liquid extract',
-             u'data': {
-                 u'color': 4.0,
-                 u'ppg': 37,
-             },
-             u'weight': 0.5,
-             u'grain_type': u'lme'},
-            {u'name': u'biscuit malt',
-             u'data': {
-                 u'color': 25.0,
-             },
-             u'weight': 0.5,
-             u'grain_type': u'specialty'},
-            {u'name': u'caramel crystal malt 40l',
-             u'weight': 0.5,
-             u'grain_type': u'specialty'},
-            {u'name': u'caramel crystal malt 120l',
-             u'weight': 0.375,
-             u'grain_type': u'specialty'},
-        ],
-        u'hops': [
-            {u'name': u'challenger',
-             u'data': {
-                 u'percent_alpha_acids': 0.08,
-             },
-             u'weight': 1.43,
-             u'boil_time': 60.0},
-            {u'name': u'fuggle',
-             u'data': {
-                 u'percent_alpha_acids': 0.05,
-             },
-             u'weight': 1.5,
-             u'boil_time': 10.0},
-            {u'name': u'east kent golding',
-             u'data': {
-                 u'percent_alpha_acids': 0.05,
-             },
-             u'weight': 1.5,
-             u'boil_time': 0.0},
-        ],
-        u'yeast': {
-            u'name': u'Wyeast 1028',
-            u'data': {
-                u'percent_attenuation': 0.74,
+        u"name": u"Biere de l'Inde (Extract)",
+        u"start_volume": 7.0,
+        u"final_volume": 6.0,
+        u"grains": [
+            {
+                u"name": u"English Pale Ale Liquid Extract",
+                u"data": {u"color": 3.5, u"ppg": 37},
+                u"weight": 8.7,
+                u"grain_type": u"lme",
             },
-        },
-        u'data': {
-            u'brew_house_yield': 0.70,
-            u'units': u'imperial',
-        },
+            {
+                u"name": u"wheat liquid extract",
+                u"data": {u"color": 4.0, u"ppg": 37},
+                u"weight": 0.5,
+                u"grain_type": u"lme",
+            },
+            {
+                u"name": u"biscuit malt",
+                u"data": {u"color": 25.0},
+                u"weight": 0.5,
+                u"grain_type": u"specialty",
+            },
+            {
+                u"name": u"caramel crystal malt 40l",
+                u"weight": 0.5,
+                u"grain_type": u"specialty",
+            },
+            {
+                u"name": u"caramel crystal malt 120l",
+                u"weight": 0.375,
+                u"grain_type": u"specialty",
+            },
+        ],
+        u"hops": [
+            {
+                u"name": u"challenger",
+                u"data": {u"percent_alpha_acids": 0.08},
+                u"weight": 1.43,
+                u"boil_time": 60.0,
+            },
+            {
+                u"name": u"fuggle",
+                u"data": {u"percent_alpha_acids": 0.05},
+                u"weight": 1.5,
+                u"boil_time": 10.0,
+            },
+            {
+                u"name": u"east kent golding",
+                u"data": {u"percent_alpha_acids": 0.05},
+                u"weight": 1.5,
+                u"boil_time": 0.0,
+            },
+        ],
+        u"yeast": {u"name": u"Wyeast 1028", u"data": {u"percent_attenuation": 0.74}},
+        u"data": {u"brew_house_yield": 0.70, u"units": u"imperial"},
     }
 
-    data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
+    data_dir = os.path.abspath(os.path.join(os.getcwd(), "data/"))
     loader = JSONDataLoader(data_dir)
     beer = parse_recipe(recipe, loader)
     print(beer.format())

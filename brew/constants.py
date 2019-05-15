@@ -2,36 +2,36 @@
 
 # Unit Types
 #: Imperial Units
-IMPERIAL_UNITS = u'imperial'
+IMPERIAL_UNITS = u"imperial"
 #: SI or Metric Units
-SI_UNITS = u'metric'
+SI_UNITS = u"metric"
 
 #: Imperial unit types
 IMPERIAL_TYPES = {
-    u'volume': u'gallon',
-    u'weight_large': u'lbs',
-    u'weight_small': u'oz',
-    u'temperature': u'degF',
+    u"volume": u"gallon",
+    u"weight_large": u"lbs",
+    u"weight_small": u"oz",
+    u"temperature": u"degF",
 }
 
 #: SI unit types
 SI_TYPES = {
-    u'volume': u'liter',
-    u'weight_large': u'kg',
-    u'weight_small': u'mg',
-    u'temperature': u'degC',
+    u"volume": u"liter",
+    u"weight_large": u"kg",
+    u"weight_small": u"mg",
+    u"temperature": u"degC",
 }
 
 # Grains
 
 #: Grain type cereal
-GRAIN_TYPE_CEREAL = u'cereal'
+GRAIN_TYPE_CEREAL = u"cereal"
 #: Grain type specialty
-GRAIN_TYPE_SPECIALTY = u'specialty'
+GRAIN_TYPE_SPECIALTY = u"specialty"
 #: Grain type DME
-GRAIN_TYPE_DME = u'dme'
+GRAIN_TYPE_DME = u"dme"
 #: Grain type LME
-GRAIN_TYPE_LME = u'lme'
+GRAIN_TYPE_LME = u"lme"
 #: Grain type list
 GRAIN_TYPE_LIST = [
     GRAIN_TYPE_CEREAL,
@@ -43,20 +43,15 @@ GRAIN_TYPE_LIST = [
 # Hops
 
 #: Hop type pellet
-HOP_TYPE_PELLET = u'pellet'
+HOP_TYPE_PELLET = u"pellet"
 #: Hop type whole leaf
-HOP_TYPE_WHOLE = u'whole'
+HOP_TYPE_WHOLE = u"whole"
 #: Hop type whole leaf, wet
-HOP_TYPE_WHOLE_WET = u'whole wet'
+HOP_TYPE_WHOLE_WET = u"whole wet"
 #: Hop type plug
-HOP_TYPE_PLUG = u'plug'
+HOP_TYPE_PLUG = u"plug"
 #: Hop type list
-HOP_TYPE_LIST = [
-    HOP_TYPE_PELLET,
-    HOP_TYPE_WHOLE,
-    HOP_TYPE_WHOLE_WET,
-    HOP_TYPE_PLUG,
-]
+HOP_TYPE_LIST = [HOP_TYPE_PELLET, HOP_TYPE_WHOLE, HOP_TYPE_WHOLE_WET, HOP_TYPE_PLUG]
 
 # Hop utilization scale factors
 #: Hop utilization scale factor for pellets
@@ -97,11 +92,11 @@ HOPS_CONSTANT_SI = 1.0
 
 # Elevation
 #: Elevation at Sea Level in feet or meters
-ELEVATION_SEA_LEVEL = 0     # feet or meters
+ELEVATION_SEA_LEVEL = 0  # feet or meters
 #: Elevation at one mile high in feet
 ELEVATION_MILE_HIGH = 5280  # feet
 #: Elevation at one kilometer high in meters
-ELEVATION_KM_HIGH = 1000    # meters
+ELEVATION_KM_HIGH = 1000  # meters
 
 # Grind Constants
 # fine/coarse difference percentage for different grain in decimal format

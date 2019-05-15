@@ -35,56 +35,39 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        u'name': u"Munich Madness (All Grain)",
-        u'start_volume': 7.0,
-        u'final_volume': 6.0,
-        u'grains': [
-            {u'name': u'Pilsner 2 row Ger',
-             u'data': {
-                 u'color': 2.3,
-             },
-             u'weight': 5.0},
-            {u'name': u'Munich Malt 10L',
-             u'data': {
-                 u'color': 9.0,
-             },
-             u'weight': 4.0},
-            {u'name': u'Vienna Malt',
-             u'weight': 3.0},
-            {u'name': u'Caramunich Malt',
-             u'data': {
-                 u'color': 60.0,
-             },
-             u'weight': 1.0,
-             u'grain_type': u'specialty'},
-        ],
-        u'hops': [
-            {u'name': u'Hallertau US',
-             u'data': {
-                 u'percent_alpha_acids': 0.04,
-             },
-             u'weight': 1.5,
-             u'boil_time': 60.0},
-            {u'name': u'Hallertau US',
-             u'data': {
-                 u'percent_alpha_acids': 0.04,
-             },
-             u'weight': 0.5,
-             u'boil_time': 20.0},
-        ],
-        u'yeast': {
-            u'name': u'Wyeast 2206',
-            u'data': {
-                u'percent_attenuation': 0.73,
+        u"name": u"Munich Madness (All Grain)",
+        u"start_volume": 7.0,
+        u"final_volume": 6.0,
+        u"grains": [
+            {u"name": u"Pilsner 2 row Ger", u"data": {u"color": 2.3}, u"weight": 5.0},
+            {u"name": u"Munich Malt 10L", u"data": {u"color": 9.0}, u"weight": 4.0},
+            {u"name": u"Vienna Malt", u"weight": 3.0},
+            {
+                u"name": u"Caramunich Malt",
+                u"data": {u"color": 60.0},
+                u"weight": 1.0,
+                u"grain_type": u"specialty",
             },
-        },
-        u'data': {
-            u'brew_house_yield': 0.70,
-            u'units': u'imperial',
-        },
+        ],
+        u"hops": [
+            {
+                u"name": u"Hallertau US",
+                u"data": {u"percent_alpha_acids": 0.04},
+                u"weight": 1.5,
+                u"boil_time": 60.0,
+            },
+            {
+                u"name": u"Hallertau US",
+                u"data": {u"percent_alpha_acids": 0.04},
+                u"weight": 0.5,
+                u"boil_time": 20.0,
+            },
+        ],
+        u"yeast": {u"name": u"Wyeast 2206", u"data": {u"percent_attenuation": 0.73}},
+        u"data": {u"brew_house_yield": 0.70, u"units": u"imperial"},
     }
 
-    data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
+    data_dir = os.path.abspath(os.path.join(os.getcwd(), "data/"))
     loader = JSONDataLoader(data_dir)
     beer = parse_recipe(recipe, loader)
     print(beer.format())

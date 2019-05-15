@@ -23,7 +23,6 @@ from fixtures import yeast
 
 
 class TestRecipeImperialUnits(unittest.TestCase):
-
     def setUp(self):
         # Define Grains
         self.grain_additions = grain_additions
@@ -52,29 +51,31 @@ class TestRecipeImperialUnits(unittest.TestCase):
         self.assertEquals(round(out, 2), 380.67)
 
     def test_get_total_points_lme(self):
-        pale_lme_add = GrainAddition(pale_lme,
-                                     weight=14.35,
-                                     grain_type=GRAIN_TYPE_LME,
-                                     units=IMPERIAL_UNITS)
-        recipe = Recipe(u'lme',
-                        grain_additions=[pale_lme_add],
-                        hop_additions=self.hop_additions,
-                        yeast=self.yeast,
-                        units=IMPERIAL_UNITS)
+        pale_lme_add = GrainAddition(
+            pale_lme, weight=14.35, grain_type=GRAIN_TYPE_LME, units=IMPERIAL_UNITS
+        )
+        recipe = Recipe(
+            u"lme",
+            grain_additions=[pale_lme_add],
+            hop_additions=self.hop_additions,
+            yeast=self.yeast,
+            units=IMPERIAL_UNITS,
+        )
 
         out = recipe.get_total_points()
         self.assertEquals(round(out, 1), 516.6)
 
     def test_get_total_points_dme(self):
-        pale_dme_add = GrainAddition(pale_dme,
-                                     weight=11.74,
-                                     grain_type=GRAIN_TYPE_DME,
-                                     units=IMPERIAL_UNITS)
-        recipe = Recipe(u'dme',
-                        grain_additions=[pale_dme_add],
-                        hop_additions=self.hop_additions,
-                        yeast=self.yeast,
-                        units=IMPERIAL_UNITS)
+        pale_dme_add = GrainAddition(
+            pale_dme, weight=11.74, grain_type=GRAIN_TYPE_DME, units=IMPERIAL_UNITS
+        )
+        recipe = Recipe(
+            u"dme",
+            grain_additions=[pale_dme_add],
+            hop_additions=self.hop_additions,
+            yeast=self.yeast,
+            units=IMPERIAL_UNITS,
+        )
 
         out = recipe.get_total_points()
         self.assertEquals(round(out, 1), 516.6)
@@ -145,29 +146,31 @@ class TestRecipeImperialUnits(unittest.TestCase):
         self.assertEquals(round(out, 2), 0.62)
 
     def test_get_grain_add_dry_weight_lme(self):
-        pale_lme_add = GrainAddition(pale_lme,
-                                     weight=14.35,
-                                     grain_type=GRAIN_TYPE_LME,
-                                     units=IMPERIAL_UNITS)
-        recipe = Recipe(u'lme',
-                        grain_additions=[pale_lme_add],
-                        hop_additions=self.hop_additions,
-                        yeast=self.yeast,
-                        units=IMPERIAL_UNITS)
+        pale_lme_add = GrainAddition(
+            pale_lme, weight=14.35, grain_type=GRAIN_TYPE_LME, units=IMPERIAL_UNITS
+        )
+        recipe = Recipe(
+            u"lme",
+            grain_additions=[pale_lme_add],
+            hop_additions=self.hop_additions,
+            yeast=self.yeast,
+            units=IMPERIAL_UNITS,
+        )
 
         out = recipe.get_grain_add_dry_weight(pale_lme_add)
         self.assertEquals(round(out, 2), 11.74)
 
     def test_get_grain_add_dry_weight_dme(self):
-        pale_dme_add = GrainAddition(pale_dme,
-                                     weight=11.74,
-                                     grain_type=GRAIN_TYPE_DME,
-                                     units=IMPERIAL_UNITS)
-        recipe = Recipe(u'dme',
-                        grain_additions=[pale_dme_add],
-                        hop_additions=self.hop_additions,
-                        yeast=self.yeast,
-                        units=IMPERIAL_UNITS)
+        pale_dme_add = GrainAddition(
+            pale_dme, weight=11.74, grain_type=GRAIN_TYPE_DME, units=IMPERIAL_UNITS
+        )
+        recipe = Recipe(
+            u"dme",
+            grain_additions=[pale_dme_add],
+            hop_additions=self.hop_additions,
+            yeast=self.yeast,
+            units=IMPERIAL_UNITS,
+        )
 
         out = recipe.get_grain_add_dry_weight(pale_dme_add)
         self.assertEquals(round(out, 2), 11.74)
@@ -177,41 +180,43 @@ class TestRecipeImperialUnits(unittest.TestCase):
         self.assertEquals(round(out, 2), 12.36)
 
     def test_get_grain_add_cereal_weight(self):
-        out = self.recipe.get_grain_add_cereal_weight(self.grain_additions[0],
-                                                      ppg=ppg_pale)
+        out = self.recipe.get_grain_add_cereal_weight(
+            self.grain_additions[0], ppg=ppg_pale
+        )
         self.assertEquals(round(out, 2), 13.96)
-        out = self.recipe.get_grain_add_cereal_weight(self.grain_additions[1],
-                                                      ppg=ppg_crystal)
+        out = self.recipe.get_grain_add_cereal_weight(
+            self.grain_additions[1], ppg=ppg_crystal
+        )
         self.assertEquals(round(out, 2), 0.78)
 
     def test_get_grain_add_cereal_weight_lme(self):
-        pale_lme_add = GrainAddition(pale_lme,
-                                     weight=14.35,
-                                     grain_type=GRAIN_TYPE_LME,
-                                     units=IMPERIAL_UNITS)
-        recipe = Recipe(u'lme',
-                        grain_additions=[pale_lme_add],
-                        hop_additions=self.hop_additions,
-                        yeast=self.yeast,
-                        units=IMPERIAL_UNITS)
+        pale_lme_add = GrainAddition(
+            pale_lme, weight=14.35, grain_type=GRAIN_TYPE_LME, units=IMPERIAL_UNITS
+        )
+        recipe = Recipe(
+            u"lme",
+            grain_additions=[pale_lme_add],
+            hop_additions=self.hop_additions,
+            yeast=self.yeast,
+            units=IMPERIAL_UNITS,
+        )
 
-        out = recipe.get_grain_add_cereal_weight(pale_lme_add,
-                                                 ppg=ppg_pale)
+        out = recipe.get_grain_add_cereal_weight(pale_lme_add, ppg=ppg_pale)
         self.assertEquals(round(out, 2), 13.96)
 
     def test_get_grain_add_cereal_weight_dme(self):
-        pale_dme_add = GrainAddition(pale_dme,
-                                     weight=11.74,
-                                     grain_type=GRAIN_TYPE_DME,
-                                     units=IMPERIAL_UNITS)
-        recipe = Recipe(u'dme',
-                        grain_additions=[pale_dme_add],
-                        hop_additions=self.hop_additions,
-                        yeast=self.yeast,
-                        units=IMPERIAL_UNITS)
+        pale_dme_add = GrainAddition(
+            pale_dme, weight=11.74, grain_type=GRAIN_TYPE_DME, units=IMPERIAL_UNITS
+        )
+        recipe = Recipe(
+            u"dme",
+            grain_additions=[pale_dme_add],
+            hop_additions=self.hop_additions,
+            yeast=self.yeast,
+            units=IMPERIAL_UNITS,
+        )
 
-        out = recipe.get_grain_add_cereal_weight(pale_dme_add,
-                                                 ppg=ppg_pale)
+        out = recipe.get_grain_add_cereal_weight(pale_dme_add, ppg=ppg_pale)
         self.assertEquals(round(out, 2), 13.96)
 
     def test_get_total_grain_weight(self):
@@ -258,8 +263,8 @@ class TestRecipeImperialUnits(unittest.TestCase):
     def test_get_total_wort_color_map(self):
         wort_map = self.recipe.get_total_wort_color_map()
         expected = {
-            u'srm': {u'daniels': u'N/A', u'morey': 6.6, u'mosher': 7.3},
-            u'ebc': {u'daniels': u'N/A', u'morey': 13.0, u'mosher': 14.4},
+            u"srm": {u"daniels": u"N/A", u"morey": 6.6, u"mosher": 7.3},
+            u"ebc": {u"daniels": u"N/A", u"morey": 13.0, u"mosher": 14.4},
         }
         self.assertEquals(wort_map, expected)
 
@@ -272,7 +277,8 @@ class TestRecipeImperialUnits(unittest.TestCase):
     def test_format(self):
         self.assertEquals(self.recipe.units, IMPERIAL_UNITS)
         out = self.recipe.format()
-        expected = textwrap.dedent(u"""\
+        expected = textwrap.dedent(
+            u"""\
             pale ale
             ===================================
 
@@ -339,7 +345,8 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
             Wyeast 1056 Yeast
             -----------------------------------
-            Attenuation:  75.0%""")
+            Attenuation:  75.0%"""
+        )
         self.assertEquals(out, expected)
 
     def test_validate(self):
@@ -348,7 +355,6 @@ class TestRecipeImperialUnits(unittest.TestCase):
 
 
 class TestRecipeBuilderImperialUnits(unittest.TestCase):
-
     def setUp(self):
         # Define Grains
         self.grain_list = grain_list
@@ -373,15 +379,16 @@ class TestRecipeBuilderImperialUnits(unittest.TestCase):
         percent_list = [0.90, 0.05]
         with self.assertRaises(RecipeException) as ctx:
             self.builder.get_grain_additions(percent_list)
-        self.assertEquals(str(ctx.exception),
-                          u"Percentages must sum to 1.0")
+        self.assertEquals(str(ctx.exception), u"Percentages must sum to 1.0")
 
     def test_get_grain_additions_raises_percent_length_mismatch(self):
         percent_list = [0.90, 0.05, 0.05]
         with self.assertRaises(RecipeException) as ctx:
             self.builder.get_grain_additions(percent_list)
-        self.assertEquals(str(ctx.exception),
-                          u"The length of percent_list must equal length of self.grain_list")  # noqa
+        self.assertEquals(
+            str(ctx.exception),
+            u"The length of percent_list must equal length of self.grain_list",
+        )  # noqa
 
     def test_get_hop_additions(self):
         percent_list = [0.8827, 0.1173]
@@ -395,24 +402,27 @@ class TestRecipeBuilderImperialUnits(unittest.TestCase):
         boil_time_list = [60.0, 5.0]
         with self.assertRaises(RecipeException) as ctx:
             self.builder.get_hop_additions(percent_list, boil_time_list)
-        self.assertEquals(str(ctx.exception),
-                          u"Percentages must sum to 1.0")
+        self.assertEquals(str(ctx.exception), u"Percentages must sum to 1.0")
 
     def test_get_hop_additions_raises_percent_length_mismatch(self):
         percent_list = [0.8827, 0.0173, 0.10]
         boil_time_list = [60.0, 5.0]
         with self.assertRaises(RecipeException) as ctx:
             self.builder.get_hop_additions(percent_list, boil_time_list)
-        self.assertEquals(str(ctx.exception),
-                          u"The length of percent_list must equal length of self.grain_list")  # noqa
+        self.assertEquals(
+            str(ctx.exception),
+            u"The length of percent_list must equal length of self.grain_list",
+        )  # noqa
 
     def test_get_hop_additions_raises_boil_time_length_mismatch(self):
         percent_list = [0.8827, 0.1173]
         boil_time_list = [60.0, 5.0, 5.0]
         with self.assertRaises(RecipeException) as ctx:
             self.builder.get_hop_additions(percent_list, boil_time_list)
-        self.assertEquals(str(ctx.exception),
-                          u"The length of boil_time_list must equal length of self.hop_list")  # noqa
+        self.assertEquals(
+            str(ctx.exception),
+            u"The length of boil_time_list must equal length of self.hop_list",
+        )  # noqa
 
     def test_get_yeast_attenuation(self):
         abv = 0.0749

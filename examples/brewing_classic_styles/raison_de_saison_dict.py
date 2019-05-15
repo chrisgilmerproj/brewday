@@ -35,68 +35,55 @@ from brew.parsers import parse_recipe
 def main():
 
     recipe = {
-        u'name': u"Raison de Saison (Extract)",
-        u'start_volume': 7.0,
-        u'final_volume': 6.0,
-        u'grains': [
-            {u'name': u'Pilsner Liquid Extract',
-             u'data': {
-                 u'color': 2.3,
-                 u'ppg': 37,
-             },
-             u'weight': 7.7,
-             u'grain_type': u'lme'},
-            {u'name': u'Cane Beet Sugar',
-             u'weight': 1.0,
-             u'grain_type': u'dme'},
-            {u'name': u'Wheat Liquid Extract',
-             u'data': {
-                 u'color': 4.0,
-                 u'ppg': 37,
-             },
-             u'weight': 0.75,
-             u'grain_type': u'lme'},
-            {u'name': u'munich liquid malt extract',
-             u'data': {
-                 u'color': 9.0,
-                 u'ppg': 37,
-             },
-             u'weight': 0.5,
-             u'grain_type': u'lme'},
-            {u'name': u'Caramunich Malt',
-             u'data': {
-                 u'color': 60.0,
-             },
-             u'weight': 0.125,
-             u'grain_type': u'specialty'},
-        ],
-        u'hops': [
-            {u'name': u'Hallertau US',
-             u'data': {
-                 u'percent_alpha_acids': 0.05,
-             },
-             u'weight': 1.7,
-             u'boil_time': 60.0},
-            {u'name': u'Hallertau US',
-             u'data': {
-                 u'percent_alpha_acids': 0.05,
-             },
-             u'weight': 0.75,
-             u'boil_time': 0.0},
-        ],
-        u'yeast': {
-            u'name': u'Wyeast 3724',
-            u'data': {
-                u'percent_attenuation': 0.86,
+        u"name": u"Raison de Saison (Extract)",
+        u"start_volume": 7.0,
+        u"final_volume": 6.0,
+        u"grains": [
+            {
+                u"name": u"Pilsner Liquid Extract",
+                u"data": {u"color": 2.3, u"ppg": 37},
+                u"weight": 7.7,
+                u"grain_type": u"lme",
             },
-        },
-        u'data': {
-            u'brew_house_yield': 0.70,
-            u'units': u'imperial',
-        },
+            {u"name": u"Cane Beet Sugar", u"weight": 1.0, u"grain_type": u"dme"},
+            {
+                u"name": u"Wheat Liquid Extract",
+                u"data": {u"color": 4.0, u"ppg": 37},
+                u"weight": 0.75,
+                u"grain_type": u"lme",
+            },
+            {
+                u"name": u"munich liquid malt extract",
+                u"data": {u"color": 9.0, u"ppg": 37},
+                u"weight": 0.5,
+                u"grain_type": u"lme",
+            },
+            {
+                u"name": u"Caramunich Malt",
+                u"data": {u"color": 60.0},
+                u"weight": 0.125,
+                u"grain_type": u"specialty",
+            },
+        ],
+        u"hops": [
+            {
+                u"name": u"Hallertau US",
+                u"data": {u"percent_alpha_acids": 0.05},
+                u"weight": 1.7,
+                u"boil_time": 60.0,
+            },
+            {
+                u"name": u"Hallertau US",
+                u"data": {u"percent_alpha_acids": 0.05},
+                u"weight": 0.75,
+                u"boil_time": 0.0,
+            },
+        ],
+        u"yeast": {u"name": u"Wyeast 3724", u"data": {u"percent_attenuation": 0.86}},
+        u"data": {u"brew_house_yield": 0.70, u"units": u"imperial"},
     }
 
-    data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data/'))
+    data_dir = os.path.abspath(os.path.join(os.getcwd(), "data/"))
     loader = JSONDataLoader(data_dir)
     beer = parse_recipe(recipe, loader)
     print(beer.format())

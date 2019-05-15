@@ -7,20 +7,20 @@ from ..exceptions import ColorException
 from ..validators import validate_units
 
 __all__ = [
-    u'srm_to_ebc',
-    u'ebc_to_srm',
-    u'calculate_mcu',
-    u'calculate_srm_mosher',
-    u'calculate_srm_daniels',
-    u'calculate_srm_daniels_power',
-    u'calculate_srm_noonan_power',
-    u'calculate_srm_morey_hybrid',
-    u'calculate_srm_morey',
-    u'calculate_srm',
-    u'lovibond_to_srm',
-    u'srm_to_lovibond',
-    u'srm_to_a430',
-    u'ebc_to_a430',
+    u"srm_to_ebc",
+    u"ebc_to_srm",
+    u"calculate_mcu",
+    u"calculate_srm_mosher",
+    u"calculate_srm_daniels",
+    u"calculate_srm_daniels_power",
+    u"calculate_srm_noonan_power",
+    u"calculate_srm_morey_hybrid",
+    u"calculate_srm_morey",
+    u"calculate_srm",
+    u"lovibond_to_srm",
+    u"srm_to_lovibond",
+    u"srm_to_a430",
+    u"ebc_to_a430",
 ]
 
 
@@ -46,8 +46,7 @@ def ebc_to_srm(ebc):
     return ebc / 1.97
 
 
-def calculate_mcu(grain_weight, beer_color, final_volume,
-                  units=IMPERIAL_UNITS):
+def calculate_mcu(grain_weight, beer_color, final_volume, units=IMPERIAL_UNITS):
     """
     Calculate MCU from Grain
 
@@ -110,7 +109,9 @@ def calculate_srm_daniels_power(mcu):
     """  # noqa
     srm = 1.73 * (mcu ** 0.64) - 0.27
     if srm > 50.0:
-        raise ColorException(u"Daniels Power equation does not work above SRM 50.0")  # noqa
+        raise ColorException(
+            u"Daniels Power equation does not work above SRM 50.0"
+        )  # noqa
     return srm
 
 
@@ -125,7 +126,9 @@ def calculate_srm_noonan_power(mcu):
     """  # noqa
     srm = 15.03 * (mcu ** 0.27) - 15.53
     if srm > 50.0:
-        raise ColorException(u"Noonan Power equation does not work above SRM 50.0")  # noqa
+        raise ColorException(
+            u"Noonan Power equation does not work above SRM 50.0"
+        )  # noqa
     return srm
 
 

@@ -7,17 +7,17 @@ from ..validators import validate_units
 from .temperature import celsius_to_fahrenheit
 
 __all__ = [
-    u'sg_to_gu',
-    u'gu_to_sg',
-    u'plato_to_sg',
-    u'sg_to_plato',
-    u'brix_to_sg',
-    u'sg_to_brix',
-    u'brix_to_plato',
-    u'plato_to_brix',
-    u'apparent_extract_to_real_extract',
-    u'hydrometer_adjustment',
-    u'refractometer_adjustment',
+    u"sg_to_gu",
+    u"gu_to_sg",
+    u"plato_to_sg",
+    u"sg_to_plato",
+    u"brix_to_sg",
+    u"sg_to_brix",
+    u"brix_to_plato",
+    u"plato_to_brix",
+    u"apparent_extract_to_real_extract",
+    u"hydrometer_adjustment",
+    u"refractometer_adjustment",
 ]
 
 
@@ -118,7 +118,7 @@ def sg_to_brix(sg):
     """
     if sg > 1.17874:
         raise SugarException(u"Above 40 degBx this function no longer works")
-    return (((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622)
+    return ((182.4601 * sg - 775.6821) * sg + 1262.7794) * sg - 669.5622
 
 
 def brix_to_plato(brix):
@@ -169,7 +169,9 @@ def apparent_extract_to_real_extract(original_extract, apparent_extract):
     * Formula from Balling: De Clerck, Jean, A Textbook Of Brewing, Chapman & Hall Ltd., 1958
     """  # noqa
     attenuation_coeff = 0.22 + 0.001 * original_extract
-    real_extract = (attenuation_coeff * original_extract + apparent_extract) / (1 + attenuation_coeff)  # noqa
+    real_extract = (attenuation_coeff * original_extract + apparent_extract) / (
+        1 + attenuation_coeff
+    )  # noqa
     return real_extract
 
 
@@ -201,18 +203,25 @@ def hydrometer_adjustment(sg, temp, units=IMPERIAL_UNITS):
     validate_units(units)
     if units == SI_UNITS:
         if temp < 0.0 or 100.0 < temp:
-            raise SugarException(u"Correction does not work outside temps 0 - 100C")  # noqa
+            raise SugarException(
+                u"Correction does not work outside temps 0 - 100C"
+            )  # noqa
         temp = celsius_to_fahrenheit(temp)
     elif units == IMPERIAL_UNITS:
         if temp < 0.0 or 212.0 < temp:
-            raise SugarException(u"Correction does not work outside temps 0 - 212F")  # noqa
+            raise SugarException(
+                u"Correction does not work outside temps 0 - 212F"
+            )  # noqa
 
     if temp == HYDROMETER_ADJUSTMENT_TEMP:
         return sg
 
-    correction = (1.313454 - 0.132674 * (temp ** 1) +
-                  (2.057793 * 10 ** -3) * (temp ** 2) -
-                  (2.627634 * 10 ** -6) * (temp ** 3))
+    correction = (
+        1.313454
+        - 0.132674 * (temp ** 1)
+        + (2.057793 * 10 ** -3) * (temp ** 2)
+        - (2.627634 * 10 ** -6) * (temp ** 3)
+    )
     return sg + (correction * 0.001)
 
 
@@ -236,8 +245,13 @@ def refractometer_adjustment(og, fg, wort_correction_factor=1.04):
     og_brix = sg_to_brix(og) / wort_correction_factor
     fg_brix = sg_to_brix(fg) / wort_correction_factor
 
-    new_fg = (1.0000 -
-              0.0044993 * og_brix + 0.0117741 * fg_brix +
-              0.000275806 * (og_brix ** 2) - 0.00127169 * (fg_brix ** 2) -
-              0.00000727999 * (og_brix ** 3) + 0.0000632929 * (fg_brix ** 3))
+    new_fg = (
+        1.0000
+        - 0.0044993 * og_brix
+        + 0.0117741 * fg_brix
+        + 0.000275806 * (og_brix ** 2)
+        - 0.00127169 * (fg_brix ** 2)
+        - 0.00000727999 * (og_brix ** 3)
+        + 0.0000632929 * (fg_brix ** 3)
+    )
     return new_fg

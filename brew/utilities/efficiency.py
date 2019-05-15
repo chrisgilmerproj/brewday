@@ -3,10 +3,7 @@
 from .sugar import sg_to_gu
 from ..constants import PPG_DME
 
-__all__ = [
-    u'calculate_brew_house_yield',
-    u'get_wort_correction',
-]
+__all__ = [u"calculate_brew_house_yield", u"get_wort_correction"]
 
 
 def calculate_brew_house_yield(wort_volume, sg, grain_additions):
@@ -29,9 +26,9 @@ def calculate_brew_house_yield(wort_volume, sg, grain_additions):
     return (sg_to_gu(sg) * wort_volume) / total_gu
 
 
-def get_wort_correction(boil_gravity, boil_volume,
-                        final_gravity, final_volume,
-                        efficiency=PPG_DME):
+def get_wort_correction(
+    boil_gravity, boil_volume, final_gravity, final_volume, efficiency=PPG_DME
+):
     """
     Get amount of sugar to add to correct wort
 
@@ -46,4 +43,6 @@ def get_wort_correction(boil_gravity, boil_volume,
     :return: The amount of DME or LME to add to the boil in lbs
     :rtype: float
     """  # noqa
-    return (final_gravity * final_volume - boil_gravity * boil_volume) / efficiency  # noqa
+    return (
+        final_gravity * final_volume - boil_gravity * boil_volume
+    ) / efficiency  # noqa

@@ -22,7 +22,6 @@ from brew.utilities.color import srm_to_lovibond
 
 
 class TestColorUtilities(unittest.TestCase):
-
     def test_srm_to_ebc(self):
         ebc = srm_to_ebc(3.0)
         self.assertEquals(round(ebc, 2), 5.91)

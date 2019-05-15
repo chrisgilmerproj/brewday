@@ -19,12 +19,16 @@ def main():
 
     target_temp = 110
     initial_temp = 70  # grain temperature without water
-    sk_temp = strike_temp(target_temp, initial_temp,
-                          liquor_to_grist_ratio=liquor_to_grist_ratio)
+    sk_temp = strike_temp(
+        target_temp, initial_temp, liquor_to_grist_ratio=liquor_to_grist_ratio
+    )
 
     print("")
-    print("Bring {} qts of water to {} degF before adding grains".format(
-        water_volume, round(sk_temp, 1)))  # noqa
+    print(
+        "Bring {} qts of water to {} degF before adding grains".format(
+            water_volume, round(sk_temp, 1)
+        )
+    )  # noqa
     print("Your temperature should then reach {} degF".format(target_temp))
     print("Keep your temperature here for 20 minutes")
 
@@ -32,12 +36,18 @@ def main():
     target_temp = 140
     infusion_temp = 210
 
-    infusion_volume = mash_infusion(target_temp, initial_temp,
-                                    grain_weight, water_volume,
-                                    infusion_temp=infusion_temp)
+    infusion_volume = mash_infusion(
+        target_temp,
+        initial_temp,
+        grain_weight,
+        water_volume,
+        infusion_temp=infusion_temp,
+    )
 
     print("")
-    print("Add {} qts of {} degF water".format(round(infusion_volume, 1), infusion_temp))  # noqa
+    print(
+        "Add {} qts of {} degF water".format(round(infusion_volume, 1), infusion_temp)
+    )  # noqa
     print("Your temperature should then reach {} degF".format(target_temp))
     print("Keep your temperature here for 40 minutes")
 
@@ -46,12 +56,18 @@ def main():
     infusion_temp = 210
     water_volume += infusion_volume
 
-    infusion_volume = mash_infusion(target_temp, initial_temp,
-                                    grain_weight, water_volume,
-                                    infusion_temp=infusion_temp)
+    infusion_volume = mash_infusion(
+        target_temp,
+        initial_temp,
+        grain_weight,
+        water_volume,
+        infusion_temp=infusion_temp,
+    )
 
     print("")
-    print("Add {} qts of {} degF water".format(round(infusion_volume, 1), infusion_temp))  # noqa
+    print(
+        "Add {} qts of {} degF water".format(round(infusion_volume, 1), infusion_temp)
+    )  # noqa
     print("Your temperature should then reach {} degF".format(target_temp))
     print("Keep your temperature here for 20 minutes")
     print("")
