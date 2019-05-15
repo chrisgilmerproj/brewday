@@ -1,8 +1,8 @@
 # Coverage
 coverage==4.1
 
-# Formatting
-black
+# Formatting for py3.6 and higher
+# black==19.3b0
 
 # Lint
 flake8==3.3.0
