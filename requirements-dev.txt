@@ -2,7 +2,7 @@
 coverage==4.1
 
 # Formatting
-black==19.3b0
+black
 
 # Lint
 flake8==3.3.0
