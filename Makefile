@@ -15,7 +15,7 @@ help:  ## Print the help documentation
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 $(VENV_ACTIVATE): requirements.txt requirements-dev.txt
-	test -f $@ || virtualenv --python=python2.7 $(VENV_DIR)
+	test -f $@ || virtualenv --python=python3.7 $(VENV_DIR)
 	$(WITH_VENV) pip install --no-deps -r requirements.txt
 	$(WITH_VENV) pip install --no-deps -r requirements-dev.txt
 	touch $@
