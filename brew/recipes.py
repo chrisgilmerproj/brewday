@@ -996,15 +996,15 @@ class RecipeBuilder(object):
         if sum(percent_list) != 1.0:
             raise RecipeException(u"Percentages must sum to 1.0")
 
-        if len(percent_list) != len(self.grain_list):
+        if len(percent_list) != len(self.hop_list):
             raise RecipeException(
-                u"The length of percent_list must equal length of self.grain_list"
+                u"The length of percent_list must equal length of self.hop_list"
             )  # noqa
 
         if len(boil_time_list) != len(self.hop_list):
             raise RecipeException(
-                u"The length of boil_time_list must equal length of self.hop_list"
-            )  # noqa
+                u"The length of boil_time_list must equal length of self.hop_list"  # noqa
+            )
 
         hops_constant = HOPS_CONSTANT_IMPERIAL
         if self.units == SI_UNITS:
