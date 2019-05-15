@@ -987,7 +987,7 @@ class RecipeBuilder(object):
         :return: A list of Hop Additions
         :rtype: list(HopAddition)
         :raises RecipeException: If sum of percentages does not equal 1.0
-        :raises RecipeException: If length of percent_list does not match length of self.grain_list
+        :raises RecipeException: If length of percent_list does not match length of self.hop_list
         :raises RecipeException: If length of boil_time_list does not match length of self.hop_list
         """  # noqa
         for percent in percent_list:
