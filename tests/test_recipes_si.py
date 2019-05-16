@@ -424,7 +424,7 @@ class TestRecipeBuilderSIUnits(unittest.TestCase):
             self.builder.get_hop_additions(percent_list, boil_time_list)
         self.assertEquals(
             str(ctx.exception),
-            u"The length of percent_list must equal length of self.grain_list",
+            u"The length of percent_list must equal length of self.hop_list",
         )  # noqa
 
     def test_get_hop_additions_raises_boil_time_length_mismatch(self):
