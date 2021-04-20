@@ -37,7 +37,7 @@ setup(
         "mock==2.0.0",
         "nose==1.3.1",
         "pluggy==0.3.1",
-        "py==1.4.31",
+        "py==1.10.0",
         "tox==2.3.1",
     ],
     keywords="brew brewing beer grain hops yeast alcohol",
